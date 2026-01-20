@@ -1,0 +1,451 @@
+/* Fondo GIF */
+body {
+  overflow-y: hidden; /* oculta scroll vertical */
+
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: url("imagenes/yo\ transparente.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Contenedor de la foto */
+.foto {
+  position: relative;   /* Se posiciona respecto al body */
+  z-index: 1;           /* Se asegura de estar encima del fondo */
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Estilo de la foto */
+.foto img {
+  width: 250px;         /* Ajusta el tamaño de tu foto */
+  border-radius: 50%;   /* Opcional: hace la foto circular */
+  border: 5px solid white; /* Opcional: borde para destacar */
+}
+
+/* Fondo GIF */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: url("fondo.gif") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Contenedor de la foto */
+.gif {
+  position: absolute;  /* Se posiciona respecto al body */
+  top: 20px;           /* Distancia desde arriba */
+  right: 20px;         /* Distancia desde la derecha */
+  z-index: 1;          /* Asegura que esté encima del fondo */
+}
+/* Fondo GIF */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: url("imagenes/gif-2026.gif") no-repeat center center fixed;
+  background-size: cover;
+}
+
+
+/* Contenedor de la foto mia */
+ .foto {
+  position: fixed;
+  top: 160px;
+  right: 90px;
+  z-index: 1;
+}
+
+
+
+.foto img {
+  width: 300px;
+  border-radius: 50%;
+  border: 1px solid white;        /* borde más delgado */
+  box-shadow: 0 0 6px white;      /* halo más fino */
+  animation: halo-rotate 0.5s linear infinite; /* giro más rápido */
+}
+
+@keyframes halo-rotate {
+  0%   { box-shadow: 0 0 6px white, 8px 0 8px rgba(8, 102, 216, 0.7); }
+  25%  { box-shadow: 0 0 6px white, 0 10px 8px rgba(255,255,255,0.7); }
+  50%  { box-shadow: 0 0 6px rgb(61, 6, 228), 8px 0 8px rgba(8, 28, 160, 0.7); }
+  75%  { box-shadow: 0 0 6px white, 0 -8px 8px rgba(255,255,255,0.7); }
+  100% { box-shadow: 0 0 6px white, 8px 0 8px rgba(63, 8, 191, 0.7); }
+}
+
+/*TITULO DE BIENVENIDA EN H1*/
+h1 {
+  position: fixed;
+  top: 35px;
+  left: 120px;
+  color: rgb(15, 28, 130);
+  
+  font-family: 'Arial', sans-serif;
+  font-size: 35px;
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+ .cursiva {
+  font-family: 'Cursive', sans-serif;
+  font-style: italic;
+   
+ 
+}
+
+/*Mi nombre en H2*/
+h2 {
+  position: fixed;
+  top: 550px;
+  right: 80px;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  z-index: 2; /* Asegura que esté encima del fondo */
+  
+}
+.cursiva {
+  font-family: 'Cursive', sans-serif;
+  font-style: italic;
+}
+
+/*Enlace de PayPal en H3*/
+h3 {
+  position: fixed;
+  top: 645px;
+  left: 245px;
+  color: rgb(247, 247, 249);
+  
+  font-family: 'Arial', sans-serif;
+  font-size: 25px;
+  z-index: 2; /* Asegura que esté encima del fondo */
+  
+}
+
+.barra-superior {
+  position: fixed;   /* se queda fija */
+  top: 0;            /* pegada arriba */
+  left: 0;
+  width: 100%;       /* ocupa todo el ancho */
+  height:150px;     /* alto de la barra */
+  background-color: #fefdfd; /* color de fondo */
+}
+
+.barra-inferior {
+  position: fixed;   /* se queda fija */
+  bottom: 0;         /* pegada abajo */
+  left: 0;
+  width: 100%;
+  height: 100px;    /* alto de la barra */
+  background-color: #d4c6c6;
+}
+
+/*mi logo de arriba a la izquierda*/
+.logo {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 20px; /* Ajusta el tamaño del logo */
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+
+/*mi logo de abajo a la derecha*/
+.logo3 {
+  position: fixed;
+  top: 630px;
+  left: 1400px;
+  width: 140px; /* Ajusta el tamaño del logo */
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+
+/*Adoración*/
+.adoracion {
+  position: fixed;
+  top: 215px;
+  right: 640px;
+  background-color: #ce1414; /* Color de fondo de YouTube */
+  color: rgb(211, 19, 19); /* Color del texto */
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+
+/*Facebook*/
+.facebook {
+  position: fixed;
+  top: 320px;
+  right: 915px;
+  background-color: #082564; /* Color de fondo de Facebook */
+  color: white; /* Color del texto */
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+
+.instagram {
+  position: fixed;
+  top: 430px;
+  right: 911px;
+  background-color: #E1306C; /* Color de fondo de Instagram */
+  color: white; /* Color del texto */
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+
+.tiktok {
+  position: fixed;
+  top: 535px;
+  right: 940px;
+  background-color: #000000; /* Color de fondo de Tik Tok */
+  color: white; /* Color del texto */
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+
+/*Logos de redes sociales*/
+
+/*YouTube*/
+.logo4 {
+  position: fixed;
+  top: 135px;
+  right: 1380px;
+  width: 100px; /* Ajusta el tamaño del logo */
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+
+/*Facebook*/
+.logo5 {
+  position: fixed;
+  top: 278px;
+  right: 1345px;
+  width: 100px; /* Ajusta el tamaño del logo */
+  z-index: 2; /* Asegura que esté encima del fondo */
+  
+}
+/*Instagram*/
+.logo6 {
+  position: fixed;
+  top: 380px;
+  right: 1360px;
+  width: 100px; /* Ajusta el tamaño del logo */
+  z-index: 2; /* Asegura que esté encima del fondo */
+  
+}
+
+/*Tik tok*/
+.logo7 {
+  position: fixed;
+  top: 460px;
+  right: 1375px;
+  width: 100px; /* Ajusta el tamaño del logo */
+  z-index: 2; /* Asegura que esté encima del fondo */
+  
+}
+
+/* Estado normal del enlace */
+a {
+  color: white; /* texto blanco */
+  text-decoration: none; /* opcional, quita el subrayado */
+}
+
+/* Cuando el enlace ya fue visitado */
+a:visited {
+  color: white; /* mantener blanco */
+}
+
+/* Cuando pasas el mouse por encima */
+a:hover {
+  color: rgb(42, 8, 210); /* puedes dejarlo blanco o cambiarlo */
+}
+
+/* Cuando haces clic o seleccionas el enlace */
+a:active {
+  color: green; /* verde al seleccionar/clic */
+}
+
+/*Boton de depurar.js*/
+.depurar.js {
+  position: fixed;
+  top: 200px;
+  right: 300px;
+  background-color: #28a745; /* Color de fondo verde */
+  color: white; /* Color del texto */
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  z-index: 2; /* Asegura que esté encima del fondo */
+}
+
+/*Boton de donar*/
+.Donar {
+  position: fixed;
+  top: 660px;
+  right:270px;
+  background-color: #071a26; /* Color de fondo de PayPal */
+  color: white; /* Color del texto */
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  font-size: 20px;
+  text-decoration: none;
+  z-index: 2; /* Asegura que esté encima del fondo */
+  
+}
+
+/* Enlaces generales, excepto el de donar */
+a:not(.Donar) {
+  color: white;
+  text-decoration: none;
+}
+
+a:not(.Donar):visited {
+  color: white;
+}
+
+a:not(.Donar):hover {
+  color: rgb(42, 8, 210);
+}
+
+a:not(.Donar):active {
+  color: green;
+}
+
+
+/*animaciones de los logos*/
+.logo4 img {
+  position: relative;
+  animation: mover 1s infinite alternate;
+}
+
+
+@keyframes mover {
+  from { transform: translateX(0); }
+  to   { transform: translateX(30px); }
+}
+
+
+.logo5 img {
+  animation: temblor 0.5s infinite;
+}
+
+@keyframes temblor {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-5px); }
+  50%  { transform: translateX(5px); }
+  75%  { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.logo6 img {
+  animation: temblor 0.5s infinite;
+}
+
+@keyframes temblor {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-5px); }
+  50%  { transform: translateX(5px); }
+  75%  { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.logo7 img {
+  position: relative;
+  animation: mover 1s infinite alternate;
+}
+
+
+@keyframes mover {
+  from { transform: translateX(0); }
+  to   { transform: translateX(30px); }
+}
+/* Bienvenida en H1*/
+h1 {
+  color: rgb(253, 253, 255);
+  display: inline-block;
+  animation: rebote 1s infinite;
+}
+
+@keyframes rebote {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+/*Boton de donar*/
+.Donar {
+  color: rgb(56, 18, 210);
+  display: inline-block;
+  animation: rebote 1s infinite;
+}
+
+@keyframes rebote {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(+10px); }
+}
+
+/*Paypal en letra*/
+
+.h3 {
+  color: yellow;
+  display: inline-block;
+  animation: rebote 1s infinite;
+}
+
+@keyframes rebote {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(+10px); }
+}
+
+/*Barras superior e inferior*/
+
+.barra-inferior {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(90deg, #111111, #444, #111);
+  background-size: 200% 100%;
+  animation: ondas 4s linear infinite;
+}
+
+@keyframes ondas {
+  from { background-position: 0 0; }
+  to   { background-position: 200% 0; }
+}
+
+.barra-superior {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(90deg, #111111, #444, #111);
+  background-size: 200% 100%;
+  animation: ondas 4s linear infinite;
+}
+
+/*Audio de fondo*/
+.audio-fondo {
+  display: none; /* Oculta el reproductor de audio */
+}
+
+audio {
+  display: none;
+}
