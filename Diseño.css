@@ -5,7 +5,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background: url("imagenes/yo\ transparente.png") no-repeat center center fixed;
+  background: url("yo\ transparente.png") no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -45,7 +45,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background: url("imagenes/gif-2026.gif") no-repeat center center fixed;
+  background: url("gif-2026.gif") no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -448,4 +448,5 @@ h1 {
 
 audio {
   display: none;
+
 }
