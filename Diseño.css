@@ -332,7 +332,7 @@ a:not(.Donar):active
 .logo4 {
   position: fixed;
   top: 135px;
-  right: 910px;
+  right: 890px;
   width: 100px;
   z-index: 2;
 }
@@ -452,6 +452,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
