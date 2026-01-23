@@ -441,11 +441,4 @@ h1 {
   animation: ondas 4s linear infinite;
 }
 
-/*Audio de fondo*/
-.audio-fondo {
-  display: none; /* Oculta el reproductor de audio */
-}
 
-audio {
-  display: none;
-}
