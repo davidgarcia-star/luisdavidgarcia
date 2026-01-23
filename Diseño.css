@@ -327,52 +327,66 @@ a:not(.Donar):active
 
 
 /*animaciones de los logos*/
-.logo4 img {
-  position: relative;
-  animation: mover 1s infinite alternate;
+
+/* Posiciones de los logos */
+.logo4 {
+  position: fixed;
+  top: 135px;
+  right: 900px;
+  width: 100px;
+  z-index: 2;
 }
 
-
-@keyframes mover {
-  from { transform: translateX(0); }
-  to   { transform: translateX(30px); }
+.logo5 {
+  position: fixed;
+  top: 278px;
+  right: 880px;
+  width: 100px;
+  z-index: 2;
 }
 
-
-.logo5 img {
-  animation: temblor 0.5s infinite;
+.logo6 {
+  position: fixed;
+  top: 380px;
+  right: 890px;
+  width: 100px;
+  z-index: 2;
 }
 
-@keyframes temblor {
-  0%   { transform: translateX(0); }
-  25%  { transform: translateX(-5px); }
-  50%  { transform: translateX(5px); }
-  75%  { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+.logo7 {
+  position: fixed;
+  top: 460px;
+  right: 900px;
+  width: 100px;
+  z-index: 2;
 }
 
-.logo6 img {
-  animation: temblor 0.5s infinite;
-}
-
-@keyframes temblor {
-  0%   { transform: translateX(0); }
-  25%  { transform: translateX(-5px); }
-  50%  { transform: translateX(5px); }
-  75%  { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-
+/* Animaciones */
+.logo4 img,
 .logo7 img {
   position: relative;
   animation: mover 1s infinite alternate;
 }
 
+.logo5 img,
+.logo6 img {
+  animation: temblor 0.5s infinite;
+}
 
+/* Keyframes únicos */
 @keyframes mover {
   from { transform: translateX(0); }
   to   { transform: translateX(30px); }
 }
+
+@keyframes temblor {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-5px); }
+  50%  { transform: translateX(5px); }
+  75%  { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
 /* Bienvenida en H1*/
 h1 {
   color: rgb(253, 253, 255);
@@ -438,6 +452,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
