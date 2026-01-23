@@ -92,12 +92,8 @@ h1 {
   font-size: 20px;
   z-index: 2; /* Asegura que esté encima del fondo */
 }
- .cursiva {
-  font-family: 'Cursive', sans-serif;
-  font-style: italic;
-   
+
  
-}
 
 /*Mi nombre en H2*/
 h2 {
@@ -445,6 +441,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
