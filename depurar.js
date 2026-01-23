@@ -12,7 +12,35 @@ window.onload = function() {
   }
 };
 
-<button onclick="location.reload();">Actualizar</button>
+let startY = 0;
+let isPulling = false;
+
+document.addEventListener("touchstart", (e) => {
+  if (window.scrollY === 0) { // solo si está arriba del todo
+    startY = e.touches[0].pageY;
+    isPulling = true;
+  }
+});
+
+document.addEventListener("touchmove", (e) => {
+  if (!isPulling) return;
+  let currentY = e.touches[0].pageY;
+  if (currentY - startY > 50) { // umbral de 50px
+    document.getElementById("refresh-indicator").style.display = "block";
+  }
+});
+
+document.addEventListener("touchend", () => {
+  if (isPulling) {
+    isPulling = false;
+    if (document.getElementById("refresh-indicator").style.display === "block") {
+      // Acción al refrescar
+      location.reload(); // recarga la página
+    }
+    document.getElementById("refresh-indicator").style.display = "none";
+  }
+});
+
 
 
 
