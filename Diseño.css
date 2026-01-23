@@ -88,7 +88,7 @@ h1 {
   left: 120px;
   color: rgb(15, 28, 130);
   
-  font-family: 'Arial', sans-serif;
+  font-family: 'roboto', sans-serif;
   font-size: 20px;
   z-index: 2; /* Asegura que esté encima del fondo */
 }
@@ -105,7 +105,7 @@ h2 {
   top: 550px;
   right: 80px;
   color: white;
-  font-family: 'Arial', sans-serif;
+  font-family: 'roboto', sans-serif;
   font-size: 20px;
   z-index: 2; /* Asegura que esté encima del fondo */
   
@@ -445,6 +445,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
