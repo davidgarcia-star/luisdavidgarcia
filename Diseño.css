@@ -161,7 +161,7 @@ h3 {
 .adoracion {
   position: fixed;
   top: 215px;
-  right: 520px;
+  right: 610px;
   background-color: #ce1414; /* Color de fondo de YouTube */
   color: rgb(211, 19, 19); /* Color del texto */
   padding: 10px 15px;
@@ -176,7 +176,7 @@ h3 {
 .facebook {
   position: fixed;
   top: 320px;
-  right: 550px;
+  right: 610px;
   background-color: #082564; /* Color de fondo de Facebook */
   color: white; /* Color del texto */
   padding: 10px 15px;
@@ -190,7 +190,7 @@ h3 {
 .instagram {
   position: fixed;
   top: 430px;
-  right: 560px;
+  right: 610px;
   background-color: #E1306C; /* Color de fondo de Instagram */
   color: white; /* Color del texto */
   padding: 10px 15px;
@@ -230,7 +230,7 @@ h3 {
 .logo5 {
   position: fixed;
   top: 278px;
-  right: 960px;
+  right: 890px;
   width: 100px; /* Ajusta el tamaño del logo */
   z-index: 2; /* Asegura que esté encima del fondo */
   
@@ -239,7 +239,7 @@ h3 {
 .logo6 {
   position: fixed;
   top: 380px;
-  right: 950px;
+  right: 890px;
   width: 100px; /* Ajusta el tamaño del logo */
   z-index: 2; /* Asegura que esté encima del fondo */
   
@@ -438,6 +438,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
