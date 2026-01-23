@@ -239,7 +239,7 @@ h3 {
 .logo6 {
   position: fixed;
   top: 380px;
-  right: 900x;
+  right: 900px;
   width: 100px; /* Ajusta el tamaño del logo */
   z-index: 2; /* Asegura que esté encima del fondo */
   
@@ -294,7 +294,7 @@ a:active {
 /*Boton de donar*/
 .Donar {
   position: fixed;
-  top: 671px;
+  top: 665px;
   right:290px;
   background-color: #071a26; /* Color de fondo de PayPal */
   color: white; /* Color del texto */
@@ -438,6 +438,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
