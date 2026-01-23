@@ -294,7 +294,7 @@ a:active {
 /*Boton de donar*/
 .Donar {
   position: fixed;
-  top: 680px;
+  top: 700px;
   right:270px;
   background-color: #071a26; /* Color de fondo de PayPal */
   color: white; /* Color del texto */
@@ -438,6 +438,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
