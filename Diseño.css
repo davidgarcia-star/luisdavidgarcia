@@ -22,6 +22,13 @@ body {
   margin-top: 200px;
 }
 
+.foto {
+  position: absolute;
+  top: 200px; /* ajusta según lo que necesites */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
 /* Estilo de la foto */
 .foto img {
   width: 250px;         /* Ajusta el tamaño de tu foto */
@@ -438,6 +445,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
