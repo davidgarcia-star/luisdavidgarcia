@@ -451,6 +451,21 @@ audio {
 
 }
 
+.contenedor {
+  width: 90%;
+  max-width: 1200px;
+}
+
+@media (max-width: 768px) {
+  .menu {
+    flex-direction: column;
+  }
+  .imagen {
+    width: 100%;
+  }
+}
+
+
 
 
 
