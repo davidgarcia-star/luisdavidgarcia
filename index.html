@@ -9,9 +9,6 @@
   <title>MINISTERIO PROFÉTICO ARDIENDO POR EL AVIVAMIENTO</title>
   
   <link rel="stylesheet" href="estilos.css">
-  <script src="depurar.js"></script>
-
-
 
   <!-- Favicon -->
   <link rel="icon" type="png" href="logo.png.png">
@@ -64,37 +61,10 @@
   <header class="barra-superior"></header>
 <footer class="barra-inferior"></footer>
   
-<!--Reproductor de audio-->
-
-<audio autoplay loop>
-  <source src="audio/Frame-Dragging - The Grey Room _ Density & Time.mp3" type="audio/mpeg">
-</audio>
-
-<button onclick="document.getElementById('miAudio').muted = false;">
-  Activar sonido
-</button>
-
-<audio controls autoplay>
-  <source src="audio/Frame-Dragging - The Grey Room _ Density & Time.mp3" type="audio/mpeg">
-  Tu navegador no soporta audio.
-</audio>
-
-<button id="btnAceptar">Soy humano, aceptar</button>
-
-<script>
-  const audio = document.getElementById("miAudio");
-  const btnAceptar = document.getElementById("btnAceptar");
-
-  btnAceptar.addEventListener("click", () => {
-    audio.play();   // inicia el audio
-    audio.muted = false; // asegura que no esté silenciado
-  });
-</script>
-
 
 <!--4 enlaces--> 
 
- <a href="https://www.ejemplo.com" class="especiales">Enlace personalizado</a><br>
+ <a href="https://www.ejemplo.com" class="especial">Enlace personalizado</a><br>
   <a href="https://www.paypal.com/paypalme/LUISDAVIDGARCIA25">Enlace normal</a>
 
    <div class="adoracion">
@@ -115,10 +85,7 @@
 
 <!--Aqui terminan la seccion de enlaces-->
                      
-   <!--Depurar.js--> 
-  <div class="depurar.js">
-    <script src="depurar.js"></script>
-
+  
     <!--Enlace de PayPal-->
   <div class="Donar">
    <a href="https://www.paypal.com/paypalme/LUISDAVIDGARCIA25">Hacer clic aquí para donar</a>
@@ -147,8 +114,43 @@
   </div>
 
 
+    <script src="depurar.js"></script>
+   <!--Depurar.js--> 
+  <div class="depurar.js">
+    <script src="depurar.js"></script>
+
+
+    <!--Reproductor de audio-->
+
+<audio autoplay loop>
+  <source src="audio/Frame-Dragging - The Grey Room _ Density & Time.mp3" type="audio/mpeg">
+</audio>
+
+<button onclick="document.getElementById('miAudio').muted = false;">
+  Activar sonido
+</button>
+
+<audio controls autoplay>
+  <source src="audio/Frame-Dragging - The Grey Room _ Density & Time.mp3" type="audio/mpeg">
+  Tu navegador no soporta audio.
+</audio>
+
+<button id="btnAceptar">Soy humano, aceptar</button>
+
+<script>
+  const audio = document.getElementById("miAudio");
+  const btnAceptar = document.getElementById("btnAceptar");
+
+  btnAceptar.addEventListener("click", () => {
+    audio.play();   // inicia el audio
+    audio.muted = false; // asegura que no esté silenciado
+  });
+</script>
+
+
 </body>
 </html>
+
 
 
 
