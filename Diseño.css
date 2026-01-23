@@ -19,7 +19,7 @@ body {
   position: relative;   /* Se posiciona respecto al body */
   z-index: 1;           /* Se asegura de estar encima del fondo */
   text-align: center;
-  margin-top: 100px;
+  margin-top: 140px;
 }
 
 /* Estilo de la foto */
@@ -438,6 +438,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
