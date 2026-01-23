@@ -163,7 +163,7 @@ h3 {
 .adoracion {
   position: fixed;
   top: 215px;
-  right: 640px;
+  right: 400px;
   background-color: #ce1414; /* Color de fondo de YouTube */
   color: rgb(211, 19, 19); /* Color del texto */
   padding: 10px 15px;
@@ -440,5 +440,6 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
