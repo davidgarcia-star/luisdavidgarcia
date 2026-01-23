@@ -178,7 +178,7 @@ h3 {
 .facebook {
   position: fixed;
   top: 320px;
-  right: 915px;
+  right: 600px;
   background-color: #082564; /* Color de fondo de Facebook */
   color: white; /* Color del texto */
   padding: 10px 15px;
@@ -192,7 +192,7 @@ h3 {
 .instagram {
   position: fixed;
   top: 430px;
-  right: 911px;
+  right: 600px;
   background-color: #E1306C; /* Color de fondo de Instagram */
   color: white; /* Color del texto */
   padding: 10px 15px;
@@ -206,7 +206,7 @@ h3 {
 .tiktok {
   position: fixed;
   top: 535px;
-  right: 940px;
+  right: 600px;
   background-color: #000000; /* Color de fondo de Tik Tok */
   color: white; /* Color del texto */
   padding: 10px 15px;
@@ -223,7 +223,7 @@ h3 {
 .logo4 {
   position: fixed;
   top: 135px;
-  right: 1380px;
+  right: 800px;
   width: 100px; /* Ajusta el tamaño del logo */
   z-index: 2; /* Asegura que esté encima del fondo */
 }
@@ -440,6 +440,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
