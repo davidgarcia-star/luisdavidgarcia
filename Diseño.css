@@ -465,6 +465,31 @@ audio {
   }
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+.contenedor {
+  width: 100%;
+  padding: 10px;
+}
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+}
+.columna {
+  flex: 1 1 100%;
+}
+@media (min-width: 768px) {
+  .columna {
+    flex: 1 1 50%;
+  }
+}
+
+
+
+
 
 
 
