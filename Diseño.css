@@ -1,5 +1,10 @@
-/* Fondo GIF */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Fondo GIF */
   overflow-y: hidden; /* oculta scroll vertical */
 
   margin: 0;
@@ -440,6 +445,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
