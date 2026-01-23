@@ -230,7 +230,7 @@ h3 {
 .logo5 {
   position: fixed;
   top: 278px;
-  right: 900px;
+  right: 940px;
   width: 100px; /* Ajusta el tamaño del logo */
   z-index: 2; /* Asegura que esté encima del fondo */
   
@@ -239,7 +239,7 @@ h3 {
 .logo6 {
   position: fixed;
   top: 380px;
-  right: 900px;
+  right: 940px;
   width: 100px; /* Ajusta el tamaño del logo */
   z-index: 2; /* Asegura que esté encima del fondo */
   
@@ -438,6 +438,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
