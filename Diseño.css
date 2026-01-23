@@ -76,6 +76,17 @@ body {
   100% { box-shadow: 0 0 6px white, 8px 0 8px rgba(63, 8, 191, 0.7); }
 }
 
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+p {
+  font-style: italic; /* cursiva */
+}
+
+strong {
+  font-weight: bold; /* negrita */
+}
 /*TITULO DE BIENVENIDA EN H1*/
 h1 {
   position: fixed;
@@ -440,6 +451,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
