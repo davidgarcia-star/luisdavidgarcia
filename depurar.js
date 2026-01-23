@@ -12,5 +12,8 @@ window.onload = function() {
   }
 };
 
-document.getElementById("miAudio").play();
+<button onclick="location.reload();">Actualizar</button>
+
+
+
 
