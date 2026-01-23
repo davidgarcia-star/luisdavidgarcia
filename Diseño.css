@@ -6,7 +6,7 @@ body {
 
 /* Fondo GIF */
   overflow-y: hidden; /* oculta scroll vertical */
-
+{
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -438,6 +438,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
