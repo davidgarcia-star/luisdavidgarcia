@@ -190,7 +190,7 @@ h3 {
 .instagram {
   position: fixed;
   top: 430px;
-  right: 700px;
+  right: 600px;
   background-color: #E1306C; /* Color de fondo de Instagram */
   color: white; /* Color del texto */
   padding: 10px 15px;
@@ -204,7 +204,7 @@ h3 {
 .tiktok {
   position: fixed;
   top: 535px;
-  right: 700px;
+  right: 600px;
   background-color: #000000; /* Color de fondo de Tik Tok */
   color: white; /* Color del texto */
   padding: 10px 15px;
@@ -438,6 +438,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
