@@ -118,7 +118,7 @@ h3 {
   color: rgb(247, 247, 249);
   
   font-family: 'Arial', sans-serif;
-  font-size: 25px;
+  font-size: 15px;
   z-index: 2; /* Asegura que esté encima del fondo */
   
 }
@@ -440,6 +440,7 @@ h1 {
   background-size: 200% 100%;
   animation: ondas 4s linear infinite;
 }
+
 
 
 
