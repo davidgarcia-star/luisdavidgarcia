@@ -635,6 +635,38 @@
     70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
     100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
+
+/* Transición suave para el collapse */
+.collapse {
+    transition: height 0.35s ease;
+}
+
+/* Efecto hover en el botón */
+.btn-outline-primary:hover i {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
+}
+
+/* Indicador visual de contenido expandible */
+.bio-intro {
+    position: relative;
+}
+
+.bio-intro::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, transparent, rgba(248, 249, 250, 0.9));
+    pointer-events: none;
+}
+
+/* Cuando está expandido, ocultar el gradiente */
+.bio-intro.expanded::after {
+    display: none;
+}
     </style>
 </head>
 <body>
@@ -796,8 +828,57 @@
             <!-- Contenido Biográfico -->
             <div class="col-md-7 col-lg-8">
                 <h3 class="h4 mb-3" style="color: var(--dominican-blue)">Un Llamado Profético</h3>
-                <p class="lead">
-                    <strong>Luis David García</strong> 
+                <p>
+                <strong>Luis David García</strong> es un predicador, y comunicador cristiano de la República Dominicana, conocido por su pasión por el avivamiento espiritual y la proclamación del evangelio a través de medios digitales. Nació en la provincia de San Cristóbal, República Dominicana, y desde temprana edad mostró un profundo interés por las cosas de Dios y por impactar vidas a través de la fe.
+
+                </p>
+                    <!-- Versión con Acordeón Bootstrap -->
+<div class="accordion accordion-flush" id="biographyAccordion">
+    <div class="accordion-item border-0">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-transparent text-primary fw-bold" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#biographyContent">
+                <i class="fas fa-book-open me-2"></i>
+                Leer biografía completa
+            </button>
+        </h2>
+        <div id="biographyContent" 
+             class="accordion-collapse collapse" 
+             data-bs-parent="#biographyAccordion">
+            <div class="accordion-body">
+                <p>
+                Es el fundador del Ministerio Profético Ardiendo por el Avivamiento, una plataforma de alcance espiritual dedicada a despertar una generación apasionada por la presencia de Dios, la restauración y el mover profético del Espíritu Santo. Su mensaje se centra en el avivamiento, la restauración espiritual, la transformación de vidas y la manifestación del poder de Dios en la iglesia y en la sociedad.
+
+                Además de su labor ministerial, Luis David García es compositor de adoración profética y espontánea, destacándose por la canción titulada “Ardiendo por el Avivamiento”, la cual refleja su llamado a encender el fuego espiritual en esta generación.
+                
+                </p>  
+                <p>
+                    Su ministerio también se caracteriza por un fuerte enfoque en el evangelismo digital. A través de plataformas como TikTok, YouTube, Facebook e Instagram, comparte predicaciones, reflexiones bíblicas y transmisiones en vivo, alcanzando a personas dentro y fuera de la República Dominicana.
+
+                </p>  
+                <p>
+                    Luis David García también se ha desarrollado en el ámbito educativo y tecnológico, contando con formación en tecnología en el Instituto Tecnológico de Las Américas (ITLA) Una Licencia en Educación Mención Informática por la Universidad Dominicana O&M, Una especialidad En Desarrollo Mooc's y certificaciones internacionales, lo que le ha permitido integrar herramientas digitales en la expansión del mensaje del evangelio.
+
+                </p>
+                <p>
+                    Es conocido por su estilo dinámico, su enfoque profético y su compromiso con la formación de creyentes que vivan una fe genuina. Además, posee habilidades musicales, tocando instrumentos como guitarra y piano, los cuales utiliza en momentos de adoración y ministración.
+
+                </p>
+                <p>
+                    Actualmente continúa desarrollando su ministerio con una visión clara: levantar una generación encendida por el Espíritu Santo y comprometida con el avivamiento y la restauración.
+
+                </p>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+                    <!-- <strong>Luis David García</strong> 
         
                     Luis David García es un predicador, y comunicador cristiano de la República Dominicana, conocido por su pasión por el avivamiento espiritual y la proclamación del evangelio a través de medios digitales. Nació en la provincia de San Cristóbal, República Dominicana, y desde temprana edad mostró un profundo interés por las cosas de Dios y por impactar vidas a través de la fe.
 
@@ -813,7 +894,7 @@ Luis David García también se ha desarrollado en el ámbito educativo y tecnol�
 Es conocido por su estilo dinámico, su enfoque profético y su compromiso con la formación de creyentes que vivan una fe genuina. Además, posee habilidades musicales, tocando instrumentos como guitarra y piano, los cuales utiliza en momentos de adoración y ministración.
 
 Actualmente continúa desarrollando su ministerio con una visión clara: levantar una generación encendida por el Espíritu Santo y comprometida con el avivamiento y la restauración.
-                </p>
+                </p> -->
                 
                 <!-- Grid de características -->
                 <div class="row g-3 my-4">
