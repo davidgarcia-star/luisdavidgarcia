@@ -2,1204 +2,1003 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ministerio Profético Ardiendo por el Avivamiento - Evangelista Luis David García">
-    <title>MIPROAA-LUIS DAVID GARCIA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#120A2B">
+    <title>MIPROAA | Evangelista Luis David García</title>
+    <meta name="description" content="Ministerio Profético Ardiendo por el Avivamiento - Evangelista Luis David García, República Dominicana.">
     <link rel="icon" type="image/png" href="logo.png.png">
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Vista previa al compartir en Facebook, WhatsApp y otras redes -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_DO">
+    <meta property="og:title" content="Ministerio Profético Ardiendo por el Avivamiento">
+    <meta property="og:description" content="Sitio oficial del Evangelista Luis David García: prédicas, biografía y cómo apoyar el ministerio.">
+    <meta property="og:image" content="https://davidgarcia-star.github.io/luisdavidgarcia/img/banner-miproaa-tv.jpg">
+    <meta name="twitter:card" content="summary_large_image">
 
-    <!-- Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&family=Newsreader:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS Adaptado para Bootstrap -->
     <style>
         /* ============================================
-           VARIABLES Y CONFIGURACIÓN GLOBAL
+           IDENTIDAD: fuego en el altar, noche y oro
            ============================================ */
         :root {
-            --primary-color: #FF6B35;
-            --secondary-color: #2C3E50;
-            --accent-color: #F7931E;
-            --dominican-blue: #002D62;
-            --dominican-red: #CE1126;
-            --dominican-gold: #FFD700;
-            --text-color: #333;
-            --light-bg: #f8f9fa;
-            --white: #ffffff;
-            --shadow-sm: 0 2px 10px rgba(0,0,0,0.1);
-            --shadow: 0 10px 30px rgba(0,0,0,0.1);
-            --shadow-lg: 0 15px 40px rgba(0,0,0,0.15);
-            --transition: all 0.3s ease;
+            --night: #120A2B;
+            --indigo: #22114A;
+            --royal: #4B2A8F;
+            --gold: #F4B73F;
+            --ember: #EE6A2B;
+            --ash: #CFC6E6;
+            --parchment: #F8F1E3;
+            --mist: #F5F2FB;
+            --ink: #1D1236;
+            --ink-soft: #4A4166;
+
+            --font-body: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --font-display: 'Barlow Condensed', 'Barlow', system-ui, sans-serif;
+            --font-verse: 'Newsreader', Georgia, serif;
+
+            --nav-h: 68px;
+            --wrap: 1160px;
         }
 
-        /* Estilos Base */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--nav-h);
+        }
+
         body {
-            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
+            margin: 0;
+            font: 400 1.0625rem/1.65 var(--font-body);
+            color: var(--ink);
+            background: var(--mist);
+            -webkit-text-size-adjust: 100%;
         }
 
-        h1, h2, h3, h4, h5, h6, .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
+        img { max-width: 100%; display: block; }
+        a { color: inherit; }
+
+        :focus-visible {
+            outline: 3px solid var(--focus, var(--gold));
+            outline-offset: 3px;
+            border-radius: 4px;
         }
 
-        /* ============================================
-           NAVBAR PERSONALIZADO
-           ============================================ */
-        .navbar {
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
+        .wrap {
+            width: min(100% - 2.5rem, var(--wrap));
+            margin-inline: auto;
         }
 
-        .navbar.scrolled {
-            background: rgba(255, 255, 255, 0.95) !important;
-            box-shadow: var(--shadow);
-        }
-
-        .navbar-brand img {
-            transition: transform 0.3s;
-        }
-
-        .navbar-brand:hover img {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .nav-link {
-            position: relative;
-            font-weight: 500;
-            transition: var(--transition);
-            padding: 0.5rem 1rem !important;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: linear-gradient(to right, var(--dominican-blue), var(--dominican-red));
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 80%;
-        }
-
-        .nav-link:hover {
-            color: var(--dominican-red) !important;
-            transform: translateY(-2px);
-        }
-
-        /* Botón Donar Mejorado */
-        .btn-donate-nav {
-            background: linear-gradient(135deg, var(--dominican-blue), var(--dominican-red));
-            border: none;
-            position: relative;
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px; height: 1px;
             overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .btn-donate-nav::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-donate-nav:hover::before {
-            left: 100%;
-        }
-
-        .btn-donate-nav:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(206, 17, 38, 0.3);
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
         }
 
         /* ============================================
-           HERO SECTION MEJORADO
+           BOTONES
            ============================================ */
-        .hero-gradient {
-            background: linear-gradient(135deg, var(--dominican-blue) 0%, var(--dominican-red) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-gradient .btn {
-    position: relative;
-    z-index: 10;
-}
-
-        /* Partículas de fondo animadas */
-        .hero-gradient::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            animation: floatBackground 20s linear infinite;
-        }
-
-        @keyframes floatBackground {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Título animado */
-        .display-3 {
-            animation: fadeInUp 1s ease;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-        }
-
-        /* ============================================
-           IMAGEN HERO CON EFECTOS ESPECIALES
-           ============================================ */
-        .hero-image-container {
-            position: relative;
-            animation: floatAnimation 6s ease-in-out infinite;
-        }
-
-        /* Rayos de luz */
-        .light-rays {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .light-rays::before,
-        .light-rays::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 120%;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--dominican-gold), transparent);
-            opacity: 0.6;
-        }
-
-        .light-rays::before {
-            transform: translate(-50%, -50%) rotate(45deg);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        .light-rays::after {
-            transform: translate(-50%, -50%) rotate(-45deg);
-            animation: pulse 3s ease-in-out infinite 1.5s;
-        }
-
-        .profile-image-rounded {
-            border: 5px solid #fff !important;
-            box-shadow: 
-                0 0 0 5px var(--dominican-blue),
-                0 0 0 10px var(--dominican-red),
-                0 0 0 15px var(--dominican-gold),
-                0 10px 50px rgba(0, 0, 0, 0.4);
-            position: relative;
-            z-index: 2;
-        }
-
-        .image-glow {
-            position: absolute;
-            top: -40px;
-            left: -40px;
-            right: -40px;
-            bottom: -40px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent 70%);
-            animation: pulseGlow 2s ease-in-out infinite;
-            z-index: 1;
-        }
-
-        .decoration-badge {
-            background: linear-gradient(135deg, var(--dominican-blue), var(--dominican-red));
-            animation: slideUp 1s ease forwards;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            border: 2px solid var(--dominican-gold);
-            z-index: 3;
-        }
-
-        /* ============================================
-           COLORES PERSONALIZADOS BOOTSTRAP
-           ============================================ */
-        .bg-dominican-blue { 
-            background: linear-gradient(135deg, var(--dominican-blue), #003d88) !important; 
-        }
-        
-        .bg-dominican-red { 
-            background: linear-gradient(135deg, var(--dominican-red), #ff1744) !important; 
-        }
-        
-        .text-gold { 
-            color: var(--dominican-gold) !important; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        /* ============================================
-           REDES SOCIALES MEJORADAS
-           ============================================ */
-        .btn-social {
-            width: 50px;
-            height: 50px;
+        .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-social::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.5s, height 0.5s;
-        }
-
-        .btn-social:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .btn-social:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .btn-social:hover .fab.fa-youtube { color: #FF0000 !important; }
-        .btn-social:hover .fab.fa-facebook { color: #1877f2 !important; }
-        .btn-social:hover .fab.fa-instagram { 
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .btn-social:hover .fab.fa-tiktok { color: #000 !important; }
-
-        /* ============================================
-           SECCIÓN BIOGRAFÍA
-           ============================================ */
-        .card {
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-        }
-
-        .biography-icon {
-            transition: var(--transition);
-        }
-
-        .biography-icon:hover {
-            transform: scale(1.2) rotate(10deg);
-        }
-
-        /* Blockquote mejorado */
-        .blockquote {
-            position: relative;
-            border-left: 4px solid var(--dominican-gold);
-        }
-
-        .blockquote::before {
-            content: '"';
-            position: absolute;
-            top: -20px;
-            left: 10px;
-            font-size: 4rem;
-            color: var(--dominican-gold);
-            opacity: 0.3;
-            font-family: Georgia, serif;
-        }
-
-        /* ============================================
-           SECCIÓN VIDEOS
-           ============================================ */
-        .ratio {
-            box-shadow: var(--shadow-lg);
-            transition: var(--transition);
-        }
-
-        .ratio:hover {
-            transform: scale(1.02);
-        }
-
-        .list-group-item {
-            transition: var(--transition);
-            border-left: 3px solid transparent;
-        }
-
-        .list-group-item:hover {
-            border-left-color: var(--dominican-red);
-            background: var(--light-bg);
-            transform: translateX(5px);
-        }
-
-        .btn-youtube {
-            background: linear-gradient(135deg, #FF0000, #CC0000);
-            border: none;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-youtube::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-youtube:hover::before {
-            left: 100%;
-        }
-
-        .btn-youtube:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
-        }
-
-        /* ============================================
-           GALERÍA MEJORADA
-           ============================================ */
-        .card-img-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .card:hover .card-img-overlay {
-            opacity: 1;
-        }
-
-        /* ============================================
-           ANIMACIONES
-           ============================================ */
-        @keyframes floatAnimation {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { 
-                opacity: 0.5; 
-                transform: scale(1); 
-            }
-            50% { 
-                opacity: 0.8; 
-                transform: scale(1.1); 
-            }
-        }
-
-        @keyframes slideUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(20px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-
-        /* ============================================
-           EFECTOS HOVER ADICIONALES
-           ============================================ */
-        .shadow-hover {
-            transition: var(--transition);
-        }
-
-        .shadow-hover:hover {
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        /* Bandera animada */
-        .flag-emoji {
-            display: inline-block;
-            animation: wave 2s ease-in-out infinite;
-        }
-
-        @keyframes wave {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg); }
-            75% { transform: rotate(-10deg); }
-        }
-
-        /* ============================================
-           FOOTER MEJORADO
-           ============================================ */
-        footer {
-            position: relative;
-            overflow: hidden;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--dominican-gold), transparent);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .btn-outline-light:hover {
-            background: var(--dominican-gold) !important;
-            border-color: var(--dominican-gold) !important;
-            color: var(--dominican-blue) !important;
-            transform: scale(1.1);
-        }
-
-        /* ============================================
-           SCROLL TO TOP BUTTON
-           ============================================ */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--dominican-blue), var(--dominican-red));
-            color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            gap: .6rem;
+            min-height: 48px;
+            padding: .75rem 1.6rem;
+            border: 2px solid transparent;
+            border-radius: 999px;
+            font: 600 1rem/1.2 var(--font-body);
+            text-decoration: none;
             cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            z-index: 999;
-            border: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
         }
 
-        .scroll-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        .btn-gold { background: var(--gold); color: var(--night); }
+        .btn-gold:hover { transform: translateY(-2px); background: #F8C65F; }
 
-        .scroll-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            background: linear-gradient(135deg, var(--dominican-red), var(--dominican-blue));
-        }
+        .btn-ghost { border-color: rgba(248, 241, 227, .5); color: var(--parchment); }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+        .btn-lg { min-height: 56px; padding-inline: 2.2rem; font-size: 1.1rem; }
 
         /* ============================================
-           RESPONSIVE ADJUSTMENTS
+           ENCABEZADO
            ============================================ */
-        @media (max-width: 768px) {
-            .hero-image-container {
-                max-width: 300px !important;
-            }
-
-            .display-3 {
-                font-size: 2rem !important;
-            }
-
-            .profile-image-rounded {
-                box-shadow: 
-                    0 0 0 3px var(--dominican-blue),
-                    0 0 0 6px var(--dominican-red),
-                    0 0 0 9px var(--dominican-gold),
-                    0 5px 25px rgba(0, 0, 0, 0.4);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-image-container {
-                max-width: 250px !important;
-            }
-
-            .display-3 {
-                font-size: 1.5rem !important;
-            }
-
-            .btn-social {
-                width: 40px;
-                height: 40px;
-            }
-        }
-
-        /* ============================================
-           LOADER
-           ============================================ */
-        .loader {
+        .site-header {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0 0 auto 0;
+            z-index: 50;
+            height: var(--nav-h);
+            transition: background-color .3s ease, box-shadow .3s ease;
+        }
+
+        .site-header.solid,
+        .site-header.open {
+            background: rgba(18, 10, 43, .94);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 0 rgba(244, 183, 63, .28);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            color: var(--parchment);
+            text-decoration: none;
+        }
+
+        .brand img {
+            width: 44px;
+            height: 44px;
+            padding: 3px;
+            border-radius: 50%;
+            background: #fff;
+            object-fit: contain;
+        }
+
+        .brand span {
+            font: 800 1.45rem/1 var(--font-display);
+            letter-spacing: .04em;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: .25rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .menu a {
+            display: block;
+            padding: .6rem .9rem;
+            border-radius: 8px;
+            color: var(--parchment);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color .2s ease;
+        }
+
+        .menu a:hover { color: var(--gold); }
+        .menu .btn { margin-left: .5rem; padding: .6rem 1.4rem; min-height: 44px; color: var(--night); }
+        .menu .btn:hover { color: var(--night); }
+
+        .nav-toggle {
+            display: none;
+            width: 48px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid rgba(248, 241, 227, .45);
+            border-radius: 50%;
+            background: transparent;
+            color: var(--parchment);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 860px) {
+            .nav-toggle { display: inline-flex; }
+
+            .menu {
+                position: absolute;
+                top: var(--nav-h);
+                left: 0;
+                right: 0;
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: .5rem 1.25rem 1.5rem;
+                background: var(--night);
+                border-bottom: 1px solid rgba(244, 183, 63, .3);
+            }
+
+            .menu.open { display: flex; }
+            .menu a { padding: .95rem .5rem; font-size: 1.1rem; }
+            .menu .btn { margin: .75rem 0 0; }
+        }
+
+        /* ============================================
+           HERO: el altar encendido
+           ============================================ */
+        .hero {
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            min-height: 100svh;
+            padding: calc(var(--nav-h) + 2rem) 0 4.5rem;
+            color: var(--parchment);
+            overflow: hidden;
+            background:
+                radial-gradient(60% 50% at 80% 92%, rgba(238, 106, 43, .38), transparent 70%),
+                radial-gradient(70% 60% at 12% 0%, rgba(75, 42, 143, .6), transparent 70%),
+                var(--night);
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: 3.5rem;
+            align-items: center;
+        }
+
+        @media (min-width: 900px) {
+            .hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 4rem; }
+        }
+
+        .hero-copy { max-width: 40rem; }
+
+        .h1-top {
+            display: block;
+            margin-bottom: .4rem;
+            font: 600 clamp(1.7rem, 4.6vw, 2.5rem)/1 var(--font-display);
+            color: var(--ash);
+        }
+
+        .h1-main {
+            display: block;
+            font: 800 clamp(3rem, 12vw, 5.6rem)/.92 var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: .005em;
+            color: var(--parchment);
+        }
+
+        .hero-name {
+            margin: 1.6rem 0 1.4rem;
+            font: 600 1.45rem/1.2 var(--font-body);
+            color: var(--gold);
+        }
+
+        .verse {
+            margin: 0 0 1.4rem;
+            padding-left: 1.1rem;
+            border-left: 3px solid var(--gold);
+            font: italic 400 1.4rem/1.45 var(--font-verse);
+            color: var(--parchment);
+        }
+
+        .verse cite {
+            display: block;
+            margin-top: .35rem;
+            font: 500 .95rem/1.4 var(--font-body);
+            font-style: normal;
+            color: var(--ash);
+        }
+
+        .where {
+            margin: 0 0 1.8rem;
+            color: var(--ash);
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .social {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .social a {
+            display: grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            border: 1.5px solid rgba(207, 198, 230, .5);
+            border-radius: 50%;
+            color: var(--parchment);
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+        }
+
+        .social a:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold);
+            background: var(--gold);
+            color: var(--night);
+        }
+
+        /* Retrato dentro de un arco, con el resplandor del fuego detrás */
+        .arch {
+            position: relative;
+            width: min(82%, 420px);
+            margin-inline: auto;
+            aspect-ratio: 4 / 5;
+        }
+
+        .arch::before {
+            content: "";
+            position: absolute;
+            inset: -14% -14% -8%;
+            background: radial-gradient(closest-side, rgba(238, 106, 43, .8), rgba(244, 183, 63, .28) 55%, transparent 78%);
+            filter: blur(18px);
+            animation: ember 5s ease-in-out infinite;
+        }
+
+        .arch::after {
+            content: "";
+            position: absolute;
+            inset: -12px;
+            border: 2px solid var(--gold);
+            border-radius: 999px 999px 32px 32px;
+            opacity: .75;
+            pointer-events: none;
+        }
+
+        .arch img {
+            position: relative;
+            z-index: 1;
             width: 100%;
             height: 100%;
-            background: var(--white);
-            display: flex;
-            justify-content: center;
+            object-fit: cover;
+            object-position: 50% 12%;
+            border-radius: 999px 999px 20px 20px;
+        }
+
+        .arch-tag {
+            position: absolute;
+            left: 50%;
+            bottom: -22px;
+            z-index: 2;
+            transform: translateX(-50%);
+            display: inline-flex;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s, visibility 0.5s;
+            gap: .5rem;
+            padding: .5rem 1.4rem;
+            border: 2px solid var(--gold);
+            border-radius: 999px;
+            background: var(--night);
+            font: 700 1.15rem/1 var(--font-display);
+            letter-spacing: .04em;
+            white-space: nowrap;
         }
 
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
+        .arch-tag i { color: var(--gold); }
+
+        @keyframes ember {
+            0%, 100% { opacity: .75; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.06); }
         }
 
-        .loader-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid var(--light-bg);
-            border-top: 4px solid var(--dominican-blue);
-            border-right: 4px solid var(--dominican-red);
+        /* ============================================
+           SECCIONES
+           ============================================ */
+        .section { padding: clamp(4rem, 9vw, 7rem) 0; }
+
+        .light { background: var(--mist); color: var(--ink); --focus: var(--royal); }
+        .dark { background: var(--night); color: var(--parchment); }
+
+        .section-title {
+            margin: 0 0 2.5rem;
+            font: 800 clamp(2.4rem, 6.5vw, 3.8rem)/1 var(--font-display);
+            text-transform: uppercase;
+        }
+
+        /* ---------- Biografía ---------- */
+        .bio {
+            display: grid;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (min-width: 900px) {
+            .bio { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 4.5rem; }
+        }
+
+        .bio-photo { margin: 0; }
+
+        .bio-photo img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+            background: #fff;
+        }
+
+        .bio-photo figcaption {
+            padding: 1.1rem 1.4rem;
+            border-radius: 0 0 20px 20px;
+            background: var(--night);
+            color: var(--parchment);
+        }
+
+        .bio-photo figcaption strong {
+            display: block;
+            font: 700 1.4rem/1.15 var(--font-display);
+            color: var(--gold);
+        }
+
+        .bio-frame {
+            border-radius: 20px;
+            box-shadow: 10px 10px 0 var(--gold);
+            margin-right: 10px;
+        }
+
+        .bio-text p { margin: 0 0 1.1rem; max-width: 62ch; }
+        .bio-text .lead { font-size: 1.2rem; }
+
+        .more { margin: .5rem 0 0; }
+
+        .more summary {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            min-height: 48px;
+            font-weight: 600;
+            color: var(--royal);
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .more summary::-webkit-details-marker { display: none; }
+
+        .more summary::after {
+            content: "\f078";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: .8rem;
+            transition: transform .2s ease;
+        }
+
+        .more[open] summary::after { transform: rotate(180deg); }
+        .more-body { padding-top: .5rem; }
+
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem 1.25rem;
+            margin: 2rem 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pillars li {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .pillars i {
+            display: grid;
+            place-items: center;
+            flex: none;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            background: var(--ink);
+            color: var(--gold);
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .pull {
+            margin: 0;
+            padding: .4rem 0 .4rem 1.4rem;
+            border-left: 4px solid var(--gold);
+            font: italic 400 clamp(1.4rem, 3.2vw, 1.8rem)/1.4 var(--font-verse);
         }
- /* Solo los estilos esenciales que Bootstrap no proporciona */
-.whatsapp-btn-minimal {
-    border: 2px solid rgba(255, 255, 255, 0.5) !important;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.1) !important;
-}
 
-.whatsapp-btn-minimal:hover {
-    background: rgba(37, 211, 102, 0.2) !important;
-    border-color: #25D366 !important;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
-}
+        .pull cite {
+            display: block;
+            margin-top: .6rem;
+            font: 500 1rem/1.4 var(--font-body);
+            font-style: normal;
+            color: var(--ink-soft);
+        }
 
-.whatsapp-btn-minimal i {
-    color: #25D366;
-    filter: drop-shadow(0 0 10px rgba(37, 211, 102, 0.5));
-}
+        /* ---------- Prédicas ---------- */
+        .channel-banner {
+            width: 100%;
+            height: auto;
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(244, 183, 63, .45);
+            border-radius: 18px;
+        }
 
-/* Indicador pulsante */
-.whatsapp-btn-minimal .bg-success {
-    animation: pulse 2s infinite;
-}
+        .sermons {
+            display: grid;
+            gap: 2.5rem;
+        }
 
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-}
+        @media (min-width: 900px) {
+            .sermons { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 2.5rem; align-items: start; }
+        }
 
-/* Transición suave para el collapse */
-.collapse {
-    transition: height 0.35s ease;
-}
+        .video {
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 18px;
+            background: #000;
+        }
 
-/* Efecto hover en el botón */
-.btn-outline-primary:hover i {
-    transform: rotate(90deg);
-    transition: transform 0.3s ease;
-}
+        .video iframe { display: block; width: 100%; height: 100%; border: 0; }
 
-/* Indicador visual de contenido expandible */
-.bio-intro {
-    position: relative;
-}
+        .sermon-main h3 {
+            margin: 1.1rem 0 0;
+            font: 700 clamp(1.5rem, 3.4vw, 2rem)/1.15 var(--font-display);
+        }
 
-.bio-intro::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 30px;
-    background: linear-gradient(to bottom, transparent, rgba(248, 249, 250, 0.9));
-    pointer-events: none;
-}
+        .sermon-list {
+            padding: 1.5rem;
+            border-radius: 18px;
+            background: var(--indigo);
+        }
 
-/* Cuando está expandido, ocultar el gradiente */
-.bio-intro.expanded::after {
-    display: none;
-}
+        .sermon-list h3 {
+            margin: 0 0 .5rem;
+            font: 700 1.5rem/1.1 var(--font-display);
+            color: var(--gold);
+        }
+
+        .sermon-list ul { margin: 0 0 1.5rem; padding: 0; list-style: none; }
+        .sermon-list li + li { border-top: 1px solid rgba(207, 198, 230, .22); }
+
+        .sermon-list li a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            text-decoration: none;
+            line-height: 1.35;
+            transition: color .2s ease;
+        }
+
+        .sermon-list li a:hover { color: var(--gold); }
+        .sermon-list li i { flex: none; font-size: 1.6rem; color: var(--ember); }
+        .sermon-list .btn { width: 100%; }
+
+        /* ---------- Galería ---------- */
+        .gallery {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .gallery {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .75rem;
+            max-width: 900px;
+            margin-inline: auto;
+        }
+
+        .shot {
+            position: relative;
+            aspect-ratio: 4 / 5;
+            margin: 0;
+            overflow: hidden;
+            border-radius: 18px;
+            background: var(--indigo);
+        }
+
+        .shot img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 50% 25%;
+        }
+
+        @media (min-width: 760px) {
+            .gallery { gap: 1.25rem; }
+        }
+
+        /* ---------- Donación ---------- */
+        .give {
+            color: var(--parchment);
+            background:
+                radial-gradient(70% 90% at 100% 100%, rgba(238, 106, 43, .4), transparent 65%),
+                linear-gradient(160deg, var(--royal), var(--indigo));
+        }
+
+        .give-inner {
+            max-width: 40rem;
+            margin-inline: auto;
+            text-align: center;
+        }
+
+        .give .section-title { margin-bottom: 1.5rem; }
+
+        .give .verse {
+            padding: 1rem 0;
+            border-left: 0;
+            border-block: 1px solid rgba(244, 183, 63, .55);
+        }
+
+        .give .btn { margin-top: .5rem; }
+        .give .world { margin-top: 1.5rem; color: var(--ash); }
+
+        /* ============================================
+           PIE DE PÁGINA
+           ============================================ */
+        .site-footer {
+            position: relative;
+            padding: 4rem 0 2rem;
+            background: var(--night);
+            color: var(--parchment);
+        }
+
+        .site-footer::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .footer-grid {
+            display: grid;
+            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        }
+
+        .footer-brand img {
+            width: 84px;
+            height: 84px;
+            margin-bottom: 1rem;
+            padding: 5px;
+            border-radius: 50%;
+            background: #fff;
+            object-fit: contain;
+        }
+
+        .site-footer h2, .site-footer h3 {
+            margin: 0 0 .6rem;
+            font: 700 1.5rem/1.1 var(--font-display);
+            color: var(--gold);
+        }
+
+        .site-footer p { margin: 0; color: var(--ash); }
+        .site-footer ul.links { margin: 0; padding: 0; list-style: none; }
+        .site-footer ul.links a { display: inline-block; padding: .35rem 0; text-decoration: none; }
+        .site-footer ul.links a:hover { color: var(--gold); }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(207, 198, 230, .2);
+            text-align: center;
+            font-size: .95rem;
+            color: var(--ash);
+        }
+
+        /* ============================================
+           MOVIMIENTO REDUCIDO
+           ============================================ */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+            html { scroll-behavior: auto; }
+        }
     </style>
 </head>
 <body>
 
-<!-- Loader -->
-<div class="loader" id="loader">
-    <div class="loader-spinner"></div>
-</div>
-
-<!-- Scroll to Top Button -->
-<button class="scroll-to-top" id="scrollToTop">
-    <i class="fas fa-chevron-up"></i>
-</button>
-
-<!-- Navbar con Bootstrap Mejorado -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" id="mainNavbar">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="./img/logo.jpeg" alt="Logo" width="50" height="50" class="me-2">
-            <span class="fw-bold">BIENVENIDOS A LA PAGINA WEB OFICIAL: MIPROAA</span>
+<header class="site-header" id="siteHeader">
+    <div class="wrap nav">
+        <a class="brand" href="#inicio" aria-label="MIPROAA, ir al inicio">
+            <img src="./img/logo.jpeg" alt="" width="44" height="44">
+            <span>MIPROAA</span>
         </a>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
         </button>
-        
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#inicio">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#biografia">Biografía</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#predicas">Prédicas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#galeria">Galeria</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="#donacion">Donación</a>
-                </li>
-                <li class="nav-item ms-lg-3">
-                    <a class="btn btn-danger rounded-pill px-4 btn-donate-nav" href="https://www.paypal.com/paypalme/luisdavidgarciaMCP?locale.x=es_XC&country.x=DO" target="_blank">
-                        <i class="fas fa-heart"></i> Donar
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
 
-<!-- Hero Section con Bootstrap Mejorado -->
-<section id="inicio" class="hero-gradient min-vh-100 d-flex align-items-center text-white pt-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <!-- Columna de Texto -->
-            <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
-                <h1 class="display-3 fw-bold mb-4">
-                    MINISTERIO PROFÉTICO<br>
-                    <span class="text-gold">ARDIENDO POR EL AVIVAMIENTO</span>
+        <ul class="menu" id="menu">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#biografia">Biografía</a></li>
+            <li><a href="#predicas">Prédicas</a></li>
+            <li><a href="#galeria">Galería</a></li>
+            <li><a href="#donacion">Donación</a></li>
+            <li>
+                <a class="btn btn-gold" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-heart" aria-hidden="true"></i> Donar
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<main>
+
+    <!-- ================= INICIO ================= -->
+    <section class="hero" id="inicio">
+        <div class="wrap hero-grid">
+            <div class="hero-copy">
+                <h1>
+                    <span class="h1-top">Ministerio Profético</span>
+                    <span class="h1-main">Ardiendo por el Avivamiento</span>
                 </h1>
-                
-                <h2 class="h3 mb-4" style="animation: fadeInUp 1.2s ease">
-                    <i class="fas fa-cross text-gold"></i> 
-                    Evangelista Luis David García 
-                    <i class="fas fa-cross text-gold"></i>
-                </h2>
-                
-                <p class="lead fst-italic mb-4" style="animation: fadeInUp 1.4s ease">
-                    "El fuego arderá continuamente en el altar; no se apagará" - Levítico 6:13
-                </p>
-                
-                <!-- Bandera RD -->
-                <div class="d-flex justify-content-center justify-content-lg-start align-items-center gap-3 mb-4" style="animation: fadeInUp 1.6s ease">
-                    <span class="fs-2 flag-emoji">🇩🇴</span>
-                    <span class="badge bg-white text-dark px-3 py-2">República Dominicana</span>
-                    <span class="fs-2 flag-emoji">🇩🇴</span>
-                </div>
-                
-                <!-- Redes Sociales -->
-                <div class="d-flex gap-3 justify-content-center justify-content-lg-start" style="animation: fadeInUp 1.8s ease">
-                    <a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" class="btn btn-light rounded-circle p-3 btn-social" target="_blank">
-                        <i class="fab fa-youtube text-danger fs-5"></i>
-                    </a>
-                    <a href="https://web.facebook.com/david.estebangarcia.58/?_rdc=1&_rdr#" class="btn btn-light rounded-circle p-3 btn-social" target="_blank">
-                        <i class="fab fa-facebook text-primary fs-5"></i>
-                    </a>
-                    <a href="https://www.instagram.com/luis_david_garcia/" class="btn btn-light rounded-circle p-3 btn-social" target="_blank">
-                        <i class="fab fa-instagram text-danger fs-5"></i>
-                    </a>
-                    <a href="https://www.tiktok.com/@miproaa?is_from_webapp=1&sender_device=pc" class="btn btn-light rounded-circle p-3 btn-social" target="_blank">
-                        <i class="fab fa-tiktok text-dark fs-5"></i>
-                    </a>
-                    <!-- BOTÓN WHATSAPP MINIMALISTA CON BOOTSTRAP -->
-                    <div class="d-inline-block position-relative" style="animation: fadeInUp 1.7s ease">
-                        <a href="https://wa.me/+18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20García" 
-                        class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 d-inline-flex align-items-center gap-3 position-relative overflow-hidden whatsapp-btn-minimal" 
-                        target="_blank"
-                        rel="noopener noreferrer">
-                            <i class="fab fa-whatsapp fs-4"></i>
-                            <span class="text-uppercase fw-semibold">Contactar</span>
-                            <span class="position-absolute top-0 end-0 translate-middle p-1 bg-success border border-light rounded-circle">
-                                <span class="visually-hidden">Disponible</span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Columna de Imagen -->
-            <div class="col-lg-6">
-                <div class="hero-image-container position-relative mx-auto" style="max-width: 400px;">
-                    <div class="light-rays"></div>
-                    <div class="image-glow"></div>
-                    <!-- Tamaños responsivos de imagen -->
-                    <img src="./img/WhatsApp Image 2026-03-10 at 4.12.58 PM (2).jpeg" 
-                         alt="Evangelista Luis David García" 
-                         class="img-fluid rounded-circle profile-image-rounded w-100">
-                    
-                    <!-- Badge con posición responsive -->
-                    <div class="position-absolute bottom-0 start-50 translate-middle-x">
-                        <span class="badge decoration-badge text-white px-4 py-2 rounded-pill fs-6">
-                            <i class="bi bi-mic-fill"></i> Evangelista
-                        </span>
-                    </div>
-                </div>
-  
-            </div>
-            
 
-        </div>
-    </div>
-</section>
+                <p class="hero-name">Evangelista Luis David García</p>
 
-<!-- Sección Biografía con Bootstrap Mejorado -->
-<section id="biografia" class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center display-5 fw-bold mb-5">
-            <i class="fas fa-user text-gold"></i> Conoce al Evangelista
-        </h2>
-        
-        <div class="row g-4 align-items-center">
-            <!-- Imagen del Evangelista -->
-            <div class="col-md-5 col-lg-4">
-                <div class="card border-0 shadow-lg shadow-hover">
-                    <img src="./img/WhatsApp Image 2026-03-10 at 4.12.58 PM (1).jpeg" 
-                         alt="Evangelista Luis David García" 
-                         class="card-img-top rounded">
-                    <div class="card-body text-center bg-dominican-blue text-white">
-                        <h3 class="h5 text-gold">Evangelista Luis David García</h3>
-                        <p class="mb-0">Siervo de Dios | República Dominicana</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Contenido Biográfico -->
-            <div class="col-md-7 col-lg-8">
-                <h3 class="h4 mb-3" style="color: var(--dominican-blue)">UN LLAMADO PROFÉTICO...</h3>
-                <p>   <div class="accordion-body" style="text-align: justify; text-align-last: left;">
-                <strong>Luis David García</strong> es un predicador, y comunicador cristiano de la República Dominicana, conocido por su pasión por el avivamiento espiritual y la proclamación del evangelio a través de medios digitales. Nació en la provincia de San Cristóbal, República Dominicana, y desde temprana edad mostró un profundo interés por las cosas de Dios y por impactar vidas a través de la fe.
-
-                </p>
-                    <!-- Versión con Acordeón Bootstrap -->
-<div class="accordion accordion-flush" id="biographyAccordion">
-    <div class="accordion-item border-0">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-transparent text-primary fw-bold" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target="#biographyContent">
-                <i class="fas fa-book-open me-2"></i>
-                Leer biografía completa
-            </button>
-        </h2>
-        <div id="biographyContent" 
-             class="accordion-collapse collapse" 
-             data-bs-parent="#biographyAccordion">
-            <div class="accordion-body" style="text-align: justify; text-align-last: left;">
-                <p>
-                Es el fundador del Ministerio Profético Ardiendo por el Avivamiento, una plataforma de alcance espiritual dedicada a despertar una generación apasionada por la presencia de Dios, la restauración y el mover profético del Espíritu Santo. Su mensaje se centra en el avivamiento, la restauración espiritual, la transformación de vidas y la manifestación del poder de Dios en la iglesia y en la sociedad.
-
-                Además de su labor ministerial, Luis David García es compositor de adoración profética y espontánea, destacándose por la canción titulada “Ardiendo por el Avivamiento”, la cual refleja su llamado a encender el fuego espiritual en esta generación.
-                
-                </p>  
-                <p>
-                    Su ministerio también se caracteriza por un fuerte enfoque en el evangelismo digital. A través de plataformas como TikTok, YouTube, Facebook e Instagram, comparte predicaciones, reflexiones bíblicas y transmisiones en vivo, alcanzando a personas dentro y fuera de la República Dominicana.
-
-                </p>  
-                <p>
-                    Luis David García también se ha desarrollado en el ámbito educativo y tecnológico, contando con formación en tecnología en el Instituto Tecnológico de Las Américas (ITLA) Una Licencia en Educación Mención Informática por la Universidad Dominicana O&M, Una especialidad En Desarrollo Mooc's y certificaciones internacionales, lo que le ha permitido integrar herramientas digitales en la expansión del mensaje del evangelio.
-
-                </p>
-                <p>
-                    Es conocido por su estilo dinámico, su enfoque profético y su compromiso con la formación de creyentes que vivan una fe genuina. Además, posee habilidades musicales, tocando instrumentos como guitarra y piano, los cuales utiliza en momentos de adoración y ministración.
-
-                </p>
-                <p>
-                    Actualmente continúa desarrollando su ministerio con una visión clara: levantar una generación encendida por el Espíritu Santo y comprometida con el avivamiento y la restauración.
-
+                <p class="verse">
+                    El fuego arderá continuamente en el altar; no se apagará.
+                    <cite>Levítico 6:13</cite>
                 </p>
 
+                <p class="where"><span aria-hidden="true">🇩🇴</span> República Dominicana</p>
 
-
-
-            </div>
-        </div>
-    </div>
-</div>
-                    <!-- <strong>Luis David García</strong> 
-        
-                   
-                
-                <!-- Grid de características -->
-                <div class="row g-3 my-4">
-                    <div class="col-6 col-lg-3">
-                        <div class="text-center">
-                            <i class="fas fa-bible fs-1 biography-icon" style="color: var(--dominican-red)"></i>
-                            <p class="small mt-2">Predicador de la Palabra</p>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="text-center">
-                            <i class="fas fa-flag fs-1 biography-icon" style="color: var(--dominican-red)"></i>
-                            <p class="small mt-2">República Dominicana</p>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="text-center">
-                            <i class="fas fa-fire fs-1 biography-icon" style="color: var(--dominican-red)"></i>
-                            <p class="small mt-2">Avivamiento</p>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="text-center">
-                            <i class="fas fa-globe-americas fs-1 biography-icon" style="color: var(--dominican-red)"></i>
-                            <p class="small mt-2">Alcance Internacional</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Quote -->
-                <blockquote class="blockquote bg-white p-4 rounded shadow-sm">
-                    <p class="mb-0 fst-italic">
-                        "Mi pasión es ver vidas transformadas por el poder del Evangelio"
-                    </p>
-                    <footer class="blockquote-footer mt-2">
-                        Evangelista Luis David García
-                    </footer>
-                </blockquote>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Sección de Videos con Bootstrap Mejorado -->
-<section id="predicas" class="py-5">
-    <div class="container">
-        <h2 class="text-center display-5 fw-bold mb-5">
-            <i class="fab fa-youtube text-danger"></i> Prédicas Recientes
-        </h2>
-        
-        <div class="row g-4">
-            <!-- Video Principal -->
-            <div class="col-lg-8">
-                <div class="ratio ratio-16x9 rounded overflow-hidden">
-                    
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/7MFtXEr3aXk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                </div>
-                <h3 class="mt-3">ADORACIÓN PROFÉTICA & ESPONTÁNEA:
-                    ARDIENDO POR EL AVIVAMIENTO</h3>
-            </div>
-            
-            <!-- Lista de Videos -->
-            <div class="col-lg-4">
-                <div class="card shadow">
-                    <div class="card-header bg-dominican-blue text-white">
-                        <h5 class="mb-0">Más Prédicas</h5>
-                    </div>
-                    <div class="list-group list-group-flush">
-                        <a href="https://www.youtube.com/watch?v=SO_ZD23SmuQ" class="list-group-item list-group-item-action" target="_blank">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-play-circle text-danger me-3 fs-4"></i>
-                                <div>
-                                    <h6 class="mb-1">Entrevista Al Apóstol Eris Martinez</h6>
-                                    <small class="text-muted">hace 2 semanas</small>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://www.youtube.com/watch?v=s-a425BtO-g" class="list-group-item list-group-item-action" target="_blank">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-play-circle text-danger me-3 fs-4"></i>
-                                <div>
-                                    <h6 class="mb-1">Entrevista Prófetica A Anyela Santana</h6>
-                                    <small class="text-muted">hace 1 mes</small>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://youtu.be/3IDPQqbslEE?si=yi7_iOrosfagmDGw" class="list-group-item list-group-item-action" target="_blank">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-play-circle text-danger me-3 fs-4"></i>
-                                <div>
-                                    <h6 class="mb-1">Prédica Profética Para Esta Generación</h6>
-                                    <small class="text-muted">hace 1 mes</small>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="d-grid mt-3">
-                    <a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" class="btn btn-danger btn-lg btn-youtube" target="_blank">
-                        <i class="fab fa-youtube"></i> Ver Canal Completo
+                <div class="cta-row">
+                    <a class="btn btn-gold" href="#predicas">
+                        <i class="fa-solid fa-circle-play" aria-hidden="true"></i> Ver prédicas
+                    </a>
+                    <a class="btn btn-ghost" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Contactar por WhatsApp
                     </a>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Galería con Bootstrap Mejorado -->
-<section id="galeria" class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center display-5 fw-bold mb-5">Galería del Ministerio</h2>
-        
-        <div class="row g-4">
-            <!-- Imagen principal más grande -->
-            <div class="col-12 col-md-8">
-                <div class="card border-0 shadow-lg overflow-hidden">
-                    <img src="./img/predicando.jpeg" 
-                         class="img-fluid" 
-                         alt="Predicando desde el púlpito">
-                    <div class="card-img-overlay d-flex align-items-end">
-                        <div class="bg-dark bg-opacity-75 text-white p-3 rounded">
-                            <h3 class="h5 text-gold">Predicando la Palabra</h3>
-                            <p class="mb-0">Llevando el mensaje de esperanza</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Imágenes secundarias -->
-            <div class="col-12 col-md-4">
-                <div class="row g-4">
-                    <div class="col-12">
-                        <div class="card border-0 shadow overflow-hidden">
-                            <img src="./img/WhatsApp Image 2026-03-15 at 13.32.09.jpeg" 
-                                 class="img-fluid" 
-                                 alt="Evangelista Luis David">
-                            <div class="card-img-overlay d-flex align-items-end">
-                                <div class="bg-dark bg-opacity-75 text-white p-2 rounded">
-                                    <h5 class="h6 text-gold mb-0">Evangelista Luis David</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="card border-0 shadow overflow-hidden">
-                            <img src="./img/con el pastor.jpeg" 
-                                 class="img-fluid" 
-                                 alt="Retrato oficial">
-                            <div class="card-img-overlay d-flex align-items-end">
-                                <div class="bg-dark bg-opacity-75 text-white p-2 rounded">
-                                    <h5 class="h6 text-gold mb-0">Siervo de Dios</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Sección Donación con Bootstrap Mejorado -->
-<section id="donacion" class="py-5 hero-gradient text-white">
-    <div class="container">
-        <div class="row align-items-center g-4">
-            <div class="col-md-6">
-                <img src="./img/WhatsApp Image 2026-03-10 at 4.12.58 PM.jpeg" 
-                     class="img-fluid rounded shadow-lg" 
-                     alt="Apoya el ministerio">
-            </div>
-            <div class="col-md-6">
-                <div class="text-center text-md-start">
-                    <h2 class="display-6 fw-bold mb-3">Apoya Este Ministerio</h2>
-                    <p class="lead fst-italic mb-4">
-                        "Cada uno dé como propuso en su corazón" - 2 Corintios 9:7
-                    </p>
-                    <p class="mb-4">
-                        Tu donación ayuda a llevar el evangelio a más personas y naciones
-                    </p>
-                    <a href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&country.x=DO" 
-                       class="btn btn-warning btn-lg px-5 shadow" target="_blank">
-                        Donar vía PayPal
-                    </a>
-                    
-                    <p class="mt-3">
-                        <small>🇩🇴 Desde República Dominicana para el mundo 🌍</small>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Footer con Bootstrap Mejorado -->
-<footer class="bg-dominican-blue text-white py-5">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-4 text-center text-md-start">
-                <img src="./img/logo.jpeg" alt="Logo" width="80" height="80" class="mb-3">
-                <h4 class="text-gold">Ministerio Profético</h4>
-                <p>Ardiendo por el Avivamiento</p>
-            </div>
-            
-            <div class="col-md-4 text-center text-md-start">
-                <h5 class="text-gold mb-3">Enlaces Rápidos</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#biografia" class="text-white text-decoration-none">Biografía</a></li>
-                    <li><a href="#predicas" class="text-white text-decoration-none">Prédicas</a></li>
-                    <li><a href="#donacion" class="text-white text-decoration-none">Donación</a></li>
+                <ul class="social" aria-label="Redes sociales">
+                    <li><a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a></li>
+                    <li><a href="https://web.facebook.com/david.estebangarcia.58/?_rdc=1&amp;_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a></li>
+                    <li><a href="https://www.instagram.com/luis_david_garcia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a></li>
+                    <li><a href="https://www.tiktok.com/@miproaa" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a></li>
                 </ul>
             </div>
-            
-            <div class="col-md-4 text-center text-md-start">
-                <h5 class="text-gold mb-3">Síguenos</h5>
-                <div class="d-flex gap-2 justify-content-center justify-content-md-start">
-                    <a href="https://web.facebook.com/david.estebangarcia.58/?_rdc=1&_rdr#" class="btn btn-outline-light rounded-circle" target="_blank">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="https://www.instagram.com/luis_david_garcia/" class="btn btn-outline-light rounded-circle" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" class="btn btn-outline-light rounded-circle" target="_blank">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    <a href="https://www.tiktok.com/@miproaa?is_from_webapp=1&sender_device=pc" class="btn btn-outline-light rounded-circle" target="_blank">
-                        <i class="fab fa-tiktok"></i>
-                    </a>
+
+            <div class="arch">
+                <img src="./img/retrato-evangelista.jpg"
+                     alt="Retrato del Evangelista Luis David García con camisa negra y bordados dorados"
+                     width="1300" height="1315" fetchpriority="high">
+                <span class="arch-tag"><i class="fa-solid fa-microphone" aria-hidden="true"></i> Evangelista</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= BIOGRAFÍA ================= -->
+    <section class="section light" id="biografia">
+        <div class="wrap">
+            <h2 class="section-title">Un llamado profético</h2>
+
+            <div class="bio">
+                <figure class="bio-photo bio-frame">
+                    <img src="./img/predicando-escenario.jpg"
+                         alt="Evangelista Luis David García predicando con micrófono en la mano"
+                         width="1300" height="1300" loading="lazy">
+                    <figcaption>
+                        <strong>Evangelista Luis David García</strong>
+                        Siervo de Dios | República Dominicana
+                    </figcaption>
+                </figure>
+
+                <div class="bio-text">
+                    <p class="lead">
+                        <strong>Luis David García</strong> es un predicador y comunicador cristiano de la República Dominicana, conocido por su pasión por el avivamiento espiritual y la proclamación del evangelio a través de medios digitales. Nació en la provincia de San Cristóbal, República Dominicana, y desde temprana edad mostró un profundo interés por las cosas de Dios y por impactar vidas a través de la fe.
+                    </p>
+
+                    <details class="more">
+                        <summary>Leer biografía completa</summary>
+                        <div class="more-body">
+                            <p>
+                                Es el fundador del Ministerio Profético Ardiendo por el Avivamiento, una plataforma de alcance espiritual dedicada a despertar una generación apasionada por la presencia de Dios, la restauración y el mover profético del Espíritu Santo. Su mensaje se centra en el avivamiento, la restauración espiritual, la transformación de vidas y la manifestación del poder de Dios en la iglesia y en la sociedad.
+                            </p>
+                            <p>
+                                Además de su labor ministerial, Luis David García es compositor de adoración profética y espontánea, destacándose por la canción titulada “Ardiendo por el Avivamiento”, la cual refleja su llamado a encender el fuego espiritual en esta generación.
+                            </p>
+                            <p>
+                                Su ministerio también se caracteriza por un fuerte enfoque en el evangelismo digital. A través de plataformas como TikTok, YouTube, Facebook e Instagram, comparte predicaciones, reflexiones bíblicas y transmisiones en vivo, alcanzando a personas dentro y fuera de la República Dominicana.
+                            </p>
+                            <p>
+                                Luis David García también se ha desarrollado en el ámbito educativo y tecnológico, con formación en tecnología en el Instituto Tecnológico de Las Américas (ITLA), una licenciatura en Educación mención Informática por la Universidad Dominicana O&amp;M, una especialidad en desarrollo de MOOC y certificaciones internacionales, lo que le ha permitido integrar herramientas digitales en la expansión del mensaje del evangelio.
+                            </p>
+                            <p>
+                                Es conocido por su estilo dinámico, su enfoque profético y su compromiso con la formación de creyentes que vivan una fe genuina. Además, posee habilidades musicales, tocando instrumentos como guitarra y piano, los cuales utiliza en momentos de adoración y ministración.
+                            </p>
+                            <p>
+                                Actualmente continúa desarrollando su ministerio con una visión clara: levantar una generación encendida por el Espíritu Santo y comprometida con el avivamiento y la restauración.
+                            </p>
+                        </div>
+                    </details>
+
+                    <ul class="pillars">
+                        <li><i class="fa-solid fa-bible" aria-hidden="true"></i> Predicador de la Palabra</li>
+                        <li><i class="fa-solid fa-flag" aria-hidden="true"></i> República Dominicana</li>
+                        <li><i class="fa-solid fa-fire" aria-hidden="true"></i> Avivamiento</li>
+                        <li><i class="fa-solid fa-earth-americas" aria-hidden="true"></i> Alcance internacional</li>
+                    </ul>
+
+                    <blockquote class="pull">
+                        “Mi pasión es ver vidas transformadas por el poder del Evangelio”
+                        <cite>Evangelista Luis David García</cite>
+                    </blockquote>
                 </div>
             </div>
         </div>
-        
-        <hr class="my-4 border-white opacity-25">
-        
-        <div class="text-center">
-            <p class="mb-0">
-                &copy; 2024 Evangelista Luis David García | República Dominicana 🇩🇴
-            </p>
+    </section>
+
+    <!-- ================= PRÉDICAS ================= -->
+    <section class="section dark" id="predicas">
+        <div class="wrap">
+            <h2 class="section-title">Prédicas recientes</h2>
+
+            <img class="channel-banner" src="./img/banner-miproaa-tv.jpg" alt="MIPROAA TV: canal del ministerio en WhatsApp, Instagram, Facebook, YouTube y TikTok" width="1600" height="640" loading="lazy">
+
+            <div class="sermons">
+                <div class="sermon-main">
+                    <div class="video">
+                        <iframe src="https://www.youtube.com/embed/7MFtXEr3aXk"
+                                title="Adoración profética y espontánea: Ardiendo por el avivamiento"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen></iframe>
+                    </div>
+                    <h3>Adoración profética y espontánea: Ardiendo por el avivamiento</h3>
+                </div>
+
+                <aside class="sermon-list">
+                    <h3>Más prédicas</h3>
+                    <ul>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=SO_ZD23SmuQ" target="_blank" rel="noopener noreferrer">
+                                <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                                <span>Entrevista al apóstol Eris Martinez</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/watch?v=s-a425BtO-g" target="_blank" rel="noopener noreferrer">
+                                <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                                <span>Entrevista profética a Anyela Santana</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://youtu.be/3IDPQqbslEE?si=yi7_iOrosfagmDGw" target="_blank" rel="noopener noreferrer">
+                                <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                                <span>Prédica profética para esta generación</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <a class="btn btn-gold" href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-youtube" aria-hidden="true"></i> Ver canal completo
+                    </a>
+                </aside>
+            </div>
         </div>
+    </section>
+
+    <!-- ================= GALERÍA ================= -->
+    <section class="section light" id="galeria">
+        <div class="wrap">
+            <h2 class="section-title">Galería del ministerio</h2>
+
+            <div class="gallery">
+                <figure class="shot">
+                    <img src="./img/pareja-escalera-blanco.jpg" alt="Pareja vestida de blanco posando en una escalera con un ramo de rosas blancas" width="1121" height="1403" loading="lazy">
+                </figure>
+
+                <figure class="shot">
+                    <img src="./img/pareja-escalera-azul.jpg" alt="Pareja en una escalera de mármol mirando sus manos entrelazadas" width="1200" height="1500" loading="lazy">
+                </figure>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= DONACIÓN ================= -->
+    <section class="section give" id="donacion">
+        <div class="wrap">
+            <div class="give-inner">
+                <h2 class="section-title">Apoya este ministerio</h2>
+
+                <p class="verse">
+                    Cada uno dé como propuso en su corazón.
+                    <cite>2 Corintios 9:7</cite>
+                </p>
+
+                <p>Tu donación ayuda a llevar el evangelio a más personas y naciones.</p>
+
+                <a class="btn btn-gold btn-lg" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-paypal" aria-hidden="true"></i> Donar por PayPal
+                </a>
+
+                <p class="world"><span aria-hidden="true">🇩🇴</span> Desde República Dominicana para el mundo <span aria-hidden="true">🌍</span></p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="wrap">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="./img/logo.jpeg" alt="Logo del ministerio Ardiendo por el Avivamiento" width="84" height="84" loading="lazy">
+                <h2>Ministerio Profético</h2>
+                <p>Ardiendo por el Avivamiento</p>
+            </div>
+
+            <nav aria-label="Enlaces rápidos">
+                <h3>Enlaces rápidos</h3>
+                <ul class="links">
+                    <li><a href="#biografia">Biografía</a></li>
+                    <li><a href="#predicas">Prédicas</a></li>
+                    <li><a href="#galeria">Galería</a></li>
+                    <li><a href="#donacion">Donación</a></li>
+                </ul>
+            </nav>
+
+            <div>
+                <h3>Síguenos</h3>
+                <ul class="social" aria-label="Redes sociales">
+                    <li><a href="https://web.facebook.com/david.estebangarcia.58/?_rdc=1&amp;_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a></li>
+                    <li><a href="https://www.instagram.com/luis_david_garcia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a></li>
+                    <li><a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a></li>
+                    <li><a href="https://www.tiktok.com/@miproaa" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="copyright">
+            &copy; <span id="year">2026</span> Evangelista Luis David García | República Dominicana <span aria-hidden="true">🇩🇴</span>
+        </p>
     </div>
 </footer>
 
-<!-- Bootstrap Bundle JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- JavaScript Mejorado -->
 <script>
-    // Loader
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            document.getElementById('loader').classList.add('hidden');
-        }, 1000);
-    });
+    (function () {
+        var header = document.getElementById('siteHeader');
+        var toggle = document.querySelector('.nav-toggle');
+        var menu = document.getElementById('menu');
+        var icon = toggle.querySelector('i');
 
-    // Smooth scroll para los enlaces del menú
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const offsetTop = target.offsetTop - 70;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
+        function onScroll() {
+            header.classList.toggle('solid', window.scrollY > 40);
+        }
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        function setMenu(open) {
+            menu.classList.toggle('open', open);
+            header.classList.toggle('open', open);
+            toggle.setAttribute('aria-expanded', String(open));
+            toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+            icon.className = open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        }
+
+        toggle.addEventListener('click', function () {
+            setMenu(!menu.classList.contains('open'));
+        });
+
+        menu.addEventListener('click', function (e) {
+            if (e.target.closest('a')) setMenu(false);
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && menu.classList.contains('open')) {
+                setMenu(false);
+                toggle.focus();
             }
         });
-    });
 
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        const navbar = document.getElementById('mainNavbar');
-        if (window.scrollY > 100) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Scroll to top button
-    const scrollToTopBtn = document.getElementById('scrollToTop');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            scrollToTopBtn.classList.add('visible');
-        } else {
-            scrollToTopBtn.classList.remove('visible');
-        }
-    });
-
-    scrollToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-
-    // Animación de entrada para elementos
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Observar elementos para animación
-    document.querySelectorAll('.card, .blockquote').forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'all 0.5s ease';
-        observer.observe(element);
-    });
+        document.getElementById('year').textContent = new Date().getFullYear();
+    })();
 </script>
 
 </body>
