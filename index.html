@@ -1415,6 +1415,81 @@
         }
 
         /* ============================================
+           MÚSICA INSTRUMENTAL
+           ============================================ */
+        .music {
+            position: fixed;
+            left: 1.1rem;
+            bottom: 1.1rem;
+            z-index: 45;
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+            min-height: 52px;
+            padding: 0 1.1rem 0 .95rem;
+            border: 1.5px solid var(--gold);
+            border-radius: 999px;
+            background: rgba(12, 6, 32, .88);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            color: var(--parchment);
+            font: 600 .98rem/1 var(--font-body);
+            cursor: pointer;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, .4);
+            transition: transform .25s var(--ease), background-color .25s ease, box-shadow .25s ease;
+        }
+
+        .music:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(244, 183, 63, .35); }
+        .music[aria-pressed="true"] { background: var(--gold); color: var(--void); }
+
+        .eq {
+            display: inline-flex;
+            align-items: flex-end;
+            gap: 3px;
+            width: 20px;
+            height: 20px;
+        }
+
+        .eq i {
+            flex: 1;
+            height: 30%;
+            border-radius: 2px;
+            background: currentColor;
+        }
+
+        .music[aria-pressed="true"] .eq i { animation: eq 1s ease-in-out infinite; }
+        .music[aria-pressed="true"] .eq i:nth-child(2) { animation-delay: -.4s; animation-duration: .8s; }
+        .music[aria-pressed="true"] .eq i:nth-child(3) { animation-delay: -.7s; animation-duration: 1.2s; }
+        .music[aria-pressed="true"] .eq i:nth-child(4) { animation-delay: -.2s; animation-duration: .9s; }
+
+        @keyframes eq {
+            0%, 100% { height: 25%; }
+            50% { height: 100%; }
+        }
+
+        .music-tip {
+            position: fixed;
+            left: 1.1rem;
+            bottom: 4.9rem;
+            z-index: 45;
+            max-width: 15rem;
+            padding: .75rem 1rem;
+            border: 1px solid rgba(244, 183, 63, .6);
+            border-radius: 14px;
+            background: var(--void);
+            color: var(--parchment);
+            font-size: .95rem;
+            line-height: 1.35;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+            opacity: 0;
+            transform: translateY(8px);
+            pointer-events: none;
+            transition: opacity .5s ease, transform .5s var(--ease);
+        }
+
+        .music-tip.show { opacity: 1; transform: none; }
+
+        /* ============================================
            MOVIMIENTO REDUCIDO: todo queda visible y quieto
            ============================================ */
         @media (prefers-reduced-motion: reduce) {
@@ -1440,6 +1515,14 @@
 
 <div class="progress" id="progress" aria-hidden="true"></div>
 <div class="spot" id="spot" aria-hidden="true"></div>
+
+<audio id="bgm" loop preload="none" src="./audio/instrumental.mp3"></audio>
+
+<button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Activar música instrumental">
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span id="musicLabel">Música</span>
+</button>
+<p class="music-tip" id="musicTip" role="status">Toca aquí para escuchar música instrumental mientras navegas.</p>
 
 <a class="fab" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp">
     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
@@ -2236,6 +2319,218 @@
                 io2.observe(visits);
             } else { render(n); }
         }).catch(function () { /* sin conexión con el servicio: la sección queda oculta */ });
+    }
+
+    /* ---------- Música instrumental ---------- */
+    /*PAD-START*/
+    function createPad(ctx, out) {
+        var comp = ctx.createDynamicsCompressor();
+        comp.connect(out);
+
+        var master = ctx.createGain();
+        master.gain.value = 1;
+        master.connect(comp);
+
+        // Eco de sala generado con ruido que se apaga poco a poco
+        var len = Math.floor(ctx.sampleRate * 3.6);
+        var ir = ctx.createBuffer(2, len, ctx.sampleRate);
+        for (var c = 0; c < 2; c++) {
+            var d = ir.getChannelData(c);
+            for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6);
+        }
+        var conv = ctx.createConvolver();
+        conv.buffer = ir;
+        var wet = ctx.createGain(); wet.gain.value = .6;
+        var dry = ctx.createGain(); dry.gain.value = .7;
+        var bus = ctx.createGain();
+        bus.connect(dry); dry.connect(master);
+        bus.connect(conv); conv.connect(wet); wet.connect(master);
+
+        var lp = ctx.createBiquadFilter();
+        lp.type = 'lowpass';
+        lp.frequency.value = 900;
+        lp.Q.value = .4;
+        lp.connect(bus);
+
+        // Do - Sol - La menor - Fa, con una nota grave y cuatro de colchón
+        var chords = [
+            { bass: 130.81, notes: [196.00, 261.63, 329.63, 392.00] },
+            { bass: 98.00,  notes: [196.00, 246.94, 293.66, 392.00] },
+            { bass: 110.00, notes: [220.00, 261.63, 329.63, 440.00] },
+            { bass: 87.31,  notes: [174.61, 220.00, 261.63, 349.23] }
+        ];
+        var DUR = 8;
+        var idx = 0, next = 0, started = false;
+
+        function voice(freq, t, dur, level, type, dest) {
+            var g = ctx.createGain();
+            g.gain.setValueAtTime(0, t);
+            g.gain.linearRampToValueAtTime(level, t + 2.2);
+            g.gain.setValueAtTime(level, t + dur - .2);
+            g.gain.linearRampToValueAtTime(0, t + dur + 2.8);
+            g.connect(dest);
+            [[type, freq * .997], [type, freq * 1.003]].forEach(function (p) {
+                var o = ctx.createOscillator();
+                o.type = p[0];
+                o.frequency.value = p[1];
+                o.connect(g);
+                o.start(t);
+                o.stop(t + dur + 3);
+            });
+        }
+
+        function bell(freq, t) {
+            var o = ctx.createOscillator();
+            var g = ctx.createGain();
+            o.type = 'sine';
+            o.frequency.value = freq;
+            g.gain.setValueAtTime(0, t);
+            g.gain.linearRampToValueAtTime(.07, t + .02);
+            g.gain.exponentialRampToValueAtTime(.0001, t + 3.6);
+            o.connect(g);
+            if (ctx.createStereoPanner) {
+                var pan = ctx.createStereoPanner();
+                pan.pan.value = Math.random() * 1.2 - .6;
+                g.connect(pan); pan.connect(bus);
+            } else { g.connect(bus); }
+            o.start(t);
+            o.stop(t + 3.8);
+        }
+
+        function chordAt(t) {
+            var ch = chords[idx % chords.length];
+            voice(ch.bass, t, DUR, .16, 'sine', bus);
+            ch.notes.forEach(function (f, k) { voice(f, t + k * .12, DUR, .05, 'triangle', lp); });
+            ch.notes.forEach(function (f) { voice(f, t, DUR, .012, 'sawtooth', lp); });
+            lp.frequency.setValueAtTime(800, t);
+            lp.frequency.linearRampToValueAtTime(1500, t + DUR / 2);
+            lp.frequency.linearRampToValueAtTime(800, t + DUR);
+            [1.6, 3.3, 4.9, 6.4].forEach(function (off) {
+                bell(ch.notes[Math.floor(Math.random() * ch.notes.length)] * 2, t + off);
+            });
+            idx++;
+        }
+
+        return {
+            schedule: function (until) {
+                if (!started) { next = ctx.currentTime + .1; started = true; }
+                if (next < ctx.currentTime) next = ctx.currentTime + .05;
+                while (next < until) { chordAt(next); next += DUR; }
+            }
+        };
+    }
+    /*PAD-END*/
+
+    var mBtn = document.getElementById('musicBtn');
+    var mLabel = document.getElementById('musicLabel');
+    var mTip = document.getElementById('musicTip');
+    var bgm = document.getElementById('bgm');
+
+    if (mBtn && bgm) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        var playing = false, mode = null; // 'file' | 'synth'
+        var actx = null, fade = null, pad = null, timer = null, VOL = .3;
+
+        function ui(on) {
+            playing = on;
+            mBtn.setAttribute('aria-pressed', String(on));
+            mBtn.setAttribute('aria-label', on ? 'Pausar música instrumental' : 'Activar música instrumental');
+            mLabel.textContent = on ? 'Sonando' : 'Música';
+            try { localStorage.setItem('miproaa_music', on ? '1' : '0'); } catch (e) {}
+        }
+
+        function startSynth() {
+            if (!AC) return false;
+            if (!actx) {
+                actx = new AC();
+                fade = actx.createGain();
+                fade.gain.value = 0;
+                fade.connect(actx.destination);
+                pad = createPad(actx, fade);
+            }
+            actx.resume();
+            pad.schedule(actx.currentTime + 14);
+            clearInterval(timer);
+            timer = setInterval(function () { pad.schedule(actx.currentTime + 14); }, 3000);
+            fade.gain.cancelScheduledValues(actx.currentTime);
+            fade.gain.setValueAtTime(fade.gain.value, actx.currentTime);
+            fade.gain.linearRampToValueAtTime(VOL, actx.currentTime + 2.5);
+            mode = 'synth';
+            return true;
+        }
+
+        function stopSynth() {
+            if (!actx) return;
+            clearInterval(timer);
+            fade.gain.cancelScheduledValues(actx.currentTime);
+            fade.gain.setValueAtTime(fade.gain.value, actx.currentTime);
+            fade.gain.linearRampToValueAtTime(0, actx.currentTime + 1);
+            setTimeout(function () { if (!playing && actx) actx.suspend(); }, 1200);
+        }
+
+        function fadeFile(to, done) {
+            var from = bgm.volume, t0 = null;
+            function step(ts) {
+                if (t0 === null) t0 = ts;
+                var p = Math.min((ts - t0) / 1000, 1);
+                bgm.volume = from + (to - from) * p;
+                if (p < 1) requestAnimationFrame(step); else if (done) done();
+            }
+            requestAnimationFrame(step);
+        }
+
+        function turnOn() {
+            mTip.classList.remove('show');
+            ui(true);
+            // Si existe audio/instrumental.mp3 se usa; si no, suena el colchón generado
+            if (mode !== 'synth') {
+                bgm.volume = 0;
+                var pr = bgm.play();
+                if (pr && pr.then) {
+                    pr.then(function () { mode = 'file'; fadeFile(.5); })
+                      .catch(function () { if (!startSynth()) ui(false); });
+                    return;
+                }
+            }
+            if (!startSynth()) ui(false);
+        }
+
+        function turnOff() {
+            ui(false);
+            if (mode === 'file') fadeFile(0, function () { bgm.pause(); });
+            else stopSynth();
+        }
+
+        mBtn.addEventListener('click', function () { playing ? turnOff() : turnOn(); });
+
+        // Se pausa al salir de la pestaña y vuelve al regresar
+        var wasOn = false;
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) { wasOn = playing; if (playing) { if (mode === 'file') bgm.pause(); else stopSynth(); } }
+            else if (wasOn && playing) { if (mode === 'file') bgm.play(); else startSynth(); }
+        });
+
+        // Quien la activó antes: arranca con su primer toque en la página
+        var pref = null;
+        try { pref = localStorage.getItem('miproaa_music'); } catch (e) {}
+        if (pref === '1') {
+            var resume = function (e) {
+                document.removeEventListener('pointerdown', resume);
+                document.removeEventListener('keydown', resume);
+                // Si tocó el propio botón, el clic ya se encarga de encenderla
+                if (e && e.target && e.target.closest && e.target.closest('#musicBtn')) return;
+                if (!playing) turnOn();
+            };
+            document.addEventListener('pointerdown', resume);
+            document.addEventListener('keydown', resume);
+        } else if (pref === null) {
+            setTimeout(function () {
+                if (!playing) {
+                    mTip.classList.add('show');
+                    setTimeout(function () { mTip.classList.remove('show'); }, 7000);
+                }
+            }, 3500);
+        }
     }
 
     /* ---------- Visor de fotos ---------- */
