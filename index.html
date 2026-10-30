@@ -220,7 +220,7 @@
             cursor: pointer;
         }
 
-        @media (max-width: 860px) {
+        @media (max-width: 1060px) {
             .nav-toggle { display: inline-flex; }
 
             .menu {
@@ -456,6 +456,54 @@
             will-change: transform;
         }
 
+        /* Aro brillante que gira alrededor del evangelista */
+        .ring {
+            position: absolute;
+            inset: 5%;
+            z-index: 2;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: spin 6s linear infinite;
+            filter: drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 16px var(--ember));
+        }
+
+        .ring-arc {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0 40%, rgba(244, 183, 63, .15) 52%, var(--gold) 90%, #fff6dc 100%);
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+        }
+
+        /* Punto de luz en la cabeza del arco */
+        .ring::after {
+            content: "";
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            margin-left: -7px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff 0 30%, var(--gold) 60%, transparent 72%);
+        }
+
+        /* Aro tenue de puntos que gira al revés */
+        .ring-dots {
+            position: absolute;
+            inset: 2%;
+            z-index: 2;
+            border: 2px dashed rgba(244, 183, 63, .4);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: spin 40s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Indicador de scroll */
         .scroll-hint {
             position: absolute;
@@ -498,21 +546,16 @@
             position: relative;
             z-index: 2;
             overflow: hidden;
-            padding: 1.6rem 0;
-            margin: -1.6rem 0;
-            background: linear-gradient(to bottom, transparent, var(--void) 30%, var(--void) 70%, var(--mist));
-            pointer-events: none;
         }
 
+        /* Cinta recta, de lado a lado */
         .marquee {
             position: relative;
             overflow: hidden;
             padding: 1.1rem 0;
             background: linear-gradient(90deg, var(--ember), var(--gold), var(--ember));
             color: var(--void);
-            transform: rotate(-1.2deg) scale(1.03);
             box-shadow: 0 10px 40px rgba(0, 0, 0, .45);
-            pointer-events: auto;
         }
 
         .marquee-track {
@@ -918,6 +961,460 @@
         }
 
         /* ============================================
+           NUEVO: luz del cursor, frase rotativa y WhatsApp flotante
+           ============================================ */
+        .spot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            width: 520px;
+            height: 520px;
+            margin: -260px 0 0 -260px;
+            border-radius: 50%;
+            background: radial-gradient(closest-side, rgba(244, 183, 63, .13), transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .4s ease;
+            will-change: transform;
+        }
+
+        .spot.on { opacity: 1; }
+
+        .rotator {
+            margin: -.3rem 0 1.1rem;
+            font: 500 1.15rem/1.4 var(--font-body);
+            color: var(--ash);
+            animation-delay: 1.05s;
+        }
+
+        .rotator strong {
+            display: inline-block;
+            min-width: 8.5em;
+            color: var(--parchment);
+            font-weight: 600;
+            transition: opacity .35s ease, transform .35s var(--ease);
+        }
+
+        .rotator strong.out { opacity: 0; transform: translateY(-8px); }
+
+        .fab {
+            position: fixed;
+            right: 1.1rem;
+            bottom: 1.1rem;
+            z-index: 45;
+            display: grid;
+            place-items: center;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #25D366;
+            color: #fff;
+            font-size: 1.75rem;
+            text-decoration: none;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, .4);
+            transition: transform .25s var(--ease);
+        }
+
+        .fab:hover { transform: scale(1.1) rotate(-6deg); }
+
+        .fab::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid #25D366;
+            animation: ring 2.2s ease-out infinite;
+        }
+
+        /* ---------- Nuestra visión ---------- */
+        .vision {
+            overflow: hidden;
+            color: var(--parchment);
+            background:
+                radial-gradient(60% 50% at 90% 0%, rgba(238, 106, 43, .25), transparent 70%),
+                linear-gradient(170deg, var(--indigo), var(--royal) 140%);
+        }
+
+        .vision-intro { max-width: 46rem; margin: -1rem 0 2.8rem; color: var(--ash); font-size: 1.15rem; }
+
+        .vision .section-title {
+            background: linear-gradient(90deg, var(--parchment), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .cards {
+            display: grid;
+            gap: 1.1rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+        }
+
+        .card {
+            position: relative;
+            padding: 1.7rem 1.6rem 1.6rem;
+            overflow: hidden;
+            border: 1px solid rgba(244, 183, 63, .28);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .06);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            height: 100%;
+            transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+            transition: transform .2s ease-out, border-color .3s ease, background-color .3s ease;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: auto -30% -60% -30%;
+            height: 80%;
+            background: radial-gradient(closest-side, rgba(238, 106, 43, .45), transparent 70%);
+            opacity: 0;
+            transition: opacity .4s ease;
+        }
+
+        .card:hover { border-color: var(--gold); background: rgba(255, 255, 255, .1); }
+        .card:hover::before { opacity: 1; }
+
+        .card .ico {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: 56px;
+            height: 56px;
+            margin-bottom: 1.1rem;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--gold), var(--ember));
+            color: var(--void);
+            font-size: 1.5rem;
+            box-shadow: 0 8px 24px rgba(238, 106, 43, .4);
+            animation: bob 4s ease-in-out infinite;
+        }
+
+        .card:nth-child(2n) .ico { animation-delay: -1.3s; }
+        .card:nth-child(3n) .ico { animation-delay: -2.4s; }
+
+        @keyframes bob {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-5px) rotate(-4deg); }
+        }
+
+        .card h3 {
+            position: relative;
+            margin: 0 0 .5rem;
+            font: 700 1.7rem/1.1 var(--font-display);
+            color: var(--gold);
+        }
+
+        .card p { position: relative; margin: 0; color: var(--parchment); }
+
+        /* ---------- Palabra de fuego (versículos) ---------- */
+        .word {
+            overflow: hidden;
+            padding: clamp(4.5rem, 10vw, 7rem) 0;
+            color: var(--parchment);
+            text-align: center;
+            background:
+                radial-gradient(70% 90% at 50% 130%, rgba(238, 106, 43, .6), transparent 70%),
+                radial-gradient(50% 60% at 90% 0%, rgba(75, 42, 143, .6), transparent 70%),
+                var(--void);
+        }
+
+        .word-title {
+            margin: 0 0 1.6rem;
+            font: 700 1.5rem/1 var(--font-display);
+            letter-spacing: .06em;
+            color: var(--gold);
+        }
+
+        .word-stage {
+            position: relative;
+            display: grid;
+            max-width: 52rem;
+            margin-inline: auto;
+        }
+
+        .word-slide {
+            grid-area: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(18px) scale(.985);
+            transition: opacity .9s var(--ease), transform .9s var(--ease);
+            pointer-events: none;
+        }
+
+        .word-slide.active { opacity: 1; transform: none; pointer-events: auto; }
+
+        .word-slide p {
+            margin: 0;
+            font: italic 500 clamp(1.7rem, 4.8vw, 3rem)/1.25 var(--font-verse);
+        }
+
+        .word-slide cite {
+            margin-top: 1.1rem;
+            font: 600 1.2rem/1.3 var(--font-display);
+            font-style: normal;
+            letter-spacing: .06em;
+            color: var(--gold);
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: .4rem;
+            margin-top: 1.8rem;
+        }
+
+        .dots button {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .dots button::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            transition: background-color .3s ease, transform .3s var(--ease);
+        }
+
+        .dots button[aria-current="true"]::before { background: var(--gold); transform: scale(1.3); }
+
+        /* ---------- Petición de oración ---------- */
+        .pray {
+            overflow: hidden;
+            color: var(--parchment);
+            background:
+                radial-gradient(60% 70% at 0% 100%, rgba(75, 42, 143, .7), transparent 70%),
+                radial-gradient(50% 60% at 100% 0%, rgba(238, 106, 43, .3), transparent 70%),
+                var(--night);
+        }
+
+        .pray-grid {
+            display: grid;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        @media (min-width: 900px) {
+            .pray-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 4.5rem; }
+        }
+
+        .pray .section-title {
+            background: linear-gradient(90deg, var(--parchment), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .pray-copy p { max-width: 34rem; color: var(--ash); font-size: 1.15rem; }
+
+        .steps {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: step;
+        }
+
+        .steps li {
+            position: relative;
+            padding-left: 3.4rem;
+            counter-increment: step;
+        }
+
+        .steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: -.1rem;
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--void);
+            font: 800 1.3rem/1 var(--font-display);
+        }
+
+        .steps strong { display: block; color: var(--parchment); }
+        .steps span { color: var(--ash); }
+
+        .form {
+            padding: clamp(1.4rem, 4vw, 2.4rem);
+            border: 1px solid rgba(244, 183, 63, .35);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, .06);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .35), 0 0 60px rgba(238, 106, 43, .12);
+        }
+
+        .field { margin-bottom: 1.15rem; }
+
+        .field label {
+            display: block;
+            margin-bottom: .4rem;
+            font-weight: 600;
+        }
+
+        .field .opt { font-weight: 400; color: var(--ash); }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            min-height: 52px;
+            padding: .8rem 1rem;
+            border: 1.5px solid rgba(207, 198, 230, .4);
+            border-radius: 14px;
+            background: rgba(12, 6, 32, .6);
+            color: var(--parchment);
+            font: 400 1.05rem/1.4 var(--font-body);
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .field textarea { min-height: 150px; resize: vertical; }
+        .field select option { color: #111; }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(244, 183, 63, .22);
+        }
+
+        .field [aria-invalid="true"] { border-color: #ff8a8a; }
+        .err { margin: .35rem 0 0; min-height: 1.2em; font-size: .95rem; color: #ffb3b3; }
+
+        .row2 { display: grid; gap: 0 1rem; }
+        @media (min-width: 620px) { .row2 { grid-template-columns: 1fr 1fr; } }
+
+        .count { display: block; margin-top: .3rem; text-align: right; font-size: .9rem; color: var(--ash); }
+
+        .check {
+            display: flex;
+            gap: .8rem;
+            align-items: flex-start;
+            margin-bottom: 1.3rem;
+            color: var(--ash);
+            font-size: .98rem;
+        }
+
+        .check input { width: 22px; height: 22px; min-height: 0; margin-top: .15rem; accent-color: var(--gold); flex: none; }
+
+        .btn-wa { background: #25D366; color: #06210f; width: 100%; font-size: 1.1rem; min-height: 56px; }
+        .btn-wa:hover { transform: translateY(-3px); background: #3be07b; box-shadow: 0 10px 30px rgba(37, 211, 102, .4); }
+
+        .status {
+            margin: 1rem 0 0;
+            padding: 1rem 1.1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(37, 211, 102, .6);
+            background: rgba(37, 211, 102, .12);
+            color: var(--parchment);
+        }
+
+        .status[hidden] { display: none; }
+        .status a { color: var(--gold); font-weight: 600; }
+
+        /* ---------- Contador de visitas ---------- */
+        .visits {
+            position: relative;
+            padding: 3.2rem 0;
+            overflow: hidden;
+            background:
+                radial-gradient(50% 120% at 50% 130%, rgba(244, 183, 63, .28), transparent 70%),
+                var(--night);
+            color: var(--parchment);
+            text-align: center;
+        }
+
+        .visits[hidden] { display: none; }
+
+        .visits h2 {
+            margin: 0 0 .3rem;
+            font: 700 1.6rem/1.1 var(--font-display);
+            color: var(--gold);
+        }
+
+        .visits p { margin: 0 0 1.4rem; color: var(--ash); }
+
+        .digits {
+            display: inline-flex;
+            gap: .4rem;
+            padding: .4rem;
+            border: 1px solid rgba(244, 183, 63, .4);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .05);
+            box-shadow: 0 0 40px rgba(244, 183, 63, .18);
+        }
+
+        .digits span {
+            display: grid;
+            place-items: center;
+            width: clamp(34px, 9vw, 54px);
+            height: clamp(48px, 12vw, 72px);
+            border-radius: 12px;
+            background: linear-gradient(180deg, #2c1a5e, var(--void));
+            color: var(--gold);
+            font: 800 clamp(1.8rem, 6vw, 3rem)/1 var(--font-display);
+            font-variant-numeric: tabular-nums;
+            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .08);
+        }
+
+        /* ---------- Visor de fotos ---------- */
+        .shot { cursor: zoom-in; }
+
+        dialog.lightbox {
+            width: min(94vw, 900px);
+            max-height: 92vh;
+            padding: 0;
+            border: 1px solid rgba(244, 183, 63, .5);
+            border-radius: 18px;
+            background: var(--void);
+            color: var(--parchment);
+            overflow: hidden;
+        }
+
+        dialog.lightbox::backdrop { background: rgba(6, 3, 16, .88); }
+
+        dialog.lightbox img {
+            width: 100%;
+            max-height: 86vh;
+            object-fit: contain;
+        }
+
+        dialog.lightbox button {
+            position: absolute;
+            top: .6rem;
+            right: .6rem;
+            width: 48px;
+            height: 48px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(12, 6, 32, .85);
+            color: var(--parchment);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        /* ============================================
            MOVIMIENTO REDUCIDO: todo queda visible y quieto
            ============================================ */
         @media (prefers-reduced-motion: reduce) {
@@ -933,13 +1430,20 @@
                 -webkit-text-fill-color: var(--parchment);
                 color: var(--parchment);
             }
-            .marquee { transform: none; margin: 0; }
+            .spot { display: none; }
+            .card { transform: none; }
+            .rotator strong { transition: none; }
         }
     </style>
 </head>
 <body>
 
 <div class="progress" id="progress" aria-hidden="true"></div>
+<div class="spot" id="spot" aria-hidden="true"></div>
+
+<a class="fab" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp">
+    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+</a>
 
 <header class="site-header" id="siteHeader">
     <div class="wrap nav">
@@ -955,8 +1459,10 @@
         <ul class="menu" id="menu">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#biografia">Biografía</a></li>
+            <li><a href="#vision">Visión</a></li>
             <li><a href="#predicas">Prédicas</a></li>
             <li><a href="#galeria">Galería</a></li>
+            <li><a href="#peticion">Petición de oración</a></li>
             <li><a href="#donacion">Donación</a></li>
             <li>
                 <a class="btn btn-gold" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
@@ -986,6 +1492,8 @@
 
                 <p class="hero-name fade-in">Evangelista Luis David García</p>
 
+                <p class="rotator fade-in">Un ministerio de <strong id="rot">avivamiento</strong></p>
+
                 <p class="verse fade-in">
                     El fuego arderá continuamente en el altar; no se apagará.
                     <cite>Levítico 6:13</cite>
@@ -997,8 +1505,11 @@
                     <a class="btn btn-gold btn-pulse" href="#predicas">
                         <i class="fa-solid fa-circle-play" aria-hidden="true"></i> Ver prédicas
                     </a>
+                    <a class="btn btn-ghost" href="#peticion">
+                        <i class="fa-solid fa-hands-praying" aria-hidden="true"></i> Pedir oración
+                    </a>
                     <a class="btn btn-ghost" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer">
-                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Contactar por WhatsApp
+                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp
                     </a>
                 </div>
 
@@ -1014,6 +1525,8 @@
                 <img id="heroImg" src="./img/predicando-escenario.jpg"
                      alt="Evangelista Luis David García predicando con el micrófono en la mano"
                      width="1300" height="1300" fetchpriority="high">
+                <span class="ring-dots" aria-hidden="true"></span>
+                <span class="ring" aria-hidden="true"><span class="ring-arc"></span></span>
             </div>
         </div>
 
@@ -1098,6 +1611,59 @@
         </div>
     </section>
 
+    <!-- ================= VISIÓN ================= -->
+    <section class="section vision" id="vision">
+        <div class="wrap">
+            <h2 class="section-title reveal"><span class="wipe-text">Nuestra visión</span></h2>
+            <p class="vision-intro reveal">Levantar una generación encendida por el Espíritu Santo y comprometida con el avivamiento y la restauración.</p>
+
+            <div class="cards">
+                <div class="reveal" style="--d:.0s">
+                    <article class="card">
+                        <span class="ico"><i class="fa-solid fa-fire" aria-hidden="true"></i></span>
+                        <h3>Avivamiento</h3>
+                        <p>Despertar una generación apasionada por la presencia de Dios.</p>
+                    </article>
+                </div>
+                <div class="reveal" style="--d:.1s">
+                    <article class="card">
+                        <span class="ico"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i></span>
+                        <h3>Restauración</h3>
+                        <p>Restauración espiritual y transformación de vidas en la iglesia y en la sociedad.</p>
+                    </article>
+                </div>
+                <div class="reveal" style="--d:.2s">
+                    <article class="card">
+                        <span class="ico"><i class="fa-solid fa-music" aria-hidden="true"></i></span>
+                        <h3>Adoración profética</h3>
+                        <p>Adoración profética y espontánea, con guitarra y piano en los momentos de ministración.</p>
+                    </article>
+                </div>
+                <div class="reveal" style="--d:.0s">
+                    <article class="card">
+                        <span class="ico"><i class="fa-solid fa-dove" aria-hidden="true"></i></span>
+                        <h3>Mover del Espíritu Santo</h3>
+                        <p>Manifestación del poder de Dios y un mover profético que alcanza a las naciones.</p>
+                    </article>
+                </div>
+                <div class="reveal" style="--d:.1s">
+                    <article class="card">
+                        <span class="ico"><i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i></span>
+                        <h3>Evangelismo digital</h3>
+                        <p>Predicaciones, reflexiones bíblicas y transmisiones en vivo en TikTok, YouTube, Facebook e Instagram.</p>
+                    </article>
+                </div>
+                <div class="reveal" style="--d:.2s">
+                    <article class="card">
+                        <span class="ico"><i class="fa-solid fa-people-group" aria-hidden="true"></i></span>
+                        <h3>Formación de creyentes</h3>
+                        <p>Creyentes que viven una fe genuina, formados con un estilo dinámico y profético.</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ================= PRÉDICAS ================= -->
     <section class="section dark" id="predicas">
         <div class="wrap">
@@ -1167,6 +1733,98 @@
         </div>
     </section>
 
+    <!-- ================= PALABRA DE FUEGO ================= -->
+    <section class="word" aria-label="Versículos">
+        <div class="wrap">
+            <h2 class="word-title reveal">Palabra de fuego</h2>
+
+            <div class="word-stage reveal" id="wordStage" aria-live="off">
+                <figure class="word-slide active" style="margin:0">
+                    <p>Y se les aparecieron lenguas repartidas, como de fuego, asentándose sobre cada uno de ellos.</p>
+                    <cite>Hechos 2:3</cite>
+                </figure>
+                <figure class="word-slide" style="margin:0">
+                    <p>Y después de esto derramaré mi Espíritu sobre toda carne, y profetizarán vuestros hijos y vuestras hijas.</p>
+                    <cite>Joel 2:28</cite>
+                </figure>
+                <figure class="word-slide" style="margin:0">
+                    <p>¿No volverás a darnos vida, para que tu pueblo se regocije en ti?</p>
+                    <cite>Salmo 85:6</cite>
+                </figure>
+                <figure class="word-slide" style="margin:0">
+                    <p>Había en mi corazón como un fuego ardiente metido en mis huesos.</p>
+                    <cite>Jeremías 20:9</cite>
+                </figure>
+            </div>
+
+            <div class="dots" id="wordDots" role="group" aria-label="Elegir versículo"></div>
+        </div>
+    </section>
+
+    <!-- ================= PETICIÓN DE ORACIÓN ================= -->
+    <section class="section pray" id="peticion">
+        <div class="wrap pray-grid">
+            <div class="pray-copy">
+                <h2 class="section-title reveal"><span class="wipe-text">Petición de oración</span></h2>
+                <p class="reveal">Cuéntanos por qué quieres que oremos. Tu petición se envía por WhatsApp directamente al ministerio.</p>
+
+                <ol class="steps">
+                    <li class="reveal" style="--d:.05s"><strong>Llena el formulario</strong><span>Tu nombre y lo que necesitas.</span></li>
+                    <li class="reveal" style="--d:.15s"><strong>Se abre WhatsApp</strong><span>Con tu mensaje ya escrito.</span></li>
+                    <li class="reveal" style="--d:.25s"><strong>Toca Enviar</strong><span>Y tu petición llega al ministerio.</span></li>
+                </ol>
+            </div>
+
+            <form class="form reveal" id="prayForm" novalidate>
+                <div class="row2">
+                    <div class="field">
+                        <label for="pName">Tu nombre</label>
+                        <input id="pName" name="nombre" type="text" autocomplete="name" maxlength="60" required aria-describedby="eName">
+                        <p class="err" id="eName"></p>
+                    </div>
+                    <div class="field">
+                        <label for="pPlace">Ciudad o país <span class="opt">(opcional)</span></label>
+                        <input id="pPlace" name="lugar" type="text" autocomplete="address-level2" maxlength="60">
+                        <p class="err"></p>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="pType">Tipo de petición</label>
+                    <select id="pType" name="tipo">
+                        <option>Sanidad</option>
+                        <option>Familia</option>
+                        <option>Finanzas y provisión</option>
+                        <option>Liberación</option>
+                        <option>Dirección de Dios</option>
+                        <option>Gratitud o testimonio</option>
+                        <option>Otra</option>
+                    </select>
+                    <p class="err"></p>
+                </div>
+
+                <div class="field">
+                    <label for="pMsg">Tu petición</label>
+                    <textarea id="pMsg" name="mensaje" maxlength="600" required aria-describedby="eMsg cMsg"></textarea>
+                    <span class="count" id="cMsg">0 / 600</span>
+                    <p class="err" id="eMsg"></p>
+                </div>
+
+                <label class="check">
+                    <input id="pOk" type="checkbox" required aria-describedby="eOk">
+                    <span>Estoy de acuerdo en que mi petición se envíe por WhatsApp al ministerio.</span>
+                </label>
+                <p class="err" id="eOk"></p>
+
+                <button class="btn btn-wa" type="submit">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Enviar petición por WhatsApp
+                </button>
+
+                <p class="status" id="pStatus" role="status" hidden></p>
+            </form>
+        </div>
+    </section>
+
     <!-- ================= DONACIÓN ================= -->
     <section class="section give" id="donacion">
         <div class="wrap">
@@ -1189,6 +1847,15 @@
         </div>
     </section>
 
+    <!-- ================= VISITANTES ================= -->
+    <section class="visits" id="visitas" hidden>
+        <div class="wrap">
+            <h2>Gracias por visitarnos</h2>
+            <p>Personas que ya han entrado a esta página</p>
+            <div class="digits" id="visitDigits" role="img" aria-label="Visitantes"></div>
+        </div>
+    </section>
+
 </main>
 
 <footer class="site-footer">
@@ -1204,8 +1871,10 @@
                 <h3>Enlaces rápidos</h3>
                 <ul class="links">
                     <li><a href="#biografia">Biografía</a></li>
+                    <li><a href="#vision">Visión</a></li>
                     <li><a href="#predicas">Prédicas</a></li>
                     <li><a href="#galeria">Galería</a></li>
+                    <li><a href="#peticion">Petición de oración</a></li>
                     <li><a href="#donacion">Donación</a></li>
                 </ul>
             </nav>
@@ -1360,6 +2029,245 @@
         }).observe(hero);
     }
     start();
+})();
+</script>
+
+<script>
+(function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    /* ---------- Luz que sigue al cursor ---------- */
+    var spot = document.getElementById('spot');
+    if (spot && fine && !reduce) {
+        var sx = 0, sy = 0, pending = false;
+        window.addEventListener('pointermove', function (e) {
+            sx = e.clientX; sy = e.clientY;
+            spot.classList.add('on');
+            if (!pending) {
+                pending = true;
+                requestAnimationFrame(function () {
+                    spot.style.transform = 'translate(' + sx + 'px,' + sy + 'px)';
+                    pending = false;
+                });
+            }
+        }, { passive: true });
+        document.addEventListener('pointerleave', function () { spot.classList.remove('on'); });
+    }
+
+    /* ---------- Frase que cambia en el inicio ---------- */
+    var rot = document.getElementById('rot');
+    if (rot && !reduce) {
+        var words = ['avivamiento', 'restauración', 'adoración profética', 'presencia de Dios', 'fuego del Espíritu'];
+        var wi = 0;
+        setInterval(function () {
+            rot.classList.add('out');
+            setTimeout(function () {
+                wi = (wi + 1) % words.length;
+                rot.textContent = words[wi];
+                rot.classList.remove('out');
+            }, 360);
+        }, 2600);
+    }
+
+    /* ---------- Tarjetas que se inclinan ---------- */
+    if (fine && !reduce) {
+        document.querySelectorAll('.card').forEach(function (c) {
+            c.addEventListener('pointermove', function (e) {
+                var r = c.getBoundingClientRect();
+                var px = (e.clientX - r.left) / r.width - .5;
+                var py = (e.clientY - r.top) / r.height - .5;
+                c.style.setProperty('--ry', (px * 9).toFixed(2) + 'deg');
+                c.style.setProperty('--rx', (-py * 9).toFixed(2) + 'deg');
+            });
+            c.addEventListener('pointerleave', function () {
+                c.style.setProperty('--rx', '0deg');
+                c.style.setProperty('--ry', '0deg');
+            });
+        });
+    }
+
+    /* ---------- Versículos que rotan ---------- */
+    var slides = document.querySelectorAll('.word-slide');
+    var dotsBox = document.getElementById('wordDots');
+    var stage = document.getElementById('wordStage');
+    if (slides.length && dotsBox) {
+        var cur = 0, timer = null, dots = [];
+
+        function show(i) {
+            cur = (i + slides.length) % slides.length;
+            slides.forEach(function (s, k) { s.classList.toggle('active', k === cur); });
+            dots.forEach(function (d, k) { d.setAttribute('aria-current', String(k === cur)); });
+        }
+
+        function play() {
+            if (reduce) return;
+            clearInterval(timer);
+            timer = setInterval(function () { show(cur + 1); }, 6500);
+        }
+
+        slides.forEach(function (_, k) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.setAttribute('aria-label', 'Versículo ' + (k + 1));
+            b.addEventListener('click', function () { show(k); play(); });
+            dotsBox.appendChild(b);
+            dots.push(b);
+        });
+
+        show(0);
+        play();
+        if (stage) {
+            stage.addEventListener('pointerenter', function () { clearInterval(timer); });
+            stage.addEventListener('pointerleave', play);
+        }
+    }
+
+    /* ---------- Petición de oración -> WhatsApp ---------- */
+    var WA = '18095289608';
+    var form = document.getElementById('prayForm');
+    if (form) {
+        var nameEl = document.getElementById('pName');
+        var placeEl = document.getElementById('pPlace');
+        var typeEl = document.getElementById('pType');
+        var msgEl = document.getElementById('pMsg');
+        var okEl = document.getElementById('pOk');
+        var cnt = document.getElementById('cMsg');
+        var status = document.getElementById('pStatus');
+
+        function setErr(id, el, text) {
+            document.getElementById(id).textContent = text;
+            if (el.type === 'checkbox') return;
+            if (text) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+        }
+
+        msgEl.addEventListener('input', function () { cnt.textContent = msgEl.value.length + ' / 600'; });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var name = nameEl.value.trim();
+            var msg = msgEl.value.trim();
+            var bad = false;
+
+            setErr('eName', nameEl, name ? '' : 'Escribe tu nombre.');
+            setErr('eMsg', msgEl, msg ? '' : 'Escribe tu petición.');
+            setErr('eOk', okEl, okEl.checked ? '' : 'Marca la casilla para poder enviarla.');
+            if (!name) { bad = true; nameEl.focus(); }
+            else if (!msg) { bad = true; msgEl.focus(); }
+            else if (!okEl.checked) { bad = true; okEl.focus(); }
+            if (bad) return;
+
+            var place = placeEl.value.trim();
+            var text = '🙏 *Petición de oración*\n\n' +
+                '*Nombre:* ' + name + '\n' +
+                (place ? '*Lugar:* ' + place + '\n' : '') +
+                '*Tipo:* ' + typeEl.value + '\n\n' +
+                '*Petición:*\n' + msg;
+
+            var url = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text);
+            var w = window.open(url, '_blank', 'noopener');
+
+            status.hidden = false;
+            status.innerHTML = 'Se abrió WhatsApp con tu petición. <strong>Toca Enviar</strong> para que llegue al ministerio. ' +
+                'Si no se abrió, <a href="' + url + '" target="_blank" rel="noopener noreferrer">toca aquí</a>.';
+            if (!w) status.focus();
+        });
+    }
+
+    /* ---------- Contador de visitas ---------- */
+    var visits = document.getElementById('visitas');
+    var digitsBox = document.getElementById('visitDigits');
+    if (visits && digitsBox && window.fetch) {
+        var BASE = 'https://abacus.jasoncameron.dev';
+        var NS = 'miproaa-luisdavidgarcia';
+        var KEY = 'visitas';
+        var seen = false;
+        try { seen = localStorage.getItem('miproaa_visited') === '1'; } catch (e) {}
+
+        function call(kind) {
+            var ctl = ('AbortController' in window) ? new AbortController() : null;
+            var t = setTimeout(function () { if (ctl) ctl.abort(); }, 7000);
+            return fetch(BASE + '/' + kind + '/' + NS + '/' + KEY, ctl ? { signal: ctl.signal } : undefined)
+                .then(function (r) { clearTimeout(t); if (!r.ok) throw new Error(r.status); return r.json(); })
+                .then(function (j) {
+                    var v = (j && (j.value !== undefined ? j.value : (j.count !== undefined ? j.count : (j.data && j.data.value))));
+                    v = Number(v);
+                    if (!isFinite(v) || v < 0) throw new Error('formato');
+                    return Math.floor(v);
+                });
+        }
+
+        function render(n) {
+            var s = String(n);
+            while (s.length < 5) s = '0' + s;
+            digitsBox.innerHTML = '';
+            s.split('').forEach(function (ch) {
+                var d = document.createElement('span');
+                d.textContent = ch;
+                d.setAttribute('aria-hidden', 'true');
+                digitsBox.appendChild(d);
+            });
+            digitsBox.setAttribute('aria-label', n + ' visitantes');
+        }
+
+        function countUp(n) {
+            if (reduce || n < 2) { render(n); return; }
+            var t0 = null, dur = 1600;
+            function step(ts) {
+                if (t0 === null) t0 = ts;
+                var p = Math.min((ts - t0) / dur, 1);
+                var e = 1 - Math.pow(1 - p, 3);
+                render(Math.round(n * e));
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        // Nuevo visitante: suma 1. Quien ya visitó en este navegador: solo se lee el total.
+        var first = seen ? call('get').catch(function () { return call('hit'); }) : call('hit');
+        first.then(function (n) {
+            try { localStorage.setItem('miproaa_visited', '1'); } catch (e) {}
+            visits.hidden = false;
+            render(0);
+            if ('IntersectionObserver' in window) {
+                var io2 = new IntersectionObserver(function (en) {
+                    if (en[0].isIntersecting) { io2.disconnect(); countUp(n); }
+                }, { threshold: .4 });
+                io2.observe(visits);
+            } else { render(n); }
+        }).catch(function () { /* sin conexión con el servicio: la sección queda oculta */ });
+    }
+
+    /* ---------- Visor de fotos ---------- */
+    var shots = document.querySelectorAll('.shot');
+    if (shots.length && typeof HTMLDialogElement === 'function') {
+        var dlg = document.createElement('dialog');
+        dlg.className = 'lightbox';
+        dlg.setAttribute('aria-label', 'Foto ampliada');
+        dlg.innerHTML = '<img alt=""><button type="button" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>';
+        document.body.appendChild(dlg);
+        var big = dlg.querySelector('img');
+
+        function open(fig) {
+            var im = fig.querySelector('img');
+            big.src = im.currentSrc || im.src;
+            big.alt = im.alt;
+            dlg.showModal();
+        }
+
+        shots.forEach(function (fig) {
+            fig.tabIndex = 0;
+            fig.setAttribute('role', 'button');
+            fig.setAttribute('aria-label', 'Ampliar foto: ' + fig.querySelector('img').alt);
+            fig.addEventListener('click', function () { open(fig); });
+            fig.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(fig); }
+            });
+        });
+
+        dlg.querySelector('button').addEventListener('click', function () { dlg.close(); });
+        dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    }
 })();
 </script>
 
