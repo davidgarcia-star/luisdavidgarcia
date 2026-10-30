@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#120A2B">
+    <meta name="theme-color" content="#0C0620">
     <title>MIPROAA | Evangelista Luis David García</title>
     <meta name="description" content="Ministerio Profético Ardiendo por el Avivamiento - Evangelista Luis David García, República Dominicana.">
     <link rel="icon" type="image/png" href="logo.png.png">
@@ -21,16 +21,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&family=Newsreader:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <script>document.documentElement.classList.add('js');</script>
+
     <style>
         /* ============================================
            IDENTIDAD: fuego en el altar, noche y oro
            ============================================ */
         :root {
+            --void: #0C0620;
             --night: #120A2B;
             --indigo: #22114A;
             --royal: #4B2A8F;
             --gold: #F4B73F;
             --ember: #EE6A2B;
+            --flame: #FF8A3D;
             --ash: #CFC6E6;
             --parchment: #F8F1E3;
             --mist: #F5F2FB;
@@ -42,7 +46,8 @@
             --font-verse: 'Newsreader', Georgia, serif;
 
             --nav-h: 68px;
-            --wrap: 1160px;
+            --wrap: 1180px;
+            --ease: cubic-bezier(.2, .8, .2, 1);
         }
 
         *, *::before, *::after { box-sizing: border-box; }
@@ -56,8 +61,9 @@
             margin: 0;
             font: 400 1.0625rem/1.65 var(--font-body);
             color: var(--ink);
-            background: var(--mist);
+            background: var(--void);
             -webkit-text-size-adjust: 100%;
+            overflow-x: hidden;
         }
 
         img { max-width: 100%; display: block; }
@@ -74,18 +80,23 @@
             margin-inline: auto;
         }
 
-        .visually-hidden {
-            position: absolute !important;
-            width: 1px; height: 1px;
-            overflow: hidden;
-            clip: rect(0 0 0 0);
-            white-space: nowrap;
+        /* Barra de progreso de lectura */
+        .progress {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 60;
+            height: 3px;
+            background: linear-gradient(90deg, var(--ember), var(--gold));
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            pointer-events: none;
         }
 
         /* ============================================
            BOTONES
            ============================================ */
         .btn {
+            position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -97,16 +108,32 @@
             font: 600 1rem/1.2 var(--font-body);
             text-decoration: none;
             cursor: pointer;
-            transition: transform .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+            transition: transform .25s var(--ease), background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .25s ease;
         }
 
-        .btn-gold { background: var(--gold); color: var(--night); }
-        .btn-gold:hover { transform: translateY(-2px); background: #F8C65F; }
+        .btn-gold { background: var(--gold); color: var(--void); }
+        .btn-gold:hover { transform: translateY(-3px); background: #F8C65F; box-shadow: 0 10px 30px rgba(244, 183, 63, .4); }
 
         .btn-ghost { border-color: rgba(248, 241, 227, .5); color: var(--parchment); }
-        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
         .btn-lg { min-height: 56px; padding-inline: 2.2rem; font-size: 1.1rem; }
+
+        /* Botón que late para llamar la atención */
+        .btn-pulse::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            border: 2px solid var(--gold);
+            animation: ring 2.4s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes ring {
+            0% { transform: scale(1); opacity: .8; }
+            80%, 100% { transform: scale(1.22); opacity: 0; }
+        }
 
         /* ============================================
            ENCABEZADO
@@ -121,9 +148,9 @@
 
         .site-header.solid,
         .site-header.open {
-            background: rgba(18, 10, 43, .94);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            background: rgba(12, 6, 32, .92);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
             box-shadow: 0 1px 0 rgba(244, 183, 63, .28);
         }
 
@@ -176,8 +203,8 @@
         }
 
         .menu a:hover { color: var(--gold); }
-        .menu .btn { margin-left: .5rem; padding: .6rem 1.4rem; min-height: 44px; color: var(--night); }
-        .menu .btn:hover { color: var(--night); }
+        .menu .btn { margin-left: .5rem; padding: .6rem 1.4rem; min-height: 44px; color: var(--void); }
+        .menu .btn:hover { color: var(--void); }
 
         .nav-toggle {
             display: none;
@@ -206,7 +233,7 @@
                 align-items: stretch;
                 gap: 0;
                 padding: .5rem 1.25rem 1.5rem;
-                background: var(--night);
+                background: var(--void);
                 border-bottom: 1px solid rgba(244, 183, 63, .3);
             }
 
@@ -224,54 +251,126 @@
             align-items: center;
             min-height: 100vh;
             min-height: 100svh;
-            padding: calc(var(--nav-h) + 2rem) 0 4.5rem;
+            padding: calc(var(--nav-h) + 1.5rem) 0 3rem;
             color: var(--parchment);
             overflow: hidden;
             background:
-                radial-gradient(60% 50% at 80% 92%, rgba(238, 106, 43, .38), transparent 70%),
-                radial-gradient(70% 60% at 12% 0%, rgba(75, 42, 143, .6), transparent 70%),
-                var(--night);
+                radial-gradient(55% 45% at 78% 100%, rgba(238, 106, 43, .5), transparent 70%),
+                radial-gradient(70% 60% at 8% 0%, rgba(75, 42, 143, .7), transparent 70%),
+                var(--void);
+        }
+
+        /* Resplandor que respira detrás de todo */
+        .hero::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -30%;
+            width: 120%;
+            aspect-ratio: 1;
+            transform: translateX(-50%);
+            background: radial-gradient(closest-side, rgba(255, 138, 61, .28), transparent 70%);
+            animation: breathe 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: .55; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+        }
+
+        #embers {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
 
         .hero-grid {
+            position: relative;
+            z-index: 1;
             display: grid;
-            gap: 3.5rem;
+            gap: 1.5rem;
             align-items: center;
         }
 
         @media (min-width: 900px) {
-            .hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 4rem; }
+            .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 2rem; }
         }
 
-        .hero-copy { max-width: 40rem; }
+        .hero-copy { max-width: 40rem; min-width: 0; }
 
-        .h1-top {
+        /* Titular: cada línea sube desde una máscara */
+        .mask {
             display: block;
-            margin-bottom: .4rem;
+            overflow: hidden;
+            padding: .12em 0 .04em;
+        }
+
+        .mask > span {
+            display: block;
+            animation: rise 1.1s var(--ease) both;
+        }
+
+        @keyframes rise {
+            from { transform: translateY(110%); }
+            to { transform: translateY(0); }
+        }
+
+        .h1-top { display: block; margin: 0; }
+        .h1-top .mask > span {
             font: 600 clamp(1.7rem, 4.6vw, 2.5rem)/1 var(--font-display);
             color: var(--ash);
+            animation-delay: .1s;
         }
 
-        .h1-main {
-            display: block;
-            font: 800 clamp(3rem, 12vw, 5.6rem)/.92 var(--font-display);
+        .h1-main { display: block; }
+
+        .h1-main .mask > span {
+            font: 800 clamp(2.6rem, 11.5vw, 5.2rem)/.9 var(--font-display);
             text-transform: uppercase;
-            letter-spacing: .005em;
-            color: var(--parchment);
+            background: linear-gradient(100deg, var(--parchment) 0%, var(--parchment) 35%, var(--gold) 55%, var(--flame) 75%, var(--parchment) 100%);
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: rise 1.1s var(--ease) both, fire 7s linear 1.6s infinite;
+        }
+
+        .h1-main .mask:nth-child(1) > span { animation-delay: .25s, 1.6s; }
+        .h1-main .mask:nth-child(2) > span { animation-delay: .4s, 1.6s; }
+        .h1-main .mask:nth-child(3) > span { animation-delay: .55s, 1.6s; }
+
+        @keyframes fire {
+            0% { background-position: 100% 0; }
+            100% { background-position: -150% 0; }
+        }
+
+        .fade-in {
+            animation: appear .9s ease both;
+        }
+
+        @keyframes appear {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: none; }
         }
 
         .hero-name {
-            margin: 1.6rem 0 1.4rem;
+            margin: 1.4rem 0 1.2rem;
             font: 600 1.45rem/1.2 var(--font-body);
             color: var(--gold);
+            animation-delay: 1s;
         }
 
         .verse {
-            margin: 0 0 1.4rem;
+            margin: 0 0 1.3rem;
             padding-left: 1.1rem;
             border-left: 3px solid var(--gold);
             font: italic 400 1.4rem/1.45 var(--font-verse);
             color: var(--parchment);
+            animation-delay: 1.15s;
         }
 
         .verse cite {
@@ -282,16 +381,14 @@
             color: var(--ash);
         }
 
-        .where {
-            margin: 0 0 1.8rem;
-            color: var(--ash);
-        }
+        .where { margin: 0 0 1.6rem; color: var(--ash); animation-delay: 1.25s; }
 
         .cta-row {
             display: flex;
             flex-wrap: wrap;
             gap: .8rem;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.6rem;
+            animation-delay: 1.35s;
         }
 
         .social {
@@ -303,6 +400,8 @@
             list-style: none;
         }
 
+        .hero .social { animation-delay: 1.45s; }
+
         .social a {
             display: grid;
             place-items: center;
@@ -313,134 +412,231 @@
             color: var(--parchment);
             font-size: 1.2rem;
             text-decoration: none;
-            transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+            transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .25s var(--ease);
         }
 
         .social a:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px) scale(1.08);
             border-color: var(--gold);
             background: var(--gold);
-            color: var(--night);
+            color: var(--void);
         }
 
-        /* Retrato dentro de un arco, con el resplandor del fuego detrás */
-        .arch {
+        /* Foto principal: sin marco, se funde con la noche */
+        .hero-photo {
             position: relative;
-            width: min(82%, 420px);
+            width: min(100%, 600px);
             margin-inline: auto;
-            aspect-ratio: 4 / 5;
+            aspect-ratio: 1;
+            animation: appear 1.4s ease .3s both;
         }
 
-        .arch::before {
+        .hero-photo::before {
             content: "";
             position: absolute;
-            inset: -14% -14% -8%;
-            background: radial-gradient(closest-side, rgba(238, 106, 43, .8), rgba(244, 183, 63, .28) 55%, transparent 78%);
-            filter: blur(18px);
-            animation: ember 5s ease-in-out infinite;
+            inset: 4% 0 -6%;
+            background: radial-gradient(closest-side, rgba(244, 183, 63, .38), rgba(238, 106, 43, .18) 55%, transparent 78%);
+            filter: blur(24px);
+            animation: breathe2 4.5s ease-in-out infinite;
         }
 
-        .arch::after {
-            content: "";
-            position: absolute;
-            inset: -12px;
-            border: 2px solid var(--gold);
-            border-radius: 999px 999px 32px 32px;
-            opacity: .75;
-            pointer-events: none;
+        @keyframes breathe2 {
+            0%, 100% { opacity: .6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.07); }
         }
 
-        .arch img {
+        .hero-photo img {
             position: relative;
-            z-index: 1;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: 50% 12%;
-            border-radius: 999px 999px 20px 20px;
+            object-position: 50% 20%;
+            -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 55%, transparent 100%);
+            mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 55%, transparent 100%);
+            will-change: transform;
         }
 
-        .arch-tag {
+        /* Indicador de scroll */
+        .scroll-hint {
             position: absolute;
             left: 50%;
-            bottom: -22px;
-            z-index: 2;
+            bottom: 1rem;
+            z-index: 1;
+            display: none;
+            width: 26px;
+            height: 42px;
+            border: 2px solid rgba(248, 241, 227, .5);
+            border-radius: 14px;
             transform: translateX(-50%);
+        }
+
+        .scroll-hint::after {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            width: 4px;
+            height: 8px;
+            margin-left: -2px;
+            border-radius: 2px;
+            background: var(--gold);
+            animation: wheel 1.8s ease-in-out infinite;
+        }
+
+        @keyframes wheel {
+            0% { opacity: 0; transform: translateY(0); }
+            30% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(14px); }
+        }
+
+        @media (min-width: 900px) and (min-height: 700px) { .scroll-hint { display: block; } }
+
+        /* ============================================
+           BANDA EN MOVIMIENTO
+           ============================================ */
+        .marquee-clip {
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            padding: 1.6rem 0;
+            margin: -1.6rem 0;
+            background: linear-gradient(to bottom, transparent, var(--void) 30%, var(--void) 70%, var(--mist));
+            pointer-events: none;
+        }
+
+        .marquee {
+            position: relative;
+            overflow: hidden;
+            padding: 1.1rem 0;
+            background: linear-gradient(90deg, var(--ember), var(--gold), var(--ember));
+            color: var(--void);
+            transform: rotate(-1.2deg) scale(1.03);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, .45);
+            pointer-events: auto;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: slide 32s linear infinite;
+        }
+
+        .marquee-track span {
             display: inline-flex;
             align-items: center;
-            gap: .5rem;
-            padding: .5rem 1.4rem;
-            border: 2px solid var(--gold);
-            border-radius: 999px;
-            background: var(--night);
-            font: 700 1.15rem/1 var(--font-display);
-            letter-spacing: .04em;
+            gap: 1.6rem;
+            padding-right: 1.6rem;
+            font: 800 clamp(1.5rem, 4vw, 2.2rem)/1 var(--font-display);
+            text-transform: uppercase;
             white-space: nowrap;
         }
 
-        .arch-tag i { color: var(--gold); }
+        .marquee-track i { font-size: .8em; }
 
-        @keyframes ember {
-            0%, 100% { opacity: .75; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.06); }
+        @keyframes slide {
+            to { transform: translateX(-50%); }
         }
+
+        .marquee:hover .marquee-track { animation-play-state: paused; }
 
         /* ============================================
            SECCIONES
            ============================================ */
-        .section { padding: clamp(4rem, 9vw, 7rem) 0; }
+        .section { padding: clamp(4.5rem, 10vw, 8rem) 0; position: relative; }
 
-        .light { background: var(--mist); color: var(--ink); --focus: var(--royal); }
-        .dark { background: var(--night); color: var(--parchment); }
+        .light { background: var(--mist); color: var(--ink); --focus: var(--royal); padding-top: clamp(6rem, 12vw, 9rem); }
+        .dark { background: var(--void); color: var(--parchment); }
 
         .section-title {
             margin: 0 0 2.5rem;
-            font: 800 clamp(2.4rem, 6.5vw, 3.8rem)/1 var(--font-display);
+            font: 800 clamp(2.6rem, 7.5vw, 4.6rem)/.95 var(--font-display);
             text-transform: uppercase;
         }
+
+        .dark .section-title {
+            background: linear-gradient(90deg, var(--parchment), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        /* ---------- Revelado al hacer scroll ---------- */
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .9s var(--ease), transform .9s var(--ease);
+            transition-delay: var(--d, 0s);
+        }
+
+        .js .reveal.in { opacity: 1; transform: none; }
+
+        /* El texto se descubre de izquierda a derecha (el observador mira al contenedor, no al texto recortado) */
+        .js .wipe-text {
+            display: inline-block;
+            clip-path: inset(-.1em 100% -.1em 0);
+            transition: clip-path 1.1s var(--ease) .1s;
+        }
+
+        .js .in .wipe-text { clip-path: inset(-.1em 0 -.1em 0); }
+
+        .js .zoom-in img {
+            transform: scale(1.18);
+            transition: transform 1.6s var(--ease);
+        }
+
+        .js .zoom-in.in img { transform: scale(1); }
 
         /* ---------- Biografía ---------- */
         .bio {
             display: grid;
             gap: 3rem;
-            align-items: center;
+            align-items: start;
         }
 
         @media (min-width: 900px) {
             .bio { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 4.5rem; }
+            .bio-photo { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
         }
 
         .bio-photo { margin: 0; }
+
+        .bio-photo .shot-wrap {
+            overflow: hidden;
+            border-radius: 22px 22px 0 0;
+            background: var(--night);
+        }
 
         .bio-photo img {
             width: 100%;
             height: auto;
             aspect-ratio: 1 / 1;
             object-fit: cover;
-            border-radius: 20px 20px 0 0;
-            background: #fff;
+            object-position: 50% 15%;
         }
 
         .bio-photo figcaption {
-            padding: 1.1rem 1.4rem;
-            border-radius: 0 0 20px 20px;
-            background: var(--night);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 0 22px 22px;
+            background: var(--void);
             color: var(--parchment);
         }
 
         .bio-photo figcaption strong {
             display: block;
-            font: 700 1.4rem/1.15 var(--font-display);
+            font: 700 1.5rem/1.15 var(--font-display);
             color: var(--gold);
         }
 
-        .bio-frame {
-            border-radius: 20px;
-            box-shadow: 10px 10px 0 var(--gold);
-            margin-right: 10px;
+        .bio-text p {
+            margin: 0 0 1.15rem;
+            max-width: 68ch;
+            text-align: justify;
+            text-align-last: left;
+            -webkit-hyphens: auto;
+            hyphens: auto;
         }
 
-        .bio-text p { margin: 0 0 1.1rem; max-width: 62ch; }
         .bio-text .lead { font-size: 1.2rem; }
 
         .more { margin: .5rem 0 0; }
@@ -463,17 +659,19 @@
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             font-size: .8rem;
-            transition: transform .2s ease;
+            transition: transform .25s ease;
         }
 
         .more[open] summary::after { transform: rotate(180deg); }
+
+        .more[open] .more-body { animation: appear .6s ease both; }
         .more-body { padding-top: .5rem; }
 
         .pillars {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 1rem 1.25rem;
-            margin: 2rem 0;
+            margin: 2rem 0 0;
             padding: 0;
             list-style: none;
         }
@@ -490,36 +688,54 @@
             display: grid;
             place-items: center;
             flex: none;
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: var(--ink);
+            background: var(--void);
             color: var(--gold);
+            transition: transform .35s var(--ease), background-color .3s ease, color .3s ease;
         }
 
-        .pull {
-            margin: 0;
-            padding: .4rem 0 .4rem 1.4rem;
-            border-left: 4px solid var(--gold);
-            font: italic 400 clamp(1.4rem, 3.2vw, 1.8rem)/1.4 var(--font-verse);
+        .pillars li:hover i { transform: scale(1.12) rotate(-8deg); background: var(--gold); color: var(--void); }
+
+        /* ---------- Frase grande ---------- */
+        .statement {
+            overflow: hidden;
+            padding: clamp(5rem, 12vw, 9rem) 0;
+            background:
+                radial-gradient(60% 80% at 50% 120%, rgba(238, 106, 43, .5), transparent 70%),
+                radial-gradient(50% 60% at 10% 0%, rgba(75, 42, 143, .6), transparent 70%),
+                var(--void);
+            color: var(--parchment);
+            text-align: center;
         }
 
-        .pull cite {
+        .statement blockquote { margin: 0 auto; }
+
+        .statement p {
+            margin: 0 auto;
+            max-width: 16em;
+            font: italic 500 clamp(2.2rem, 7vw, 4.6rem)/1.12 var(--font-verse);
+        }
+
+        .statement cite {
             display: block;
-            margin-top: .6rem;
-            font: 500 1rem/1.4 var(--font-body);
+            margin-top: 1.6rem;
+            font: 600 1.15rem/1.3 var(--font-display);
             font-style: normal;
-            color: var(--ink-soft);
+            letter-spacing: .06em;
+            color: var(--gold);
         }
 
         /* ---------- Prédicas ---------- */
         .channel-banner {
             width: 100%;
             height: auto;
-            margin-bottom: 2.5rem;
             border: 1px solid rgba(244, 183, 63, .45);
-            border-radius: 18px;
+            border-radius: 20px;
         }
+
+        .banner-wrap { margin-bottom: 2.5rem; border-radius: 20px; overflow: hidden; }
 
         .sermons {
             display: grid;
@@ -535,6 +751,7 @@
             overflow: hidden;
             border-radius: 18px;
             background: #000;
+            box-shadow: 0 20px 60px rgba(238, 106, 43, .25);
         }
 
         .video iframe { display: block; width: 100%; height: 100%; border: 0; }
@@ -566,20 +783,17 @@
             padding: 1rem 0;
             text-decoration: none;
             line-height: 1.35;
-            transition: color .2s ease;
+            transition: color .2s ease, transform .3s var(--ease);
         }
 
-        .sermon-list li a:hover { color: var(--gold); }
-        .sermon-list li i { flex: none; font-size: 1.6rem; color: var(--ember); }
+        .sermon-list li a:hover { color: var(--gold); transform: translateX(6px); }
+        .sermon-list li i { flex: none; font-size: 1.6rem; color: var(--ember); transition: transform .3s var(--ease); }
+        .sermon-list li a:hover i { transform: scale(1.2); }
         .sermon-list .btn { width: 100%; }
 
         /* ---------- Galería ---------- */
         .gallery {
             display: grid;
-            gap: 1rem;
-        }
-
-        .gallery {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: .75rem;
             max-width: 900px;
@@ -591,7 +805,7 @@
             aspect-ratio: 4 / 5;
             margin: 0;
             overflow: hidden;
-            border-radius: 18px;
+            border-radius: 20px;
             background: var(--indigo);
         }
 
@@ -604,15 +818,31 @@
             object-position: 50% 25%;
         }
 
+        @media (hover: hover) {
+            .shot img { transition: transform 1.2s var(--ease), filter .6s ease; }
+            .shot:hover img { transform: scale(1.08); }
+            .shot::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(to top, rgba(75, 42, 143, .55), transparent 55%);
+                opacity: 0;
+                transition: opacity .5s ease;
+            }
+            .shot:hover::after { opacity: 1; }
+        }
+
         @media (min-width: 760px) {
             .gallery { gap: 1.25rem; }
+            .gallery .shot:nth-child(2) { margin-top: 3rem; }
         }
 
         /* ---------- Donación ---------- */
         .give {
+            overflow: hidden;
             color: var(--parchment);
             background:
-                radial-gradient(70% 90% at 100% 100%, rgba(238, 106, 43, .4), transparent 65%),
+                radial-gradient(70% 90% at 100% 100%, rgba(238, 106, 43, .45), transparent 65%),
                 linear-gradient(160deg, var(--royal), var(--indigo));
         }
 
@@ -639,7 +869,7 @@
         .site-footer {
             position: relative;
             padding: 4rem 0 2rem;
-            background: var(--night);
+            background: var(--void);
             color: var(--parchment);
         }
 
@@ -675,8 +905,8 @@
 
         .site-footer p { margin: 0; color: var(--ash); }
         .site-footer ul.links { margin: 0; padding: 0; list-style: none; }
-        .site-footer ul.links a { display: inline-block; padding: .35rem 0; text-decoration: none; }
-        .site-footer ul.links a:hover { color: var(--gold); }
+        .site-footer ul.links a { display: inline-block; padding: .35rem 0; text-decoration: none; transition: color .2s ease, transform .25s var(--ease); }
+        .site-footer ul.links a:hover { color: var(--gold); transform: translateX(5px); }
 
         .copyright {
             margin-top: 3rem;
@@ -688,7 +918,7 @@
         }
 
         /* ============================================
-           MOVIMIENTO REDUCIDO
+           MOVIMIENTO REDUCIDO: todo queda visible y quieto
            ============================================ */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -696,10 +926,20 @@
                 transition: none !important;
             }
             html { scroll-behavior: auto; }
+            .js .reveal, .js .zoom-in img { opacity: 1; transform: none; }
+            .js .wipe-text { clip-path: none; }
+            .h1-main .mask > span {
+                background: none;
+                -webkit-text-fill-color: var(--parchment);
+                color: var(--parchment);
+            }
+            .marquee { transform: none; margin: 0; }
         }
     </style>
 </head>
 <body>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
 
 <header class="site-header" id="siteHeader">
     <div class="wrap nav">
@@ -731,24 +971,30 @@
 
     <!-- ================= INICIO ================= -->
     <section class="hero" id="inicio">
+        <canvas id="embers" aria-hidden="true"></canvas>
+
         <div class="wrap hero-grid">
             <div class="hero-copy">
                 <h1>
-                    <span class="h1-top">Ministerio Profético</span>
-                    <span class="h1-main">Ardiendo por el Avivamiento</span>
+                    <span class="h1-top"><span class="mask"><span>Ministerio Profético</span></span></span>
+                    <span class="h1-main">
+                        <span class="mask"><span>Ardiendo</span></span>
+                        <span class="mask"><span>por el</span></span>
+                        <span class="mask"><span>Avivamiento</span></span>
+                    </span>
                 </h1>
 
-                <p class="hero-name">Evangelista Luis David García</p>
+                <p class="hero-name fade-in">Evangelista Luis David García</p>
 
-                <p class="verse">
+                <p class="verse fade-in">
                     El fuego arderá continuamente en el altar; no se apagará.
                     <cite>Levítico 6:13</cite>
                 </p>
 
-                <p class="where"><span aria-hidden="true">🇩🇴</span> República Dominicana</p>
+                <p class="where fade-in"><span aria-hidden="true">🇩🇴</span> República Dominicana</p>
 
-                <div class="cta-row">
-                    <a class="btn btn-gold" href="#predicas">
+                <div class="cta-row fade-in">
+                    <a class="btn btn-gold btn-pulse" href="#predicas">
                         <i class="fa-solid fa-circle-play" aria-hidden="true"></i> Ver prédicas
                     </a>
                     <a class="btn btn-ghost" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer">
@@ -756,7 +1002,7 @@
                     </a>
                 </div>
 
-                <ul class="social" aria-label="Redes sociales">
+                <ul class="social fade-in" aria-label="Redes sociales">
                     <li><a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a></li>
                     <li><a href="https://web.facebook.com/david.estebangarcia.58/?_rdc=1&amp;_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a></li>
                     <li><a href="https://www.instagram.com/luis_david_garcia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a></li>
@@ -764,25 +1010,38 @@
                 </ul>
             </div>
 
-            <div class="arch">
-                <img src="./img/retrato-evangelista.jpg"
-                     alt="Retrato del Evangelista Luis David García con camisa negra y bordados dorados"
-                     width="1300" height="1315" fetchpriority="high">
-                <span class="arch-tag"><i class="fa-solid fa-microphone" aria-hidden="true"></i> Evangelista</span>
+            <div class="hero-photo">
+                <img id="heroImg" src="./img/predicando-escenario.jpg"
+                     alt="Evangelista Luis David García predicando con el micrófono en la mano"
+                     width="1300" height="1300" fetchpriority="high">
             </div>
         </div>
+
+        <span class="scroll-hint" aria-hidden="true"></span>
     </section>
+
+    <!-- ================= BANDA EN MOVIMIENTO ================= -->
+    <div class="marquee-clip" aria-hidden="true">
+        <div class="marquee">
+            <div class="marquee-track">
+                <span>Avivamiento <i class="fa-solid fa-fire"></i> Presencia de Dios <i class="fa-solid fa-fire"></i> Adoración profética <i class="fa-solid fa-fire"></i> Restauración <i class="fa-solid fa-fire"></i> Espíritu Santo <i class="fa-solid fa-fire"></i></span>
+                <span>Avivamiento <i class="fa-solid fa-fire"></i> Presencia de Dios <i class="fa-solid fa-fire"></i> Adoración profética <i class="fa-solid fa-fire"></i> Restauración <i class="fa-solid fa-fire"></i> Espíritu Santo <i class="fa-solid fa-fire"></i></span>
+            </div>
+        </div>
+    </div>
 
     <!-- ================= BIOGRAFÍA ================= -->
     <section class="section light" id="biografia">
         <div class="wrap">
-            <h2 class="section-title">Un llamado profético</h2>
+            <h2 class="section-title reveal"><span class="wipe-text">Un llamado profético</span></h2>
 
             <div class="bio">
-                <figure class="bio-photo bio-frame">
-                    <img src="./img/predicando-escenario.jpg"
-                         alt="Evangelista Luis David García predicando con micrófono en la mano"
-                         width="1300" height="1300" loading="lazy">
+                <figure class="bio-photo reveal">
+                    <div class="shot-wrap zoom-in reveal">
+                        <img src="./img/retrato-evangelista.jpg"
+                             alt="Retrato del Evangelista Luis David García con camisa negra y bordados dorados"
+                             width="1300" height="1315" loading="lazy">
+                    </div>
                     <figcaption>
                         <strong>Evangelista Luis David García</strong>
                         Siervo de Dios | República Dominicana
@@ -790,11 +1049,11 @@
                 </figure>
 
                 <div class="bio-text">
-                    <p class="lead">
+                    <p class="lead reveal">
                         <strong>Luis David García</strong> es un predicador y comunicador cristiano de la República Dominicana, conocido por su pasión por el avivamiento espiritual y la proclamación del evangelio a través de medios digitales. Nació en la provincia de San Cristóbal, República Dominicana, y desde temprana edad mostró un profundo interés por las cosas de Dios y por impactar vidas a través de la fe.
                     </p>
 
-                    <details class="more">
+                    <details class="more reveal">
                         <summary>Leer biografía completa</summary>
                         <div class="more-body">
                             <p>
@@ -819,30 +1078,37 @@
                     </details>
 
                     <ul class="pillars">
-                        <li><i class="fa-solid fa-bible" aria-hidden="true"></i> Predicador de la Palabra</li>
-                        <li><i class="fa-solid fa-flag" aria-hidden="true"></i> República Dominicana</li>
-                        <li><i class="fa-solid fa-fire" aria-hidden="true"></i> Avivamiento</li>
-                        <li><i class="fa-solid fa-earth-americas" aria-hidden="true"></i> Alcance internacional</li>
+                        <li class="reveal" style="--d:.05s"><i class="fa-solid fa-bible" aria-hidden="true"></i> Predicador de la Palabra</li>
+                        <li class="reveal" style="--d:.15s"><i class="fa-solid fa-flag" aria-hidden="true"></i> República Dominicana</li>
+                        <li class="reveal" style="--d:.25s"><i class="fa-solid fa-fire" aria-hidden="true"></i> Avivamiento</li>
+                        <li class="reveal" style="--d:.35s"><i class="fa-solid fa-earth-americas" aria-hidden="true"></i> Alcance internacional</li>
                     </ul>
-
-                    <blockquote class="pull">
-                        “Mi pasión es ver vidas transformadas por el poder del Evangelio”
-                        <cite>Evangelista Luis David García</cite>
-                    </blockquote>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- ================= FRASE ================= -->
+    <section class="statement" aria-label="Frase del evangelista">
+        <div class="wrap">
+            <blockquote class="reveal">
+                <p>Mi pasión es ver vidas transformadas por el poder del Evangelio</p>
+                <cite>Evangelista Luis David García</cite>
+            </blockquote>
         </div>
     </section>
 
     <!-- ================= PRÉDICAS ================= -->
     <section class="section dark" id="predicas">
         <div class="wrap">
-            <h2 class="section-title">Prédicas recientes</h2>
+            <h2 class="section-title reveal"><span class="wipe-text">Prédicas recientes</span></h2>
 
-            <img class="channel-banner" src="./img/banner-miproaa-tv.jpg" alt="MIPROAA TV: canal del ministerio en WhatsApp, Instagram, Facebook, YouTube y TikTok" width="1600" height="640" loading="lazy">
+            <div class="banner-wrap reveal">
+                <img class="channel-banner" src="./img/banner-miproaa-tv.jpg" alt="MIPROAA TV: canal del ministerio en WhatsApp, Instagram, Facebook, YouTube y TikTok" width="1600" height="640" loading="lazy">
+            </div>
 
             <div class="sermons">
-                <div class="sermon-main">
+                <div class="sermon-main reveal">
                     <div class="video">
                         <iframe src="https://www.youtube.com/embed/7MFtXEr3aXk"
                                 title="Adoración profética y espontánea: Ardiendo por el avivamiento"
@@ -854,7 +1120,7 @@
                     <h3>Adoración profética y espontánea: Ardiendo por el avivamiento</h3>
                 </div>
 
-                <aside class="sermon-list">
+                <aside class="sermon-list reveal" style="--d:.15s">
                     <h3>Más prédicas</h3>
                     <ul>
                         <li>
@@ -887,14 +1153,14 @@
     <!-- ================= GALERÍA ================= -->
     <section class="section light" id="galeria">
         <div class="wrap">
-            <h2 class="section-title">Galería del ministerio</h2>
+            <h2 class="section-title reveal"><span class="wipe-text">Galería del ministerio</span></h2>
 
             <div class="gallery">
-                <figure class="shot">
+                <figure class="shot reveal zoom-in">
                     <img src="./img/pareja-escalera-blanco.jpg" alt="Pareja vestida de blanco posando en una escalera con un ramo de rosas blancas" width="1121" height="1403" loading="lazy">
                 </figure>
 
-                <figure class="shot">
+                <figure class="shot reveal zoom-in" style="--d:.15s">
                     <img src="./img/pareja-escalera-azul.jpg" alt="Pareja en una escalera de mármol mirando sus manos entrelazadas" width="1200" height="1500" loading="lazy">
                 </figure>
             </div>
@@ -905,20 +1171,20 @@
     <section class="section give" id="donacion">
         <div class="wrap">
             <div class="give-inner">
-                <h2 class="section-title">Apoya este ministerio</h2>
+                <h2 class="section-title reveal">Apoya este ministerio</h2>
 
-                <p class="verse">
+                <p class="verse reveal">
                     Cada uno dé como propuso en su corazón.
                     <cite>2 Corintios 9:7</cite>
                 </p>
 
-                <p>Tu donación ayuda a llevar el evangelio a más personas y naciones.</p>
+                <p class="reveal">Tu donación ayuda a llevar el evangelio a más personas y naciones.</p>
 
-                <a class="btn btn-gold btn-lg" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
+                <a class="btn btn-gold btn-lg btn-pulse reveal" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-paypal" aria-hidden="true"></i> Donar por PayPal
                 </a>
 
-                <p class="world"><span aria-hidden="true">🇩🇴</span> Desde República Dominicana para el mundo <span aria-hidden="true">🌍</span></p>
+                <p class="world reveal"><span aria-hidden="true">🇩🇴</span> Desde República Dominicana para el mundo <span aria-hidden="true">🌍</span></p>
             </div>
         </div>
     </section>
@@ -962,43 +1228,139 @@
 </footer>
 
 <script>
-    (function () {
-        var header = document.getElementById('siteHeader');
-        var toggle = document.querySelector('.nav-toggle');
-        var menu = document.getElementById('menu');
-        var icon = toggle.querySelector('i');
+(function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        function onScroll() {
-            header.classList.toggle('solid', window.scrollY > 40);
+    /* ---------- Menú ---------- */
+    var header = document.getElementById('siteHeader');
+    var toggle = document.querySelector('.nav-toggle');
+    var menu = document.getElementById('menu');
+    var icon = toggle.querySelector('i');
+
+    function setMenu(open) {
+        menu.classList.toggle('open', open);
+        header.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+        icon.className = open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    }
+
+    toggle.addEventListener('click', function () { setMenu(!menu.classList.contains('open')); });
+    menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); toggle.focus(); }
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ---------- Scroll: barra de progreso, encabezado y paralaje ---------- */
+    var bar = document.getElementById('progress');
+    var heroImg = document.getElementById('heroImg');
+    var ticking = false;
+
+    function onScroll() {
+        var y = window.scrollY;
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        header.classList.toggle('solid', y > 40);
+        bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+        if (!reduce && heroImg && y < window.innerHeight) {
+            heroImg.style.transform = 'translateY(' + (y * 0.12).toFixed(1) + 'px) scale(' + (1 + y * 0.00008).toFixed(4) + ')';
         }
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
+        ticking = false;
+    }
 
-        function setMenu(open) {
-            menu.classList.toggle('open', open);
-            header.classList.toggle('open', open);
-            toggle.setAttribute('aria-expanded', String(open));
-            toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-            icon.className = open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+    }, { passive: true });
+    onScroll();
+
+    /* ---------- Revelado al entrar en pantalla ---------- */
+    var items = document.querySelectorAll('.reveal, .zoom-in');
+    if ('IntersectionObserver' in window && !reduce) {
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        items.forEach(function (el) { io.observe(el); });
+    } else {
+        items.forEach(function (el) { el.classList.add('in'); });
+    }
+
+    /* ---------- Brasas que suben en el hero ---------- */
+    var canvas = document.getElementById('embers');
+    if (!canvas || reduce || !canvas.getContext) return;
+
+    var ctx = canvas.getContext('2d');
+    var hero = canvas.parentElement;
+    var w = 0, h = 0, dpr = 1, parts = [], running = false, visible = true;
+
+    function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = hero.clientWidth;
+        h = hero.clientHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        var n = w < 700 ? 34 : 70;
+        parts = [];
+        for (var i = 0; i < n; i++) parts.push(spawn(true));
+    }
+
+    function spawn(anywhere) {
+        return {
+            x: Math.random() * w,
+            y: anywhere ? Math.random() * h : h + 10,
+            r: Math.random() * 2.2 + .6,
+            vy: Math.random() * .9 + .35,
+            vx: (Math.random() - .5) * .35,
+            sway: Math.random() * Math.PI * 2,
+            life: Math.random() * .6 + .4,
+            hue: Math.random() < .55 ? 28 : 42
+        };
+    }
+
+    function frame() {
+        if (!running) return;
+        ctx.clearRect(0, 0, w, h);
+        for (var i = 0; i < parts.length; i++) {
+            var p = parts[i];
+            p.y -= p.vy;
+            p.sway += .02;
+            p.x += p.vx + Math.sin(p.sway) * .35;
+            var fade = Math.max(0, Math.min(1, (p.y / h) * 1.4));
+            var a = fade * p.life;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+            ctx.fillStyle = 'hsla(' + p.hue + ',100%,60%,' + a.toFixed(3) + ')';
+            ctx.shadowColor = 'hsla(' + p.hue + ',100%,55%,.9)';
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            if (p.y < -10) parts[i] = spawn(false);
         }
+        requestAnimationFrame(frame);
+    }
 
-        toggle.addEventListener('click', function () {
-            setMenu(!menu.classList.contains('open'));
-        });
+    function start() {
+        if (running || !visible || document.hidden) return;
+        running = true;
+        requestAnimationFrame(frame);
+    }
 
-        menu.addEventListener('click', function (e) {
-            if (e.target.closest('a')) setMenu(false);
-        });
+    function stop() { running = false; }
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && menu.classList.contains('open')) {
-                setMenu(false);
-                toggle.focus();
-            }
-        });
+    resize();
+    window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
 
-        document.getElementById('year').textContent = new Date().getFullYear();
-    })();
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (en) {
+            visible = en[0].isIntersecting;
+            visible ? start() : stop();
+        }).observe(hero);
+    }
+    start();
+})();
 </script>
 
 </body>
