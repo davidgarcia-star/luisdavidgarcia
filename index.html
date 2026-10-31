@@ -1442,6 +1442,9 @@
         .music:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(244, 183, 63, .35); }
         .music[aria-pressed="true"] { background: var(--gold); color: var(--void); }
 
+        .music .eq { display: none; }
+        .music[aria-pressed="true"] .eq { display: inline-flex; }
+
         .eq {
             display: inline-flex;
             align-items: flex-end;
@@ -1516,13 +1519,14 @@
 <div class="progress" id="progress" aria-hidden="true"></div>
 <div class="spot" id="spot" aria-hidden="true"></div>
 
-<audio id="bgm" loop preload="none" src="./audio/instrumental.mp3"></audio>
+<audio id="bgm" loop preload="none" src="./audio/instrumental.m4a"></audio>
 
-<button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Activar música instrumental">
+<button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Reproducir música instrumental">
+    <i class="fa-solid fa-play" id="musicIcon" aria-hidden="true"></i>
+    <span id="musicLabel">Reproducir</span>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-    <span id="musicLabel">Música</span>
 </button>
-<p class="music-tip" id="musicTip" role="status">Toca aquí para escuchar música instrumental mientras navegas.</p>
+<p class="music-tip" id="musicTip" role="status">Toca aquí para reproducir música instrumental mientras navegas.</p>
 
 <a class="fab" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp">
     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
@@ -1759,7 +1763,7 @@
             <div class="sermons">
                 <div class="sermon-main reveal">
                     <div class="video">
-                        <iframe src="https://www.youtube.com/embed/7MFtXEr3aXk"
+                        <iframe id="ytPlayer" src="https://www.youtube.com/embed/7MFtXEr3aXk?enablejsapi=1&amp;rel=0"
                                 title="Adoración profética y espontánea: Ardiendo por el avivamiento"
                                 loading="lazy"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -2431,12 +2435,16 @@
         var playing = false, mode = null; // 'file' | 'synth'
         var actx = null, fade = null, pad = null, timer = null, VOL = .3;
 
-        function ui(on) {
+        var mIcon = document.getElementById('musicIcon');
+
+        function ui(on, auto) {
             playing = on;
             mBtn.setAttribute('aria-pressed', String(on));
-            mBtn.setAttribute('aria-label', on ? 'Pausar música instrumental' : 'Activar música instrumental');
-            mLabel.textContent = on ? 'Sonando' : 'Música';
-            try { localStorage.setItem('miproaa_music', on ? '1' : '0'); } catch (e) {}
+            mBtn.setAttribute('aria-label', on ? 'Pausar música instrumental' : 'Reproducir música instrumental');
+            mLabel.textContent = on ? 'Pausar' : 'Reproducir';
+            if (mIcon) mIcon.className = on ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+            // Si se detuvo sola (por el video), no se guarda como una decisión de la persona
+            if (!auto) { try { localStorage.setItem('miproaa_music', on ? '1' : '0'); } catch (e) {} }
         }
 
         function startSynth() {
@@ -2487,7 +2495,7 @@
                 bgm.volume = 0;
                 var pr = bgm.play();
                 if (pr && pr.then) {
-                    pr.then(function () { mode = 'file'; fadeFile(.5); })
+                    pr.then(function () { mode = 'file'; fadeFile(.6); })
                       .catch(function () { if (!startSynth()) ui(false); });
                     return;
                 }
@@ -2495,13 +2503,31 @@
             if (!startSynth()) ui(false);
         }
 
-        function turnOff() {
-            ui(false);
-            if (mode === 'file') fadeFile(0, function () { bgm.pause(); });
+        function turnOff(auto) {
+            ui(false, auto);
+            if (mode === 'file') fadeFile(0, function () { if (!playing) bgm.pause(); });
             else stopSynth();
         }
 
         mBtn.addEventListener('click', function () { playing ? turnOff() : turnOn(); });
+
+        // Cuando suena la adoración de YouTube, la música de fondo se detiene sola
+        window.onYouTubeIframeAPIReady = function () {
+            if (!window.YT || !YT.Player || !document.getElementById('ytPlayer')) return;
+            new YT.Player('ytPlayer', {
+                events: {
+                    onStateChange: function (e) {
+                        if (e && e.data === 1 && playing) turnOff(true); // 1 = reproduciendo
+                    }
+                }
+            });
+        };
+        window.addEventListener('load', function () {
+            var s = document.createElement('script');
+            s.src = 'https://www.youtube.com/iframe_api';
+            s.async = true;
+            document.head.appendChild(s);
+        });
 
         // Se pausa al salir de la pestaña y vuelve al regresar
         var wasOn = false;
