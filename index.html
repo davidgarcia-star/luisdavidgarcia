@@ -1036,7 +1036,50 @@
                 linear-gradient(170deg, var(--indigo), var(--royal) 140%);
         }
 
-        .vision-intro { max-width: 46rem; margin: -1rem 0 2.8rem; color: var(--ash); font-size: 1.15rem; }
+        .vm {
+            display: grid;
+            gap: 1.1rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+        }
+
+        .card.big { padding: clamp(1.6rem, 4vw, 2.6rem); }
+
+        .card.big h3 { font-size: 1.9rem; }
+
+        .statement-text {
+            font: 700 clamp(1.5rem, 3.4vw, 2.3rem)/1.2 var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: .01em;
+        }
+
+        .values-title {
+            margin: 3rem 0 1.2rem;
+            font: 800 clamp(2rem, 5vw, 3rem)/1 var(--font-display);
+            text-transform: uppercase;
+            color: var(--parchment);
+        }
+
+        .values {
+            display: grid;
+            gap: 1.1rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @media (min-width: 820px) { .values { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+        .card.val { padding: 1.6rem 1rem; text-align: center; }
+        .card.val .ico { margin: 0 auto 1rem; }
+        .card.val h3 { margin: 0; font-size: 1.9rem; }
+
+        .worship-note { margin: .3rem 0 1rem; color: var(--ash); }
+
+        /* Resalta el video cuando se llega desde el botón */
+        .video.glow { animation: glow 2.6s ease-out; }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 20px 60px rgba(238, 106, 43, .25); }
+            25%, 65% { box-shadow: 0 0 0 4px var(--gold), 0 0 70px rgba(244, 183, 63, .75); }
+        }
 
         .vision .section-title {
             background: linear-gradient(90deg, var(--parchment), var(--gold));
@@ -1419,7 +1462,7 @@
            ============================================ */
         .music {
             position: fixed;
-            left: 1.1rem;
+            right: 5.6rem;
             bottom: 1.1rem;
             z-index: 45;
             display: flex;
@@ -1472,7 +1515,7 @@
 
         .music-tip {
             position: fixed;
-            left: 1.1rem;
+            right: 1.1rem;
             bottom: 4.9rem;
             z-index: 45;
             max-width: 15rem;
@@ -1589,8 +1632,8 @@
                 <p class="where fade-in"><span aria-hidden="true">🇩🇴</span> República Dominicana</p>
 
                 <div class="cta-row fade-in">
-                    <a class="btn btn-gold btn-pulse" href="#predicas">
-                        <i class="fa-solid fa-circle-play" aria-hidden="true"></i> Ver prédicas
+                    <a class="btn btn-gold btn-pulse" href="#adoracion" data-go-worship>
+                        <i class="fa-solid fa-music" aria-hidden="true"></i> Adoración de su autoría
                     </a>
                     <a class="btn btn-ghost" href="#peticion">
                         <i class="fa-solid fa-hands-praying" aria-hidden="true"></i> Pedir oración
@@ -1698,54 +1741,41 @@
         </div>
     </section>
 
-    <!-- ================= VISIÓN ================= -->
+    <!-- ================= VISIÓN, MISIÓN Y VALORES ================= -->
     <section class="section vision" id="vision">
         <div class="wrap">
-            <h2 class="section-title reveal"><span class="wipe-text">Nuestra visión</span></h2>
-            <p class="vision-intro reveal">Levantar una generación encendida por el Espíritu Santo y comprometida con el avivamiento y la restauración.</p>
+            <h2 class="section-title reveal"><span class="wipe-text">Visión, misión y valores</span></h2>
 
-            <div class="cards">
+            <div class="vm">
+                <div class="reveal">
+                    <article class="card big">
+                        <span class="ico"><i class="fa-solid fa-eye" aria-hidden="true"></i></span>
+                        <h3>Nuestra visión</h3>
+                        <p class="statement-text">Despertar a la generación profética al cumplimiento, por medio del Espíritu Santo.</p>
+                    </article>
+                </div>
+                <div class="reveal" style="--d:.12s">
+                    <article class="card big">
+                        <span class="ico"><i class="fa-solid fa-bullseye" aria-hidden="true"></i></span>
+                        <h3>Misión</h3>
+                        <p class="statement-text">Trabajar para el aceleramiento del cumplimiento de la promesa.</p>
+                    </article>
+                </div>
+            </div>
+
+            <h3 class="values-title reveal">Valores</h3>
+            <div class="values">
                 <div class="reveal" style="--d:.0s">
-                    <article class="card">
-                        <span class="ico"><i class="fa-solid fa-fire" aria-hidden="true"></i></span>
-                        <h3>Avivamiento</h3>
-                        <p>Despertar una generación apasionada por la presencia de Dios.</p>
-                    </article>
+                    <article class="card val"><span class="ico"><i class="fa-solid fa-crown" aria-hidden="true"></i></span><h3>Dignidad</h3></article>
                 </div>
-                <div class="reveal" style="--d:.1s">
-                    <article class="card">
-                        <span class="ico"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i></span>
-                        <h3>Restauración</h3>
-                        <p>Restauración espiritual y transformación de vidas en la iglesia y en la sociedad.</p>
-                    </article>
+                <div class="reveal" style="--d:.08s">
+                    <article class="card val"><span class="ico"><i class="fa-solid fa-award" aria-hidden="true"></i></span><h3>Honra</h3></article>
                 </div>
-                <div class="reveal" style="--d:.2s">
-                    <article class="card">
-                        <span class="ico"><i class="fa-solid fa-music" aria-hidden="true"></i></span>
-                        <h3>Adoración profética</h3>
-                        <p>Adoración profética y espontánea, con guitarra y piano en los momentos de ministración.</p>
-                    </article>
+                <div class="reveal" style="--d:.16s">
+                    <article class="card val"><span class="ico"><i class="fa-solid fa-handshake" aria-hidden="true"></i></span><h3>Respeto</h3></article>
                 </div>
-                <div class="reveal" style="--d:.0s">
-                    <article class="card">
-                        <span class="ico"><i class="fa-solid fa-dove" aria-hidden="true"></i></span>
-                        <h3>Mover del Espíritu Santo</h3>
-                        <p>Manifestación del poder de Dios y un mover profético que alcanza a las naciones.</p>
-                    </article>
-                </div>
-                <div class="reveal" style="--d:.1s">
-                    <article class="card">
-                        <span class="ico"><i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i></span>
-                        <h3>Evangelismo digital</h3>
-                        <p>Predicaciones, reflexiones bíblicas y transmisiones en vivo en TikTok, YouTube, Facebook e Instagram.</p>
-                    </article>
-                </div>
-                <div class="reveal" style="--d:.2s">
-                    <article class="card">
-                        <span class="ico"><i class="fa-solid fa-people-group" aria-hidden="true"></i></span>
-                        <h3>Formación de creyentes</h3>
-                        <p>Creyentes que viven una fe genuina, formados con un estilo dinámico y profético.</p>
-                    </article>
+                <div class="reveal" style="--d:.24s">
+                    <article class="card val"><span class="ico"><i class="fa-solid fa-heart" aria-hidden="true"></i></span><h3>Amor</h3></article>
                 </div>
             </div>
         </div>
@@ -1761,7 +1791,7 @@
             </div>
 
             <div class="sermons">
-                <div class="sermon-main reveal">
+                <div class="sermon-main reveal" id="adoracion">
                     <div class="video">
                         <iframe id="ytPlayer" src="https://www.youtube.com/embed/7MFtXEr3aXk?enablejsapi=1&amp;rel=0"
                                 title="Adoración profética y espontánea: Ardiendo por el avivamiento"
@@ -1771,6 +1801,10 @@
                                 allowfullscreen></iframe>
                     </div>
                     <h3>Adoración profética y espontánea: Ardiendo por el avivamiento</h3>
+                    <p class="worship-note">Adoración de su autoría.</p>
+                    <a class="btn btn-ghost" href="https://www.youtube.com/watch?v=7MFtXEr3aXk" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-youtube" aria-hidden="true"></i> Ver en YouTube
+                    </a>
                 </div>
 
                 <aside class="sermon-list reveal" style="--d:.15s">
@@ -2558,6 +2592,24 @@
             }, 3500);
         }
     }
+
+    /* ---------- Botón "Adoración de su autoría": baja al video y lo resalta ---------- */
+    document.querySelectorAll('[data-go-worship]').forEach(function (a) {
+        a.addEventListener('click', function () {
+            var vid = document.querySelector('#adoracion .video');
+            if (!vid || reduce) return;
+            var done = false;
+            function go() {
+                if (done) return;
+                done = true;
+                vid.classList.remove('glow');
+                void vid.offsetWidth;
+                vid.classList.add('glow');
+            }
+            window.addEventListener('scrollend', go, { once: true });
+            setTimeout(go, 1200);
+        });
+    });
 
     /* ---------- Visor de fotos ---------- */
     var shots = document.querySelectorAll('.shot');
