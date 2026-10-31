@@ -1000,19 +1000,19 @@
 
         .fab {
             position: fixed;
-            right: 1.1rem;
-            bottom: 1.1rem;
+            right: .9rem;
+            bottom: .9rem;
             z-index: 45;
             display: grid;
             place-items: center;
-            width: 58px;
-            height: 58px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: #25D366;
             color: #fff;
-            font-size: 1.75rem;
+            font-size: 1.4rem;
             text-decoration: none;
-            box-shadow: 0 8px 26px rgba(0, 0, 0, .4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .4);
             transition: transform .25s var(--ease);
         }
 
@@ -1462,23 +1462,23 @@
            ============================================ */
         .music {
             position: fixed;
-            right: 5.6rem;
-            bottom: 1.1rem;
+            left: .9rem;
+            bottom: .9rem;
             z-index: 45;
             display: flex;
             align-items: center;
-            gap: .65rem;
-            min-height: 52px;
-            padding: 0 1.1rem 0 .95rem;
+            gap: .45rem;
+            min-height: 40px;
+            padding: 0 .85rem 0 .7rem;
             border: 1.5px solid var(--gold);
             border-radius: 999px;
             background: rgba(12, 6, 32, .88);
             -webkit-backdrop-filter: blur(8px);
             backdrop-filter: blur(8px);
             color: var(--parchment);
-            font: 600 .98rem/1 var(--font-body);
+            font: 600 .84rem/1 var(--font-body);
             cursor: pointer;
-            box-shadow: 0 8px 26px rgba(0, 0, 0, .4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .4);
             transition: transform .25s var(--ease), background-color .25s ease, box-shadow .25s ease;
         }
 
@@ -1491,10 +1491,12 @@
         .eq {
             display: inline-flex;
             align-items: flex-end;
-            gap: 3px;
-            width: 20px;
-            height: 20px;
+            gap: 2px;
+            width: 14px;
+            height: 14px;
         }
+
+        #musicIcon { width: 14px; text-align: center; font-size: .75rem; }
 
         .eq i {
             flex: 1;
@@ -1515,20 +1517,23 @@
 
         .music-tip {
             position: fixed;
-            right: 1.1rem;
-            bottom: 4.9rem;
+            left: 9rem;
+            bottom: .9rem;
             z-index: 45;
-            max-width: 15rem;
-            padding: .75rem 1rem;
+            display: flex;
+            align-items: center;
+            min-height: 40px;
+            white-space: nowrap;
+            padding: .4rem .85rem;
             border: 1px solid rgba(244, 183, 63, .6);
             border-radius: 14px;
             background: var(--void);
             color: var(--parchment);
-            font-size: .95rem;
+            font-size: .88rem;
             line-height: 1.35;
             box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
             opacity: 0;
-            transform: translateY(8px);
+            transform: translateX(-8px);
             pointer-events: none;
             transition: opacity .5s ease, transform .5s var(--ease);
         }
@@ -1569,7 +1574,7 @@
     <span id="musicLabel">Reproducir</span>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
 </button>
-<p class="music-tip" id="musicTip" role="status">Toca aquí para reproducir música instrumental mientras navegas.</p>
+<p class="music-tip" id="musicTip" role="status">Toca para escuchar</p>
 
 <a class="fab" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp">
     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
@@ -2587,7 +2592,7 @@
             setTimeout(function () {
                 if (!playing) {
                     mTip.classList.add('show');
-                    setTimeout(function () { mTip.classList.remove('show'); }, 7000);
+                    setTimeout(function () { mTip.classList.remove('show'); }, 5000);
                 }
             }, 3500);
         }
