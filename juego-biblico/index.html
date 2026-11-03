@@ -174,16 +174,18 @@
       voz.preload = 'auto';
       voz.volume = 1;
       var sonado = false;
-      var EVENTOS = ['pointerdown', 'keydown', 'touchstart'];
+      var EVENTOS = ['click', 'pointerup', 'touchend', 'keydown', 'mousedown'];
 
       function quitar() { EVENTOS.forEach(function (ev) { document.removeEventListener(ev, alInteractuar, true); }); }
+      var intentando = false;
       function sonar() {
-        if (sonado) return;
+        if (sonado || intentando) return;
         try { if (window.Sound && !Sound.sfxOn) return; } catch (e) {}
         var welcome = document.getElementById('screen-welcome');
         if (welcome && !welcome.classList.contains('active')) { quitar(); return; }
+        intentando = true;
         var p = voz.play();
-        if (p && p.then) p.then(function () { sonado = true; quitar(); }).catch(function () {});
+        if (p && p.then) p.then(function () { intentando = false; sonado = true; quitar(); }).catch(function () { intentando = false; });
         else { sonado = true; quitar(); }
       }
       // Los navegadores suelen bloquear el sonido hasta el primer toque o tecla:
