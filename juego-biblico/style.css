@@ -40,6 +40,9 @@ body {
 }
 .chip:hover { border-color: var(--gold); }
 .chip.off { opacity: 0.6; }
+.chip-visitas { margin-right: auto; cursor: default; border-color: var(--gold); }
+.chip-visitas b { color: var(--gold); }
+@media (max-width: 420px) { .chip-visitas .chip-txt { display: none; } }
 
 #app { flex: 1; display: flex; align-items: center; justify-content: center; padding: 16px; }
 

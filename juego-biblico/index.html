@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Desafío Bíblico RD</title>
   <meta name="description" content="Desafío Bíblico RD – Juego de preguntas bíblicas. MIPROAA Ministerio Profético Ardiendo Por El Avivamiento.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
   <div id="particles" aria-hidden="true"></div>
   <canvas id="confetti" aria-hidden="true"></canvas>
 
   <div class="topbar">
+    <span class="chip chip-visitas" title="Personas que han entrado al juego" aria-live="polite">👥 <b class="js-visitas">…</b> <span class="chip-txt">visitantes</span></span>
     <button id="btnMusic" class="chip" type="button" aria-pressed="true">🎵 Música: Sí</button>
     <button id="btnSfx" class="chip" type="button" aria-pressed="true">🔊 Sonidos: Sí</button>
   </div>
@@ -27,7 +28,7 @@
         <p class="lead">Pon a prueba tu conocimiento de la Palabra de Dios.</p>
         <button id="btnStart" class="btn primary big" type="button">Comenzar</button>
         <p class="visitas" title="Personas que han entrado al juego" aria-live="polite">
-          <span aria-hidden="true">👥</span> <strong id="juegoVisitas">…</strong> personas han entrado al juego
+          <span aria-hidden="true">👥</span> <strong id="juegoVisitas" class="js-visitas">…</strong> personas han entrado al juego
         </p>
         <p class="credits">
           Creado por <strong>Luis David Esteban García</strong><br>
@@ -144,27 +145,68 @@
     Desafío Bíblico RD · MIPROAA Ministerio Profético Ardiendo Por El Avivamiento
   </footer>
 
-  <script src="audio.js"></script>
-  <script src="questions.js"></script>
-  <script src="game.js"></script>
+  <script src="audio.js?v=3"></script>
+  <script src="questions.js?v=3"></script>
+  <script src="game.js?v=3"></script>
   <script>
     /* Contador de personas que han entrado al juego (una vez por navegador) */
     (function () {
-      var base = 'https://abacus.jasoncameron.dev/';
-      var ruta = 'miproaa-luisdavidgarcia/juego-biblico';
-      var marca = 'miproaa-juego-contado';
-      var el = document.getElementById('juegoVisitas');
-      var contado = false;
-      try { contado = !!localStorage.getItem(marca); } catch (e) {}
-      fetch(base + (contado ? 'get/' : 'hit/') + ruta)
-        .then(function (r) {
-          if (r.status === 404) return { value: 0 };
-          if (!r.ok) throw new Error(r.status);
-          if (!contado) { try { localStorage.setItem(marca, '1'); } catch (e) {} }
-          return r.json();
-        })
-        .then(function (d) { if (el) el.textContent = Number(d.value || 0).toLocaleString('es-DO'); })
-        .catch(function () { if (el) el.textContent = '—'; });
+      var BASE = 'https://abacus.jasoncameron.dev/';
+      var RUTA = 'miproaa-luisdavidgarcia/juego-biblico';
+      var MARCA = 'miproaa-juego-contado';
+      var CACHE = 'miproaa-juego-visitas';
+      var els = document.querySelectorAll('.js-visitas');
+
+      function mostrar(n) {
+        var txt = Number(n).toLocaleString('es-DO');
+        for (var i = 0; i < els.length; i++) els[i].textContent = txt;
+      }
+      function leer(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+      function guardar(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+      // Último número conocido: se ve al instante mientras llega el dato nuevo
+      var previo = leer(CACHE);
+      if (previo !== null) mostrar(previo);
+
+      function pedir(tipo) {
+        var ctl = window.AbortController ? new AbortController() : null;
+        var t = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+        return fetch(BASE + tipo + '/' + RUTA + '?t=' + Date.now(), ctl ? { signal: ctl.signal, cache: 'no-store' } : { cache: 'no-store' })
+          .then(function (r) {
+            clearTimeout(t);
+            if (r.status === 404) { var e = new Error('404'); e.noExiste = true; throw e; }
+            if (!r.ok) throw new Error(r.status);
+            return r.json();
+          })
+          .then(function (d) {
+            var v = Number(d && (d.value !== undefined ? d.value : d.count));
+            if (!isFinite(v) || v < 0) throw new Error('formato');
+            return Math.floor(v);
+          });
+      }
+
+      if (!window.fetch) { mostrar(previo || 0); return; }
+
+      var contado = !!leer(MARCA);
+      // Si ya contó en este navegador solo lee; si el contador aún no existe, lo crea sumando esta visita.
+      var p = contado
+        ? pedir('get').catch(function (e) { if (e.noExiste) { contado = false; return pedir('hit'); } throw e; })
+        : pedir('hit');
+
+      p.then(function (n) {
+        if (!contado) guardar(MARCA, '1');
+        guardar(CACHE, String(n));
+        mostrar(n);
+      }).catch(function () {
+        // Reintento una vez más tras unos segundos
+        setTimeout(function () {
+          pedir(contado ? 'get' : 'hit').then(function (n) {
+            if (!contado) guardar(MARCA, '1');
+            guardar(CACHE, String(n));
+            mostrar(n);
+          }).catch(function () { if (previo === null) mostrar(0); });
+        }, 3000);
+      });
     })();
   </script>
 </body>

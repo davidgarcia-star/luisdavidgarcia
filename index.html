@@ -130,34 +130,56 @@
             pointer-events: none;
         }
 
-        /* Botón del juego: amarillo con trofeos que se mueven dentro */
-        .btn-juego { position: relative; isolation: isolate; }
+        /* Botón del juego: amarillo con luces que giran alrededor y destellos */
+        .btn-juego { position: relative; isolation: isolate; box-shadow: 0 0 18px rgba(244, 183, 63, .45); }
         .btn-juego .btn-texto { position: relative; z-index: 2; }
-        .btn-juego .trofeos {
-            position: absolute; inset: 0; z-index: 1;
-            border-radius: inherit; overflow: hidden; pointer-events: none;
+        .btn-juego .brillo {
+            position: absolute; inset: -4px; z-index: 1;
+            border-radius: inherit; padding: 3px; overflow: hidden; pointer-events: none;
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+                    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
         }
-        .btn-juego .trofeos span {
-            position: absolute; left: -1.6em; bottom: .15em;
-            font-size: 1.1em; line-height: 1; opacity: .85;
-            filter: drop-shadow(0 1px 1px rgba(0,0,0,.35));
-            animation: trofeoCorre 4.8s linear infinite;
+        .btn-juego .brillo.halo { inset: -8px; padding: 8px; filter: blur(6px); opacity: .9; }
+        .btn-juego .brillo::before {
+            content: ""; position: absolute; left: 50%; top: 50%;
+            width: max(320%, 340px); aspect-ratio: 1;
+            transform: translate(-50%, -50%) rotate(0deg);
+            background: conic-gradient(from 0deg,
+                transparent 0deg, transparent 60deg,
+                rgba(255, 236, 170, .9) 110deg, #fff 135deg, rgba(255, 214, 102, .9) 155deg,
+                transparent 200deg, transparent 240deg,
+                rgba(255, 236, 170, .9) 290deg, #fff 315deg, rgba(255, 214, 102, .9) 335deg,
+                transparent 360deg);
+            animation: brilloGira 3s linear infinite;
         }
-        .btn-juego .trofeos span:nth-child(2) { animation-delay: -1.6s; font-size: .95em; }
-        .btn-juego .trofeos span:nth-child(3) { animation-delay: -3.2s; font-size: 1.2em; }
-        @keyframes trofeoCorre {
-            0%   { left: -1.6em; transform: translateY(0) rotate(-10deg); }
-            12%  { transform: translateY(-.9em) rotate(10deg); }
-            25%  { transform: translateY(0) rotate(-10deg); }
-            37%  { transform: translateY(-.9em) rotate(10deg); }
-            50%  { transform: translateY(0) rotate(-10deg); }
-            62%  { transform: translateY(-.9em) rotate(10deg); }
-            75%  { transform: translateY(0) rotate(-10deg); }
-            87%  { transform: translateY(-.9em) rotate(10deg); }
-            100% { left: 100%; transform: translateY(0) rotate(-10deg); }
+        @keyframes brilloGira { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* Destellos que titilan en el borde */
+        .btn-juego .destellos { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+        .btn-juego .destellos i {
+            position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px;
+            background: radial-gradient(circle, #fff 0 18%, transparent 20%),
+                        linear-gradient(90deg, transparent 42%, #fff 50%, transparent 58%),
+                        linear-gradient(0deg, transparent 42%, #fff 50%, transparent 58%);
+            filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 6px #F4B73F);
+            opacity: 0; transform: scale(.2);
+            animation: destello 2.4s ease-in-out infinite;
+        }
+        .btn-juego .destellos i:nth-child(1) { left: 8%;  top: 0;    animation-delay: 0s; }
+        .btn-juego .destellos i:nth-child(2) { left: 92%; top: 0;    animation-delay: .6s; }
+        .btn-juego .destellos i:nth-child(3) { left: 96%; top: 100%; animation-delay: 1.2s; }
+        .btn-juego .destellos i:nth-child(4) { left: 6%;  top: 100%; animation-delay: 1.8s; }
+        .btn-juego .destellos i:nth-child(5) { left: 50%; top: 0;    animation-delay: .9s; }
+        .btn-juego .destellos i:nth-child(6) { left: 50%; top: 100%; animation-delay: 2.1s; }
+        @keyframes destello {
+            0%, 100% { opacity: 0; transform: scale(.2) rotate(0deg); }
+            45%      { opacity: 1; transform: scale(1.3) rotate(45deg); }
+            70%      { opacity: 0; transform: scale(.4) rotate(90deg); }
         }
         @media (prefers-reduced-motion: reduce) {
-            .btn-juego .trofeos span { animation: none; display: none; }
+            .btn-juego .brillo::before, .btn-juego .destellos i { animation: none; }
+            .btn-juego .destellos { display: none; }
         }
 
         @keyframes ring {
@@ -1743,7 +1765,7 @@
                         <i class="fa-solid fa-music" aria-hidden="true"></i> Adoración de su autoría
                     </a>
                     <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html">
-                        <span class="trofeos" aria-hidden="true"><span>🏆</span><span>🏆</span><span>🏆</span></span>
+                        <span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
                         <span class="btn-texto"><i class="fa-solid fa-book-bible" aria-hidden="true"></i> Entrar al Juego</span>
                     </a>
                     <a class="btn btn-ghost" href="#peticion">
