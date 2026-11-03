@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Desafío Bíblico RD</title>
   <meta name="description" content="Desafío Bíblico RD – Juego de preguntas bíblicas. MIPROAA Ministerio Profético Ardiendo Por El Avivamiento.">
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
   <div id="particles" aria-hidden="true"></div>
@@ -156,10 +156,63 @@
     Desafío Bíblico RD · MIPROAA Ministerio Profético Ardiendo Por El Avivamiento
   </footer>
 
-  <script src="audio.js?v=10"></script>
-  <script src="questions.js?v=10"></script>
-  <script src="game.js?v=10"></script>
+  <script src="audio.js?v=11"></script>
+  <script src="questions.js?v=11"></script>
+  <script src="game.js?v=11"></script>
   <script>
+    /* Voz femenina de bienvenida al entrar al juego */
+    (function () {
+      if (!('speechSynthesis' in window) || !window.SpeechSynthesisUtterance) return;
+      var TEXTO = '¡Bienvenidos al juego de Miproaa!';
+      var dicho = false;
+      var FEMENINAS = /(paulina|m[oó]nica|helena|elvira|dalia|sabina|laura|lucia|luc[ií]a|elena|paloma|marisol|esperanza|soledad|ximena|camila|valentina|francisca|carmen|isabela|female|mujer|femenin)/i;
+
+      function elegirVoz() {
+        var voces = speechSynthesis.getVoices().filter(function (v) { return /^es(-|_|$)/i.test(v.lang); });
+        if (!voces.length) return null;
+        var pref = ['es-DO', 'es-US', 'es-MX', 'es-419', 'es-ES'];
+        voces.sort(function (a, b) {
+          var fa = FEMENINAS.test(a.name) ? 0 : 1, fb = FEMENINAS.test(b.name) ? 0 : 1;
+          if (fa !== fb) return fa - fb;
+          var pa = pref.indexOf(a.lang), pb = pref.indexOf(b.lang);
+          return (pa < 0 ? 9 : pa) - (pb < 0 ? 9 : pb);
+        });
+        return voces[0];
+      }
+
+      function hablar() {
+        if (dicho) return;
+        try { if (window.Sound && !Sound.sfxOn) return; } catch (e) {}
+        var welcome = document.getElementById('screen-welcome');
+        if (welcome && !welcome.classList.contains('active')) return;
+        var u = new SpeechSynthesisUtterance(TEXTO);
+        var voz = elegirVoz();
+        if (voz) u.voice = voz;
+        u.lang = voz ? voz.lang : 'es-ES';
+        u.rate = 1.05;    // con ánimo
+        u.pitch = 1.35;   // tono alegre y femenino
+        u.volume = 1;
+        u.onstart = function () { dicho = true; quitar(); };
+        speechSynthesis.cancel();
+        speechSynthesis.speak(u);
+      }
+
+      // Muchos navegadores solo permiten hablar después del primer toque o tecla:
+      // se intenta al entrar y, si no se pudo, en la primera interacción.
+      function alInteractuar() { if (!dicho) hablar(); }
+      function quitar() {
+        ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) { document.removeEventListener(ev, alInteractuar, true); });
+      }
+      ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) { document.addEventListener(ev, alInteractuar, true); });
+
+      function intentar() { setTimeout(hablar, 600); }
+      if (speechSynthesis.getVoices().length) intentar();
+      else {
+        speechSynthesis.onvoiceschanged = function () { speechSynthesis.onvoiceschanged = null; intentar(); };
+        setTimeout(intentar, 1500);
+      }
+    })();
+
     /* Botón de pantalla completa (solo donde el navegador lo permite) */
     (function () {
       var b = document.getElementById('btnFull'), d = document.documentElement;

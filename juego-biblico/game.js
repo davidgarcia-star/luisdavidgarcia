@@ -168,7 +168,7 @@
   $("btnSfxMenu").onclick = toggleSfx;
 
   /* ---------- botones de navegación ---------- */
-  $("btnStart").onclick = () => { Sound.start(); Sound.welcome(); go("menu"); };
+  $("btnStart").onclick = () => { Sound.start(); Sound.triumph(); go("menu"); };
   // Botón "Inicio": vuelve a la bienvenida
   $("btnHome").onclick = () => { Sound.start(); Sound.click(); clearInterval(state.timer); state.active = false; go("welcome"); };
   // Botón "Salir": cierra la página; si el navegador no lo permite, vuelve a la página principal
@@ -345,7 +345,7 @@
     state.active = true;
     state.finished = false;
     $("playLevel").textContent = lv.emoji + " " + lv.name;
-    Sound.triumph();
+    Sound.welcome();
     go("play");
     renderScoreboard();
     nextQuestion();
