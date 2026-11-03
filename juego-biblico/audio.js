@@ -205,6 +205,16 @@ const Sound = (() => {
       if (!sfxOn || !ensureCtx()) return;
       tone(880, ctx.currentTime, 0.05, "square", 0.05, sfxGain, 0.002);
     },
+    // Sonido de "Siguiente" en la bienvenida: arpa celestial que sube con brillo
+    welcome() {
+      if (!sfxOn || !ensureCtx()) return;
+      const t = ctx.currentTime + 0.03;
+      [523.25, 659.25, 783.99, 987.77, 1174.66, 1567.98].forEach((f, i) => {
+        tone(f, t + i * 0.07, 0.9, "sine", 0.16, sfxGain, 0.005);
+        tone(f * 2, t + i * 0.07, 0.4, "sine", 0.04, sfxGain, 0.005);
+      });
+      [1567.98, 2093.0].forEach((f, i) => tone(f, t + 0.5 + i * 0.12, 0.7, "triangle", 0.06, sfxGain, 0.01));
+    },
     // Efecto de triunfo (trompetas) al iniciar el juego
     triumph() {
       if (!sfxOn || !ensureCtx()) return;
