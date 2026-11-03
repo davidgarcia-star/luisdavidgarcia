@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Desafío Bíblico RD</title>
+  <meta name="description" content="Desafío Bíblico RD – Juego de preguntas bíblicas. MIPROAA Ministerio Profético Ardiendo Por El Avivamiento.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="particles" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <div class="topbar">
+    <button id="btnMusic" class="chip" type="button" aria-pressed="true">🎵 Música: Sí</button>
+    <button id="btnSfx" class="chip" type="button" aria-pressed="true">🔊 Sonidos: Sí</button>
+  </div>
+
+  <main id="app">
+
+    <!-- BIENVENIDA -->
+    <section id="screen-welcome" class="screen active">
+      <div class="card center">
+        <div class="logo-plate"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="150" height="150"></div>
+        <p class="kicker">Bienvenido a</p>
+        <h1 class="title">Desafío Bíblico <span>RD</span></h1>
+        <p class="lead">Pon a prueba tu conocimiento de la Palabra de Dios.</p>
+        <button id="btnStart" class="btn primary big" type="button">Comenzar</button>
+        <p class="credits">
+          Creado por <strong>Luis David Esteban García</strong><br>
+          de parte de <strong>MIPROAA</strong><br>
+          Ministerio Profético Ardiendo Por El Avivamiento
+        </p>
+      </div>
+    </section>
+
+    <!-- MENÚ -->
+    <section id="screen-menu" class="screen">
+      <div class="card center">
+        <div class="logo-plate small"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA" width="84" height="84"></div>
+        <h2 class="title small">Desafío Bíblico <span>RD</span></h2>
+        <p class="lead">Elige cómo quieres jugar</p>
+        <div class="stack">
+          <button id="btnSolo" class="btn primary big" type="button">👤 Modo individual</button>
+          <button id="btnTeams" class="btn primary big" type="button">👥 Modo por equipos</button>
+        </div>
+        <div class="menu-sound">
+          <p class="hint">Sonido instrumental durante todo el juego. Con “Sonidos” activado, cada tecla que presiones suena.</p>
+          <button id="btnSfxMenu" class="btn ghost" type="button">🔊 Sonidos del juego: Sí</button>
+          <button id="btnMusicMenu" class="btn ghost" type="button">🎵 Música instrumental: Sí</button>
+        </div>
+        <p class="small-note">Versión bíblica: La Biblia de las Américas (LBLA)</p>
+      </div>
+    </section>
+
+    <!-- CONFIGURAR EQUIPOS -->
+    <section id="screen-teams" class="screen">
+      <div class="card">
+        <h2 class="title small">Modo por equipos</h2>
+        <p class="lead center">¿Cuántos equipos van a jugar?</p>
+        <div class="segmented" id="teamCount" role="group" aria-label="Cantidad de equipos">
+          <button type="button" class="seg" data-n="2">2 equipos</button>
+          <button type="button" class="seg" data-n="3">3 equipos</button>
+          <button type="button" class="seg" data-n="4">4 equipos</button>
+        </div>
+        <p class="hint center">Cada equipo tiene su color. Elige un nombre de la lista o usa “Asignar nombre de preferencia” para escribir el que quieras.</p>
+        <div id="teamNames" class="team-names"></div>
+        <label class="field">
+          Rondas (preguntas por equipo)
+          <select id="rounds">
+            <option value="3">3 rondas</option>
+            <option value="5" selected>5 rondas</option>
+            <option value="10">10 rondas</option>
+          </select>
+        </label>
+        <div class="row">
+          <button class="btn ghost" type="button" data-back="screen-menu">← Volver</button>
+          <button id="btnTeamsNext" class="btn primary" type="button">Elegir nivel →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- NIVELES -->
+    <section id="screen-levels" class="screen">
+      <div class="card">
+        <h2 class="title small" id="levelsTitle">Elige un nivel</h2>
+        <p class="lead center" id="levelsSub">Elige un nivel</p>
+        <div id="soloLength" class="length-box">
+          <p class="hint center">¿Cuántas preguntas quieres por partida?</p>
+          <div class="segmented two" id="lengthSeg" role="group" aria-label="Cantidad de preguntas">
+            <button type="button" class="seg" data-n="20">Pocas preguntas<small>20 preguntas</small></button>
+            <button type="button" class="seg" data-n="50">Muchas preguntas<small>50 preguntas</small></button>
+          </div>
+        </div>
+        <div id="levelList" class="levels"></div>
+        <div class="row">
+          <button id="btnLevelsBack" class="btn ghost" type="button">← Volver</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- JUEGO -->
+    <section id="screen-play" class="screen">
+      <div class="card play">
+        <div class="play-head">
+          <span id="playLevel" class="badge"></span>
+          <span id="playProgress" class="badge ghost"></span>
+        </div>
+        <div id="scoreboard" class="scoreboard"></div>
+        <div class="timer"><div id="timerBar" class="timer-bar"></div></div>
+        <p id="turnInfo" class="turn" aria-live="polite"></p>
+        <h3 id="questionText" class="question"></h3>
+        <div id="options" class="options"></div>
+        <div id="feedback" class="feedback" aria-live="polite" hidden>
+          <p id="feedbackText"></p>
+          <p id="feedbackRef" class="ref"></p>
+          <button id="btnNext" class="btn primary" type="button">Siguiente →</button>
+        </div>
+        <button id="btnQuit" class="btn link" type="button">Salir al menú</button>
+        <p class="hint center">Atajos: teclas 1–4 o A–D para responder · Enter para continuar</p>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="screen-result" class="screen">
+      <div class="card center">
+        <div class="logo" aria-hidden="true">🏆</div>
+        <h2 class="title small" id="resultTitle">¡Resultados!</h2>
+        <div id="resultBody" class="result-body"></div>
+        <div class="row">
+          <button id="btnNextLevel" class="btn primary" type="button" hidden>Siguiente nivel →</button>
+          <button id="btnAgain" class="btn ghost" type="button">🔁 Jugar de nuevo</button>
+          <button id="btnToMenu" class="btn ghost" type="button">Menú</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    Desafío Bíblico RD · MIPROAA Ministerio Profético Ardiendo Por El Avivamiento
+  </footer>
+
+  <script src="audio.js"></script>
+  <script src="questions.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
