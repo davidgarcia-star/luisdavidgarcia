@@ -315,3 +315,12 @@ body::before {
 .verdict.pass { background: rgba(47,191,113,.18); border: 1px solid var(--ok); }
 .verdict.retry { background: rgba(244,197,66,.14); border: 1px solid var(--gold); }
 #btnNextLevel[hidden] { display: none; }
+
+/* Contador de visitantes en la bienvenida */
+.visitas {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 16px auto 0; padding: 8px 16px; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--gold);
+  color: var(--muted); font-size: 0.95rem;
+}
+.visitas strong { color: var(--gold); font-size: 1.1rem; }

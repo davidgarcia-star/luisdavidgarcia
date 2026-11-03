@@ -130,39 +130,34 @@
             pointer-events: none;
         }
 
-        /* Botón del juego: cambia entre amarillo y azul */
-        .btn-juego {
-            color: #fff;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, .75);
-            background: linear-gradient(90deg, #FFD600, #1565C0, #FFD600, #1565C0);
-            background-size: 300% 100%;
-            animation: juegoColores 6s linear infinite;
+        /* Botón del juego: amarillo con trofeos que se mueven dentro */
+        .btn-juego { position: relative; isolation: isolate; }
+        .btn-juego .btn-texto { position: relative; z-index: 2; }
+        .btn-juego .trofeos {
+            position: absolute; inset: 0; z-index: 1;
+            border-radius: inherit; overflow: hidden; pointer-events: none;
         }
-        .btn-juego:hover {
-            background: linear-gradient(90deg, #FFD600, #1565C0, #FFD600, #1565C0);
-            background-size: 300% 100%;
-            box-shadow: 0 10px 30px rgba(255, 255, 255, .25);
+        .btn-juego .trofeos span {
+            position: absolute; left: -1.6em; bottom: .15em;
+            font-size: 1.1em; line-height: 1; opacity: .85;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,.35));
+            animation: trofeoCorre 4.8s linear infinite;
         }
-        .btn-juego.btn-pulse::after { animation: ring 2.4s ease-out infinite, juegoBorde 6s linear infinite; }
-        /* Contador de personas que han entrado al juego */
-        .juego-grupo { display: inline-flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
-        .juego-visitas {
-            display: inline-flex; align-items: center; gap: .45rem;
-            padding: .55rem .9rem; border-radius: 999px;
-            font-weight: 700; font-size: .95rem; color: #fff;
-            background: rgba(21, 101, 192, .35);
-            border: 2px solid #FFD600;
-            white-space: nowrap;
+        .btn-juego .trofeos span:nth-child(2) { animation-delay: -1.6s; font-size: .95em; }
+        .btn-juego .trofeos span:nth-child(3) { animation-delay: -3.2s; font-size: 1.2em; }
+        @keyframes trofeoCorre {
+            0%   { left: -1.6em; transform: translateY(0) rotate(-10deg); }
+            12%  { transform: translateY(-.9em) rotate(10deg); }
+            25%  { transform: translateY(0) rotate(-10deg); }
+            37%  { transform: translateY(-.9em) rotate(10deg); }
+            50%  { transform: translateY(0) rotate(-10deg); }
+            62%  { transform: translateY(-.9em) rotate(10deg); }
+            75%  { transform: translateY(0) rotate(-10deg); }
+            87%  { transform: translateY(-.9em) rotate(10deg); }
+            100% { left: 100%; transform: translateY(0) rotate(-10deg); }
         }
-        .juego-visitas i { color: #FFD600; }
-        .juego-visitas small { font-weight: 500; opacity: .85; }
-        @keyframes juegoColores {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
-        }
-        @keyframes juegoBorde {
-            0%, 100% { border-color: #FFD600; }
-            50% { border-color: #1565C0; }
+        @media (prefers-reduced-motion: reduce) {
+            .btn-juego .trofeos span { animation: none; display: none; }
         }
 
         @keyframes ring {
@@ -1747,15 +1742,10 @@
                     <a class="btn btn-gold btn-pulse" href="#adoracion" data-go-worship>
                         <i class="fa-solid fa-music" aria-hidden="true"></i> Adoración de su autoría
                     </a>
-                    <span class="juego-grupo">
-                        <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html">
-                            <i class="fa-solid fa-book-bible" aria-hidden="true"></i> Entrar al Juego
-                        </a>
-                        <span class="juego-visitas" title="Personas que han entrado al juego" aria-live="polite">
-                            <i class="fa-solid fa-users" aria-hidden="true"></i>
-                            <span id="juegoVisitas">…</span> <small>jugadores</small>
-                        </span>
-                    </span>
+                    <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html">
+                        <span class="trofeos" aria-hidden="true"><span>🏆</span><span>🏆</span><span>🏆</span></span>
+                        <span class="btn-texto"><i class="fa-solid fa-book-bible" aria-hidden="true"></i> Entrar al Juego</span>
+                    </a>
                     <a class="btn btn-ghost" href="#peticion">
                         <i class="fa-solid fa-hands-praying" aria-hidden="true"></i> Pedir oración
                     </a>
@@ -2810,16 +2800,5 @@
 })();
 </script>
 
-<script>
-/* Contador de personas que han entrado al juego (se suma en juego-biblico/index.html) */
-(function () {
-    var el = document.getElementById('juegoVisitas');
-    if (!el) return;
-    fetch('https://abacus.jasoncameron.dev/get/miproaa-luisdavidgarcia/juego-biblico')
-        .then(function (r) { return r.status === 404 ? { value: 0 } : r.json(); })
-        .then(function (d) { el.textContent = Number(d.value || 0).toLocaleString('es-DO'); })
-        .catch(function () { el.textContent = '—'; });
-})();
-</script>
 </body>
 </html>
