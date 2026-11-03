@@ -256,6 +256,16 @@
             .aura-chispas { display: none; }
         }
 
+        /* Aviso para escuchar la voz de bienvenida cuando el navegador bloquea el sonido */
+        .voz-aviso {
+            position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 9999;
+            font: 700 1rem/1.2 inherit; color: #1b1400; cursor: pointer;
+            background: linear-gradient(180deg, #F8C65F, #E0A22A); border: 0; border-radius: 999px;
+            padding: 12px 22px; box-shadow: 0 10px 30px rgba(0,0,0,.45), 0 0 0 0 rgba(244,183,63,.6);
+            animation: vozLatido 1.8s ease-in-out infinite;
+        }
+        @keyframes vozLatido { 50% { box-shadow: 0 10px 30px rgba(0,0,0,.45), 0 0 0 12px rgba(244,183,63,0); } }
+
         @keyframes ring {
             0% { transform: scale(1); opacity: .8; }
             80%, 100% { transform: scale(1.22); opacity: 0; }
@@ -1827,7 +1837,6 @@
                     <cite>Levítico 6:13</cite>
                 </p>
 
-                <p class="where fade-in"><span aria-hidden="true">🇩🇴</span> República Dominicana</p>
 
                 <div class="cta-row fade-in">
                     <a class="btn btn-gold btn-pulse" href="#adoracion" data-go-worship>
@@ -2894,23 +2903,40 @@
 <script>
 /* Voz de bienvenida al entrar al sitio web (una vez por visita) */
 (function () {
-    var CLAVE = 'miproaa_voz_bienvenida';
+    var CLAVE = 'miproaa_voz_bienvenida_web';
     try { if (sessionStorage.getItem(CLAVE) === '1') return; } catch (e) {}
-    var voz = new Audio('./audio/bienvenida-web.mp3?v=1');
+    var voz = new Audio('./audio/bienvenida-web.mp3?v=2');
     voz.preload = 'auto';
+    voz.volume = 1;
     var sonado = false;
-    var EVENTOS = ['pointerdown', 'keydown', 'touchstart'];
-    function quitar() { EVENTOS.forEach(function (ev) { document.removeEventListener(ev, sonar, true); }); }
+    // Eventos que el navegador acepta como "toque del usuario" (en celular el toque cuenta al soltar)
+    var EVENTOS = ['click', 'pointerup', 'touchend', 'keydown', 'mousedown'];
+    var aviso = null;
+
+    function quitar() {
+        EVENTOS.forEach(function (ev) { document.removeEventListener(ev, sonar, true); });
+        if (aviso) { aviso.remove(); aviso = null; }
+    }
+    function mostrarAviso() {
+        if (aviso || sonado) return;
+        aviso = document.createElement('button');
+        aviso.type = 'button';
+        aviso.className = 'voz-aviso';
+        aviso.innerHTML = '🔊 Toca para escuchar la bienvenida';
+        document.body.appendChild(aviso);
+    }
+    var intentando = false;
     function sonar() {
-        if (sonado) return;
+        if (sonado || intentando) return;
+        intentando = true;
         var p = voz.play();
-        var ok = function () { sonado = true; quitar(); try { sessionStorage.setItem(CLAVE, '1'); } catch (e) {} };
-        if (p && p.then) p.then(ok).catch(function () {}); else ok();
+        var ok = function () { intentando = false; sonado = true; quitar(); try { sessionStorage.setItem(CLAVE, '1'); } catch (e) {} };
+        if (p && p.then) p.then(ok).catch(function () { intentando = false; mostrarAviso(); }); else ok();
     }
     // Si el navegador bloquea el sonido al cargar, suena con el primer toque, clic o tecla.
     EVENTOS.forEach(function (ev) { document.addEventListener(ev, sonar, true); });
-    if (document.readyState === 'complete') setTimeout(sonar, 400);
-    else window.addEventListener('load', function () { setTimeout(sonar, 400); });
+    if (document.readyState === 'complete') setTimeout(sonar, 300);
+    else window.addEventListener('load', function () { setTimeout(sonar, 300); });
 })();
 </script>
 </body>
