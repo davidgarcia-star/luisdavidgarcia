@@ -144,5 +144,15 @@
   <script src="audio.js"></script>
   <script src="questions.js"></script>
   <script src="game.js"></script>
+  <script>
+    /* Cuenta una vez a cada persona (por navegador) que entra al juego */
+    (function () {
+      var marca = 'miproaa-juego-contado';
+      try { if (localStorage.getItem(marca)) return; } catch (e) {}
+      fetch('https://abacus.jasoncameron.dev/hit/miproaa-luisdavidgarcia/juego-biblico')
+        .then(function (r) { if (r.ok) { try { localStorage.setItem(marca, '1'); } catch (e) {} } })
+        .catch(function () {});
+    })();
+  </script>
 </body>
 </html>
