@@ -21,7 +21,7 @@
     <!-- BIENVENIDA -->
     <section id="screen-welcome" class="screen active">
       <div class="card center">
-        <div class="logo" aria-hidden="true">📖</div>
+        <div class="logo-plate"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="150" height="150"></div>
         <p class="kicker">Bienvenido a</p>
         <h1 class="title">Desafío Bíblico <span>RD</span></h1>
         <p class="lead">Pon a prueba tu conocimiento de la Palabra de Dios.</p>
@@ -37,6 +37,7 @@
     <!-- MENÚ -->
     <section id="screen-menu" class="screen">
       <div class="card center">
+        <div class="logo-plate small"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA" width="84" height="84"></div>
         <h2 class="title small">Desafío Bíblico <span>RD</span></h2>
         <p class="lead">Elige cómo quieres jugar</p>
         <div class="stack">
@@ -62,6 +63,7 @@
           <button type="button" class="seg" data-n="3">3 equipos</button>
           <button type="button" class="seg" data-n="4">4 equipos</button>
         </div>
+        <p class="hint center">Cada equipo tiene su color. Elige un nombre de la lista o usa “Asignar nombre de preferencia” para escribir el que quieras.</p>
         <div id="teamNames" class="team-names"></div>
         <label class="field">
           Rondas (preguntas por equipo)
@@ -82,7 +84,14 @@
     <section id="screen-levels" class="screen">
       <div class="card">
         <h2 class="title small" id="levelsTitle">Elige un nivel</h2>
-        <p class="lead center" id="levelsSub">Cada nivel tiene 50 preguntas</p>
+        <p class="lead center" id="levelsSub">Elige un nivel</p>
+        <div id="soloLength" class="length-box">
+          <p class="hint center">¿Cuántas preguntas quieres por partida?</p>
+          <div class="segmented two" id="lengthSeg" role="group" aria-label="Cantidad de preguntas">
+            <button type="button" class="seg" data-n="20">Pocas preguntas<small>20 preguntas</small></button>
+            <button type="button" class="seg" data-n="50">Muchas preguntas<small>50 preguntas</small></button>
+          </div>
+        </div>
         <div id="levelList" class="levels"></div>
         <div class="row">
           <button id="btnLevelsBack" class="btn ghost" type="button">← Volver</button>
