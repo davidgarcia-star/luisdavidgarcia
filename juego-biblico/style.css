@@ -576,3 +576,7 @@ body { min-height: 100dvh; }
   #screen-welcome .logo-aura { --s: clamp(80px, 15vh, 200px); margin: 2vh auto 1.4vh; }
   #screen-welcome .credits { margin-top: 1.4vh; }
 }
+
+/* PayPal centrado en su propia línea */
+.welcome-extras { flex-direction: column; justify-content: center; }
+.welcome-extras .btn-paypal { align-self: center; }
