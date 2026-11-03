@@ -10,10 +10,10 @@
 
   // Equipos: color fijo por equipo y nombres sugeridos
   const TEAM_COLORS = [
-    { hex: "#e5484d", name: "rojo" },
-    { hex: "#3e8bff", name: "azul" },
-    { hex: "#2fbf71", name: "verde" },
-    { hex: "#a970ff", name: "morado" },
+    { hex: "#e5484d", name: "Rojo" },
+    { hex: "#3e8bff", name: "Azul" },
+    { hex: "#2fbf71", name: "Verde" },
+    { hex: "#a970ff", name: "Morado" },
   ];
   const PRESET_NAMES = ["Leones de Judá", "Águilas de Fuego", "Guerreros de Fe", "Hijos de la Luz"];
   const CUSTOM = "custom";
@@ -200,7 +200,7 @@
 
       const label = document.createElement("div");
       label.className = "team-label";
-      label.innerHTML = "<b>Equipo " + (i + 1) + "</b> · color " + TEAM_COLORS[i].name;
+      label.innerHTML = "<b>Equipo " + (i + 1) + "</b> · Color " + TEAM_COLORS[i].name;
 
       const sel = document.createElement("select");
       sel.setAttribute("aria-label", "Nombre del equipo " + (i + 1));
