@@ -271,7 +271,7 @@
 
         .a11y-btn {
             /* Encima del botón de WhatsApp, en la esquina inferior derecha */
-            position: fixed; right: var(--fab-r, 14px); bottom: calc(var(--fab-b, 14px) + 56px); z-index: 9000;
+            position: fixed; right: var(--fab-r, 14px); bottom: var(--fab-b, 14px); z-index: 9000;
             display: flex; flex-direction: row-reverse; align-items: center; gap: .4rem;
             min-width: 44px; height: 44px; justify-content: center;
             background: #1a56db; color: #fff; border: 2px solid #fff;
@@ -282,8 +282,8 @@
         .a11y-btn .a11y-btn-txt { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .3s; }
         .a11y-btn:hover .a11y-btn-txt, .a11y-btn:focus-visible .a11y-btn-txt, .a11y-btn[aria-expanded="true"] .a11y-btn-txt { max-width: 12em; padding-left: .35rem; }
         .a11y-panel {
-            position: fixed; right: 12px; bottom: calc(var(--fab-b, 14px) + 110px); z-index: 9001;
-            width: min(330px, calc(100vw - 24px)); max-height: calc(100dvh - 150px); overflow: auto;
+            position: fixed; right: 12px; bottom: calc(var(--fab-b, 14px) + 56px); z-index: 9001;
+            width: min(330px, calc(100vw - 24px)); max-height: calc(100dvh - 100px); overflow: auto;
             background: #0d1117; color: #fff; border: 2px solid #FFE066; border-radius: 16px;
             padding: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,.6);
         }
@@ -1843,7 +1843,7 @@
 <div class="spot" id="spot" aria-hidden="true"></div>
 
 <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
-<p class="sr-only">Este sitio tiene opciones de accesibilidad: lectura en voz alta, texto más grande y alto contraste. Usa el botón Accesibilidad, en la esquina inferior derecha, encima del botón de WhatsApp. Presiona la tecla Escape para detener cualquier voz.</p>
+<p class="sr-only">Este sitio tiene opciones de accesibilidad: lectura en voz alta, texto más grande y alto contraste. Usa el botón Accesibilidad, en la esquina inferior derecha. Presiona la tecla Escape para detener cualquier voz.</p>
 
 <button class="a11y-btn" id="a11yBtn" type="button" aria-expanded="false" aria-controls="a11yPanel">
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="4" r="2.2" fill="currentColor"/><path d="M4 8.5c2.6.8 5.3 1.2 8 1.2s5.4-.4 8-1.2l.5 1.8c-2 .7-4.1 1.1-6.2 1.3v3.2l2.3 6.6-1.8.7L12.5 16h-1l-2.3 6.1-1.8-.7 2.3-6.6v-3.2c-2.1-.2-4.2-.6-6.2-1.3z" fill="currentColor"/></svg>
@@ -1876,9 +1876,6 @@
 </button>
 <p class="music-tip" id="musicTip" role="status">Toca para escuchar</p>
 
-<a class="fab" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp">
-    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
-</a>
 
 <header class="site-header" id="siteHeader">
     <div class="wrap nav">
