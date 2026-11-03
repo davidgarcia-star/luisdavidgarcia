@@ -354,12 +354,29 @@ body::before {
   animation: auraRespira 2.8s ease-in-out infinite; }
 @keyframes auraRespira { 0%, 100% { transform: scale(.92); opacity: .65; } 50% { transform: scale(1.08); opacity: 1; } }
 
-/* Rayos de luz que giran lentamente */
-.aura-rayos { inset: -38%; z-index: 1; opacity: .55;
-  background: repeating-conic-gradient(from 0deg, rgba(255,236,170,.55) 0deg 4deg, transparent 4deg 22deg);
-  -webkit-mask: radial-gradient(circle, transparent 34%, #000 42%, transparent 70%);
-          mask: radial-gradient(circle, transparent 34%, #000 42%, transparent 70%);
-  animation: auraGira 6s linear infinite; }
+/* Rayos de sol cortos, discretos y de distintos largos */
+.aura-rayos { inset: -24%; z-index: 1; animation: auraGira 14s linear infinite; }
+.aura-rayos::before, .aura-rayos::after { content: ""; position: absolute; inset: 0; border-radius: 50%; }
+/* rayos cortos */
+.aura-rayos::before {
+  background: repeating-conic-gradient(from 0deg, rgba(255,226,140,.6) 0deg 2.5deg, transparent 2.5deg 30deg);
+  -webkit-mask: radial-gradient(circle, transparent 41%, #000 43%, transparent 56%);
+          mask: radial-gradient(circle, transparent 41%, #000 43%, transparent 56%);
+}
+/* rayos un poco más largos, intercalados y con largos variados */
+.aura-rayos::after {
+  background:
+    conic-gradient(from 11deg,  rgba(255,226,140,.6) 0 2deg, transparent 2deg 360deg),
+    conic-gradient(from 52deg,  rgba(255,226,140,.5) 0 1.6deg, transparent 1.6deg 360deg),
+    conic-gradient(from 101deg, rgba(255,226,140,.6) 0 2deg, transparent 2deg 360deg),
+    conic-gradient(from 147deg, rgba(255,226,140,.45) 0 1.5deg, transparent 1.5deg 360deg),
+    conic-gradient(from 196deg, rgba(255,226,140,.6) 0 2deg, transparent 2deg 360deg),
+    conic-gradient(from 238deg, rgba(255,226,140,.5) 0 1.6deg, transparent 1.6deg 360deg),
+    conic-gradient(from 283deg, rgba(255,226,140,.6) 0 2deg, transparent 2deg 360deg),
+    conic-gradient(from 329deg, rgba(255,226,140,.45) 0 1.5deg, transparent 1.5deg 360deg);
+  -webkit-mask: radial-gradient(circle, transparent 41%, #000 43%, rgba(0,0,0,.5) 54%, transparent 64%);
+          mask: radial-gradient(circle, transparent 41%, #000 43%, rgba(0,0,0,.5) 54%, transparent 64%);
+}
 
 /* Anillo de oro que gira rápido en círculo alrededor del logo */
 .aura-anillo { inset: -12px; z-index: 2;
@@ -467,34 +484,72 @@ body { min-height: 100dvh; }
 /* En celulares no hay teclado: se ocultan los atajos */
 @media (hover: none) and (pointer: coarse) { #screen-play .hint { display: none; } }
 
-/* ===== Juego a pantalla grande en PC: la tarjeta ocupa casi toda la ventana ===== */
+/* ===== PC: todo el juego cabe en una sola pantalla, sin barras de desplazamiento ===== */
 @media (min-width: 900px) {
-  #app { padding: 16px 2.5vw 8px; align-items: stretch; }
+  html, body { height: 100%; }
+  body { height: 100dvh; min-height: 0; overflow: hidden; }
+  .topbar { flex: none; padding: 8px 16px; }
+  .foot { flex: none; padding: 4px; font-size: .7rem; }
+  #app { flex: 1 1 auto; min-height: 0; padding: 1.2vh 2.5vw; align-items: stretch; }
   .screen, #screen-play { max-width: min(1500px, 95vw); }
-  .screen.active { display: flex; }
-  .screen > .card { flex: 1; width: 100%; min-height: calc(100dvh - 120px);
-    display: flex; flex-direction: column; justify-content: center; padding: 3vh 5vw; }
-  .screen > .card > * { width: 100%; max-width: 1100px; margin-left: auto; margin-right: auto; }
+  .screen.active { display: flex; height: 100%; }
+  .screen > .card { flex: 1; width: 100%; height: 100%; min-height: 0; overflow: auto; scrollbar-width: none;
+    display: flex; flex-direction: column; justify-content: center; justify-content: safe center; padding: 2.4vh 4.5vw; }
+  .screen > .card::-webkit-scrollbar { display: none; }
+  .screen > .card > * { width: 100%; max-width: 1100px; margin-left: auto; margin-right: auto; flex: none; }
   .screen > .card > .logo-aura { width: var(--s); }
   .screen > .card > .visitas { width: auto; }
-  .screen > .card .btn.big { min-width: 260px; }
-  .logo-aura { --s: clamp(150px, 22vh, 230px); }
-  .logo-aura.small { --s: clamp(96px, 13vh, 130px); }
-  .title { font-size: clamp(3rem, 4.4vw, 4.6rem); }
-  .title.small { font-size: clamp(2.1rem, 3vw, 3rem); }
-  .lead, .saludo { font-size: clamp(1.1rem, 1.35vw, 1.4rem); }
-  .saludo { max-width: 46em; }
-  .btn.big { font-size: 1.3rem; padding: 20px 28px; }
-  .question { font-size: clamp(1.9rem, 2.6vw, 2.8rem); }
-  .opt { font-size: clamp(1.1rem, 1.4vw, 1.45rem); min-height: 88px; padding: 20px 24px; }
-  .opt .key { width: 38px; height: 38px; font-size: 1.05rem; }
-  .level-btn { padding: 22px; }
-  .level-name { font-size: 1.3rem; }
-  .level-emoji { font-size: 2.5rem; }
-  .foot { padding: 6px; }
+  .screen > .card > .btn { width: auto; align-self: center; }
+
+  /* Tamaños que crecen o se achican según el alto de la ventana */
+  .logo-aura { --s: clamp(84px, 17vh, 210px); margin: 2.4vh auto 1.8vh; }
+  .logo-aura.small { --s: clamp(60px, 10vh, 120px); margin: 1.2vh auto 1vh; }
+  .kicker { font-size: clamp(.7rem, 1.4vh, .95rem); }
+  .title { font-size: clamp(2rem, 6.2vh, 4.4rem); margin: .4vh auto .8vh; }
+  .title.small { font-size: clamp(1.5rem, 4vh, 2.8rem); }
+  .lead, .saludo { font-size: clamp(.92rem, 2.05vh, 1.35rem); }
+  .lead { margin-bottom: 1.6vh; }
+  .saludo { max-width: 50em; margin-bottom: 2vh; line-height: 1.5; }
+  .saludo p { margin-bottom: .9vh; }
+  .saludo-hola { font-size: clamp(1.05rem, 2.5vh, 1.6rem); }
+  .btn { padding: clamp(9px, 1.4vh, 14px) 18px; }
+  .btn.big { font-size: clamp(1rem, 2.3vh, 1.35rem); padding: clamp(10px, 1.9vh, 20px) 28px; min-width: 260px; }
+  .visitas { margin-top: 1.6vh; font-size: clamp(.82rem, 1.7vh, 1rem); padding: .7vh 16px; }
+  .credits { margin-top: 2vh; font-size: clamp(.78rem, 1.7vh, 1rem); line-height: 1.5; }
+  .stack { gap: 1.6vh 16px; margin-bottom: 1.8vh; }
+  .menu-sound { padding-top: 1.6vh; gap: 1vh 12px; }
+  .hint { margin: .8vh 0; font-size: clamp(.78rem, 1.6vh, .95rem); }
+  .small-note { margin-top: 1.6vh; }
+
+  .segmented { margin-bottom: 1.4vh; }
+  .seg { padding: clamp(8px, 1.4vh, 14px) 8px; }
+  .team-names { gap: 1.2vh 14px; margin-bottom: 1.4vh; }
+  .team-row { padding: 1vh 12px; }
+  .row { margin-top: 1.8vh; }
+  .length-box { margin-bottom: 1.2vh; }
+  .levels { gap: 1.4vh 16px; }
+  .level-btn { padding: clamp(10px, 2vh, 22px) 18px; }
+  .level-name { font-size: clamp(1rem, 2.3vh, 1.3rem); }
+  .level-emoji { font-size: clamp(1.6rem, 4vh, 2.5rem); }
+
+  .play-head { margin-bottom: 1vh; }
+  .scoreboard { margin-bottom: 1.2vh; }
+  .score-chip { padding: .8vh 10px; }
+  .timer { margin-bottom: 1.2vh; }
+  .question { font-size: clamp(1.3rem, 4vh, 2.7rem); margin: 1vh 0 2.4vh; }
+  .options { gap: 1.6vh 14px; }
+  .opt { font-size: clamp(1rem, 2.3vh, 1.4rem); min-height: clamp(52px, 9vh, 92px); padding: 1.4vh 22px; }
+  .opt .key { width: clamp(28px, 4vh, 38px); height: clamp(28px, 4vh, 38px); }
+  .feedback { margin-top: 1.6vh; padding: 1.4vh 14px; }
+  .big-score { font-size: clamp(2.2rem, 7vh, 4rem); }
+  .logo { font-size: clamp(2.2rem, 6vh, 3.6rem); }
 }
-@media (min-width: 900px) and (max-height: 760px) {
-  .logo-aura { --s: 130px; }
-  .screen > .card { padding: 2vh 4vw; }
+
+/* Botones Inicio y Salir */
+.chip-salir:hover { border-color: var(--bad); color: #ffb3b5; }
+@media (max-width: 600px) {
+  .topbar { justify-content: center; }
+  .chip-visitas { margin-right: auto; }
+  .topbar { justify-content: flex-end; flex-wrap: nowrap; gap: 5px; padding: 8px; }
+  .topbar .chip { padding: 6px 9px; white-space: nowrap; }
 }
-@media (min-width: 900px) { .screen > .card > .btn { width: auto; align-self: center; } }

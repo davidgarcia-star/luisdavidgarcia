@@ -10,10 +10,10 @@
 
   // Equipos: color fijo por equipo y nombres sugeridos
   const TEAM_COLORS = [
-    { hex: "#e5484d", name: "rojo" },
-    { hex: "#3e8bff", name: "azul" },
-    { hex: "#2fbf71", name: "verde" },
-    { hex: "#a970ff", name: "morado" },
+    { hex: "#e5484d", name: "Rojo" },
+    { hex: "#3e8bff", name: "Azul" },
+    { hex: "#2fbf71", name: "Verde" },
+    { hex: "#a970ff", name: "Morado" },
   ];
   const PRESET_NAMES = ["Leones de Judá", "Águilas de Fuego", "Guerreros de Fe", "Hijos de la Luz"];
   const CUSTOM = "custom";
@@ -151,8 +151,8 @@
 
   function refreshSoundButtons() {
     const m = Sound.musicOn, s = Sound.sfxOn;
-    $("btnMusic").textContent = "🎵 Música: " + (m ? "Sí" : "No");
-    $("btnSfx").textContent = "🔊 Sonidos: " + (s ? "Sí" : "No");
+    $("btnMusic").innerHTML = "🎵 <span class=\"chip-txt\">Música: " + (m ? "Sí" : "No") + "</span>";
+    $("btnSfx").innerHTML = (s ? "🔊" : "🔇") + " <span class=\"chip-txt\">Sonidos: " + (s ? "Sí" : "No") + "</span>";
     $("btnMusic").classList.toggle("off", !m);
     $("btnSfx").classList.toggle("off", !s);
     $("btnMusic").setAttribute("aria-pressed", String(m));
@@ -168,7 +168,15 @@
   $("btnSfxMenu").onclick = toggleSfx;
 
   /* ---------- botones de navegación ---------- */
-  $("btnStart").onclick = () => { Sound.start(); Sound.click(); go("menu"); };
+  $("btnStart").onclick = () => { Sound.start(); Sound.triumph(); go("menu"); };
+  // Botón "Inicio": vuelve a la bienvenida
+  $("btnHome").onclick = () => { Sound.start(); Sound.click(); clearInterval(state.timer); state.active = false; go("welcome"); };
+  // Botón "Salir": cierra la página; si el navegador no lo permite, vuelve a la página principal
+  $("btnExit").onclick = () => {
+    Sound.click();
+    window.close();
+    setTimeout(() => { if (!window.closed) location.href = "../index.html"; }, 250);
+  };
   $("btnSolo").onclick = () => { Sound.click(); state.mode = "solo"; go("levels"); };
   $("btnTeams").onclick = () => { Sound.click(); state.mode = "teams"; go("teams"); };
   document.querySelectorAll("[data-back]").forEach((b) => {
@@ -200,7 +208,7 @@
 
       const label = document.createElement("div");
       label.className = "team-label";
-      label.innerHTML = "<b>Equipo " + (i + 1) + "</b> · color " + TEAM_COLORS[i].name;
+      label.innerHTML = "<b>Equipo " + (i + 1) + "</b> · Color " + TEAM_COLORS[i].name;
 
       const sel = document.createElement("select");
       sel.setAttribute("aria-label", "Nombre del equipo " + (i + 1));
@@ -337,6 +345,7 @@
     state.active = true;
     state.finished = false;
     $("playLevel").textContent = lv.emoji + " " + lv.name;
+    Sound.triumph();
     go("play");
     renderScoreboard();
     nextQuestion();
