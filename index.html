@@ -182,6 +182,80 @@
             .btn-juego .destellos { display: none; }
         }
 
+
+        /* ===== Logo MIPROAA con luces, igual que en el juego ===== */
+        .logo-aura { --s: 46px; position: relative; display: inline-block; flex: none; width: var(--s); height: var(--s); }
+        .logo-aura.foot-aura { --s: 84px; margin: 14px 0 1.2rem 14px; }
+        .logo-aura .logo-plate {
+            position: relative; z-index: 3; display: grid; place-items: center;
+            width: 100%; height: 100%; border-radius: 50%; background: #fff;
+            box-shadow: 0 0 0 2px rgba(244,197,66,.8), 0 0 14px rgba(255,214,102,.7);
+        }
+        .logo-aura.foot-aura .logo-plate { box-shadow: 0 0 0 3px rgba(244,197,66,.8), 0 0 20px rgba(255,214,102,.7); }
+        .logo-aura .logo-plate img { width: 82%; height: 82%; object-fit: contain; display: block; padding: 0; margin: 0; background: none; border-radius: 0; }
+        .logo-aura > span:not(.logo-plate) { position: absolute; border-radius: 50%; pointer-events: none; }
+        .aura-halo { inset: -22%; z-index: 0;
+            background: radial-gradient(circle, rgba(255,226,130,.55) 30%, rgba(244,197,66,.18) 55%, transparent 70%);
+            animation: auraRespira 2.8s ease-in-out infinite; }
+        @keyframes auraRespira { 0%, 100% { transform: scale(.92); opacity: .65; } 50% { transform: scale(1.08); opacity: 1; } }
+        .aura-rayos { inset: -24%; z-index: 1; animation: auraGira 14s linear infinite; }
+        .aura-rayos::before, .aura-rayos::after { content: ""; position: absolute; inset: 0; border-radius: 50%; }
+        .aura-rayos::before {
+            background: repeating-conic-gradient(from 0deg, rgba(255,226,140,.6) 0deg 2.5deg, transparent 2.5deg 30deg);
+            -webkit-mask: radial-gradient(circle, transparent 41%, #000 43%, transparent 56%);
+                    mask: radial-gradient(circle, transparent 41%, #000 43%, transparent 56%); }
+        .aura-rayos::after {
+            background:
+                conic-gradient(from 11deg,  rgba(255,226,140,.6) 0 2deg, transparent 2deg 360deg),
+                conic-gradient(from 52deg,  rgba(255,226,140,.5) 0 1.6deg, transparent 1.6deg 360deg),
+                conic-gradient(from 101deg, rgba(255,226,140,.6) 0 2deg, transparent 2deg 360deg),
+                conic-gradient(from 147deg, rgba(255,226,140,.45) 0 1.5deg, transparent 1.5deg 360deg),
+                conic-gradient(from 196deg, rgba(255,226,140,.6) 0 2deg, transparent 2deg 360deg),
+                conic-gradient(from 238deg, rgba(255,226,140,.5) 0 1.6deg, transparent 1.6deg 360deg),
+                conic-gradient(from 283deg, rgba(255,226,140,.6) 0 2deg, transparent 2deg 360deg),
+                conic-gradient(from 329deg, rgba(255,226,140,.45) 0 1.5deg, transparent 1.5deg 360deg);
+            -webkit-mask: radial-gradient(circle, transparent 41%, #000 43%, rgba(0,0,0,.5) 54%, transparent 64%);
+                    mask: radial-gradient(circle, transparent 41%, #000 43%, rgba(0,0,0,.5) 54%, transparent 64%); }
+        .aura-anillo { inset: -5px; z-index: 2;
+            background: conic-gradient(from 0deg,
+                rgba(120,85,10,.55) 0deg, rgba(120,85,10,.55) 150deg,
+                #b8860b 200deg, #f4c542 260deg, #ffe58a 310deg, #fffbe6 345deg, #ffd34d 352deg, rgba(120,85,10,.55) 360deg);
+            -webkit-mask: radial-gradient(circle, transparent calc(50% - 4px), #000 calc(50% - 3px));
+                    mask: radial-gradient(circle, transparent calc(50% - 4px), #000 calc(50% - 3px));
+            filter: drop-shadow(0 0 4px #ffd34d) drop-shadow(0 0 8px rgba(244,197,66,.95));
+            animation: auraGira .8s linear infinite; }
+        .foot-aura .aura-anillo { inset: -9px;
+            -webkit-mask: radial-gradient(circle, transparent calc(50% - 7px), #000 calc(50% - 6px));
+                    mask: radial-gradient(circle, transparent calc(50% - 7px), #000 calc(50% - 6px)); }
+        @keyframes auraGira { to { transform: rotate(360deg); } }
+        .aura-chispas { inset: -16%; z-index: 4; animation: auraGira 2.4s linear infinite; }
+        .aura-chispas i {
+            position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px;
+            background: radial-gradient(circle, #fff 0 18%, transparent 22%),
+                        linear-gradient(90deg, transparent 42%, #fff 50%, transparent 58%),
+                        linear-gradient(0deg, transparent 42%, #fff 50%, transparent 58%);
+            filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 5px #f4c542);
+            transform: rotate(var(--a)) translateY(calc(var(--s) * -0.66)) scale(.2); opacity: 0;
+            animation: chispa 2.4s ease-in-out infinite; }
+        .nav-aura .aura-chispas i { width: 6px; height: 6px; margin: -3px; }
+        .aura-chispas i:nth-child(1) { --a: 0deg;   animation-delay: 0s; }
+        .aura-chispas i:nth-child(2) { --a: 45deg;  animation-delay: .3s; }
+        .aura-chispas i:nth-child(3) { --a: 90deg;  animation-delay: .6s; }
+        .aura-chispas i:nth-child(4) { --a: 135deg; animation-delay: .9s; }
+        .aura-chispas i:nth-child(5) { --a: 180deg; animation-delay: 1.2s; }
+        .aura-chispas i:nth-child(6) { --a: 225deg; animation-delay: 1.5s; }
+        .aura-chispas i:nth-child(7) { --a: 270deg; animation-delay: 1.8s; }
+        .aura-chispas i:nth-child(8) { --a: 315deg; animation-delay: 2.1s; }
+        @keyframes chispa {
+            0%, 100% { opacity: 0; transform: rotate(var(--a)) translateY(calc(var(--s) * -0.66)) scale(.2); }
+            45%      { opacity: 1; transform: rotate(var(--a)) translateY(calc(var(--s) * -0.66)) scale(1.2) rotate(45deg); }
+            70%      { opacity: 0; transform: rotate(var(--a)) translateY(calc(var(--s) * -0.66)) scale(.4); } }
+        .brand { gap: .9rem; }
+        @media (prefers-reduced-motion: reduce) {
+            .aura-anillo, .aura-rayos, .aura-halo, .aura-chispas { animation: none !important; }
+            .aura-chispas { display: none; }
+        }
+
         @keyframes ring {
             0% { transform: scale(1); opacity: .8; }
             80%, 100% { transform: scale(1.22); opacity: 0; }
@@ -1705,7 +1779,7 @@
 <header class="site-header" id="siteHeader">
     <div class="wrap nav">
         <a class="brand" href="#inicio" aria-label="MIPROAA, ir al inicio">
-            <img src="./img/logo.jpeg" alt="" width="44" height="44">
+            <span class="logo-aura nav-aura"><span class="aura-halo" aria-hidden="true"></span><span class="aura-rayos" aria-hidden="true"></span><span class="aura-anillo" aria-hidden="true"></span><span class="aura-chispas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="logo-plate"><img src="./juego-biblico/logo.png" alt="" width="44" height="44"></span></span>
             <span>MIPROAA</span>
         </a>
 
@@ -2116,7 +2190,7 @@
     <div class="wrap">
         <div class="footer-grid">
             <div class="footer-brand">
-                <img src="./img/logo.jpeg" alt="Logo del ministerio Ardiendo por el Avivamiento" width="84" height="84" loading="lazy">
+                <span class="logo-aura foot-aura"><span class="aura-halo" aria-hidden="true"></span><span class="aura-rayos" aria-hidden="true"></span><span class="aura-anillo" aria-hidden="true"></span><span class="aura-chispas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="logo-plate"><img src="./juego-biblico/logo.png" alt="Logo del ministerio Ardiendo por el Avivamiento" width="84" height="84" loading="lazy"></span></span>
                 <h2>Ministerio Profético</h2>
                 <p>Ardiendo por el Avivamiento</p>
             </div>
