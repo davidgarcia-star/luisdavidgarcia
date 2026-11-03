@@ -580,3 +580,14 @@ body { min-height: 100dvh; }
 /* PayPal centrado en su propia línea */
 .welcome-extras { flex-direction: column; justify-content: center; }
 .welcome-extras .btn-paypal { align-self: center; }
+
+/* Botón "Página Web" */
+a.chip { text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+.chip-web { border-color: rgba(244,197,66,.55); }
+.chip-web:hover { border-color: var(--gold); color: var(--gold); }
+@media (max-width: 600px) {
+  .topbar .chip { padding: 6px 7px; font-size: .78rem; }
+  .topbar { gap: 4px; padding: 8px 6px; }
+  #btnFull { display: none; }
+}
+@media (max-width: 360px) { .chip-lbl { display: none; } }
