@@ -205,6 +205,22 @@ const Sound = (() => {
       if (!sfxOn || !ensureCtx()) return;
       tone(880, ctx.currentTime, 0.05, "square", 0.05, sfxGain, 0.002);
     },
+    // Efecto de triunfo (trompetas) al iniciar el juego
+    triumph() {
+      if (!sfxOn || !ensureCtx()) return;
+      const t = ctx.currentTime + 0.05;
+      const notas = [
+        [392.00, 0.00, 0.14], [392.00, 0.16, 0.14], [392.00, 0.32, 0.14],
+        [523.25, 0.48, 0.55], [659.25, 1.05, 0.22], [783.99, 1.30, 0.9],
+      ];
+      notas.forEach(([f, d, dur]) => {
+        tone(f, t + d, dur, "sawtooth", 0.07, sfxGain, 0.02);
+        tone(f, t + d, dur, "triangle", 0.2, sfxGain, 0.02);
+        tone(f * 2, t + d, dur * 0.8, "sine", 0.05, sfxGain, 0.02);
+      });
+      // acorde final brillante
+      [523.25, 659.25, 783.99, 1046.5].forEach((f) => tone(f, t + 1.3, 1.1, "triangle", 0.09, sfxGain, 0.03));
+    },
     fanfare() {
       if (!sfxOn || !ensureCtx()) return;
       const t = ctx.currentTime;

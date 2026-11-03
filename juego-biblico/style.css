@@ -544,3 +544,12 @@ body { min-height: 100dvh; }
   .big-score { font-size: clamp(2.2rem, 7vh, 4rem); }
   .logo { font-size: clamp(2.2rem, 6vh, 3.6rem); }
 }
+
+/* Botones Inicio y Salir */
+.chip-salir:hover { border-color: var(--bad); color: #ffb3b5; }
+@media (max-width: 600px) {
+  .topbar { justify-content: center; }
+  .chip-visitas { margin-right: auto; }
+  .topbar { justify-content: flex-end; flex-wrap: nowrap; gap: 5px; padding: 8px; }
+  .topbar .chip { padding: 6px 9px; white-space: nowrap; }
+}

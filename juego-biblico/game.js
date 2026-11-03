@@ -151,8 +151,8 @@
 
   function refreshSoundButtons() {
     const m = Sound.musicOn, s = Sound.sfxOn;
-    $("btnMusic").textContent = "🎵 Música: " + (m ? "Sí" : "No");
-    $("btnSfx").textContent = "🔊 Sonidos: " + (s ? "Sí" : "No");
+    $("btnMusic").innerHTML = "🎵 <span class=\"chip-txt\">Música: " + (m ? "Sí" : "No") + "</span>";
+    $("btnSfx").innerHTML = (s ? "🔊" : "🔇") + " <span class=\"chip-txt\">Sonidos: " + (s ? "Sí" : "No") + "</span>";
     $("btnMusic").classList.toggle("off", !m);
     $("btnSfx").classList.toggle("off", !s);
     $("btnMusic").setAttribute("aria-pressed", String(m));
@@ -168,7 +168,15 @@
   $("btnSfxMenu").onclick = toggleSfx;
 
   /* ---------- botones de navegación ---------- */
-  $("btnStart").onclick = () => { Sound.start(); Sound.click(); go("menu"); };
+  $("btnStart").onclick = () => { Sound.start(); Sound.triumph(); go("menu"); };
+  // Botón "Inicio": vuelve a la bienvenida
+  $("btnHome").onclick = () => { Sound.start(); Sound.click(); clearInterval(state.timer); state.active = false; go("welcome"); };
+  // Botón "Salir": cierra la página; si el navegador no lo permite, vuelve a la página principal
+  $("btnExit").onclick = () => {
+    Sound.click();
+    window.close();
+    setTimeout(() => { if (!window.closed) location.href = "../index.html"; }, 250);
+  };
   $("btnSolo").onclick = () => { Sound.click(); state.mode = "solo"; go("levels"); };
   $("btnTeams").onclick = () => { Sound.click(); state.mode = "teams"; go("teams"); };
   document.querySelectorAll("[data-back]").forEach((b) => {
@@ -337,6 +345,7 @@
     state.active = true;
     state.finished = false;
     $("playLevel").textContent = lv.emoji + " " + lv.name;
+    Sound.triumph();
     go("play");
     renderScoreboard();
     nextQuestion();
