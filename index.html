@@ -256,6 +256,83 @@
             .aura-chispas { display: none; }
         }
 
+
+        /* ============================================
+           ACCESIBILIDAD (personas ciegas y con baja visión)
+           ============================================ */
+        main:focus { outline: none; }
+        .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+        .skip-link {
+            position: fixed; left: 12px; top: -80px; z-index: 10000;
+            background: #FFE066; color: #000; font-weight: 800; padding: 12px 18px; border-radius: 10px;
+            text-decoration: none; box-shadow: 0 6px 20px rgba(0,0,0,.5); transition: top .2s;
+        }
+        .skip-link:focus { top: 12px; }
+
+        .a11y-btn {
+            position: fixed; left: 0; top: 50%; transform: translateY(-50%); z-index: 9000;
+            display: flex; align-items: center; gap: .4rem;
+            background: #1a56db; color: #fff; border: 2px solid #fff; border-left: 0;
+            border-radius: 0 14px 14px 0; padding: .7rem .7rem .7rem .55rem;
+            font: 700 .95rem/1 inherit; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.45);
+        }
+        .a11y-btn svg { width: 26px; height: 26px; flex: none; }
+        .a11y-btn .a11y-btn-txt { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .3s; }
+        .a11y-btn:hover .a11y-btn-txt, .a11y-btn:focus-visible .a11y-btn-txt, .a11y-btn[aria-expanded="true"] .a11y-btn-txt { max-width: 12em; }
+        .a11y-panel {
+            position: fixed; left: 12px; top: 50%; transform: translateY(-50%); z-index: 9001;
+            width: min(330px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto;
+            background: #0d1117; color: #fff; border: 2px solid #FFE066; border-radius: 16px;
+            padding: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,.6);
+        }
+        .a11y-panel[hidden] { display: none; }
+        .a11y-panel h2 { font-size: 1.2rem; margin: 0 0 .3rem; color: #FFE066; }
+        .a11y-panel p { margin: 0 0 .8rem; font-size: .9rem; color: #d0d7e2; line-height: 1.45; }
+        .a11y-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+        .a11y-grid button, .a11y-close {
+            font: 700 .92rem/1.2 inherit; color: #fff; background: #1f2937; border: 2px solid #4b5563;
+            border-radius: 12px; padding: .75rem .5rem; cursor: pointer; text-align: center;
+        }
+        .a11y-grid button[aria-pressed="true"] { background: #FFE066; color: #000; border-color: #FFE066; }
+        .a11y-grid .full { grid-column: 1 / -1; }
+        .a11y-close { width: 100%; margin-top: .7rem; background: transparent; }
+        .a11y-grid button:hover, .a11y-close:hover { border-color: #FFE066; }
+        .a11y-reading { outline: 4px solid #FFE066 !important; outline-offset: 4px; border-radius: 6px; background: rgba(255,224,102,.12); }
+
+        /* Tamaño de texto */
+        html.a11y-t1 { font-size: 112.5%; }
+        html.a11y-t2 { font-size: 125%; }
+        html.a11y-t3 { font-size: 140%; }
+        /* El título grande del inicio no se agranda más para que no se corte */
+        html.a11y-t1 .h1-main .mask > span { font-size: clamp(2.3rem, 10.2vw, 4.62rem); }
+        html.a11y-t2 .h1-main .mask > span { font-size: clamp(2.08rem, 9.2vw, 4.16rem); }
+        html.a11y-t3 .h1-main .mask > span { font-size: clamp(1.86rem, 8.2vw, 3.71rem); }
+        /* El menú superior en PC mantiene su tamaño para que quepa completo */
+        @media (min-width: 1000px) { html[class*="a11y-t"] .menu a { font-size: 15px !important; } html[class*="a11y-t"] .brand span { font-size: 22px !important; } }
+        /* Alto contraste: fondo negro, texto blanco y enlaces amarillos */
+        html.a11y-contrast, html.a11y-contrast body { background: #000 !important; }
+        html.a11y-contrast body *:not(img):not(video):not(iframe):not(svg):not(path):not(.a11y-panel):not(.a11y-panel *):not(.a11y-btn):not(.a11y-btn *) {
+            background-color: transparent !important; background-image: none !important; color: #fff !important;
+            text-shadow: none !important; box-shadow: none !important; border-color: #fff !important;
+            -webkit-text-fill-color: currentColor !important; filter: none !important;
+        }
+        html.a11y-contrast .site-header, html.a11y-contrast .btn, html.a11y-contrast button:not(.a11y-btn),
+        html.a11y-contrast input, html.a11y-contrast select, html.a11y-contrast textarea, html.a11y-contrast dialog,
+        html.a11y-contrast .menu { background-color: #000 !important; }
+        html.a11y-contrast .logo-plate { background-color: #fff !important; }
+        html.a11y-contrast a, html.a11y-contrast a *:not(.logo-plate) { color: #FFE066 !important; }
+        html.a11y-contrast .btn, html.a11y-contrast button:not(.a11y-btn) { border: 2px solid #FFE066 !important; }
+        html.a11y-contrast .aura-halo, html.a11y-contrast .aura-rayos, html.a11y-contrast .aura-chispas, html.a11y-contrast canvas { display: none !important; }
+        /* Subrayar enlaces */
+        html.a11y-links a:not(.btn) { text-decoration: underline !important; text-underline-offset: 3px; }
+        html.a11y-links a.btn { outline: 2px dashed currentColor; outline-offset: 2px; }
+        /* Detener animaciones */
+        html.a11y-still *, html.a11y-still *::before, html.a11y-still *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        html.a11y-still .reveal, html.a11y-still .fade-in, html.a11y-still .zoom-in img, html.a11y-still .mask > span { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+        html.a11y-still .rotator strong.out { opacity: 1 !important; transform: none !important; }
+        /* Cursor grande */
+        html.a11y-cursor, html.a11y-cursor * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l16 10-7 1 4 8-3 1-4-8-5 5z' fill='%23FFE066' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") 4 2, auto !important; }
+
         @keyframes ring {
             0% { transform: scale(1); opacity: .8; }
             80%, 100% { transform: scale(1.22); opacity: 0; }
@@ -1763,6 +1840,31 @@
 <div class="progress" id="progress" aria-hidden="true"></div>
 <div class="spot" id="spot" aria-hidden="true"></div>
 
+<a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+<p class="sr-only">Este sitio tiene opciones de accesibilidad: lectura en voz alta, texto más grande y alto contraste. Usa el botón Accesibilidad, al lado izquierdo de la pantalla. Presiona la tecla Escape para detener cualquier voz.</p>
+
+<button class="a11y-btn" id="a11yBtn" type="button" aria-expanded="false" aria-controls="a11yPanel">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="4" r="2.2" fill="currentColor"/><path d="M4 8.5c2.6.8 5.3 1.2 8 1.2s5.4-.4 8-1.2l.5 1.8c-2 .7-4.1 1.1-6.2 1.3v3.2l2.3 6.6-1.8.7L12.5 16h-1l-2.3 6.1-1.8-.7 2.3-6.6v-3.2c-2.1-.2-4.2-.6-6.2-1.3z" fill="currentColor"/></svg>
+    <span class="a11y-btn-txt">Accesibilidad</span>
+</button>
+<section class="a11y-panel" id="a11yPanel" role="dialog" aria-modal="false" aria-labelledby="a11yTitle" hidden>
+    <h2 id="a11yTitle">Opciones de accesibilidad</h2>
+    <p>Ajusta el sitio a tu manera. Tus opciones se guardan en este dispositivo.</p>
+    <div class="a11y-grid">
+        <button type="button" class="full" data-a11y="leer" aria-pressed="false">🔊 Leer el sitio en voz alta</button>
+        <button type="button" data-a11y="pausa">⏸️ Pausar / seguir</button>
+        <button type="button" data-a11y="detener">⏹️ Detener voz</button>
+        <button type="button" data-a11y="mas">A+ Texto más grande</button>
+        <button type="button" data-a11y="menos">A− Texto más pequeño</button>
+        <button type="button" data-a11y="contraste" aria-pressed="false">◐ Alto contraste</button>
+        <button type="button" data-a11y="enlaces" aria-pressed="false">🔗 Resaltar enlaces</button>
+        <button type="button" data-a11y="quieto" aria-pressed="false">✋ Detener animaciones</button>
+        <button type="button" data-a11y="cursor" aria-pressed="false">🖱️ Cursor grande</button>
+        <button type="button" class="full" data-a11y="reiniciar">↺ Restablecer todo</button>
+    </div>
+    <p class="sr-only" id="a11yStatus" role="status" aria-live="polite"></p>
+    <button type="button" class="a11y-close" data-a11y="cerrar">Cerrar opciones</button>
+</section>
 <audio id="bgm" loop preload="none" src="./audio/instrumental.m4a"></audio>
 
 <button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Reproducir música instrumental">
@@ -1801,7 +1903,7 @@
     </div>
 </header>
 
-<main>
+<main id="contenido" tabindex="-1">
 
     <!-- ================= INICIO ================= -->
     <section class="hero" id="inicio">
@@ -2891,9 +2993,138 @@
 </script>
 
 <script>
+/* ===== Accesibilidad: lectura en voz alta, tamaño de texto, contraste, etc. ===== */
+(function () {
+    var html = document.documentElement;
+    var btn = document.getElementById('a11yBtn');
+    var panel = document.getElementById('a11yPanel');
+    var status = document.getElementById('a11yStatus');
+    if (!btn || !panel) return;
+    var KEY = 'miproaa_a11y';
+    var st = { t: 0, contraste: false, enlaces: false, quieto: false, cursor: false };
+    try { var g = JSON.parse(localStorage.getItem(KEY) || 'null'); if (g) for (var k in g) st[k] = g[k]; } catch (e) {}
+
+    function decir(msg) { if (status) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 50); } }
+    function aplicar() {
+        html.classList.remove('a11y-t1', 'a11y-t2', 'a11y-t3');
+        if (st.t > 0) html.classList.add('a11y-t' + st.t);
+        html.classList.toggle('a11y-contrast', !!st.contraste);
+        html.classList.toggle('a11y-links', !!st.enlaces);
+        html.classList.toggle('a11y-still', !!st.quieto);
+        html.classList.toggle('a11y-cursor', !!st.cursor);
+        ['contraste', 'enlaces', 'quieto', 'cursor'].forEach(function (k) {
+            var b = panel.querySelector('[data-a11y="' + k + '"]');
+            if (b) b.setAttribute('aria-pressed', String(!!st[k]));
+        });
+        try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
+    }
+    aplicar();
+
+    /* ---- Lectura en voz alta del contenido ---- */
+    var synth = window.speechSynthesis;
+    var cola = [], idx = 0, leyendo = false, actual = null;
+    function vozES() {
+        if (!synth) return null;
+        var v = synth.getVoices().filter(function (x) { return /^es/i.test(x.lang); });
+        var pref = ['es-DO', 'es-US', 'es-MX', 'es-419', 'es-ES'];
+        v.sort(function (a, b) { var pa = pref.indexOf(a.lang), pb = pref.indexOf(b.lang); return (pa < 0 ? 9 : pa) - (pb < 0 ? 9 : pb); });
+        return v[0] || null;
+    }
+    function bloquesLegibles() {
+        var main = document.getElementById('contenido') || document.body;
+        var sel = 'h1, h2, h3, p, li, blockquote, figcaption, label, .btn';
+        return [].slice.call(main.querySelectorAll(sel)).filter(function (el) {
+            if (el.closest('[aria-hidden="true"], .a11y-panel, .sr-only, script, style')) return false;
+            if (el.parentElement && el.parentElement.closest(sel)) return false;   // evita leer dos veces
+            var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+            if (cs.display === 'none' || cs.visibility === 'hidden') return false;
+            if (!r.width && !r.height) return false;
+            return (el.innerText || '').trim().length > 1;
+        });
+    }
+    function marcar(el) {
+        if (actual) actual.classList.remove('a11y-reading');
+        actual = el;
+        if (el) { el.classList.add('a11y-reading'); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+    }
+    function siguiente() {
+        if (!leyendo) return;
+        if (idx >= cola.length) { detener(); decir('Lectura terminada'); return; }
+        var el = cola[idx++];
+        var texto = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (/^H[1-3]$/.test(el.tagName)) texto = 'Título: ' + texto + '.';
+        var u = new SpeechSynthesisUtterance(texto);
+        var v = vozES(); if (v) u.voice = v;
+        u.lang = v ? v.lang : 'es-ES'; u.rate = 1; u.pitch = 1;
+        u.onend = siguiente;
+        u.onerror = function () { if (leyendo) siguiente(); };
+        marcar(el);
+        synth.speak(u);
+    }
+    function pararBienvenida() { try { document.querySelectorAll('audio').forEach(function (a) { if (/bienvenida/.test(a.src)) a.pause(); }); } catch (e) {} if (window.__vozBienvenida) window.__vozBienvenida.pause(); }
+    function leer() {
+        if (!synth) { decir('Tu navegador no permite la lectura en voz alta'); return; }
+        pararBienvenida();
+        synth.cancel();
+        cola = bloquesLegibles(); idx = 0; leyendo = true;
+        panel.querySelector('[data-a11y="leer"]').setAttribute('aria-pressed', 'true');
+        cerrar(false);
+        siguiente();
+    }
+    function detener() {
+        leyendo = false;
+        if (synth) synth.cancel();
+        marcar(null);
+        pararBienvenida();
+        var b = panel.querySelector('[data-a11y="leer"]'); if (b) b.setAttribute('aria-pressed', 'false');
+    }
+    function pausa() {
+        if (!synth) return;
+        if (synth.paused) { synth.resume(); decir('Lectura reanudada'); }
+        else if (synth.speaking) { synth.pause(); decir('Lectura en pausa'); }
+    }
+
+    /* ---- Panel ---- */
+    function abrir() {
+        panel.hidden = false; btn.setAttribute('aria-expanded', 'true');
+        pararBienvenida();
+        var f = panel.querySelector('button'); if (f) f.focus();
+    }
+    function cerrar(devolverFoco) {
+        panel.hidden = true; btn.setAttribute('aria-expanded', 'false');
+        if (devolverFoco !== false) btn.focus();
+    }
+    btn.addEventListener('click', function () { panel.hidden ? abrir() : cerrar(); });
+    panel.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-a11y]'); if (!b) return;
+        var a = b.getAttribute('data-a11y');
+        if (a === 'leer') { leyendo ? detener() : leer(); return; }
+        if (a === 'pausa') return pausa();
+        if (a === 'detener') { detener(); decir('Voz detenida'); return; }
+        if (a === 'cerrar') return cerrar();
+        if (a === 'mas') { st.t = Math.min(3, st.t + 1); decir('Texto más grande'); }
+        if (a === 'menos') { st.t = Math.max(0, st.t - 1); decir('Texto más pequeño'); }
+        if (a === 'contraste' || a === 'enlaces' || a === 'quieto' || a === 'cursor') {
+            st[a] = !st[a]; decir(b.textContent.replace(/^[^A-Za-zÁÉÍÓÚáéíóúÑñ]+/, '') + (st[a] ? ' activado' : ' desactivado'));
+        }
+        if (a === 'reiniciar') { st = { t: 0, contraste: false, enlaces: false, quieto: false, cursor: false }; decir('Opciones restablecidas'); }
+        aplicar();
+    });
+    // Escape: detiene cualquier voz y cierra el panel. Alt + A abre las opciones.
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { detener(); if (!panel.hidden) cerrar(); }
+        if (e.altKey && (e.key === 'a' || e.key === 'A')) { e.preventDefault(); panel.hidden ? abrir() : cerrar(); }
+    });
+    // Saltar al contenido: lleva el foco al contenido principal
+    var skip = document.querySelector('.skip-link');
+    if (skip) skip.addEventListener('click', function () { setTimeout(function () { var m = document.getElementById('contenido'); if (m) m.focus(); }, 0); });
+})();
+</script>
+<script>
 /* Voz de bienvenida: suena cada vez que se abre o se actualiza el sitio */
 (function () {
     var voz = new Audio('./audio/bienvenida-web.mp3?v=2');
+    window.__vozBienvenida = voz;   // permite detenerla con Escape o desde Accesibilidad
     voz.preload = 'auto';
     voz.volume = 1;
     var sonado = false;
