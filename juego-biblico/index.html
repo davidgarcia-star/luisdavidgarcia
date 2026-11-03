@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Desafío Bíblico RD</title>
   <meta name="description" content="Desafío Bíblico RD – Juego de preguntas bíblicas. MIPROAA Ministerio Profético Ardiendo Por El Avivamiento.">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <div id="particles" aria-hidden="true"></div>
@@ -13,6 +13,7 @@
 
   <div class="topbar">
     <span class="chip chip-visitas" title="Personas que han entrado al juego" aria-live="polite">👥 <b class="js-visitas">…</b> <span class="chip-txt">visitantes</span></span>
+    <button id="btnFull" class="chip" type="button" hidden>⛶ <span class="chip-txt">Pantalla completa</span></button>
     <button id="btnMusic" class="chip" type="button" aria-pressed="true">🎵 Música: Sí</button>
     <button id="btnSfx" class="chip" type="button" aria-pressed="true">🔊 Sonidos: Sí</button>
   </div>
@@ -22,11 +23,15 @@
     <!-- BIENVENIDA -->
     <section id="screen-welcome" class="screen active">
       <div class="card center">
-        <div class="logo-plate"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="150" height="150"></div>
+        <div class="logo-aura"><span class="aura-halo" aria-hidden="true"></span><span class="aura-rayos" aria-hidden="true"></span><span class="aura-anillo" aria-hidden="true"></span><span class="aura-chispas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div class="logo-plate"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="150" height="150"></div></div>
         <p class="kicker">Bienvenido a</p>
         <h1 class="title">Desafío Bíblico <span>RD</span></h1>
-        <p class="lead">Pon a prueba tu conocimiento de la Palabra de Dios.</p>
-        <button id="btnStart" class="btn primary big" type="button">Comenzar</button>
+        <div class="saludo">
+          <p class="saludo-hola">¡Dios te bendiga y bienvenido! 🙌</p>
+          <p>Nos alegra mucho que estés aquí. Este juego fue preparado con amor para que aprendas, te diviertas y crezcas en el conocimiento de la Palabra de Dios, solo o junto a tu familia, amigos o iglesia.</p>
+          <p class="saludo-verso">“Lámpara es a mis pies tu palabra, y luz para mi camino.” <small>— Salmos 119:105 (LBLA)</small></p>
+        </div>
+        <button id="btnStart" class="btn primary big" type="button">Siguiente →</button>
         <p class="visitas" title="Personas que han entrado al juego" aria-live="polite">
           <span aria-hidden="true">👥</span> <strong id="juegoVisitas" class="js-visitas">…</strong> personas han entrado al juego
         </p>
@@ -41,7 +46,7 @@
     <!-- MENÚ -->
     <section id="screen-menu" class="screen">
       <div class="card center">
-        <div class="logo-plate small"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA" width="84" height="84"></div>
+        <div class="logo-aura small"><span class="aura-halo" aria-hidden="true"></span><span class="aura-rayos" aria-hidden="true"></span><span class="aura-anillo" aria-hidden="true"></span><span class="aura-chispas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div class="logo-plate small"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA" width="84" height="84"></div></div>
         <h2 class="title small">Desafío Bíblico <span>RD</span></h2>
         <p class="lead">Elige cómo quieres jugar</p>
         <div class="stack">
@@ -145,10 +150,30 @@
     Desafío Bíblico RD · MIPROAA Ministerio Profético Ardiendo Por El Avivamiento
   </footer>
 
-  <script src="audio.js?v=3"></script>
-  <script src="questions.js?v=3"></script>
-  <script src="game.js?v=3"></script>
+  <script src="audio.js?v=4"></script>
+  <script src="questions.js?v=4"></script>
+  <script src="game.js?v=4"></script>
   <script>
+    /* Botón de pantalla completa (solo donde el navegador lo permite) */
+    (function () {
+      var b = document.getElementById('btnFull'), d = document.documentElement;
+      var req = d.requestFullscreen || d.webkitRequestFullscreen;
+      if (!b || !req) return;
+      b.hidden = false;
+      function activo() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+      function pintar() {
+        b.innerHTML = activo() ? '✕ <span class="chip-txt">Salir de pantalla completa</span>' : '⛶ <span class="chip-txt">Pantalla completa</span>';
+        b.setAttribute('aria-pressed', String(activo()));
+      }
+      b.onclick = function () {
+        if (activo()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        else { var r = req.call(d); if (r && r.catch) r.catch(function () {}); }
+      };
+      document.addEventListener('fullscreenchange', pintar);
+      document.addEventListener('webkitfullscreenchange', pintar);
+      pintar();
+    })();
+
     /* Contador de personas que han entrado al juego (una vez por navegador) */
     (function () {
       var BASE = 'https://abacus.jasoncameron.dev/';
