@@ -2891,10 +2891,8 @@
 </script>
 
 <script>
-/* Voz de bienvenida al entrar al sitio web (una vez por visita) */
+/* Voz de bienvenida: suena cada vez que se abre o se actualiza el sitio */
 (function () {
-    var CLAVE = 'miproaa_voz_bienvenida_web';
-    try { if (sessionStorage.getItem(CLAVE) === '1') return; } catch (e) {}
     var voz = new Audio('./audio/bienvenida-web.mp3?v=2');
     voz.preload = 'auto';
     voz.volume = 1;
@@ -2910,7 +2908,7 @@
         if (sonado || intentando) return;
         intentando = true;
         var p = voz.play();
-        var ok = function () { intentando = false; sonado = true; quitar(); try { sessionStorage.setItem(CLAVE, '1'); } catch (e) {} };
+        var ok = function () { intentando = false; sonado = true; quitar(); };
         if (p && p.then) p.then(ok).catch(function () { intentando = false; }); else ok();
     }
     // Si el navegador bloquea el sonido al cargar, suena con el primer toque, clic o tecla.
