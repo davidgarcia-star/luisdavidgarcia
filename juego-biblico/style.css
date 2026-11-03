@@ -588,6 +588,15 @@ a.chip { text-decoration: none; display: inline-flex; align-items: center; gap: 
 @media (max-width: 600px) {
   .topbar .chip { padding: 6px 7px; font-size: .78rem; }
   .topbar { gap: 4px; padding: 8px 6px; }
-  #btnFull { display: none; }
 }
 @media (max-width: 360px) { .chip-lbl { display: none; } }
+
+/* Pantalla completa en celulares: ícono arriba y botón visible en la bienvenida */
+.btn-full-cel { display: none; }
+.btn-full-cel[hidden], .full-tip[hidden] { display: none !important; }
+.full-tip { max-width: 30em; margin: 0 auto; line-height: 1.5; }
+@media (max-width: 600px) {
+  .btn-full-cel { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; }
+  .btn-full-cel .chip-txt { display: inline; }
+  .topbar .chip { padding: 6px 6px; }
+}
