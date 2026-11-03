@@ -553,3 +553,26 @@ body { min-height: 100dvh; }
   .topbar { justify-content: flex-end; flex-wrap: nowrap; gap: 5px; padding: 8px; }
   .topbar .chip { padding: 6px 9px; white-space: nowrap; }
 }
+
+/* Botón para honrar al creador vía PayPal */
+.btn-paypal {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  margin: 16px auto 0; text-decoration: none; letter-spacing: .03em;
+  background: linear-gradient(180deg, #2a7fd6, #0b4f9c); color: #fff; border: 1px solid #5aa6ff;
+  box-shadow: 0 8px 22px rgba(11, 79, 156, .45);
+}
+.btn-paypal:hover { filter: brightness(1.12); transform: translateY(-2px); }
+.btn-paypal svg { flex: none; }
+@media (max-width: 600px) { .btn-paypal { width: 100%; font-size: .9rem; padding: 13px 12px; } }
+@media (min-width: 900px) {
+  .screen > .card > .btn-paypal { width: auto; align-self: center; margin-top: 1.6vh; font-size: clamp(.85rem, 1.7vh, 1rem); }
+}
+
+.welcome-extras { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 14px; margin-top: 16px; }
+.welcome-extras .visitas, .welcome-extras .btn-paypal { margin: 0; }
+@media (min-width: 900px) {
+  .screen > .card > .welcome-extras { margin-top: 1.6vh; }
+  .welcome-extras .btn-paypal { font-size: clamp(.8rem, 1.6vh, 1rem); padding: .9vh 18px; }
+  #screen-welcome .logo-aura { --s: clamp(80px, 15vh, 200px); margin: 2vh auto 1.4vh; }
+  #screen-welcome .credits { margin-top: 1.4vh; }
+}
