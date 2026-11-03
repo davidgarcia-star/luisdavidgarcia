@@ -2174,7 +2174,7 @@
     <section class="visits" id="visitas" hidden>
         <div class="wrap">
             <h2>Gracias por visitarnos</h2>
-            <p>Personas que ya han entrado a esta página</p>
+            <p>Personas que ya han entrado a este sitio web</p>
             <div class="digits" id="visitDigits" role="img" aria-label="Visitantes"></div>
         </div>
     </section>
@@ -2891,5 +2891,27 @@
 })();
 </script>
 
+<script>
+/* Voz de bienvenida al entrar al sitio web (una vez por visita) */
+(function () {
+    var CLAVE = 'miproaa_voz_bienvenida';
+    try { if (sessionStorage.getItem(CLAVE) === '1') return; } catch (e) {}
+    var voz = new Audio('./audio/bienvenida-web.mp3?v=1');
+    voz.preload = 'auto';
+    var sonado = false;
+    var EVENTOS = ['pointerdown', 'keydown', 'touchstart'];
+    function quitar() { EVENTOS.forEach(function (ev) { document.removeEventListener(ev, sonar, true); }); }
+    function sonar() {
+        if (sonado) return;
+        var p = voz.play();
+        var ok = function () { sonado = true; quitar(); try { sessionStorage.setItem(CLAVE, '1'); } catch (e) {} };
+        if (p && p.then) p.then(ok).catch(function () {}); else ok();
+    }
+    // Si el navegador bloquea el sonido al cargar, suena con el primer toque, clic o tecla.
+    EVENTOS.forEach(function (ev) { document.addEventListener(ev, sonar, true); });
+    if (document.readyState === 'complete') setTimeout(sonar, 400);
+    else window.addEventListener('load', function () { setTimeout(sonar, 400); });
+})();
+</script>
 </body>
 </html>
