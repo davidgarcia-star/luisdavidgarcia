@@ -144,6 +144,18 @@
             box-shadow: 0 10px 30px rgba(255, 255, 255, .25);
         }
         .btn-juego.btn-pulse::after { animation: ring 2.4s ease-out infinite, juegoBorde 6s linear infinite; }
+        /* Contador de personas que han entrado al juego */
+        .juego-grupo { display: inline-flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+        .juego-visitas {
+            display: inline-flex; align-items: center; gap: .45rem;
+            padding: .55rem .9rem; border-radius: 999px;
+            font-weight: 700; font-size: .95rem; color: #fff;
+            background: rgba(21, 101, 192, .35);
+            border: 2px solid #FFD600;
+            white-space: nowrap;
+        }
+        .juego-visitas i { color: #FFD600; }
+        .juego-visitas small { font-weight: 500; opacity: .85; }
         @keyframes juegoColores {
             0% { background-position: 0% 50%; }
             100% { background-position: 300% 50%; }
@@ -1735,9 +1747,15 @@
                     <a class="btn btn-gold btn-pulse" href="#adoracion" data-go-worship>
                         <i class="fa-solid fa-music" aria-hidden="true"></i> Adoración de su autoría
                     </a>
-                    <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html">
-                        <i class="fa-solid fa-book-bible" aria-hidden="true"></i> Entrar al Juego
-                    </a>
+                    <span class="juego-grupo">
+                        <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html">
+                            <i class="fa-solid fa-book-bible" aria-hidden="true"></i> Entrar al Juego
+                        </a>
+                        <span class="juego-visitas" title="Personas que han entrado al juego" aria-live="polite">
+                            <i class="fa-solid fa-users" aria-hidden="true"></i>
+                            <span id="juegoVisitas">…</span> <small>jugadores</small>
+                        </span>
+                    </span>
                     <a class="btn btn-ghost" href="#peticion">
                         <i class="fa-solid fa-hands-praying" aria-hidden="true"></i> Pedir oración
                     </a>
@@ -2792,5 +2810,16 @@
 })();
 </script>
 
+<script>
+/* Contador de personas que han entrado al juego (se suma en juego-biblico/index.html) */
+(function () {
+    var el = document.getElementById('juegoVisitas');
+    if (!el) return;
+    fetch('https://abacus.jasoncameron.dev/get/miproaa-luisdavidgarcia/juego-biblico')
+        .then(function (r) { return r.status === 404 ? { value: 0 } : r.json(); })
+        .then(function (d) { el.textContent = Number(d.value || 0).toLocaleString('es-DO'); })
+        .catch(function () { el.textContent = '—'; });
+})();
+</script>
 </body>
 </html>
