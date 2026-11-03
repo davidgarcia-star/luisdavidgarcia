@@ -1686,22 +1686,28 @@
             left: .9rem;
             bottom: .9rem;
             z-index: 45;
-            display: flex;
-            align-items: center;
-            gap: .45rem;
-            min-height: 40px;
-            padding: 0 .85rem 0 .7rem;
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            padding: 0;
             border: 1.5px solid var(--gold);
-            border-radius: 999px;
+            border-radius: 50%;
             background: rgba(12, 6, 32, .88);
             -webkit-backdrop-filter: blur(8px);
             backdrop-filter: blur(8px);
-            color: var(--parchment);
-            font: 600 .84rem/1 var(--font-body);
+            color: var(--gold);
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(0, 0, 0, .4);
             transition: transform .25s var(--ease), background-color .25s ease, box-shadow .25s ease;
         }
+
+        .music > * { grid-area: 1 / 1; }
+        .music .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+        }
+        .music[aria-pressed="true"] #musicIcon { display: none; }
 
         .music:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(244, 183, 63, .35); }
         .music[aria-pressed="true"] { background: var(--gold); color: var(--void); }
@@ -1717,7 +1723,7 @@
             height: 14px;
         }
 
-        #musicIcon { width: 14px; text-align: center; font-size: .75rem; }
+        #musicIcon { display: block; width: 16px; height: 16px; }
 
         .eq i {
             flex: 1;
@@ -1738,12 +1744,12 @@
 
         .music-tip {
             position: fixed;
-            left: 9rem;
+            left: 3.6rem;
             bottom: .9rem;
             z-index: 45;
             display: flex;
             align-items: center;
-            min-height: 40px;
+            min-height: 38px;
             white-space: nowrap;
             padding: .4rem .85rem;
             border: 1px solid rgba(244, 183, 63, .6);
@@ -1870,8 +1876,8 @@
 <audio id="bgm" loop preload="none" src="./audio/instrumental.m4a"></audio>
 
 <button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Reproducir música instrumental">
-    <i class="fa-solid fa-play" id="musicIcon" aria-hidden="true"></i>
-    <span id="musicLabel">Reproducir</span>
+    <svg id="musicIcon" viewBox="0 0 512 512" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7v336c0 44.2-43 80-96 80s-96-35.8-96-80 43-80 96-80c11.2 0 22 1.6 32 4.6V147L192 223.8V432c0 44.2-43 80-96 80S0 476.2 0 432s43-80 96-80c11.2 0 22 1.6 32 4.6V200 128c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/></svg>
+    <span id="musicLabel" class="sr-only">Reproducir</span>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
 </button>
 <p class="music-tip" id="musicTip" role="status">Toca para escuchar</p>
@@ -2819,8 +2825,7 @@
             mBtn.setAttribute('aria-pressed', String(on));
             mBtn.setAttribute('aria-label', on ? 'Pausar música instrumental' : 'Reproducir música instrumental');
             mLabel.textContent = on ? 'Pausar' : 'Reproducir';
-            if (mIcon) mIcon.className = on ? 'fa-solid fa-pause' : 'fa-solid fa-play';
-            // Si se detuvo sola (por el video), no se guarda como una decisión de la persona
+                // Si se detuvo sola (por el video), no se guarda como una decisión de la persona
             if (!auto) { try { localStorage.setItem('miproaa_music', on ? '1' : '0'); } catch (e) {} }
         }
 
