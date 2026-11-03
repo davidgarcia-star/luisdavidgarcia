@@ -130,6 +130,32 @@
             pointer-events: none;
         }
 
+        /* Botón del juego: cambia de colores continuamente */
+        .btn-juego {
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .45);
+            background: linear-gradient(90deg, #E53935, #F4B73F, #43A047, #1E88E5, #8E24AA, #E53935);
+            background-size: 300% 100%;
+            animation: juegoColores 6s linear infinite;
+        }
+        .btn-juego:hover {
+            background: linear-gradient(90deg, #E53935, #F4B73F, #43A047, #1E88E5, #8E24AA, #E53935);
+            background-size: 300% 100%;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, .25);
+        }
+        .btn-juego.btn-pulse::after { animation: ring 2.4s ease-out infinite, juegoBorde 6s linear infinite; }
+        @keyframes juegoColores {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+        @keyframes juegoBorde {
+            0%, 100% { border-color: #E53935; }
+            20% { border-color: #F4B73F; }
+            40% { border-color: #43A047; }
+            60% { border-color: #1E88E5; }
+            80% { border-color: #8E24AA; }
+        }
+
         @keyframes ring {
             0% { transform: scale(1); opacity: .8; }
             80%, 100% { transform: scale(1.22); opacity: 0; }
@@ -1712,8 +1738,8 @@
                     <a class="btn btn-gold btn-pulse" href="#adoracion" data-go-worship>
                         <i class="fa-solid fa-music" aria-hidden="true"></i> Adoración de su autoría
                     </a>
-                    <a class="btn btn-gold btn-pulse" href="juego-biblico/index.html">
-                        <i class="fa-solid fa-book-bible" aria-hidden="true"></i> Juego Bíblico RD
+                    <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html">
+                        <i class="fa-solid fa-book-bible" aria-hidden="true"></i> Pulsa para acceder al Juego
                     </a>
                     <a class="btn btn-ghost" href="#peticion">
                         <i class="fa-solid fa-hands-praying" aria-hidden="true"></i> Pedir oración
