@@ -130,16 +130,16 @@
             pointer-events: none;
         }
 
-        /* Botón del juego: cambia de colores continuamente */
+        /* Botón del juego: cambia entre amarillo y azul */
         .btn-juego {
             color: #fff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, .45);
-            background: linear-gradient(90deg, #E53935, #F4B73F, #43A047, #1E88E5, #8E24AA, #E53935);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, .75);
+            background: linear-gradient(90deg, #FFD600, #1565C0, #FFD600, #1565C0);
             background-size: 300% 100%;
             animation: juegoColores 6s linear infinite;
         }
         .btn-juego:hover {
-            background: linear-gradient(90deg, #E53935, #F4B73F, #43A047, #1E88E5, #8E24AA, #E53935);
+            background: linear-gradient(90deg, #FFD600, #1565C0, #FFD600, #1565C0);
             background-size: 300% 100%;
             box-shadow: 0 10px 30px rgba(255, 255, 255, .25);
         }
@@ -149,11 +149,8 @@
             100% { background-position: 300% 50%; }
         }
         @keyframes juegoBorde {
-            0%, 100% { border-color: #E53935; }
-            20% { border-color: #F4B73F; }
-            40% { border-color: #43A047; }
-            60% { border-color: #1E88E5; }
-            80% { border-color: #8E24AA; }
+            0%, 100% { border-color: #FFD600; }
+            50% { border-color: #1565C0; }
         }
 
         @keyframes ring {
@@ -1694,7 +1691,7 @@
             <li><a href="#predicas">Prédicas</a></li>
             <li><a href="#galeria">Galería</a></li>
             <li><a href="#peticion">Petición de oración</a></li>
-            <li><a href="juego-biblico/index.html"><i class="fa-solid fa-book-bible" aria-hidden="true"></i> Juego Bíblico RD</a></li>
+            <li><a href="juego-biblico/index.html"><i class="fa-solid fa-book-bible" aria-hidden="true"></i> Jugar</a></li>
             <li><a href="#donacion">Donación</a></li>
             <li><a href="#visitas"><i class="fa-solid fa-users" aria-hidden="true"></i> Visitantes</a></li>
             <li>
@@ -1739,7 +1736,7 @@
                         <i class="fa-solid fa-music" aria-hidden="true"></i> Adoración de su autoría
                     </a>
                     <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html">
-                        <i class="fa-solid fa-book-bible" aria-hidden="true"></i> Pulsa para acceder al Juego
+                        <i class="fa-solid fa-book-bible" aria-hidden="true"></i> Entrar al Juego
                     </a>
                     <a class="btn btn-ghost" href="#peticion">
                         <i class="fa-solid fa-hands-praying" aria-hidden="true"></i> Pedir oración
