@@ -17,6 +17,7 @@
   ];
   const PRESET_NAMES = ["Leones de Judá", "Águilas de Fuego", "Guerreros de Fe", "Hijos de la Luz"];
   const CUSTOM = "custom";
+  const PASS_PCT = 70;   // porcentaje mínimo para aprobar un nivel
 
   const state = {
     mode: "solo",          // "solo" | "teams"
@@ -100,6 +101,16 @@
   function saveBest(levelId, n, v) {
     try { if (v > best(levelId, n)) localStorage.setItem(bestKey(levelId, n), String(v)); } catch (e) { /* sin almacenamiento */ }
   }
+  // Niveles aprobados (modo individual). Se guarda en el navegador y también en memoria.
+  const passedMem = {};
+  function isPassed(levelId) {
+    if (passedMem[levelId]) return true;
+    try { return localStorage.getItem("dbrd_passed_" + levelId) === "1"; } catch (e) { return false; }
+  }
+  function setPassed(levelId) {
+    passedMem[levelId] = true;
+    try { localStorage.setItem("dbrd_passed_" + levelId, "1"); } catch (e) { /* sin almacenamiento */ }
+  }
   const teamColor = (i) => TEAM_COLORS[i % TEAM_COLORS.length].hex;
 
   /* ---------- navegación con historial (botón atrás) ---------- */
@@ -123,6 +134,7 @@
     if (ROUTE[name] !== h && !(name === "welcome" && h === "")) {
       history.replaceState(null, "", "#" + ROUTE[name]);
     }
+    Sound.setTrack(name === "play" ? "game" : "menu");   // otra música al iniciar el juego
     paint(name);
   }
 
@@ -268,18 +280,31 @@
 
     const list = $("levelList");
     list.innerHTML = "";
-    LEVELS.forEach((lv) => {
+    LEVELS.forEach((lv, idx) => {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "level-btn";
       const total = QUESTIONS[lv.id].length;
       const n = solo ? Math.min(state.soloCount, total) : Math.min(state.rounds * state.teamCount, total);
       const bst = solo ? best(lv.id, n) : 0;
+      // Solo en modo individual: un nivel se desbloquea al aprobar el anterior
+      const locked = solo && idx > 0 && !isPassed(LEVELS[idx - 1].id);
+      const passed = solo && isPassed(lv.id);
+      const desc = locked
+        ? "Bloqueado · aprueba " + LEVELS[idx - 1].name + " con " + PASS_PCT + "% o más"
+        : lv.desc + " · " + n + " preguntas";
       b.innerHTML =
-        '<span class="level-emoji">' + lv.emoji + "</span>" +
-        '<span><span class="level-name">' + lv.name + '</span><span class="level-desc">' + lv.desc + " · " + n + " preguntas</span></span>" +
-        (solo && bst ? '<span class="level-best">Récord: ' + bst + "/" + n + "</span>" : "");
-      b.onclick = () => { Sound.click(); startGame(lv); };
+        '<span class="level-emoji">' + (locked ? "🔒" : lv.emoji) + "</span>" +
+        '<span><span class="level-name">' + lv.name + '</span><span class="level-desc">' + desc + "</span></span>" +
+        (!locked && passed ? '<span class="level-best ok">✅ Aprobado</span>' : "") +
+        (!locked && !passed && solo && bst ? '<span class="level-best">Récord: ' + bst + "/" + n + "</span>" : "");
+      if (locked) {
+        b.classList.add("locked");
+        b.disabled = true;
+        b.setAttribute("aria-disabled", "true");
+      } else {
+        b.onclick = () => { Sound.click(); startGame(lv); };
+      }
       list.appendChild(b);
     });
   }
@@ -483,6 +508,11 @@
       const n = state.total;
       const pct = Math.round((state.correctCount / n) * 100);
       saveBest(state.level.id, n, state.correctCount);
+      const passed = pct >= PASS_PCT;
+      if (passed) setPassed(state.level.id);
+      const li = LEVELS.findIndex((l) => l.id === state.level.id);
+      const nextLv = LEVELS[li + 1] || null;
+      state.nextLevel = passed ? nextLv : null;
       $("resultTitle").textContent = "¡Nivel " + state.level.name + " completado!";
       const big = document.createElement("div");
       big.className = "big-score";
@@ -497,9 +527,21 @@
         pct >= 70 ? "🌟 ¡Muy bien! Sigue creciendo en la Palabra." :
         pct >= 50 ? "📖 Buen intento. ¡Sigue estudiando la Biblia!" :
                     "🙏 ¡Ánimo! Lee, estudia y vuelve a intentarlo.";
-      body.append(big, l1, l2);
+      const verdict = document.createElement("div");
+      verdict.className = "verdict " + (passed ? "pass" : "retry");
+      verdict.textContent = passed
+        ? (nextLv
+            ? "✅ ¡Aprobaste! Puedes pasar al siguiente nivel: " + nextLv.name + "."
+            : "🎉 ¡Aprobaste el último nivel! Completaste todos los niveles.")
+        : "📚 Debes seguir practicando. Necesitas " + PASS_PCT + "% o más para pasar al siguiente nivel.";
+      body.append(big, l1, l2, verdict);
+      $("btnNextLevel").hidden = !state.nextLevel;
+      if (state.nextLevel) $("btnNextLevel").textContent = "Siguiente nivel: " + state.nextLevel.name + " →";
+      $("btnAgain").textContent = passed ? "🔁 Repetir nivel" : "🔁 Practicar de nuevo";
     } else {
       $("resultTitle").textContent = "¡Resultados por equipos!";
+      $("btnNextLevel").hidden = true;
+      $("btnAgain").textContent = "🔁 Jugar de nuevo";
       const order = state.teamNames
         .map((name, i) => ({ name, pts: state.scores[i], color: teamColor(i) }))
         .sort((a, b) => b.pts - a.pts);
@@ -529,6 +571,7 @@
     go("result");
   }
 
+  $("btnNextLevel").onclick = () => { if (state.nextLevel) { Sound.click(); startGame(state.nextLevel); } };
   $("btnAgain").onclick = () => { Sound.click(); startGame(state.level); };
   $("btnToMenu").onclick = () => { Sound.click(); go("menu"); };
 

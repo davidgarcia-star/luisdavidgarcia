@@ -11,18 +11,34 @@ const Sound = (() => {
   let nextTime = 0;
   let step = 0;
 
-  const BPM = 72;
-  const STEP = 60 / BPM / 2; // corchea
   const midi = (n) => 440 * Math.pow(2, (n - 69) / 12);
 
-  // Progresión: C - Am - F - G (ambiente suave, estilo adoración instrumental)
-  const CHORDS = [
-    { notes: [60, 64, 67, 71], bass: 36 },
-    { notes: [57, 60, 64, 67], bass: 33 },
-    { notes: [53, 57, 60, 64], bass: 41 },
-    { notes: [55, 59, 62, 67], bass: 43 },
-  ];
-  const ARP = [0, 1, 2, 3, 2, 1, 2, 1];
+  // Dos pistas instrumentales: "menu" (calmada, adoración) y "game" (más enérgica, para jugar)
+  const TRACKS = {
+    menu: {
+      bpm: 72, wave: "triangle", drums: false,
+      chords: [
+        { notes: [60, 64, 67, 71], bass: 36 }, // C
+        { notes: [57, 60, 64, 67], bass: 33 }, // Am
+        { notes: [53, 57, 60, 64], bass: 41 }, // F
+        { notes: [55, 59, 62, 67], bass: 43 }, // G
+      ],
+      arp: [0, 1, 2, 3, 2, 1, 2, 1],
+    },
+    game: {
+      bpm: 108, wave: "square", drums: true,
+      chords: [
+        { notes: [62, 65, 69, 72], bass: 38 }, // Dm
+        { notes: [58, 62, 65, 69], bass: 34 }, // Bb
+        { notes: [60, 64, 67, 72], bass: 36 }, // C
+        { notes: [57, 60, 64, 69], bass: 33 }, // Am
+      ],
+      arp: [0, 2, 1, 3, 0, 2, 3, 1],
+    },
+  };
+  let trackName = "menu";
+  const track = () => TRACKS[trackName];
+  const stepLen = () => 60 / track().bpm / 2; // corchea
 
   function ensureCtx() {
     if (ctx) return true;
@@ -55,20 +71,56 @@ const Sound = (() => {
     o.stop(when + dur + 0.05);
   }
 
+  let noiseBuf = null;
+  function hat(when, vol) {
+    if (!noiseBuf) {
+      noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    const f = ctx.createBiquadFilter();
+    f.type = "highpass"; f.frequency.value = 7000;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(vol, when);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + 0.05);
+    src.connect(f); f.connect(g); g.connect(musicGain);
+    src.start(when); src.stop(when + 0.1);
+  }
+  function kick(when) {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.setValueAtTime(140, when);
+    o.frequency.exponentialRampToValueAtTime(45, when + 0.12);
+    g.gain.setValueAtTime(0.35, when);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + 0.16);
+    o.connect(g); g.connect(musicGain);
+    o.start(when); o.stop(when + 0.2);
+  }
+
   function scheduleStep(time, s) {
+    const t = track();
+    const L = stepLen();
     const barStep = s % 8;
-    const chord = CHORDS[Math.floor(s / 8) % CHORDS.length];
+    const chord = t.chords[Math.floor(s / 8) % t.chords.length];
     if (barStep === 0) {
       // Colchón de acordes y bajo
-      chord.notes.forEach((n) => tone(midi(n), time, STEP * 8, "sine", 0.07, musicGain, 0.8));
-      tone(midi(chord.bass), time, STEP * 8, "triangle", 0.12, musicGain, 0.1);
+      chord.notes.forEach((n) => tone(midi(n), time, L * 8, "sine", 0.06, musicGain, 0.4));
+      tone(midi(chord.bass), time, L * 8, "triangle", 0.13, musicGain, 0.05);
     }
-    // Arpegio suave
-    const n = chord.notes[ARP[barStep] % chord.notes.length] + 12;
-    tone(midi(n), time, STEP * 2.2, "triangle", 0.09, musicGain, 0.02);
+    if (t.drums) {
+      if (barStep % 2 === 0) kick(time);
+      hat(time + (barStep % 2 ? 0 : L / 2), barStep % 2 ? 0.05 : 0.025);
+      if (barStep === 4) tone(midi(chord.bass + 12), time, L * 1.5, "triangle", 0.1, musicGain, 0.01);
+    }
+    // Arpegio
+    const n = chord.notes[t.arp[barStep] % chord.notes.length] + 12;
+    tone(midi(n), time, L * 2.2, t.wave, t.drums ? 0.06 : 0.09, musicGain, 0.02);
     // Melodía ocasional una octava más arriba
     if (barStep === 0 || barStep === 4) {
-      tone(midi(chord.notes[(barStep / 4 + 2) % chord.notes.length] + 24), time + STEP * 0.5, STEP * 3, "sine", 0.05, musicGain, 0.05);
+      tone(midi(chord.notes[(barStep / 4 + 2) % chord.notes.length] + 24), time + L * 0.5, L * 3, "sine", 0.05, musicGain, 0.05);
     }
   }
 
@@ -76,7 +128,7 @@ const Sound = (() => {
     if (!ctx) return;
     while (nextTime < ctx.currentTime + 0.6) {
       scheduleStep(nextTime, step);
-      nextTime += STEP;
+      nextTime += stepLen();
       step++;
     }
   }
@@ -112,6 +164,14 @@ const Sound = (() => {
 
   const api = {
     start,
+    // Cambia la música: "menu" (calmada) o "game" (para jugar)
+    setTrack(name) {
+      if (!TRACKS[name] || name === trackName) return;
+      trackName = name;
+      step = 0;
+      if (ctx) nextTime = ctx.currentTime + 0.15;
+    },
+    get track() { return trackName; },
     get musicOn() { return musicOn; },
     get sfxOn() { return sfxOn; },
     toggleMusic() { return setMusic(!musicOn); },

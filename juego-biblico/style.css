@@ -305,3 +305,13 @@ body::before {
 .rank-item { border-left: 6px solid var(--tc, var(--card-border)); }
 .rank-item.first { border-color: var(--gold); border-left-color: var(--tc, var(--gold)); }
 .team-fields select { font-size: .88rem; padding-left: 8px; padding-right: 4px; }
+
+/* ===== Niveles bloqueados y veredicto ===== */
+.level-btn.locked { opacity: .55; cursor: not-allowed; filter: grayscale(.6); animation: none; }
+.level-btn.locked:hover { transform: none; border-color: var(--card-border); background: var(--card); }
+.level-btn.locked .level-emoji { animation: none; }
+.level-best.ok { color: var(--ok); font-weight: 700; }
+.verdict { margin: 14px 0 4px; padding: 12px 14px; border-radius: 14px; font-weight: 700; line-height: 1.4; animation: rise .5s ease both; }
+.verdict.pass { background: rgba(47,191,113,.18); border: 1px solid var(--ok); }
+.verdict.retry { background: rgba(244,197,66,.14); border: 1px solid var(--gold); }
+#btnNextLevel[hidden] { display: none; }
