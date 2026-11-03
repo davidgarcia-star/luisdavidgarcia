@@ -26,6 +26,9 @@
         <h1 class="title">Desafío Bíblico <span>RD</span></h1>
         <p class="lead">Pon a prueba tu conocimiento de la Palabra de Dios.</p>
         <button id="btnStart" class="btn primary big" type="button">Comenzar</button>
+        <p class="visitas" title="Personas que han entrado al juego" aria-live="polite">
+          <span aria-hidden="true">👥</span> <strong id="juegoVisitas">…</strong> personas han entrado al juego
+        </p>
         <p class="credits">
           Creado por <strong>Luis David Esteban García</strong><br>
           de parte de <strong>MIPROAA</strong><br>
@@ -145,13 +148,23 @@
   <script src="questions.js"></script>
   <script src="game.js"></script>
   <script>
-    /* Cuenta una vez a cada persona (por navegador) que entra al juego */
+    /* Contador de personas que han entrado al juego (una vez por navegador) */
     (function () {
+      var base = 'https://abacus.jasoncameron.dev/';
+      var ruta = 'miproaa-luisdavidgarcia/juego-biblico';
       var marca = 'miproaa-juego-contado';
-      try { if (localStorage.getItem(marca)) return; } catch (e) {}
-      fetch('https://abacus.jasoncameron.dev/hit/miproaa-luisdavidgarcia/juego-biblico')
-        .then(function (r) { if (r.ok) { try { localStorage.setItem(marca, '1'); } catch (e) {} } })
-        .catch(function () {});
+      var el = document.getElementById('juegoVisitas');
+      var contado = false;
+      try { contado = !!localStorage.getItem(marca); } catch (e) {}
+      fetch(base + (contado ? 'get/' : 'hit/') + ruta)
+        .then(function (r) {
+          if (r.status === 404) return { value: 0 };
+          if (!r.ok) throw new Error(r.status);
+          if (!contado) { try { localStorage.setItem(marca, '1'); } catch (e) {} }
+          return r.json();
+        })
+        .then(function (d) { if (el) el.textContent = Number(d.value || 0).toLocaleString('es-DO'); })
+        .catch(function () { if (el) el.textContent = '—'; });
     })();
   </script>
 </body>
