@@ -1,5 +1,5 @@
 /* Desafío Bíblico RD – Banco de preguntas
- * 4 niveles x 50 preguntas. Nombres y referencias según La Biblia de las Américas (LBLA).
+ * 5 niveles x 50 preguntas. Nombres y referencias según La Biblia de las Américas (LBLA).
  * Formato: Q(pregunta, respuestaCorrecta, incorrecta1, incorrecta2, incorrecta3, referencia)
  * Las opciones se barajan al jugar. No se reproduce el texto de los versículos,
  * solo la referencia bíblica. */
@@ -10,6 +10,7 @@ const LEVELS = [
   { id: "intermedio", name: "Intermedio", emoji: "📗", desc: "Jueces, profetas, Evangelios y Hechos" },
   { id: "avanzado", name: "Avanzado", emoji: "🔥", desc: "Genealogías, reyes, profetas y cartas" },
   { id: "experto", name: "Experto", emoji: "👑", desc: "Cifras, capítulos y detalles precisos" },
+  { id: "master", name: "Master", emoji: "💎", desc: "Personajes poco conocidos y detalles muy precisos" },
 ];
 
 const QUESTIONS = {
@@ -223,5 +224,58 @@ const QUESTIONS = {
     Q("¿Cuántos días se apareció Jesús a sus discípulos después de su resurrección antes de ascender?", "Cuarenta", "Tres", "Siete", "Cincuenta", "Hechos 1:3"),
     Q("¿Cuántas personas se añadieron a los discípulos tras el sermón de Pedro en Pentecostés?", "Unas 3,000", "Unas 500", "Unas 5,000", "Unas 120", "Hechos 2:41"),
     Q("¿Qué discípula de Jope fue resucitada por Pedro?", "Dorcas (Tabita)", "Lidia", "Priscila", "Febe", "Hechos 9:36-41"),
+  ],
+
+  master: [
+    Q("¿Quién fue el padre de Matusalén?", "Enoc", "Lamec", "Jared", "Set", "Génesis 5:21"),
+    Q("¿Cuántos años vivió Adán en total?", "930", "969", "912", "950", "Génesis 5:5"),
+    Q("¿Cuántos años tenía Abram cuando salió de Harán?", "75", "99", "100", "86", "Génesis 12:4"),
+    Q("¿Qué rey de Salem y sacerdote del Dios Altísimo bendijo a Abram?", "Melquisedec", "Abimelec", "Jetro", "Quedorlaomer", "Génesis 14:18-19"),
+    Q("¿Qué nombre egipcio le dio Faraón a José?", "Zafnat-panea", "Beltsasar", "Potifera", "Abrek", "Génesis 41:45"),
+    Q("¿Cómo se llamaba la esposa egipcia de José?", "Asenat", "Séfora", "Zilpa", "Tamar", "Génesis 41:45"),
+    Q("¿Cómo se llamaban las parteras hebreas que temieron a Dios y no mataron a los niños?", "Sifra y Fúa", "Ada y Zila", "Orfa y Rut", "Débora y Jael", "Éxodo 1:15-17"),
+    Q("Según Éxodo 12:40, ¿cuánto tiempo habitaron los hijos de Israel en Egipto?", "430 años", "400 años", "215 años", "40 años", "Éxodo 12:40"),
+    Q("¿A quién llenó Dios de su Espíritu para hacer las obras del tabernáculo?", "Bezaleel", "Hur", "Eleazar", "Hiram", "Éxodo 31:2-3"),
+    Q("¿Qué nieto de Aarón detuvo la plaga en Sitim por su celo por Dios?", "Finees", "Eleazar", "Itamar", "Abiú", "Números 25:7-11"),
+    Q("¿Qué levita se rebeló contra Moisés y fue tragado por la tierra junto a Datán y Abiram?", "Coré", "Acán", "Zimri", "Balaam", "Números 16:1, 31-33"),
+    Q("¿De qué tribu era Caleb?", "Judá", "Efraín", "Benjamín", "Simeón", "Números 13:6"),
+    Q("¿Cómo se llamaba el padre de las cinco hijas que pidieron heredad a Moisés?", "Zelofehad", "Elimelec", "Manoa", "Jefté", "Números 27:1-7"),
+    Q("¿Quién fue el primer juez que libró a Israel?", "Otoniel", "Aod", "Débora", "Gedeón", "Jueces 3:9"),
+    Q("¿Qué juez zurdo mató a Eglón, rey de Moab?", "Aod", "Samgar", "Otoniel", "Barac", "Jueces 3:15-21"),
+    Q("¿Qué juez mató a 600 filisteos con una aguijada de bueyes?", "Samgar", "Sansón", "Tola", "Jair", "Jueces 3:31"),
+    Q("¿Cómo se llamaba el primer esposo de Rut?", "Mahlón", "Quelión", "Elimelec", "Booz", "Rut 4:10"),
+    Q("¿Qué nombre recibió el nieto de Elí, que significa que la gloria se ha ido de Israel?", "Icabod", "Ajitob", "Abiatar", "Ofni", "1 Samuel 4:19-22"),
+    Q("¿Quién mató a los sacerdotes de Nob por orden de Saúl?", "Doeg el edomita", "Abner", "Joab", "Amasa", "1 Samuel 22:18"),
+    Q("¿Cómo se llamaba el hijo de Jonatán que quedó lisiado de los pies?", "Mefiboset", "Is-boset", "Abinadab", "Malquisúa", "2 Samuel 4:4"),
+    Q("¿Quién murió al tocar el arca de Dios cuando los bueyes tropezaron?", "Uza", "Ahío", "Obed-edom", "Abinadab", "2 Samuel 6:6-7"),
+    Q("¿En casa de quién estuvo el arca tres meses, y el Señor bendijo a su familia?", "Obed-edom", "Abinadab", "Uza", "Sadoc", "2 Samuel 6:11"),
+    Q("¿Qué hijo de David intentó proclamarse rey antes que Salomón?", "Adonías", "Absalón", "Amnón", "Quileab", "1 Reyes 1:5"),
+    Q("¿Cómo se llamaban las dos columnas de bronce del templo de Salomón?", "Jaquín y Boaz", "Urim y Tumim", "Ebal y Gerizim", "Hiram y Huram", "1 Reyes 7:21"),
+    Q("¿Cuántos años tardó Salomón en edificar el templo?", "Siete", "Trece", "Tres", "Cuarenta", "1 Reyes 6:38"),
+    Q("¿Qué profeta rasgó un manto en doce pedazos y dio diez a Jeroboam?", "Ahías silonita", "Semaías", "Natán", "Jehú hijo de Hananí", "1 Reyes 11:29-31"),
+    Q("¿En qué dos ciudades puso Jeroboam becerros de oro?", "Betel y Dan", "Siquem y Silo", "Samaria y Jezreel", "Gilgal y Beerseba", "1 Reyes 12:28-29"),
+    Q("¿Qué rey de Israel compró el monte de Samaria y edificó allí la ciudad?", "Omri", "Acab", "Baasa", "Jeroboam", "1 Reyes 16:24"),
+    Q("¿Qué siervo de Eliseo fue herido de lepra por su avaricia?", "Giezi", "Naamán", "Ocozías", "Elifaz", "2 Reyes 5:20-27"),
+    Q("¿Qué señal recibió Ezequías de que sería sanado?", "La sombra retrocedió diez grados", "El sol se detuvo un día", "Cayó fuego del cielo", "Floreció una vara", "2 Reyes 20:9-11"),
+    Q("¿Qué sumo sacerdote halló el libro de la ley en el templo?", "Hilcías", "Esdras", "Joiada", "Sadoc", "2 Reyes 22:8"),
+    Q("¿A qué profetisa consultaron los enviados del rey Josías?", "Hulda", "Débora", "Miriam", "Noadías", "2 Reyes 22:14"),
+    Q("¿Qué sacerdote coronó a Joás después de tenerlo escondido seis años en el templo?", "Joiada", "Hilcías", "Urías", "Zacarías", "2 Reyes 11:3-12"),
+    Q("¿Qué rey persa autorizó a Nehemías a reconstruir los muros de Jerusalén?", "Artajerjes", "Ciro", "Darío", "Asuero", "Nehemías 2:1-8"),
+    Q("¿En cuántos días se terminó la muralla de Jerusalén en tiempos de Nehemías?", "52", "40", "70", "120", "Nehemías 6:15"),
+    Q("¿Cuál era el otro nombre de Ester?", "Hadasa", "Vasti", "Zeres", "Mical", "Ester 2:7"),
+    Q("¿Qué profeta anunció que de Belén Efrata saldría el gobernante de Israel?", "Miqueas", "Isaías", "Zacarías", "Malaquías", "Miqueas 5:2"),
+    Q("¿De qué tribu era la profetisa Ana que vio al niño Jesús en el templo?", "Aser", "Leví", "Judá", "Benjamín", "Lucas 2:36-38"),
+    Q("¿Cómo se llamaba el estanque donde Jesús sanó a un paralítico?", "Betesda", "Siloé", "Gihón", "Hebrón", "Juan 5:2-9"),
+    Q("¿Cuántos años llevaba enfermo el paralítico sanado junto al estanque?", "38", "12", "18", "40", "Juan 5:5"),
+    Q("¿Cómo se llamaba el siervo del sumo sacerdote al que Pedro le cortó la oreja?", "Malco", "Barrabás", "Rufo", "Alejandro", "Juan 18:10"),
+    Q("¿Cuántos peces grandes sacaron en la pesca después de la resurrección?", "153", "144", "120", "77", "Juan 21:11"),
+    Q("¿Qué hombre de Samaria quiso comprar con dinero el poder de dar el Espíritu Santo?", "Simón", "Elimas", "Demetrio", "Esceva", "Hechos 8:9-20"),
+    Q("¿Qué procónsul de Chipre creyó tras ver al mago Elimas quedar ciego?", "Sergio Paulo", "Galión", "Félix", "Festo", "Hechos 13:6-12"),
+    Q("¿Quién se separó de Pablo y Bernabé en Panfilia y volvió a Jerusalén?", "Juan Marcos", "Silas", "Lucas", "Demas", "Hechos 13:13; 15:38"),
+    Q("¿Qué procónsul de Acaya se negó a juzgar a Pablo en Corinto?", "Galión", "Sergio Paulo", "Festo", "Félix", "Hechos 18:12-16"),
+    Q("¿Qué platero de Éfeso provocó un alboroto contra Pablo?", "Demetrio", "Alejandro", "Gayo", "Erasto", "Hechos 19:24-29"),
+    Q("¿Qué arcángel contendió con el diablo por el cuerpo de Moisés?", "Miguel", "Gabriel", "Querubín", "Abadón", "Judas 9"),
+    Q("¿Cuántos fueron sellados de cada tribu de Israel en Apocalipsis 7?", "12,000", "144,000", "7,000", "1,000", "Apocalipsis 7:4-8"),
+    Q("¿Qué iglesia de Apocalipsis fue reprendida por ser tibia?", "Laodicea", "Sardis", "Pérgamo", "Tiatira", "Apocalipsis 3:14-16"),
   ],
 };
