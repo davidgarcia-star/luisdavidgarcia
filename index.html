@@ -569,6 +569,17 @@
             100% { background-position: -150% 0; }
         }
 
+        /* Celular: compactar el inicio para que "Pedir oración" y "WhatsApp" queden
+           por encima de los botones flotantes de música y accesibilidad */
+        @media (max-width: 600px) {
+            .hero { padding-top: calc(var(--nav-h) + .5rem); }
+            .hero .hero-name { margin: .9rem 0 .7rem; font-size: 1.3rem; }
+            .hero .rotator { margin-bottom: .8rem; }
+            .hero .verse { margin-bottom: 1rem; font-size: 1.22rem; }
+            .hero .cta-row { gap: .6rem; }
+            .hero .cta-row .btn { min-height: 44px; padding: .6rem 1.3rem; }
+        }
+
         .fade-in {
             animation: appear .9s ease both;
         }
