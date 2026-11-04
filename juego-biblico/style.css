@@ -601,3 +601,59 @@ a.chip { text-decoration: none; display: inline-flex; align-items: center; gap: 
   .btn-full-cel .chip-txt { display: inline; }
   .topbar .chip { padding: 6px 6px; }
 }
+
+/* ===== Redes sociales en la bienvenida: efecto "Relevo de fuego" (igual que el sitio web) =====
+   Un cometa de luz recorre el borde de cada red, una tras otra; al llegar, el ícono se enciende
+   con el color de su marca, late y suelta una onda, y le pasa el fuego a la siguiente. */
+.social-titulo { margin: 22px 0 10px; color: var(--gold); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; font-size: .85rem; }
+.social { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.social li { list-style: none; }
+.social a {
+  position: relative; isolation: isolate;
+  display: grid; place-items: center; width: 46px; height: 46px;
+  border: 1.5px solid rgba(183, 192, 224, .5); border-radius: 50%;
+  color: var(--text); text-decoration: none;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .25s ease;
+  --marca: var(--gold); --marca-fondo: var(--marca);
+  animation: redEncendido 6s ease-in-out infinite;
+}
+.social a svg { width: 22px; height: 22px; }
+.social a:hover { transform: translateY(-4px) scale(1.08); border-color: var(--gold); background: var(--gold); color: #0b1530; animation: none; }
+.social a[aria-label="YouTube"]   { --marca: #ff2b2b; }
+.social a[aria-label="Facebook"]  { --marca: #1877f2; }
+.social a[aria-label="Instagram"] { --marca: #e1306c; --marca-fondo: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); }
+.social a[aria-label="TikTok"]    { --marca: #25f4ee; --marca-fondo: linear-gradient(135deg, #25f4ee 0%, #000 45%, #000 55%, #fe2c55 100%); }
+.social a::before, .social a::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; opacity: 0; }
+.social a::before {
+  inset: -5px; z-index: -1;
+  background: conic-gradient(from 0deg, transparent 0 62%, color-mix(in srgb, var(--marca) 40%, transparent) 80%, var(--marca) 94%, #fff 99%, transparent 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+  animation: redCometa 6s linear infinite;
+}
+.social a::after { inset: 0; border: 2px solid var(--marca); animation: redOnda 6s ease-out infinite; }
+.social li:nth-child(2) a, .social li:nth-child(2) a::before, .social li:nth-child(2) a::after { animation-delay: 1.5s; }
+.social li:nth-child(3) a, .social li:nth-child(3) a::before, .social li:nth-child(3) a::after { animation-delay: 3s; }
+.social li:nth-child(4) a, .social li:nth-child(4) a::before, .social li:nth-child(4) a::after { animation-delay: 4.5s; }
+@keyframes redCometa {
+  0%   { opacity: 0; rotate: -90deg; }
+  3%   { opacity: 1; }
+  22%  { opacity: 1; rotate: 630deg; }
+  26%  { opacity: 0; rotate: 700deg; }
+  100% { opacity: 0; rotate: 700deg; }
+}
+@keyframes redEncendido {
+  18% { scale: 1; color: var(--text); border-color: rgba(183, 192, 224, .5); background: transparent; box-shadow: none; }
+  21% { scale: 1.18; color: #fff; border-color: var(--marca); background: var(--marca-fondo); box-shadow: 0 0 22px color-mix(in srgb, var(--marca) 70%, transparent); }
+  25% { scale: .96; color: #fff; border-color: var(--marca); background: var(--marca-fondo); box-shadow: 0 0 14px color-mix(in srgb, var(--marca) 55%, transparent); }
+  29% { scale: 1.04; color: #fff; border-color: var(--marca); background: var(--marca-fondo); }
+  34% { scale: 1; color: var(--text); border-color: rgba(183, 192, 224, .5); background: transparent; box-shadow: none; }
+}
+@keyframes redOnda {
+  0%, 20% { opacity: 0; scale: 1; }
+  21%  { opacity: .9; scale: 1; }
+  34%  { opacity: 0; scale: 2.1; }
+  100% { opacity: 0; scale: 2.1; }
+}
+@media (min-width: 900px) and (max-height: 820px) { .social-titulo { margin: 1.4vh 0 .8vh; } .social a { width: 40px; height: 40px; } .social a svg { width: 19px; height: 19px; } }
+@media (prefers-reduced-motion: reduce) { .social a, .social a::before, .social a::after { animation: none; } }
