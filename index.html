@@ -579,7 +579,7 @@
             .hero .cta-row { gap: .6rem; }
             .hero .cta-row .btn { min-height: 44px; padding: .6rem 1.3rem; }
             /* Redes sociales al centro, lejos de los botones de música y accesibilidad */
-            .hero .social { justify-content: center; }
+            .hero .social { justify-content: center; translate: var(--redes-x, 0px) 0; }
         }
 
         .fade-in {
@@ -3186,6 +3186,26 @@
     EVENTOS.forEach(function (ev) { document.addEventListener(ev, sonar, true); });
     sonar();   // se intenta de inmediato al abrir el sitio
     if (document.readyState !== 'complete') window.addEventListener('load', sonar);
+})();
+
+/* Celular: centrar las redes del inicio justo en medio del botón de música y el de accesibilidad */
+(function () {
+    var redes = document.querySelector('.hero .social');
+    var musica = document.getElementById('musicBtn');
+    var acc = document.getElementById('a11yBtn');
+    if (!redes || !musica || !acc) return;
+    var movil = window.matchMedia('(max-width: 600px)');
+    function centrar() {
+        if (!movil.matches) { redes.style.removeProperty('--redes-x'); return; }
+        var m = musica.getBoundingClientRect(), a = acc.getBoundingClientRect();
+        if (!m.width || !a.width) return;
+        var medio = (m.right + a.left) / 2;               // punto medio entre los dos botones
+        var actual = window.innerWidth / 2;               // las redes ya están centradas en la pantalla
+        redes.style.setProperty('--redes-x', Math.round(medio - actual) + 'px');
+    }
+    window.addEventListener('load', centrar);
+    window.addEventListener('resize', centrar);
+    setTimeout(centrar, 300);
 })();
 
 /* Celular: esconder los botones de música y accesibilidad al bajar para que no tapen el texto */
