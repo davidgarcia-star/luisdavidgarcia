@@ -656,6 +656,71 @@
             color: var(--void);
         }
 
+        /* ===== Redes: "Relevo de fuego" =====
+           Un cometa de luz recorre el borde de cada red, una tras otra, como una antorcha que se pasa
+           de mano en mano. Al llegar, el ícono se enciende con el color de su marca, late y suelta una
+           onda; luego le pasa el fuego a la siguiente. Ciclo de 6 s, 1.5 s por red. */
+        .social li { list-style: none; }
+        .social a { position: relative; isolation: isolate; --marca: #f4b73f; --marca-fondo: var(--marca); }
+        .social a[aria-label="YouTube"]   { --marca: #ff2b2b; }
+        .social a[aria-label="Facebook"]  { --marca: #1877f2; }
+        .social a[aria-label="Instagram"] { --marca: #e1306c; --marca-fondo: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); }
+        .social a[aria-label="TikTok"]    { --marca: #25f4ee; --marca-fondo: linear-gradient(135deg, #25f4ee 0%, #000 45%, #000 55%, #fe2c55 100%); }
+
+        .social a::before,
+        .social a::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+        /* Cometa que da vueltas por el borde */
+        .social a::before {
+            inset: -5px;
+            z-index: -1;
+            background: conic-gradient(from 0deg, transparent 0 62%, color-mix(in srgb, var(--marca) 40%, transparent) 80%, var(--marca) 94%, #fff 99%, transparent 100%);
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2.5px));
+            animation: redCometa 6s linear infinite;
+        }
+        /* Onda que se expande al encenderse */
+        .social a::after {
+            inset: 0;
+            border: 2px solid var(--marca);
+            animation: redOnda 6s ease-out infinite;
+        }
+        .social a { animation: redEncendido 6s ease-in-out infinite; }
+
+        .social li:nth-child(1) a, .social li:nth-child(1) a::before, .social li:nth-child(1) a::after { animation-delay: 0s; }
+        .social li:nth-child(2) a, .social li:nth-child(2) a::before, .social li:nth-child(2) a::after { animation-delay: 1.5s; }
+        .social li:nth-child(3) a, .social li:nth-child(3) a::before, .social li:nth-child(3) a::after { animation-delay: 3s; }
+        .social li:nth-child(4) a, .social li:nth-child(4) a::before, .social li:nth-child(4) a::after { animation-delay: 4.5s; }
+
+        @keyframes redCometa {
+            0%   { opacity: 0; rotate: -90deg; }
+            3%   { opacity: 1; }
+            22%  { opacity: 1; rotate: 630deg; }
+            26%  { opacity: 0; rotate: 700deg; }
+            100% { opacity: 0; rotate: 700deg; }
+        }
+        @keyframes redEncendido {
+            18%  { scale: 1; color: var(--parchment); border-color: rgba(207, 198, 230, .5); background: transparent; box-shadow: none; }
+            21%  { scale: 1.18; color: #fff; border-color: var(--marca); background: var(--marca-fondo); box-shadow: 0 0 22px color-mix(in srgb, var(--marca) 70%, transparent); }
+            25%  { scale: .96; color: #fff; border-color: var(--marca); background: var(--marca-fondo); box-shadow: 0 0 14px color-mix(in srgb, var(--marca) 55%, transparent); }
+            29%  { scale: 1.04; color: #fff; border-color: var(--marca); background: var(--marca-fondo); }
+            34%  { scale: 1; color: var(--parchment); border-color: rgba(207, 198, 230, .5); background: transparent; box-shadow: none; }
+        }
+        @keyframes redOnda {
+            0%, 20% { opacity: 0; scale: 1; }
+            21%  { opacity: .9; scale: 1; }
+            34%  { opacity: 0; scale: 2.1; }
+            100% { opacity: 0; scale: 2.1; }
+        }
+        /* Al pasar el cursor manda el dorado del sitio */
+        .social a:hover { animation: none; }
+        html.a11y-still .social a, html.a11y-still .social a::before, html.a11y-still .social a::after { animation: none !important; }
+
         /* Foto principal: sin marco, se funde con la noche */
         .hero-photo {
             position: relative;
