@@ -222,7 +222,16 @@
         if (activo()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
         else { var r = req.call(d); if (r && r.catch) r.catch(function () { if (aviso) aviso.hidden = false; }); }
       }
-      botones.forEach(function (b) { if (b) b.onclick = alternar; });
+      botones.forEach(function (b) { if (b) { b.onclick = alternar; b.title = 'Pantalla completa (tecla F)'; } });
+      // En la PC: la tecla F activa o quita la pantalla completa
+      document.addEventListener('keydown', function (e) {
+        if (!req || e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+        if ((e.key || '').toLowerCase() !== 'f') return;
+        var t = e.target, tag = t && t.tagName;
+        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || (t && t.isContentEditable)) return;
+        e.preventDefault();
+        alternar();
+      });
       document.addEventListener('fullscreenchange', pintar);
       document.addEventListener('webkitfullscreenchange', pintar);
       pintar();
