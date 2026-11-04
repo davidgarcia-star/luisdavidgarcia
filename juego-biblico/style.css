@@ -657,3 +657,7 @@ a.chip { text-decoration: none; display: inline-flex; align-items: center; gap: 
 }
 @media (min-width: 900px) and (max-height: 820px) { .social-titulo { margin: 1.4vh 0 .8vh; } .social a { width: 40px; height: 40px; } .social a svg { width: 19px; height: 19px; } }
 @media (prefers-reduced-motion: reduce) { .social a, .social a::before, .social a::after { animation: none; } }
+/* Botón para ir a BIBLIXIA */
+.btn-biblixia{display:inline-flex;align-items:center;justify-content:center;gap:8px;align-self:center;text-decoration:none;font-weight:800;color:#241800;background:linear-gradient(180deg,#ffe38a,#f5c542);border:none;border-radius:999px;padding:12px 22px;box-shadow:0 6px 18px rgba(245,197,66,.4);margin:0}
+.btn-biblixia:hover{filter:brightness(1.08);transform:translateY(-2px)}
+@media (max-width:600px){.btn-biblixia{width:100%}}
