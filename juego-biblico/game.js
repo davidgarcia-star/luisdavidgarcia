@@ -284,7 +284,7 @@
     );
     $("levelsSub").textContent = solo
       ? "Elige un nivel"
-      : "Elige un nivel · " + state.rounds + " rondas por equipo";
+      : "Elige un nivel · " + teamQuestionCount(50) / state.teamCount + " rondas por equipo";
 
     const list = $("levelList");
     list.innerHTML = "";
@@ -293,7 +293,7 @@
       b.type = "button";
       b.className = "level-btn";
       const total = QUESTIONS[lv.id].length;
-      const n = solo ? Math.min(state.soloCount, total) : Math.min(state.rounds * state.teamCount, total);
+      const n = solo ? Math.min(state.soloCount, total) : teamQuestionCount(total);
       const bst = solo ? best(lv.id, n) : 0;
       // Solo en modo individual: un nivel se desbloquea al aprobar el anterior
       const locked = solo && idx > 0 && !isPassed(LEVELS[idx - 1].id);
@@ -327,6 +327,13 @@
 
   $("btnLevelsBack").onclick = () => { Sound.click(); go(state.mode === "solo" ? "menu" : "teams"); };
 
+  // Preguntas en modo equipos: rondas × equipos, sin pasar del total del nivel
+  // y siempre múltiplo del número de equipos para que todos jueguen igual.
+  function teamQuestionCount(total) {
+    const rounds = Math.min(state.rounds, Math.floor(total / state.teamCount));
+    return rounds * state.teamCount;
+  }
+
   /* ---------- partida ---------- */
   function startGame(lv) {
     state.level = lv;
@@ -335,7 +342,7 @@
       state.queue = pool.slice(0, state.soloCount);       // 20 (pocas) o 50 (muchas)
       state.scores = [0];
     } else {
-      state.queue = pool.slice(0, state.rounds * state.teamCount);
+      state.queue = pool.slice(0, teamQuestionCount(pool.length));
       state.scores = state.teamNames.map(() => 0);
     }
     state.total = state.queue.length;
