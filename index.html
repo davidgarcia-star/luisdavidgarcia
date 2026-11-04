@@ -1767,6 +1767,17 @@
 
         .music-tip.show { opacity: 1; transform: none; }
 
+        /* Celular: los botones flotantes (música y accesibilidad) se esconden al bajar
+           para no tapar el texto, y vuelven a salir al subir o al llegar al final */
+        @media (max-width: 768px) {
+            body { padding-bottom: 64px; }
+            .music { transition: transform .25s var(--ease), background-color .25s ease, box-shadow .25s ease, translate .35s ease, opacity .35s ease; }
+            .a11y-btn { transition: translate .35s ease, opacity .35s ease; }
+            html.fab-oculto .music,
+            html.fab-oculto .a11y-btn { translate: 0 160%; opacity: 0; pointer-events: none; }
+            html.fab-oculto .music-tip.show { opacity: 0; }
+        }
+
         /* ============================================
            MÁS VIDA: movimiento extra y suave
            ============================================ */
@@ -3150,6 +3161,28 @@
     EVENTOS.forEach(function (ev) { document.addEventListener(ev, sonar, true); });
     sonar();   // se intenta de inmediato al abrir el sitio
     if (document.readyState !== 'complete') window.addEventListener('load', sonar);
+})();
+
+/* Celular: esconder los botones de música y accesibilidad al bajar para que no tapen el texto */
+(function () {
+    var html = document.documentElement;
+    var movil = window.matchMedia('(max-width: 768px)');
+    var panel = document.getElementById('a11yPanel');
+    var ultimo = window.scrollY, pendiente = false;
+    function revisar() {
+        pendiente = false;
+        var y = window.scrollY;
+        var fin = y + window.innerHeight >= document.documentElement.scrollHeight - 80;
+        var abierto = panel && !panel.hidden;
+        if (!movil.matches || abierto || y < 80 || fin) html.classList.remove('fab-oculto');
+        else if (y > ultimo + 6) html.classList.add('fab-oculto');      // bajando
+        else if (y < ultimo - 6) html.classList.remove('fab-oculto');   // subiendo
+        if (Math.abs(y - ultimo) > 6 || fin || y < 80) ultimo = y;
+    }
+    window.addEventListener('scroll', function () {
+        if (!pendiente) { pendiente = true; requestAnimationFrame(revisar); }
+    }, { passive: true });
+    if (movil.addEventListener) movil.addEventListener('change', revisar);
 })();
 </script>
 </body>
