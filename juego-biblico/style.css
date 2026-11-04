@@ -661,3 +661,10 @@ a.chip { text-decoration: none; display: inline-flex; align-items: center; gap: 
 .btn-biblixia{display:inline-flex;align-items:center;justify-content:center;gap:8px;align-self:center;text-decoration:none;font-weight:800;color:#241800;background:linear-gradient(180deg,#ffe38a,#f5c542);border:none;border-radius:999px;padding:12px 22px;box-shadow:0 6px 18px rgba(245,197,66,.4);margin:0}
 .btn-biblixia:hover{filter:brightness(1.08);transform:translateY(-2px)}
 @media (max-width:600px){.btn-biblixia{width:100%}}
+
+/* Accesibilidad: anillo de enfoque visible al usar teclado (Tab) */
+.btn:focus-visible, .opt:focus-visible, .chip:focus-visible,
+.level-btn:focus-visible, .seg:focus-visible, a:focus-visible, button:focus-visible {
+  outline: 3px solid #ffd54a;
+  outline-offset: 3px;
+}
