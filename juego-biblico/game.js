@@ -458,8 +458,16 @@
     const buttons = Array.from($("options").children);
     buttons.forEach((b, idx) => {
       b.disabled = true;
-      if (opts[idx] === correct) b.classList.add("correct");
-      else if (idx === i) b.classList.add("wrong");
+      const key = b.querySelector(".key");
+      if (opts[idx] === correct) {
+        b.classList.add("correct");
+        if (key) key.textContent = "✓";
+        b.setAttribute("aria-label", opts[idx] + " (respuesta correcta)");
+      } else if (idx === i) {
+        b.classList.add("wrong");
+        if (key) key.textContent = "✗";
+        b.setAttribute("aria-label", opts[idx] + " (tu respuesta, incorrecta)");
+      }
     });
     const ok = i >= 0 && opts[i] === correct;
     if (ok) {

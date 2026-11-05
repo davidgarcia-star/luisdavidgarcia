@@ -154,6 +154,9 @@ select option { color: #111; }
 }
 .opt.correct { background: rgba(47, 191, 113, 0.25); border-color: var(--ok); }
 .opt.wrong { background: rgba(229, 72, 77, 0.25); border-color: var(--bad); }
+/* Símbolo ✓ / ✗ además del color (para personas daltónicas) */
+.opt.correct .key { background: var(--ok); color: #fff; font-weight: 900; font-size: 1.15em; }
+.opt.wrong .key { background: var(--bad); color: #fff; font-weight: 900; font-size: 1.15em; }
 .opt:disabled { cursor: default; }
 
 .feedback { margin-top: 14px; padding: 14px; border-radius: 14px; background: rgba(0, 0, 0, 0.25); text-align: center; }
