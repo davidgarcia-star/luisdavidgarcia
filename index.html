@@ -354,71 +354,178 @@
         }
         .skip-link:focus { top: 12px; }
 
+        /* ---- Botón flotante (mismo lugar de siempre) ---- */
         .a11y-btn {
-            /* Encima del botón de WhatsApp, en la esquina inferior derecha */
             position: fixed; right: var(--fab-r, 14px); bottom: var(--fab-b, 14px); z-index: 9000;
-            display: flex; flex-direction: row-reverse; align-items: center; gap: .4rem;
-            min-width: 44px; height: 44px; justify-content: center;
-            background: #1a56db; color: #fff; border: 2px solid #fff;
-            border-radius: 999px; padding: 0 7px;
-            font: 700 .95rem/1 inherit; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.45);
+            width: 46px; height: 46px; padding: 0; display: grid; place-items: center;
+            background: #1f4f96; color: #fff; border: 2px solid #fff; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 0 0 3px #1f4f96, 0 6px 20px rgba(0,0,0,.45);
+            transition: transform .2s ease;
         }
-        .a11y-btn svg { width: 24px; height: 24px; flex: none; }
-        .a11y-btn .a11y-btn-txt { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .3s; }
-        .a11y-btn:hover .a11y-btn-txt, .a11y-btn:focus-visible .a11y-btn-txt, .a11y-btn[aria-expanded="true"] .a11y-btn-txt { max-width: 12em; padding-left: .35rem; }
+        .a11y-btn:hover, .a11y-btn:focus-visible { transform: scale(1.08); }
+        .a11y-btn:focus-visible { outline: 3px solid #FFE066; outline-offset: 4px; }
+        .a11y-btn svg { width: 28px; height: 28px; }
+
+        /* ---- Panel "Menú de accesibilidad" ---- */
         .a11y-panel {
-            position: fixed; right: 12px; bottom: calc(var(--fab-b, 14px) + 56px); z-index: 9001;
-            width: min(330px, calc(100vw - 24px)); max-height: calc(100dvh - 100px); overflow: auto;
-            background: #0d1117; color: #fff; border: 2px solid #FFE066; border-radius: 16px;
-            padding: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,.6);
+            --a11y-c: #0f97a7;
+            position: fixed; right: 12px; bottom: calc(var(--fab-b, 14px) + 60px); z-index: 9001;
+            width: min(440px, calc(100vw - 24px)); max-height: calc(100dvh - var(--fab-b, 14px) - 80px);
+            display: flex; flex-direction: column; overflow: hidden;
+            background: #f2f2f2; color: #222; border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.45);
+            font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.25;
+            letter-spacing: normal; word-spacing: normal; text-align: left;
         }
         .a11y-panel[hidden] { display: none; }
-        .a11y-panel h2 { font-size: 1.2rem; margin: 0 0 .3rem; color: #FFE066; }
-        .a11y-panel p { margin: 0 0 .8rem; font-size: .9rem; color: #d0d7e2; line-height: 1.45; }
-        .a11y-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
-        .a11y-grid button, .a11y-close {
-            font: 700 .92rem/1.2 inherit; color: #fff; background: #1f2937; border: 2px solid #4b5563;
-            border-radius: 12px; padding: .75rem .5rem; cursor: pointer; text-align: center;
+        .a11y-panel *, .a11y-panel *::before { box-sizing: border-box; font-family: inherit; letter-spacing: normal; word-spacing: normal; }
+        .a11y-head {
+            flex: none; display: flex; align-items: center; justify-content: space-between;
+            background: var(--a11y-c); color: #fff; padding: 1.1em 1.1em 1.6em;
         }
-        .a11y-grid button[aria-pressed="true"] { background: #FFE066; color: #000; border-color: #FFE066; }
-        .a11y-grid .full { grid-column: 1 / -1; }
-        .a11y-close { width: 100%; margin-top: .7rem; background: transparent; }
-        .a11y-grid button:hover, .a11y-close:hover { border-color: #FFE066; }
+        .a11y-head h2 { margin: 0; font-size: 1.1em; font-weight: 600; color: #fff; }
+        .a11y-x {
+            width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; background: transparent;
+            color: #fff; display: grid; place-items: center; cursor: pointer; padding: 0;
+        }
+        .a11y-x:hover, .a11y-x:focus-visible { background: rgba(255,255,255,.2); outline: none; }
+        .a11y-x svg { width: 16px; height: 16px; }
+        .a11y-body {
+            flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain;
+            background: #f2f2f2; margin-top: -14px; border-radius: 14px 14px 0 0; padding: .9em 1.1em 1em;
+        }
+        .a11y-sub { margin: 0 0 .7em; font-size: .95em; font-weight: 700; color: #444; }
+        .a11y-perfiles { display: grid; grid-template-columns: 1fr 1fr; gap: .7em; padding-bottom: 1em; border-bottom: 1px solid #b9c8d6; margin-bottom: 1em; }
+        .a11y-perfil {
+            display: flex; align-items: center; gap: .7em; min-height: 54px; padding: .5em .8em;
+            background: #fff; color: #222; border: 2px solid transparent; border-radius: 10px;
+            font-size: .88em; font-weight: 700; text-align: left; cursor: pointer;
+        }
+        .a11y-perfil .ico { flex: none; width: 30px; height: 30px; border-radius: 50%; background: #eef1f4; display: grid; place-items: center; }
+        .a11y-perfil .ico svg { width: 17px; height: 17px; }
+        .a11y-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7em; }
+        .a11y-tile {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .45em;
+            min-height: 104px; padding: .8em .4em .7em; background: #fff; color: #222;
+            border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+            font-size: .84em; font-weight: 700; text-align: center;
+        }
+        .a11y-tile svg { width: 26px; height: 26px; flex: none; }
+        .a11y-tile .lbl { display: block; }
+        .a11y-niveles { display: flex; gap: 4px; width: 78%; justify-content: center; }
+        .a11y-niveles i { flex: 1; height: 4px; border-radius: 2px; background: #ddd; }
+        .a11y-niveles i.on { background: var(--a11y-c); }
+        .a11y-tile:hover, .a11y-perfil:hover { border-color: #b9dfe4; }
+        .a11y-tile:focus-visible, .a11y-perfil:focus-visible, .a11y-reset:focus-visible, .a11y-nav-item:focus-visible { outline: 3px solid var(--a11y-c); outline-offset: 2px; }
+        .a11y-tile[aria-pressed="true"], .a11y-perfil[aria-pressed="true"] { border-color: var(--a11y-c); background: #e6f6f8; color: #075e68; }
+        .a11y-foot { flex: none; padding: .8em 1em; background: #fff; display: flex; justify-content: center; }
+        .a11y-reset {
+            display: inline-flex; align-items: center; gap: .5em; width: min(300px, 100%); justify-content: center;
+            background: #6b6b6b; color: #fff; border: 0; border-radius: 8px; padding: .65em 1em;
+            font-size: .9em; font-weight: 600; cursor: pointer;
+        }
+        .a11y-reset:hover { background: #555; }
+        .a11y-reset svg { width: 16px; height: 16px; }
+        /* Vista "Estructura de la página" */
+        .a11y-estructura[hidden], .a11y-opciones[hidden] { display: none; }
+        .a11y-volver { background: none; border: 0; color: #075e68; font-weight: 700; font-size: .9em; cursor: pointer; padding: 0 0 .7em; }
+        .a11y-nav { list-style: none; margin: 0; padding: 0; display: grid; gap: .4em; }
+        .a11y-nav-item { width: 100%; text-align: left; background: #fff; border: 2px solid transparent; border-radius: 8px; padding: .6em .8em; font-size: .9em; color: #222; cursor: pointer; }
+        .a11y-nav-item:hover { border-color: var(--a11y-c); }
+        .a11y-nav-item small { display: inline-block; min-width: 2.2em; margin-right: .4em; padding: 1px 5px; border-radius: 4px; background: var(--a11y-c); color: #fff; font-size: .72em; text-align: center; }
+        .a11y-nav-item.n3 { padding-left: 1.6em; }
+        @media (max-width: 420px) {
+            .a11y-panel { right: 8px; width: calc(100vw - 16px); }
+            .a11y-body { padding: .8em .7em 1em; }
+            .a11y-grid, .a11y-perfiles { gap: .5em; }
+            .a11y-tile { font-size: .76em; min-height: 96px; }
+            .a11y-perfil { font-size: .8em; gap: .5em; padding: .5em; }
+        }
+
         .a11y-reading { outline: 4px solid #FFE066 !important; outline-offset: 4px; border-radius: 6px; background: rgba(255,224,102,.12); }
+        /* Lupa, guía y máscara de lectura */
+        .a11y-lupa {
+            position: fixed; z-index: 9500; pointer-events: none; max-width: min(520px, calc(100vw - 20px));
+            background: #111; color: #fff; border: 3px solid #0f97a7; border-radius: 10px;
+            padding: .6rem .9rem; font: 600 1.5rem/1.35 Arial, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,.5);
+        }
+        .a11y-lupa[hidden], .a11y-guia[hidden], .a11y-mascara[hidden] { display: none; }
+        .a11y-guia { position: fixed; left: 0; right: 0; top: 0; height: 12px; z-index: 9400; pointer-events: none; background: #FFE066; border-top: 3px solid #000; border-bottom: 3px solid #000; transform: translateY(calc(var(--y, -100px) - 6px)); }
+        .a11y-mascara { position: fixed; inset: 0; z-index: 9400; pointer-events: none;
+            background: linear-gradient(to bottom, rgba(0,0,0,.6) calc(var(--y, 50vh) - 70px), transparent calc(var(--y, 50vh) - 70px), transparent calc(var(--y, 50vh) + 70px), rgba(0,0,0,.6) calc(var(--y, 50vh) + 70px)); }
 
         /* Tamaño de texto */
         html.a11y-t1 { font-size: 112.5%; }
         html.a11y-t2 { font-size: 125%; }
         html.a11y-t3 { font-size: 140%; }
+        html.a11y-t4 { font-size: 155%; }
         /* El título grande del inicio no se agranda más para que no se corte */
         html.a11y-t1 .h1-main .mask > span { font-size: clamp(2.3rem, 10.2vw, 4.62rem); }
         html.a11y-t2 .h1-main .mask > span { font-size: clamp(2.08rem, 9.2vw, 4.16rem); }
         html.a11y-t3 .h1-main .mask > span { font-size: clamp(1.86rem, 8.2vw, 3.71rem); }
+        html.a11y-t4 .h1-main .mask > span { font-size: clamp(1.68rem, 7.4vw, 3.35rem); }
         /* El menú superior en PC mantiene su tamaño para que quepa completo */
         @media (min-width: 1000px) { html[class*="a11y-t"] .menu a { font-size: 15px !important; } html[class*="a11y-t"] .brand span { font-size: 22px !important; } }
-        /* Alto contraste: fondo negro, texto blanco y enlaces amarillos */
+        /* Contraste nivel 1: fondo negro, texto blanco y enlaces amarillos */
         html.a11y-contrast, html.a11y-contrast body { background: #000 !important; }
-        html.a11y-contrast body *:not(img):not(video):not(iframe):not(svg):not(path):not(.a11y-panel):not(.a11y-panel *):not(.a11y-btn):not(.a11y-btn *) {
+        html.a11y-contrast body *:not(img):not(video):not(iframe):not(svg):not(path):not(.a11y-panel):not(.a11y-panel *):not(.a11y-btn):not(.a11y-btn *):not(.a11y-lupa) {
             background-color: transparent !important; background-image: none !important; color: #fff !important;
             text-shadow: none !important; box-shadow: none !important; border-color: #fff !important;
             -webkit-text-fill-color: currentColor !important; filter: none !important;
         }
-        html.a11y-contrast .site-header, html.a11y-contrast .btn, html.a11y-contrast button:not(.a11y-btn),
+        html.a11y-contrast .site-header, html.a11y-contrast .btn, html.a11y-contrast button:not(.a11y-btn):not(.a11y-panel button),
         html.a11y-contrast input, html.a11y-contrast select, html.a11y-contrast textarea, html.a11y-contrast dialog,
         html.a11y-contrast .menu { background-color: #000 !important; }
         html.a11y-contrast .logo-plate { background-color: #fff !important; }
-        html.a11y-contrast a, html.a11y-contrast a *:not(.logo-plate) { color: #FFE066 !important; }
-        html.a11y-contrast .btn, html.a11y-contrast button:not(.a11y-btn) { border: 2px solid #FFE066 !important; }
-        html.a11y-contrast .aura-halo, html.a11y-contrast .aura-rayos, html.a11y-contrast .aura-chispas, html.a11y-contrast canvas { display: none !important; }
+        html.a11y-contrast a:not(.a11y-panel *), html.a11y-contrast a *:not(.logo-plate) { color: #FFE066 !important; }
+        html.a11y-contrast .btn, html.a11y-contrast button:not(.a11y-btn):not(.a11y-panel button) { border: 2px solid #FFE066 !important; }
+        html.a11y-contrast .aura-halo, html.a11y-contrast .aura-rayos, html.a11y-contrast .aura-chispas, html.a11y-contrast canvas,
+        html.a11y-claro .aura-halo, html.a11y-claro .aura-rayos, html.a11y-claro .aura-chispas, html.a11y-claro canvas { display: none !important; }
+        /* Contraste nivel 2: fondo blanco, texto negro y enlaces azules */
+        html.a11y-claro, html.a11y-claro body { background: #fff !important; }
+        html.a11y-claro body *:not(img):not(video):not(iframe):not(svg):not(path):not(.a11y-panel):not(.a11y-panel *):not(.a11y-btn):not(.a11y-btn *):not(.a11y-lupa) {
+            background-color: transparent !important; background-image: none !important; color: #000 !important;
+            text-shadow: none !important; box-shadow: none !important; border-color: #000 !important;
+            -webkit-text-fill-color: currentColor !important; filter: none !important;
+        }
+        html.a11y-claro .site-header, html.a11y-claro .btn, html.a11y-claro button:not(.a11y-btn):not(.a11y-panel button),
+        html.a11y-claro input, html.a11y-claro select, html.a11y-claro textarea, html.a11y-claro .menu { background-color: #fff !important; }
+        html.a11y-claro a:not(.a11y-panel *), html.a11y-claro a *:not(.logo-plate) { color: #0033aa !important; }
+        html.a11y-claro .btn, html.a11y-claro button:not(.a11y-btn):not(.a11y-panel button) { border: 2px solid #000 !important; }
+        /* Contraste nivel 3 (colores invertidos) y saturación: filtros sobre el sitio, nunca sobre el menú */
+        html.a11y-filtro body > *:not(.a11y-btn):not(.a11y-panel):not(.a11y-lupa):not(.a11y-guia):not(.a11y-mascara):not(.skip-link) { filter: var(--a11y-inv,) var(--a11y-sat,); }
+        html.a11y-invertir body > * img, html.a11y-invertir body > * video, html.a11y-invertir body > * iframe { filter: invert(1) hue-rotate(180deg); }
+        html.a11y-invertir .logo-plate { filter: invert(1) hue-rotate(180deg); }
+        html.a11y-invertir .logo-plate img { filter: none; }
         /* Subrayar enlaces */
-        html.a11y-links a:not(.btn) { text-decoration: underline !important; text-underline-offset: 3px; }
+        html.a11y-links a:not(.btn):not(.a11y-panel *) { text-decoration: underline !important; text-underline-offset: 3px; }
         html.a11y-links a.btn { outline: 2px dashed currentColor; outline-offset: 2px; }
+        /* Resaltar encabezados */
+        html.a11y-encab :is(h1, h2, h3, h4, h5, h6):not(.a11y-panel *) { outline: 3px solid #0f97a7 !important; outline-offset: 4px; border-radius: 4px; background-color: rgba(15,151,167,.12) !important; }
+        /* Ocultar imágenes */
+        html.a11y-noimg :is(img, picture, video, canvas, iframe):not(.a11y-panel *) { visibility: hidden !important; }
         /* Detener animaciones */
         html.a11y-still *, html.a11y-still *::before, html.a11y-still *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
         html.a11y-still .reveal, html.a11y-still .fade-in, html.a11y-still .zoom-in img, html.a11y-still .mask > span { opacity: 1 !important; transform: none !important; clip-path: none !important; }
         html.a11y-still .rotator strong.out { opacity: 1 !important; transform: none !important; }
-        /* Cursor grande */
+        /* Cursor grande (nivel 1 amarillo, nivel 2 negro; nivel 3 añade guía de lectura) */
         html.a11y-cursor, html.a11y-cursor * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l16 10-7 1 4 8-3 1-4-8-5 5z' fill='%23FFE066' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") 4 2, auto !important; }
+        html.a11y-cursor2, html.a11y-cursor2 * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l16 10-7 1 4 8-3 1-4-8-5 5z' fill='%23000' stroke='%23fff' stroke-width='1.2'/%3E%3C/svg%3E") 4 2, auto !important; }
+        /* Apto para dislexia: letra más legible (no cambia los íconos) */
+        html.a11y-dis1 body :not(i):not([class*="fa-"]):not(.a11y-panel *):not(svg *) { font-family: Verdana, Tahoma, "Segoe UI", Arial, sans-serif !important; }
+        html.a11y-dis2 body :not(i):not([class*="fa-"]):not(.a11y-panel *):not(svg *) { font-family: "Comic Sans MS", "Comic Neue", "Chalkboard SE", Verdana, sans-serif !important; font-style: normal !important; }
+        /* Espaciado de texto */
+        html.a11y-esp1 body :not(.a11y-panel *) { letter-spacing: .06em !important; word-spacing: .12em !important; }
+        html.a11y-esp2 body :not(.a11y-panel *) { letter-spacing: .12em !important; word-spacing: .24em !important; }
+        html.a11y-esp3 body :not(.a11y-panel *) { letter-spacing: .18em !important; word-spacing: .36em !important; }
+        /* Altura de la línea */
+        html.a11y-alt1 :is(p, li, blockquote, figcaption, dd, td, label, small):not(.a11y-panel *) { line-height: 1.8 !important; }
+        html.a11y-alt2 :is(p, li, blockquote, figcaption, dd, td, label, small):not(.a11y-panel *) { line-height: 2.1 !important; }
+        html.a11y-alt3 :is(p, li, blockquote, figcaption, dd, td, label, small):not(.a11y-panel *) { line-height: 2.5 !important; }
+        /* Texto alineado */
+        html.a11y-alin1 :is(p, li, h1, h2, h3, h4, h5, h6, blockquote, figcaption, td):not(.a11y-panel *) { text-align: left !important; }
+        html.a11y-alin2 :is(p, li, h1, h2, h3, h4, h5, h6, blockquote, figcaption, td):not(.a11y-panel *) { text-align: center !important; }
+        html.a11y-alin3 :is(p, li, h1, h2, h3, h4, h5, h6, blockquote, figcaption, td):not(.a11y-panel *) { text-align: right !important; }
 
         @keyframes ring {
             0% { transform: scale(1); opacity: .8; }
@@ -2035,30 +2142,36 @@
 <div class="spot" id="spot" aria-hidden="true"></div>
 
 <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
-<p class="sr-only">Este sitio tiene opciones de accesibilidad: lectura en voz alta, texto más grande y alto contraste. Usa el botón Accesibilidad, en la esquina inferior derecha. Presiona la tecla Escape para detener cualquier voz.</p>
+<p class="sr-only">Este sitio tiene opciones de accesibilidad: lectura en voz alta, texto más grande y alto contraste. Usa el botón Accesibilidad, en la esquina inferior derecha, o presiona Alt + A. Presiona la tecla Escape para detener cualquier voz.</p>
 
-<button class="a11y-btn" id="a11yBtn" type="button" aria-expanded="false" aria-controls="a11yPanel">
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="4" r="2.2" fill="currentColor"/><path d="M4 8.5c2.6.8 5.3 1.2 8 1.2s5.4-.4 8-1.2l.5 1.8c-2 .7-4.1 1.1-6.2 1.3v3.2l2.3 6.6-1.8.7L12.5 16h-1l-2.3 6.1-1.8-.7 2.3-6.6v-3.2c-2.1-.2-4.2-.6-6.2-1.3z" fill="currentColor"/></svg>
-    <span class="a11y-btn-txt">Accesibilidad</span>
+<button class="a11y-btn" id="a11yBtn" type="button" aria-expanded="false" aria-controls="a11yPanel" aria-label="Accesibilidad" title="Menú de accesibilidad">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="3.8" r="1.8" fill="currentColor" stroke="none"/><path d="M10.5 7.5v5.5h5l2.6 5.2 2-.9"/><path d="M10.5 10h4.5"/><path d="M8 10.6a5.2 5.2 0 1 0 7.2 6.4"/></svg>
 </button>
 <section class="a11y-panel" id="a11yPanel" role="dialog" aria-modal="false" aria-labelledby="a11yTitle" hidden>
-    <h2 id="a11yTitle">Opciones de accesibilidad</h2>
-    <p>Ajusta el sitio a tu manera. Tus opciones se guardan en este dispositivo.</p>
-    <div class="a11y-grid">
-        <button type="button" class="full" data-a11y="leer" aria-pressed="false">🔊 Leer el sitio en voz alta</button>
-        <button type="button" data-a11y="pausa">⏸️ Pausar / seguir</button>
-        <button type="button" data-a11y="detener">⏹️ Detener voz</button>
-        <button type="button" data-a11y="mas">A+ Texto más grande</button>
-        <button type="button" data-a11y="menos">A− Texto más pequeño</button>
-        <button type="button" data-a11y="contraste" aria-pressed="false">◐ Alto contraste</button>
-        <button type="button" data-a11y="enlaces" aria-pressed="false">🔗 Resaltar enlaces</button>
-        <button type="button" data-a11y="quieto" aria-pressed="false">✋ Detener animaciones</button>
-        <button type="button" data-a11y="cursor" aria-pressed="false">🖱️ Cursor grande</button>
-        <button type="button" class="full" data-a11y="reiniciar">↺ Restablecer todo</button>
+    <div class="a11y-head">
+        <h2 id="a11yTitle">Menú de accesibilidad</h2>
+        <button type="button" class="a11y-x" data-a11y="cerrar" aria-label="Cerrar menú de accesibilidad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="a11y-body">
+        <div class="a11y-opciones" id="a11yOpciones">
+            <p class="a11y-sub">Perfiles de accesibilidad</p>
+            <div class="a11y-perfiles" id="a11yPerfiles"></div>
+            <div class="a11y-grid" id="a11yGrid"></div>
+        </div>
+        <div class="a11y-estructura" id="a11yEstructura" hidden>
+            <button type="button" class="a11y-volver" data-a11y="volver">← Volver al menú</button>
+            <p class="a11y-sub">Estructura de la página</p>
+            <ul class="a11y-nav" id="a11yNav"></ul>
+        </div>
+    </div>
+    <div class="a11y-foot">
+        <button type="button" class="a11y-reset" data-a11y="reiniciar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg> Restablecer Filtros</button>
     </div>
     <p class="sr-only" id="a11yStatus" role="status" aria-live="polite"></p>
-    <button type="button" class="a11y-close" data-a11y="cerrar">Cerrar opciones</button>
 </section>
+<div class="a11y-lupa" id="a11yLupa" aria-hidden="true" hidden></div>
+<div class="a11y-guia" id="a11yGuia" aria-hidden="true" hidden></div>
+<div class="a11y-mascara" id="a11yMascara" aria-hidden="true" hidden></div>
 <audio id="bgm" loop preload="none" src="./audio/instrumental.m4a"></audio>
 
 <button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Reproducir música instrumental">
@@ -3188,36 +3301,136 @@
 </script>
 
 <script>
-/* ===== Accesibilidad: lectura en voz alta, tamaño de texto, contraste, etc. ===== */
+/* ===== Menú de accesibilidad: perfiles, lectura en voz alta, contraste, texto, cursor, etc. ===== */
 (function () {
     var html = document.documentElement;
     var btn = document.getElementById('a11yBtn');
     var panel = document.getElementById('a11yPanel');
     var status = document.getElementById('a11yStatus');
-    if (!btn || !panel) return;
+    var gridEl = document.getElementById('a11yGrid');
+    var perfEl = document.getElementById('a11yPerfiles');
+    var vistaOp = document.getElementById('a11yOpciones');
+    var vistaEs = document.getElementById('a11yEstructura');
+    var navEl = document.getElementById('a11yNav');
+    var lupa = document.getElementById('a11yLupa');
+    var guia = document.getElementById('a11yGuia');
+    var mascara = document.getElementById('a11yMascara');
+    if (!btn || !panel || !gridEl) return;
+
+    function svg(p) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + p + '</svg>'; }
+    var ICO = {
+        ojo: '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>',
+        libro: '<path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/>',
+        ondas: '<circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/>',
+        mira: '<circle cx="12" cy="12" r="9"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/>',
+        leer: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5"/><path d="M14 3v5h5v2"/><path d="M8 9h2M8 13h4"/><path d="M14.5 16H16l3-2.5v8L16 19h-1.5z"/>',
+        contraste: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
+        enlace: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+        encab: '<path d="M6 3v7a6 6 0 0 0 12 0V3"/><path d="M4 21h16"/>',
+        noimg: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/><path d="M2 2l20 20"/>',
+        pausa: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
+        sat: '<rect x="2" y="5" width="20" height="14" rx="3" fill="currentColor"/><circle cx="12" cy="12" r="4.2" fill="#fff" stroke="#fff"/><path d="M12 7.8a4.2 4.2 0 0 1 0 8.4z" fill="currentColor" stroke="none"/>',
+        texto: '<path d="M4 7V4h16v3M9 20h6M12 4v16"/>',
+        cursor: '<path d="M5 3l6.5 17 2.6-7.4L21.5 10z"/>',
+        lupa: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/>',
+        doc: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/>',
+        esp: '<text x="12" y="11" text-anchor="middle" font-size="10" font-weight="700" font-family="Arial, sans-serif" fill="currentColor" stroke="none">AB</text><path d="M4 18h16M7 15.5L4 18l3 2.5M17 15.5l3 2.5-3 2.5"/>',
+        alt: '<path d="M5 4v16M2 7l3-3 3 3M2 17l3 3 3-3M11 6h10M11 12h10M11 18h10"/>',
+        alin: '<path d="M3 6h18M3 10h12M3 14h18M3 18h12"/>',
+        capas: '<path d="M12 2l10 5-10 5L2 7z"/><path d="M2 12l10 5 10-5"/><path d="M2 17l10 5 10-5"/>'
+    };
+
+    /* Opciones: n = número de niveles (0 = encender/apagar) */
+    var OPC = [
+        { id: 'leer', lbl: 'Leer página', ico: 'leer', n: 0, especial: true },
+        { id: 'contraste', lbl: 'Contraste +', ico: 'contraste', n: 3, nombres: ['Contraste oscuro', 'Contraste claro', 'Colores invertidos'] },
+        { id: 'enlaces', lbl: 'Resaltar enlaces', ico: 'enlace', n: 0 },
+        { id: 'encab', lbl: 'Resaltar encabezados', ico: 'encab', n: 0 },
+        { id: 'noimg', lbl: 'Ocultar imágenes', ico: 'noimg', n: 0 },
+        { id: 'quieto', lbl: 'Detener animaciones', ico: 'pausa', n: 0 },
+        { id: 'sat', lbl: 'Saturación', ico: 'sat', n: 3, nombres: ['Saturación baja', 'Saturación alta', 'Blanco y negro'] },
+        { id: 't', lbl: 'Agrandar texto', ico: 'texto', n: 4 },
+        { id: 'cursor', lbl: 'Cursor', ico: 'cursor', n: 3, nombres: ['Cursor grande amarillo', 'Cursor grande negro', 'Cursor grande con guía de lectura'] },
+        { id: 'lupa', lbl: 'Lupa de contenido', ico: 'lupa', n: 0 },
+        { id: 'dis', lbl: 'Apto para dislexia', ico: 'doc', n: 2, nombres: ['Letra legible', 'Letra para dislexia'] },
+        { id: 'esp', lbl: 'Espaciado de texto', ico: 'esp', n: 3 },
+        { id: 'alt', lbl: 'Altura de la línea', ico: 'alt', n: 3 },
+        { id: 'alin', lbl: 'Texto alineado', ico: 'alin', n: 3, nombres: ['Texto a la izquierda', 'Texto centrado', 'Texto a la derecha'] },
+        { id: 'estructura', lbl: 'Estructura de la página', ico: 'capas', n: 0, especial: true }
+    ];
+    var PERFILES = [
+        { id: 'daltonismo', lbl: 'Daltonismo', ico: 'ojo', aplica: { sat: 2, enlaces: true, encab: true } },
+        { id: 'dislexia', lbl: 'Dislexia', ico: 'libro', aplica: { dis: 2, esp: 1, alt: 1, alin: 1 } },
+        { id: 'foto', lbl: 'Protección fotosensible', ico: 'ondas', aplica: { quieto: true, sat: 1 } },
+        { id: 'tdah', lbl: 'TDAH', ico: 'mira', aplica: { quieto: true, encab: true, mascara: true } }
+    ];
+
     var KEY = 'miproaa_a11y';
-    var st = { t: 0, contraste: false, enlaces: false, quieto: false, cursor: false };
-    try { var g = JSON.parse(localStorage.getItem(KEY) || 'null'); if (g) for (var k in g) st[k] = g[k]; } catch (e) {}
+    function base() { return { t: 0, contraste: 0, sat: 0, cursor: 0, dis: 0, esp: 0, alt: 0, alin: 0, enlaces: false, encab: false, noimg: false, quieto: false, lupa: false, mascara: false, perfil: '' }; }
+    var st = base();
+    try {
+        var g = JSON.parse(localStorage.getItem(KEY) || 'null');
+        if (g) for (var k in st) if (k in g) st[k] = (typeof st[k] === 'number') ? (Number(g[k]) || 0) : g[k];
+    } catch (e) {}
+
+    /* ---- Construir el menú ---- */
+    perfEl.innerHTML = PERFILES.map(function (p) {
+        return '<button type="button" class="a11y-perfil" data-perfil="' + p.id + '" aria-pressed="false"><span class="ico">' + svg(ICO[p.ico]) + '</span><span>' + p.lbl + '</span></button>';
+    }).join('');
+    gridEl.innerHTML = OPC.map(function (o) {
+        var barras = '';
+        if (o.n) { barras = '<span class="a11y-niveles" aria-hidden="true">'; for (var i = 0; i < o.n; i++) barras += '<i></i>'; barras += '</span>'; }
+        var pressed = o.id === 'estructura' ? '' : ' aria-pressed="false"';
+        return '<button type="button" class="a11y-tile" data-a11y="' + o.id + '"' + pressed + '>' + svg(ICO[o.ico]) + '<span class="lbl">' + o.lbl + '</span>' + barras + '</button>';
+    }).join('');
 
     function decir(msg) { if (status) { status.textContent = ''; setTimeout(function () { status.textContent = msg; }, 50); } }
+
     function aplicar() {
-        html.classList.remove('a11y-t1', 'a11y-t2', 'a11y-t3');
-        if (st.t > 0) html.classList.add('a11y-t' + st.t);
-        html.classList.toggle('a11y-contrast', !!st.contraste);
-        html.classList.toggle('a11y-links', !!st.enlaces);
-        html.classList.toggle('a11y-still', !!st.quieto);
-        html.classList.toggle('a11y-cursor', !!st.cursor);
-        ['contraste', 'enlaces', 'quieto', 'cursor'].forEach(function (k) {
-            var b = panel.querySelector('[data-a11y="' + k + '"]');
-            if (b) b.setAttribute('aria-pressed', String(!!st[k]));
+        var c = html.classList;
+        c.remove('a11y-t1', 'a11y-t2', 'a11y-t3', 'a11y-t4', 'a11y-contrast', 'a11y-claro', 'a11y-invertir', 'a11y-filtro',
+            'a11y-cursor', 'a11y-cursor2', 'a11y-dis1', 'a11y-dis2', 'a11y-esp1', 'a11y-esp2', 'a11y-esp3',
+            'a11y-alt1', 'a11y-alt2', 'a11y-alt3', 'a11y-alin1', 'a11y-alin2', 'a11y-alin3');
+        if (st.t) c.add('a11y-t' + st.t);
+        if (st.contraste === 1) c.add('a11y-contrast');
+        if (st.contraste === 2) c.add('a11y-claro');
+        if (st.contraste === 3) c.add('a11y-invertir');
+        var sat = ['', 'saturate(.5)', 'saturate(2)', 'grayscale(1)'][st.sat] || '';
+        html.style.setProperty('--a11y-sat', sat);
+        html.style.setProperty('--a11y-inv', st.contraste === 3 ? 'invert(1) hue-rotate(180deg)' : '');
+        if (sat || st.contraste === 3) c.add('a11y-filtro');
+        if (st.cursor === 1 || st.cursor === 3) c.add('a11y-cursor');
+        if (st.cursor === 2) c.add('a11y-cursor2');
+        if (st.dis) c.add('a11y-dis' + st.dis);
+        if (st.esp) c.add('a11y-esp' + st.esp);
+        if (st.alt) c.add('a11y-alt' + st.alt);
+        if (st.alin) c.add('a11y-alin' + st.alin);
+        c.toggle('a11y-links', !!st.enlaces);
+        c.toggle('a11y-encab', !!st.encab);
+        c.toggle('a11y-noimg', !!st.noimg);
+        c.toggle('a11y-still', !!st.quieto);
+        if (guia) guia.hidden = st.cursor !== 3;
+        if (mascara) mascara.hidden = !st.mascara;
+        if (!st.lupa && lupa) lupa.hidden = true;
+
+        OPC.forEach(function (o) {
+            if (o.especial) return;
+            var b = gridEl.querySelector('[data-a11y="' + o.id + '"]'); if (!b) return;
+            var v = st[o.id];
+            b.setAttribute('aria-pressed', String(!!v));
+            if (o.n) {
+                [].forEach.call(b.querySelectorAll('.a11y-niveles i'), function (i, n) { i.classList.toggle('on', n < v); });
+                b.setAttribute('aria-label', o.lbl + (v ? ', nivel ' + v + ' de ' + o.n : ', desactivado'));
+            }
         });
+        [].forEach.call(perfEl.querySelectorAll('[data-perfil]'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-perfil') === st.perfil)); });
         try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {}
     }
-    aplicar();
 
     /* ---- Lectura en voz alta del contenido ---- */
     var synth = window.speechSynthesis;
     var cola = [], idx = 0, leyendo = false, actual = null;
+    var tileLeer = gridEl.querySelector('[data-a11y="leer"]');
     function vozES() {
         if (!synth) return null;
         var v = synth.getVoices().filter(function (x) { return /^es/i.test(x.lang); });
@@ -3242,6 +3455,11 @@
         actual = el;
         if (el) { el.classList.add('a11y-reading'); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
     }
+    function marcarLeer(on) {
+        if (!tileLeer) return;
+        tileLeer.setAttribute('aria-pressed', String(on));
+        tileLeer.querySelector('.lbl').textContent = on ? 'Detener lectura' : 'Leer página';
+    }
     function siguiente() {
         if (!leyendo) return;
         if (idx >= cola.length) { detener(); decir('Lectura terminada'); return; }
@@ -3262,7 +3480,7 @@
         pararBienvenida();
         synth.cancel();
         cola = bloquesLegibles(); idx = 0; leyendo = true;
-        panel.querySelector('[data-a11y="leer"]').setAttribute('aria-pressed', 'true');
+        marcarLeer(true);
         cerrar(false);
         siguiente();
     }
@@ -3271,43 +3489,115 @@
         if (synth) synth.cancel();
         marcar(null);
         pararBienvenida();
-        var b = panel.querySelector('[data-a11y="leer"]'); if (b) b.setAttribute('aria-pressed', 'false');
+        marcarLeer(false);
     }
-    function pausa() {
-        if (!synth) return;
-        if (synth.paused) { synth.resume(); decir('Lectura reanudada'); }
-        else if (synth.speaking) { synth.pause(); decir('Lectura en pausa'); }
+
+    /* ---- Lupa de contenido: muestra el texto en grande al pasar el ratón ---- */
+    var SEL_LUPA = 'p, li, h1, h2, h3, h4, h5, h6, a, button, label, figcaption, blockquote, td, span, strong, em, small';
+    document.addEventListener('mouseover', function (e) {
+        if (!st.lupa || !lupa) return;
+        var el = e.target.closest && e.target.closest(SEL_LUPA);
+        if (!el || el.closest('.a11y-panel, .a11y-btn')) { lupa.hidden = true; return; }
+        var t = (el.innerText || el.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim();
+        if (!t) { lupa.hidden = true; return; }
+        lupa.textContent = t.length > 280 ? t.slice(0, 280) + '…' : t;
+        lupa.hidden = false;
+    });
+    /* Lupa, guía y máscara siguen al ratón (o al dedo) */
+    function mover(x, y) {
+        if (guia && !guia.hidden) guia.style.setProperty('--y', y + 'px');
+        if (mascara && !mascara.hidden) mascara.style.setProperty('--y', y + 'px');
+        if (lupa && !lupa.hidden) {
+            var w = lupa.offsetWidth, h = lupa.offsetHeight;
+            var lx = Math.min(Math.max(10, x + 18), window.innerWidth - w - 10);
+            var ly = y + 24 + h > window.innerHeight ? y - h - 16 : y + 24;
+            lupa.style.left = lx + 'px'; lupa.style.top = Math.max(10, ly) + 'px';
+        }
+    }
+    document.addEventListener('mousemove', function (e) { mover(e.clientX, e.clientY); }, { passive: true });
+    document.addEventListener('touchmove', function (e) { var t = e.touches[0]; if (t) mover(t.clientX, t.clientY); }, { passive: true });
+    document.addEventListener('mouseleave', function () { if (lupa) lupa.hidden = true; });
+
+    /* ---- Estructura de la página ---- */
+    function mostrarEstructura(si) {
+        vistaOp.hidden = si; vistaEs.hidden = !si;
+        if (!si) { var t = gridEl.querySelector('[data-a11y="estructura"]'); if (t) t.focus(); return; }
+        var main = document.getElementById('contenido') || document.body;
+        var hs = [].filter.call(main.querySelectorAll('h1, h2, h3'), function (h) {
+            return !h.closest('[aria-hidden="true"], .sr-only') && (h.innerText || '').trim() && h.getClientRects().length;
+        });
+        navEl.innerHTML = '';
+        hs.forEach(function (h) {
+            var li = document.createElement('li');
+            var b = document.createElement('button');
+            b.type = 'button'; b.className = 'a11y-nav-item' + (h.tagName === 'H3' ? ' n3' : '');
+            b.innerHTML = '<small>' + h.tagName + '</small>';
+            b.appendChild(document.createTextNode((h.innerText || '').replace(/\s+/g, ' ').trim()));
+            b.addEventListener('click', function () {
+                cerrar(false);
+                if (!h.hasAttribute('tabindex')) h.setAttribute('tabindex', '-1');
+                h.scrollIntoView({ block: 'start', behavior: st.quieto ? 'auto' : 'smooth' });
+                h.focus({ preventScroll: true });
+            });
+            li.appendChild(b); navEl.appendChild(li);
+        });
+        if (!hs.length) navEl.innerHTML = '<li>No se encontraron títulos en esta página.</li>';
+        var v = vistaEs.querySelector('.a11y-volver'); if (v) v.focus();
     }
 
     /* ---- Panel ---- */
     function abrir() {
         panel.hidden = false; btn.setAttribute('aria-expanded', 'true');
         pararBienvenida();
-        var f = panel.querySelector('button'); if (f) f.focus();
+        var f = panel.querySelector('.a11y-perfil'); if (f) f.focus();
     }
     function cerrar(devolverFoco) {
         panel.hidden = true; btn.setAttribute('aria-expanded', 'false');
+        if (!vistaEs.hidden) { vistaEs.hidden = true; vistaOp.hidden = false; }
         if (devolverFoco !== false) btn.focus();
     }
     btn.addEventListener('click', function () { panel.hidden ? abrir() : cerrar(); });
+    document.addEventListener('click', function (e) {   // clic fuera del menú lo cierra
+        if (!panel.hidden && !panel.contains(e.target) && !btn.contains(e.target)) cerrar(false);
+    });
+
     panel.addEventListener('click', function (e) {
+        var p = e.target.closest('[data-perfil]');
+        if (p) {
+            var id = p.getAttribute('data-perfil');
+            var t = st.t;
+            var activo = st.perfil === id;
+            st = base(); st.t = t;   // el tamaño de texto se respeta
+            if (!activo) {
+                var perfil = PERFILES.filter(function (x) { return x.id === id; })[0];
+                for (var k in perfil.aplica) st[k] = perfil.aplica[k];
+                st.perfil = id;
+                decir('Perfil ' + perfil.lbl + ' activado');
+            } else decir('Perfil desactivado');
+            aplicar(); return;
+        }
         var b = e.target.closest('[data-a11y]'); if (!b) return;
         var a = b.getAttribute('data-a11y');
-        if (a === 'leer') { leyendo ? detener() : leer(); return; }
-        if (a === 'pausa') return pausa();
-        if (a === 'detener') { detener(); decir('Voz detenida'); return; }
         if (a === 'cerrar') return cerrar();
-        if (a === 'mas') { st.t = Math.min(3, st.t + 1); decir('Texto más grande'); }
-        if (a === 'menos') { st.t = Math.max(0, st.t - 1); decir('Texto más pequeño'); }
-        if (a === 'contraste' || a === 'enlaces' || a === 'quieto' || a === 'cursor') {
-            st[a] = !st[a]; decir(b.textContent.replace(/^[^A-Za-zÁÉÍÓÚáéíóúÑñ]+/, '') + (st[a] ? ' activado' : ' desactivado'));
+        if (a === 'leer') { leyendo ? detener() : leer(); return; }
+        if (a === 'estructura') return mostrarEstructura(true);
+        if (a === 'volver') return mostrarEstructura(false);
+        if (a === 'reiniciar') { detener(); st = base(); decir('Filtros restablecidos'); aplicar(); return; }
+        var o = OPC.filter(function (x) { return x.id === a; })[0]; if (!o) return;
+        if (o.n) {
+            st[a] = (st[a] + 1) % (o.n + 1);   // avanza de nivel y al final se apaga
+            decir(st[a] ? ((o.nombres && o.nombres[st[a] - 1]) || o.lbl + ' nivel ' + st[a]) : o.lbl + ' desactivado');
+        } else {
+            st[a] = !st[a];
+            decir(o.lbl + (st[a] ? ' activado' : ' desactivado'));
         }
-        if (a === 'reiniciar') { st = { t: 0, contraste: false, enlaces: false, quieto: false, cursor: false }; decir('Opciones restablecidas'); }
         aplicar();
     });
-    // Escape: detiene cualquier voz y cierra el panel. Alt + A abre las opciones.
+    aplicar();
+
+    // Escape: detiene cualquier voz y cierra el menú. Alt + A abre las opciones.
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') { detener(); if (!panel.hidden) cerrar(); }
+        if (e.key === 'Escape') { detener(); if (lupa) lupa.hidden = true; if (!panel.hidden) cerrar(); }
         if (e.altKey && (e.key === 'a' || e.key === 'A')) { e.preventDefault(); panel.hidden ? abrir() : cerrar(); }
     });
     // Saltar al contenido: lleva el foco al contenido principal
