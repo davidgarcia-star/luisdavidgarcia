@@ -187,7 +187,7 @@ const QUESTIONS = {
     Q("¿Cuántos capítulos tiene el evangelio de Juan?", "21", "28", "24", "16", "Juan"),
     Q("¿Cuántos capítulos tiene la carta a los Romanos?", "16", "13", "21", "8", "Romanos"),
     Q("¿Qué libro de la Biblia no menciona directamente el nombre de Dios?", "Ester", "Rut", "Jonás", "Eclesiastés", "Ester"),
-    Q("¿Cuántos años estuvo Nabucodonosor viviendo como animal por su soberbia?", "Siete años", "Tres años", "Cuarenta días", "Un año", "Daniel 4:32-33"),
+    Q("Según Daniel 4, ¿cuántos «tiempos» pasaron sobre Nabucodonosor mientras vivía como animal del campo?", "Siete tiempos", "Tres tiempos", "Cuarenta días", "Un tiempo", "Daniel 4:32-33"),
     Q("¿Cuántos años de cautiverio en Babilonia anunció Jeremías?", "70", "40", "50", "100", "Jeremías 25:11"),
     Q("¿Qué rey de Babilonia vio la escritura en la pared durante un banquete?", "Belsasar", "Nabucodonosor", "Darío", "Ciro", "Daniel 5"),
     Q("¿Cuáles fueron las palabras escritas en la pared en el banquete de Belsasar?", "Mene, Mene, Tekel, Uparsin", "Selah, Amén, Aleluya, Hosanna", "Alfa, Omega, Principio, Fin", "Santo, Santo, Santo, Señor", "Daniel 5:25"),
