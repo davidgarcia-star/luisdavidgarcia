@@ -2134,6 +2134,270 @@
             .card { transform: none; }
             .rotator strong { transition: none; }
         }
+
+        /* ============================================
+           REDISEÑO 2026: más limpio y moderno
+           Un solo momento llamativo (la portada con el altar encendido);
+           el resto, tranquilo y ordenado.
+           ============================================ */
+        :root {
+            --nav-h: 88px;
+            --r-xl: 32px;
+            --r-lg: 24px;
+            --r-md: 16px;
+            --hair: rgba(248, 241, 227, .12);
+            --hair-ink: rgba(29, 18, 54, .1);
+        }
+
+        /* ---------- Encabezado flotante (cápsula de vidrio) ---------- */
+        .site-header {
+            top: 12px;
+            height: auto;
+            background: none !important;
+            box-shadow: none !important;
+            -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+        }
+        .site-header .wrap.nav {
+            position: relative;
+            max-width: 1240px;
+            height: 64px;
+            padding: 0 8px 0 12px;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
+        }
+        .site-header.solid .wrap.nav,
+        .site-header.open .wrap.nav {
+            background: rgba(14, 8, 34, .74);
+            -webkit-backdrop-filter: blur(18px) saturate(1.4);
+            backdrop-filter: blur(18px) saturate(1.4);
+            border-color: var(--hair);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .35);
+        }
+        .brand span { font-size: 1.35rem; letter-spacing: .06em; }
+
+        .menu { gap: .1rem; }
+        .menu a:not(.btn) {
+            padding: .5rem .85rem;
+            border-radius: 999px;
+            font-size: .95rem;
+            color: rgba(248, 241, 227, .8);
+        }
+        .menu a:not(.btn):hover,
+        .menu a:not(.btn):focus-visible {
+            background: rgba(248, 241, 227, .1);
+            color: #fff;
+            transform: none;
+            box-shadow: none;
+        }
+        .menu a.is-current:not(:hover):not(:focus-visible) {
+            color: var(--gold);
+            background: rgba(244, 183, 63, .12);
+        }
+        .menu .menu-cta .btn { margin-left: .5rem; min-height: 46px; padding: .55rem 1.25rem; font-size: .95rem; }
+
+        .nav-toggle {
+            width: 46px;
+            height: 46px;
+            border: 1px solid var(--hair);
+            background: rgba(248, 241, 227, .06);
+        }
+
+        /* El menú cabe completo en pantallas medianas */
+        @media (min-width: 1081px) and (max-width: 1320px) {
+            .nav-toggle { display: none; }
+            .menu {
+                position: static;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 0;
+                background: none;
+                border: 0;
+            }
+            .menu a { font-size: .95rem; }
+            .menu .menu-cta .btn { margin: 0 0 0 .5rem; }
+        }
+        /* Celular y tableta: menú desplegable en una tarjeta de vidrio */
+        @media (max-width: 1080px) {
+            .site-header { padding-inline: 10px; }
+            .site-header .wrap.nav { width: 100%; }
+            .menu {
+                top: calc(100% + 10px);
+                left: 0;
+                right: 0;
+                gap: .15rem;
+                padding: .6rem;
+                border: 1px solid var(--hair);
+                border-radius: var(--r-lg);
+                background: #120A2B;
+                box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
+                max-height: calc(100svh - 110px);
+                overflow-y: auto;
+            }
+            .menu a:not(.btn) { padding: .85rem 1rem; font-size: 1.05rem; border-radius: 14px; }
+            .menu .menu-cta .btn { display: flex; width: 100%; margin: .5rem 0 0; min-height: 52px; }
+            /* con el menú abierto, la cápsula queda sólida para que no se vea la portada detrás */
+            .site-header.open .wrap.nav { background: #120A2B; -webkit-backdrop-filter: none; backdrop-filter: none; }
+        }
+
+        /* ---------- Portada ---------- */
+        .hero { padding-bottom: 4rem; }
+        .cta-row { gap: .7rem; margin-bottom: 1.4rem; }
+        .btn-ghost {
+            border: 1px solid rgba(248, 241, 227, .28);
+            background: rgba(248, 241, 227, .06);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+        .btn-ghost:hover { background: rgba(248, 241, 227, .12); border-color: rgba(248, 241, 227, .55); color: var(--parchment); }
+        .btn-wa-ghost i { color: #25D366; }
+
+        /* Accesos a los juegos: miniaturas con portada */
+        .hero-games {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .7rem;
+            max-width: 32rem;
+            margin-bottom: 1.4rem;
+            animation-delay: 1.4s;
+        }
+        .hero-games a {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .5rem .9rem .5rem .5rem;
+            border: 1px solid rgba(244, 183, 63, .35);
+            border-radius: var(--r-md);
+            background: linear-gradient(135deg, rgba(244, 183, 63, .14), rgba(238, 106, 43, .06));
+            color: var(--parchment);
+            text-decoration: none;
+            transition: border-color .25s ease, background-color .25s ease, transform .25s var(--ease);
+        }
+        .hero-games a:hover { border-color: var(--gold); transform: translateY(-2px); }
+        /* borde dorado con una luz que gira alrededor (mismo efecto que los botones de los juegos) */
+        .hero-games a.btn-juego { border-color: rgba(244, 183, 63, .6); box-shadow: 0 0 18px rgba(244, 183, 63, .35); }
+        .hero-games a.btn-juego > img, .hero-games a.btn-juego > span:not(.brillo):not(.destellos) { position: relative; z-index: 2; }
+        .hero-games a.btn-juego .destellos i:nth-child(2) { animation-delay: .9s; }
+        .hero-games img {
+            flex: none;
+            width: 58px;
+            height: 46px;
+            border-radius: 10px;
+            object-fit: cover;
+            object-position: 12% 50%;
+        }
+        .hero-games span { display: block; min-width: 0; font: 700 1.05rem/1.15 var(--font-body); }
+        .hero-games small { display: block; margin-bottom: .15rem; font: 500 .8rem/1.2 var(--font-body); color: var(--gold); }
+
+        /* ---------- Títulos de sección: sin mayúsculas forzadas ---------- */
+        .section-title {
+            font: 700 clamp(2.3rem, 5.6vw, 3.8rem)/1 var(--font-display);
+            text-transform: none;
+            letter-spacing: -.005em;
+        }
+        .section-title::after { height: 3px; border-radius: 3px; }
+
+        /* ---------- Tarjetas: vidrio con borde fino, sin movimiento constante ---------- */
+        .card {
+            border: 1px solid var(--hair);
+            border-radius: var(--r-lg);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
+        }
+        .card:hover { border-color: rgba(244, 183, 63, .55); }
+        .card .ico { animation: none; border-radius: 14px; width: 52px; height: 52px; font-size: 1.35rem; }
+
+        /* Visión y misión en mosaico: la visión manda */
+        @media (min-width: 900px) {
+            .vm { grid-template-columns: 1.35fr 1fr !important; }
+            .card-vision .statement-text { font-size: clamp(1.7rem, 2.6vw, 2.3rem); }
+        }
+        .statement-text { text-transform: none !important; line-height: 1.15 !important; }
+        .values-title { text-transform: none; }
+        .card.val { display: flex; align-items: center; justify-content: center; gap: .8rem; padding: 1.1rem 1rem; text-align: left; }
+        .card.val .ico { margin: 0; width: 42px; height: 42px; font-size: 1.1rem; }
+        .card.val h3 { font-size: 1.45rem; }
+
+        /* Datos de la biografía como etiquetas */
+        .pillars li { border-radius: 999px; }
+        .bio-photo .shot-wrap, .bio-photo img { border-radius: var(--r-xl) var(--r-xl) 0 0; }
+        .bio-photo { border-radius: var(--r-xl); overflow: hidden; }
+
+        /* ---------- Juegos bíblicos ---------- */
+        .games { background: var(--mist); }
+        .games-head { display: grid; gap: .5rem 3rem; align-items: end; margin-bottom: 2.5rem; }
+        .games-head .section-title { margin-bottom: 0; }
+        .games-head p { margin: 0; max-width: 34rem; color: var(--ink-soft); font-size: 1.1rem; }
+        @media (min-width: 900px) { .games-head { grid-template-columns: auto 1fr; } .games-head p { justify-self: end; } }
+
+        .games-grid { display: grid; gap: 1.4rem; }
+        @media (min-width: 860px) { .games-grid { grid-template-columns: 1fr 1fr; } }
+
+        .game {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: var(--r-xl);
+            background: var(--void);
+            color: var(--parchment);
+            box-shadow: 0 30px 60px -30px rgba(29, 18, 54, .55);
+        }
+        .game-cover { display: block; overflow: hidden; aspect-ratio: 1200 / 630; }
+        .game-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+        .game:hover .game-cover img { transform: scale(1.04); }
+        .game-body { display: flex; flex-direction: column; flex: 1; gap: .9rem; padding: 1.6rem clamp(1.3rem, 3vw, 2rem) 1.9rem; }
+        .game-body h3 { margin: 0; font: 700 2rem/1 var(--font-display); color: var(--gold); }
+        .game-body p { margin: 0; color: var(--ash); max-width: 36rem; }
+        .game-tags { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+        .game-tags li { padding: .3rem .75rem; border: 1px solid var(--hair); border-radius: 999px; font-size: .88rem; color: var(--parchment); }
+        .game-body .btn { align-self: flex-start; margin-top: auto; }
+
+        /* ---------- Prédicas y galería ---------- */
+        .banner-wrap, .video, .sermon-list { border-radius: var(--r-lg); }
+        .sermon-list { border: 1px solid var(--hair); }
+        /* La galería ya no salta sin parar: se queda quieta y crece un poco al pasar el cursor */
+        .gallery .shot, .gallery .shot img, .shot { animation: none !important; translate: none; }
+        .shot { border-radius: var(--r-xl); }
+        .shot img { transition: transform .6s var(--ease); }
+        .shot:hover img { transform: scale(1.04); }
+
+        /* ---------- Petición de oración y donación ---------- */
+        .form { border-radius: var(--r-xl); border-color: var(--hair); }
+        .field input, .field select, .field textarea { border-radius: 14px; }
+        .btn-pulse::after { animation: none !important; opacity: 0; }
+
+        .give-inner {
+            padding: clamp(2.2rem, 6vw, 4rem) clamp(1.4rem, 5vw, 4rem);
+            border: 1px solid var(--hair);
+            border-radius: var(--r-xl);
+            background: linear-gradient(160deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .02));
+        }
+
+        /* ---------- Pie de página ---------- */
+        .site-footer ul.links a:hover { transform: none; }
+
+        .menu .menu-cta .btn { display: inline-flex; border-radius: 999px; line-height: 1; }
+        .vision .section-title::after { margin-inline: 0; }
+        .give .section-title::after { margin-inline: auto; }
+        @media (min-width: 601px) {
+            .hero-name { margin: 1.1rem 0 .8rem; }
+            .rotator { margin-bottom: 1rem; }
+            .verse { margin-bottom: 1.4rem; }
+        }
+
+        /* ---------- Celular ---------- */
+        @media (max-width: 600px) {
+            .hero-games { gap: .5rem; margin-bottom: 1.1rem; }
+            .hero-games a { gap: .5rem; padding: .4rem .55rem .4rem .4rem; border-radius: 14px; }
+            .hero-games img { width: 40px; height: 40px; border-radius: 9px; object-position: 9% 50%; }
+            .hero-games span { font-size: .9rem; }
+            .hero-games small { font-size: .72rem; }
+            .game-body .btn { align-self: stretch; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .game-cover img, .shot img, .hero-games a { transition: none; }
+        }
     </style>
 </head>
 <body>
@@ -2196,14 +2460,12 @@
         <ul class="menu" id="menu">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#biografia">Biografía</a></li>
-            <li><a href="#vision">Filosofía ministerial</a></li>
+            <li><a href="#vision">Visión</a></li>
+            <li><a href="#juegos">Juegos</a></li>
             <li><a href="#predicas">Prédicas</a></li>
             <li><a href="#galeria">Galería</a></li>
-            <li><a href="#peticion">Petición de oración</a></li>
-            <li><a href="juego-biblico/index.html"><i class="fa-solid fa-book-bible" aria-hidden="true"></i> Jugar</a></li>
-            <li><a href="https://davidgarcia-star.github.io/biblixia/" title="BIBLIXIA – Juego bíblico 3D"><i class="fa-solid fa-cube" aria-hidden="true"></i> BIBLIXIA 3D</a></li>
-            <li><a href="#donacion">Donación</a></li>
-            <li><a href="#visitas"><i class="fa-solid fa-users" aria-hidden="true"></i> Visitantes</a></li>
+            <li><a href="#peticion">Oración</a></li>
+            <li class="menu-cta"><a class="btn btn-gold" href="#donacion"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i> Donar</a></li>
         </ul>
     </div>
 </header>
@@ -2236,24 +2498,29 @@
 
 
                 <div class="cta-row fade-in">
-                    <a class="btn btn-gold btn-pulse" href="#adoracion" data-go-worship>
-                        <i class="fa-solid fa-music" aria-hidden="true"></i> Adoración de su autoría
-                    </a>
-                    <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html" title="Desafío Bíblico RD">
-                        <span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
-                        <span class="btn-texto"><i class="fa-solid fa-book-bible" aria-hidden="true"></i> Jugar Desafío Bíblico RD</span>
-                    </a>
-                    <a class="btn btn-gold btn-pulse btn-juego" href="https://davidgarcia-star.github.io/biblixia/" title="BIBLIXIA – ¡Aprende, juega y vive la Biblia!">
-                        <span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
-                        <span class="btn-texto"><i class="fa-solid fa-cube" aria-hidden="true"></i> Jugar BIBLIXIA 3D</span>
+                    <a class="btn btn-gold" href="#adoracion" data-go-worship>
+                        <i class="fa-solid fa-play" aria-hidden="true"></i> Escuchar su adoración
                     </a>
                     <a class="btn btn-ghost" href="#peticion">
                         <i class="fa-solid fa-hands-praying" aria-hidden="true"></i> Pedir oración
                     </a>
-                    <a class="btn btn-ghost" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer">
+                    <a class="btn btn-ghost btn-wa-ghost" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp
                     </a>
                 </div>
+
+                <nav class="hero-games fade-in" aria-label="Juegos bíblicos">
+                    <a class="btn-juego" href="juego-biblico/index.html">
+                        <span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                        <img src="./img/juego-desafio.jpg" alt="" width="1200" height="630">
+                        <span><small>Preguntas bíblicas</small>Desafío Bíblico RD</span>
+                    </a>
+                    <a class="btn-juego" href="https://davidgarcia-star.github.io/biblixia/">
+                        <span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                        <img src="./img/juego-biblixia.jpg" alt="" width="1200" height="630">
+                        <span><small>Juego en 3D</small>BIBLIXIA</span>
+                    </a>
+                </nav>
 
                 <ul class="social fade-in" aria-label="Redes sociales">
                     <li><a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a></li>
@@ -2360,7 +2627,7 @@
 
             <div class="vm">
                 <div class="reveal">
-                    <article class="card big">
+                    <article class="card big card-vision">
                         <span class="ico"><i class="fa-solid fa-eye" aria-hidden="true"></i></span>
                         <h3>Nuestra visión</h3>
                         <p class="statement-text">Despertar a la generación profética al cumplimiento, por medio del Espíritu Santo.</p>
@@ -2389,6 +2656,46 @@
                 <div class="reveal" style="--d:.24s">
                     <article class="card val"><span class="ico"><i class="fa-solid fa-heart" aria-hidden="true"></i></span><h3>Amor</h3></article>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= JUEGOS BÍBLICOS ================= -->
+    <section class="section light games" id="juegos">
+        <div class="wrap">
+            <div class="games-head">
+                <h2 class="section-title reveal"><span class="wipe-text">Juegos bíblicos</span></h2>
+                <p class="reveal">Dos juegos gratis, creados por el Evangelista Luis David García, para aprender la Palabra jugando en familia, en la iglesia o en la escuela bíblica.</p>
+            </div>
+
+            <div class="games-grid">
+                <article class="game reveal">
+                    <a class="game-cover" href="https://davidgarcia-star.github.io/biblixia/" tabindex="-1" aria-hidden="true">
+                        <img src="./img/juego-biblixia.jpg" alt="" width="1200" height="630" loading="lazy">
+                    </a>
+                    <div class="game-body">
+                        <h3>BIBLIXIA</h3>
+                        <p>Recorre en 3D el tabernáculo, el arca de Noé y el valle de David y Goliat. Recoge monedas con versículos y habla con profetas y apóstoles.</p>
+                        <ul class="game-tags" aria-label="Contenido">
+                            <li>5 niveles</li><li>Celular y computadora</li><li>Biblia LBLA</li>
+                        </ul>
+                        <a class="btn btn-gold btn-pulse btn-juego" href="https://davidgarcia-star.github.io/biblixia/"><span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="btn-texto"><i class="fa-solid fa-cube" aria-hidden="true"></i> Jugar BIBLIXIA</span></a>
+                    </div>
+                </article>
+
+                <article class="game reveal" style="--d:.12s">
+                    <a class="game-cover" href="juego-biblico/index.html" tabindex="-1" aria-hidden="true">
+                        <img src="./img/juego-desafio.jpg" alt="" width="1200" height="630" loading="lazy">
+                    </a>
+                    <div class="game-body">
+                        <h3>Desafío Bíblico RD</h3>
+                        <p>Responde preguntas de la Biblia solo o en equipos de 2, 3 y 4. Empieza en Básico y llega hasta el nivel Master.</p>
+                        <ul class="game-tags" aria-label="Contenido">
+                            <li>5 niveles</li><li>Modo por equipos</li><li>Biblia LBLA</li>
+                        </ul>
+                        <a class="btn btn-gold btn-pulse btn-juego" href="juego-biblico/index.html"><span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="btn-texto"><i class="fa-solid fa-book-bible" aria-hidden="true"></i> Jugar Desafío Bíblico RD</span></a>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
@@ -2605,6 +2912,7 @@
                 <ul class="links">
                     <li><a href="#biografia">Biografía</a></li>
                     <li><a href="#vision">Filosofía ministerial</a></li>
+                    <li><a href="#juegos">Juegos bíblicos</a></li>
                     <li><a href="#predicas">Prédicas</a></li>
                     <li><a href="#galeria">Galería</a></li>
                     <li><a href="#peticion">Petición de oración</a></li>
