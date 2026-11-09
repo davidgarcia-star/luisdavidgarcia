@@ -2356,8 +2356,7 @@
         /* ---------- Prédicas y galería ---------- */
         .banner-wrap, .video, .sermon-list { border-radius: var(--r-lg); }
         .sermon-list { border: 1px solid var(--hair); }
-        /* La galería ya no salta sin parar: se queda quieta y crece un poco al pasar el cursor */
-        .gallery .shot, .gallery .shot img, .shot { animation: none !important; translate: none; }
+        /* La galería conserva su movimiento de antes (flotan, se balancean y la imagen late) */
         .shot { border-radius: var(--r-xl); }
         .shot img { transition: transform .6s var(--ease); }
         .shot:hover img { transform: scale(1.04); }
