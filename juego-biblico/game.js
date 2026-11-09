@@ -31,6 +31,8 @@
     index: 0,
     scores: [],
     correctCount: 0,
+    streak: 0,
+    bestStreak: 0,
     turn: 0,
     locked: false,
     timer: null,
@@ -45,11 +47,14 @@
   (function particles() {
     const box = $("particles");
     if (!box) return;
-    for (let i = 0; i < 28; i++) {
+    // chispas con forma de llamita que suben, se mecen y titilan
+    const n = innerWidth < 600 ? 16 : 26;
+    for (let i = 0; i < n; i++) {
       const p = document.createElement("span");
       p.className = "particle";
-      const size = 4 + Math.random() * 10;
-      p.style.cssText = "left:" + Math.random() * 100 + "%;width:" + size + "px;height:" + size + "px;animation-duration:" + (9 + Math.random() * 12) + "s;animation-delay:" + (-Math.random() * 18) + "s";
+      const size = 9 + Math.random() * 14;
+      p.style.cssText = "left:" + (Math.random() * 100).toFixed(1) + "%;--w:" + size.toFixed(1) + "px;--dur:" + (9 + Math.random() * 10).toFixed(1) + "s;--del:" + (-Math.random() * 18).toFixed(1) + "s;--sx:" + (8 + Math.random() * 26).toFixed(0) + "px;--flk:" + (.5 + Math.random() * .6).toFixed(2) + "s";
+      p.appendChild(document.createElement("i"));
       box.appendChild(p);
     }
   })();
@@ -278,13 +283,12 @@
   function buildLevels() {
     const solo = state.mode === "solo";
     $("levelsTitle").textContent = solo ? "Modo individual" : "Modo por equipos · " + state.teamCount + " equipos";
+    $("levelsSub").textContent = "Elige un nivel";
     $("soloLength").hidden = !solo;
     document.querySelectorAll("#lengthSeg .seg").forEach((b) =>
       b.classList.toggle("selected", Number(b.dataset.n) === state.soloCount)
     );
-    $("levelsSub").textContent = solo
-      ? "Elige un nivel"
-      : "Elige un nivel · " + teamQuestionCount(50) / state.teamCount + " rondas por equipo";
+    if (!solo) $("levelsTitle").textContent += " · " + state.rounds + " rondas por equipo";
 
     const list = $("levelList");
     list.innerHTML = "";
@@ -302,10 +306,12 @@
         ? "Bloqueado · aprueba " + LEVELS[idx - 1].name + " con " + PASS_PCT + "% o más"
         : lv.desc + " · " + n + " preguntas";
       b.innerHTML =
-        '<span class="level-emoji">' + (locked ? "🔒" : lv.emoji) + "</span>" +
+        '<span class="level-step">' + (locked ? "🔒" : passed ? "✓" : idx + 1) + "</span>" +
+        '<span class="level-emoji" aria-hidden="true">' + lv.emoji + "</span>" +
         '<span><span class="level-name">' + lv.name + '</span><span class="level-desc">' + desc + "</span></span>" +
         (!locked && passed ? '<span class="level-best ok">✅ Aprobado</span>' : "") +
         (!locked && !passed && solo && bst ? '<span class="level-best">Récord: ' + bst + "/" + n + "</span>" : "");
+      if (passed && !locked) b.classList.add("passed");
       if (locked) {
         b.classList.add("locked");
         b.disabled = true;
@@ -348,6 +354,8 @@
     state.total = state.queue.length;
     state.index = 0;
     state.correctCount = 0;
+    state.streak = 0;
+    state.bestStreak = 0;
     state.turn = 0;
     state.active = true;
     state.finished = false;
@@ -359,7 +367,7 @@
   }
 
   function applyTeamTheme() {
-    const card = document.querySelector("#screen-play .card");
+    const card = document.querySelector("#screen-play .panel");
     if (state.mode === "teams") {
       card.classList.add("team-turn");
       card.style.setProperty("--tc", teamColor(state.turn));
@@ -373,7 +381,8 @@
     const sb = $("scoreboard");
     sb.innerHTML = "";
     if (state.mode === "solo") {
-      sb.innerHTML = '<div class="score-chip active">Aciertos<b>' + state.correctCount + "</b></div>";
+      sb.innerHTML = '<div class="score-chip active">Aciertos<b>' + state.correctCount + "</b></div>" +
+        '<div class="score-chip streak' + (state.streak >= 2 ? " active" : "") + '">🔥 Racha<b>' + state.streak + "</b></div>";
       return;
     }
     state.teamNames.forEach((name, i) => {
@@ -397,6 +406,7 @@
     state.current = { correct, opts: shuffle(item.a), ref: item.r };
 
     $("playProgress").textContent = "Pregunta " + (state.index + 1) + " de " + state.total;
+    $("progressBar").style.width = (state.index / state.total * 100) + "%";
     const turn = $("turnInfo");
     turn.textContent = "";
     if (state.mode === "teams") {
@@ -442,12 +452,15 @@
       }
     }, 250);
   }
+  // Reloj circular: el anillo se vacía y cambia de oro a naranja y a rojo
   function updateTimerBar() {
-    const bar = $("timerBar");
     const pct = Math.max(0, (state.timeLeft / TIME_PER_Q) * 100);
-    bar.style.width = pct + "%";
-    bar.classList.toggle("warn", pct <= 50 && pct > 25);
-    bar.classList.toggle("danger", pct <= 25);
+    $("timerRing").style.strokeDashoffset = String(100 - pct);
+    $("timerNum").textContent = String(Math.max(0, Math.ceil(state.timeLeft)));
+    const ring = $("ringTimer");
+    ring.classList.toggle("warn", pct <= 50 && pct > 25);
+    ring.classList.toggle("danger", pct <= 25);
+    ring.setAttribute("aria-label", "Quedan " + Math.max(0, Math.ceil(state.timeLeft)) + " segundos");
   }
 
   function answer(i) {
@@ -472,11 +485,14 @@
     const ok = i >= 0 && opts[i] === correct;
     if (ok) {
       state.correctCount++;
+      state.streak++;
+      state.bestStreak = Math.max(state.bestStreak, state.streak);
       state.scores[state.mode === "solo" ? 0 : state.turn] += 1;
       Sound.correct();
       const r = buttons[opts.indexOf(correct)].getBoundingClientRect();
       confetti(28, r.left + r.width / 2, r.top);
     } else {
+      state.streak = 0;
       Sound.wrong();
     }
     $("feedbackText").textContent = ok
@@ -484,9 +500,14 @@
       : (i === -1 ? "⏰ Se acabó el tiempo. " : "❌ Incorrecto. ") + "Respuesta: " + correct;
     $("feedbackRef").textContent = "📖 " + ref + " · LBLA";
     $("feedback").hidden = false;
-    $("btnNext").textContent = state.index + 1 >= state.total ? "Ver resultados →" : "Siguiente →";
+    $("feedback").className = "feedback " + (ok ? "ok" : "bad");
+    $("progressBar").style.width = ((state.index + 1) / state.total * 100) + "%";
+    $("btnNext").textContent = state.index + 1 >= state.total ? "Ver resultados" : "Siguiente";
     $("btnNext").focus({ preventScroll: true });
     renderScoreboard();
+    if (ok && state.mode === "solo" && state.streak >= 2) {
+      const c = document.querySelector(".score-chip.streak"); if (c) c.classList.add("hot");
+    }
   }
 
   function advance() {
@@ -538,12 +559,21 @@
       const nextLv = LEVELS[li + 1] || null;
       state.nextLevel = passed ? nextLv : null;
       $("resultTitle").textContent = "¡Nivel " + state.level.name + " completado!";
+      $("resultIcon").hidden = true;
+      const ring = document.createElement("div");
+      ring.className = "score-ring";
+      ring.setAttribute("role", "img");
+      ring.setAttribute("aria-label", pct + "% de aciertos");
+      ring.innerHTML = '<svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="srGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset=".55" stop-color="#f4c542"/><stop offset="1" stop-color="#ff7a2f"/></linearGradient></defs>' +
+        '<circle class="sr-track" cx="60" cy="60" r="52"/><circle class="sr-bar" cx="60" cy="60" r="52" pathLength="100" style="stroke-dashoffset:100"/></svg>' +
+        '<div class="sr-num"><b>' + pct + '%</b><span>de aciertos</span></div>';
+      requestAnimationFrame(() => requestAnimationFrame(() => { const b = ring.querySelector(".sr-bar"); if (b) b.style.strokeDashoffset = String(100 - pct); }));
       const big = document.createElement("div");
-      big.className = "big-score";
-      big.textContent = state.correctCount + " / " + n;
-      const l1 = document.createElement("p");
-      l1.className = "result-line";
-      l1.textContent = pct + "% de aciertos";
+      big.className = "stats";
+      big.innerHTML = '<div class="stat"><b>' + state.correctCount + " / " + n + '</b><span>Aciertos</span></div>' +
+        '<div class="stat"><b>' + (n - state.correctCount) + '</b><span>Fallos</span></div>' +
+        '<div class="stat"><b>🔥 ' + state.bestStreak + '</b><span>Mejor racha</span></div>';
+      const l1 = ring;
       const l2 = document.createElement("p");
       l2.className = "result-line";
       l2.textContent =
@@ -558,11 +588,12 @@
             ? "✅ ¡Aprobaste! Puedes pasar al siguiente nivel: " + nextLv.name + "."
             : "🎉 ¡Aprobaste el último nivel! Completaste todos los niveles.")
         : "📚 Debes seguir practicando. Necesitas " + PASS_PCT + "% o más para pasar al siguiente nivel.";
-      body.append(big, l1, l2, verdict);
+      body.append(l1, big, l2, verdict);
       $("btnNextLevel").hidden = !state.nextLevel;
-      if (state.nextLevel) $("btnNextLevel").textContent = "Siguiente nivel: " + state.nextLevel.name + " →";
+      if (state.nextLevel) $("btnNextLevel").textContent = "Siguiente nivel: " + state.nextLevel.name;
       $("btnAgain").textContent = passed ? "🔁 Repetir nivel" : "🔁 Practicar de nuevo";
     } else {
+      $("resultIcon").hidden = false;
       $("resultTitle").textContent = "¡Resultados por equipos!";
       $("btnNextLevel").hidden = true;
       $("btnAgain").textContent = "🔁 Jugar de nuevo";

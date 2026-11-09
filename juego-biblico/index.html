@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://abacus.jasoncameron.dev; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://abacus.jasoncameron.dev; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Desafío Bíblico RD">
-  <meta name="theme-color" content="#0b1530">
+  <meta name="theme-color" content="#000000">
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
   <title>Desafío Bíblico RD – Juego de preguntas bíblicas | MIPROAA</title>
@@ -54,7 +54,10 @@
     "countryOfOrigin": { "@type": "Country", "name": "República Dominicana" }
   }
   </script>
-  <link rel="stylesheet" href="style.css?v=17">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=Newsreader:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20">
 </head>
 <body>
   <div id="particles" aria-hidden="true"></div>
@@ -74,55 +77,83 @@
 
     <!-- BIENVENIDA -->
     <section id="screen-welcome" class="screen active">
-      <div class="card center">
-        <div class="logo-aura"><span class="aura-halo" aria-hidden="true"></span><span class="aura-rayos" aria-hidden="true"></span><span class="aura-anillo" aria-hidden="true"></span><span class="aura-chispas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div class="logo-plate"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="150" height="150"></div></div>
-        <p class="kicker">Bienvenido a</p>
-        <h1 class="title">Desafío Bíblico <span>RD</span></h1>
-        <p class="hint seo-sub">Juego de preguntas bíblicas de República Dominicana · 5 niveles · solo o por equipos</p>
-        <div class="saludo">
-          <p class="saludo-hola">¡Recibe una cordial bienvenida, bendiciones! 🙌</p>
-          <p>Nos alegra mucho que estés aquí. Este juego fue preparado con amor para que aprendas, te diviertas y crezcas en el conocimiento de la Palabra de Dios, solo o junto a tu familia, amigos o iglesia.</p>
-          <p class="saludo-verso">“Lámpara es a mis pies tu palabra, y luz para mi camino.” <small>— Salmos 119:105 (LBLA)</small></p>
+      <div class="panel welcome">
+        <div class="welcome-art">
+          <div class="logo-aura"><span class="aura-halo" aria-hidden="true"></span><span class="aura-rayos" aria-hidden="true"></span><span class="aura-anillo" aria-hidden="true"></span><span class="aura-chispas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div class="logo-plate"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="150" height="150"></div></div>
         </div>
-        <button id="btnStart" class="btn primary big" type="button">Siguiente →</button>
-<div class="welcome-extras">
-        <a class="btn btn-biblixia" href="https://davidgarcia-star.github.io/biblixia/" rel="noopener">🎮 JUGAR BIBLIXIA 3D</a>
-        <button class="btn ghost btn-full-cel js-full" type="button" hidden>⛶ <span class="chip-txt">Pantalla completa</span></button>
-        <p id="fullTip" class="hint full-tip" hidden>En iPhone: toca <b>Compartir</b> <span aria-hidden="true">⬆️</span> y luego <b>“Agregar a inicio”</b>. Al abrir el juego desde ese ícono se verá en pantalla completa.</p>
+        <div class="welcome-copy">
+          <p class="kicker">Bienvenido a</p>
+          <h1 class="title">Desafío Bíblico <span>RD</span></h1>
+          <p class="seo-sub">Juego de preguntas bíblicas de República Dominicana</p>
+          <ul class="facts" aria-label="Lo que trae el juego">
+            <li><b>5</b> niveles</li>
+            <li><b>Solo</b> o por equipos</li>
+            <li><b>LBLA</b> Biblia de las Américas</li>
+          </ul>
+          <div class="saludo">
+            <p class="saludo-hola">¡Recibe una cordial bienvenida, bendiciones! 🙌</p>
+            <p>Este juego fue preparado con amor para que aprendas, te diviertas y crezcas en el conocimiento de la Palabra de Dios, solo o junto a tu familia, amigos o iglesia.</p>
+            <p class="saludo-verso">“Lámpara es a mis pies tu palabra, y luz para mi camino.” <small>Salmos 119:105 (LBLA)</small></p>
+          </div>
+          <div class="welcome-cta">
+            <button id="btnStart" class="btn primary big" type="button">Comenzar a jugar</button>
+            <a class="btn btn-biblixia btn-juego" href="https://davidgarcia-star.github.io/biblixia/" rel="noopener"><span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="btn-texto">🎮 Jugar BIBLIXIA 3D</span></a>
+          </div>
+          <div class="welcome-extras">
+            <button class="btn ghost btn-full-cel js-full" type="button" hidden>⛶ <span class="chip-txt">Pantalla completa</span></button>
+            <p id="fullTip" class="hint full-tip" hidden>En iPhone: toca <b>Compartir</b> <span aria-hidden="true">⬆️</span> y luego <b>“Agregar a inicio”</b>. Al abrir el juego desde ese ícono se verá en pantalla completa.</p>
         <a class="btn btn-paypal" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M7.1 21.3H3.6a.6.6 0 0 1-.6-.7L5.9 2.6c.1-.4.4-.6.8-.6h6.6c2.4 0 4.2.6 5.1 1.8.9 1.1 1 2.6.6 4.4-.9 4.5-3.9 6-7.8 6H9.5c-.4 0-.8.3-.8.7l-1.1 6.4c-.1-.1-.3 0-.5 0zm12.5-13.1c-.9 4.7-4 6.6-8.3 6.6h-.9l-1.3 7.9c0 .2.2.4.4.4h2.9c.4 0 .7-.3.8-.7l.6-3.7c.1-.4.4-.7.8-.7h.5c3.4 0 6-1.4 6.8-5.3.3-1.8.1-3.3-1.1-4.3l-.2-.2z"/></svg>
-          HONRAR AL CREADOR DEL JUEGO VÍA PAYPAL
+          Honrar al creador del juego vía PayPal
         </a>
-        </div>
-        <p class="social-titulo" id="seguirCreador">Seguir al creador</p>
+          </div>
+          <div class="welcome-foot">
+            <div>
+              <p class="social-titulo" id="seguirCreador">Seguir al creador</p>
         <ul class="social" aria-labelledby="seguirCreador">
           <li><a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 4.8 12 4.8 12 4.8s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15.1V8.9l5.2 3.1L10 15.1z"/></svg></a></li>
           <li><a href="https://web.facebook.com/david.estebangarcia.58/?_rdc=1&amp;_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg></a></li>
           <li><a href="https://www.instagram.com/luis_david_garcia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg></a></li>
           <li><a href="https://www.tiktok.com/@miproaa" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 3h-3.1v12.2a2.7 2.7 0 1 1-2.7-2.7c.3 0 .6 0 .8.1V9.4a5.9 5.9 0 1 0 5 5.8V9a7.4 7.4 0 0 0 4.3 1.4V7.3A4.4 4.4 0 0 1 16.6 3z"/></svg></a></li>
         </ul>
-        <p class="credits">
-          Creado por <strong>Luis David Esteban García</strong><br>
-          de parte de <strong>MIPROAA</strong><br>
-          Ministerio Profético Ardiendo Por El Avivamiento
-        </p>
+            </div>
+            <p class="credits">
+              Creado por <strong>Luis David Esteban García</strong><br>
+              de parte de <strong>MIPROAA</strong> · Ministerio Profético Ardiendo Por El Avivamiento
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- MENÚ -->
     <section id="screen-menu" class="screen">
-      <div class="card center">
-        <div class="logo-aura small"><span class="aura-halo" aria-hidden="true"></span><span class="aura-rayos" aria-hidden="true"></span><span class="aura-anillo" aria-hidden="true"></span><span class="aura-chispas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><div class="logo-plate small"><img class="brand-logo" src="logo.png" alt="Logo de MIPROAA" width="84" height="84"></div></div>
-        <h2 class="title small">Desafío Bíblico <span>RD</span></h2>
-        <p class="lead">Elige cómo quieres jugar</p>
-        <div class="stack">
-          <button id="btnSolo" class="btn primary big" type="button">👤 Modo individual</button>
-          <button id="btnTeams" class="btn primary big" type="button">👥 Modo por equipos</button>
+      <div class="panel">
+        <header class="screen-head">
+          <img class="head-logo" src="logo.png" alt="" width="56" height="56">
+          <div>
+            <p class="kicker">Desafío Bíblico RD</p>
+            <h2 class="title small">¿Cómo quieres jugar?</h2>
+          </div>
+        </header>
+        <div class="modes">
+          <button id="btnSolo" class="mode-card" type="button">
+            <span class="mode-ico" aria-hidden="true">👤</span>
+            <span class="mode-name">Modo individual</span>
+            <span class="mode-desc">Avanza de Básico a Master. Con 70% de aciertos se abre el siguiente nivel.</span>
+            <span class="mode-go" aria-hidden="true">Jugar solo</span>
+          </button>
+          <button id="btnTeams" class="mode-card" type="button">
+            <span class="mode-ico" aria-hidden="true">👥</span>
+            <span class="mode-name">Modo por equipos</span>
+            <span class="mode-desc">De 2 a 4 equipos se turnan para responder. Gana el que más puntos sume.</span>
+            <span class="mode-go" aria-hidden="true">Jugar en equipos</span>
+          </button>
         </div>
         <div class="menu-sound">
-          <p class="hint">Sonido instrumental durante todo el juego. Con “Sonidos” activado, cada tecla que presiones suena.</p>
-          <button id="btnSfxMenu" class="btn ghost" type="button">🔊 Sonidos del juego: Sí</button>
-          <button id="btnMusicMenu" class="btn ghost" type="button">🎵 Música instrumental: Sí</button>
+          <button id="btnMusicMenu" class="toggle" type="button">🎵 Música instrumental: Sí</button>
+          <button id="btnSfxMenu" class="toggle" type="button">🔊 Sonidos del juego: Sí</button>
+          <p class="hint">Con “Sonidos” activado, cada tecla que presiones suena.</p>
         </div>
         <p class="small-note">Versión bíblica: La Biblia de las Américas (LBLA)</p>
       </div>
@@ -130,15 +161,20 @@
 
     <!-- CONFIGURAR EQUIPOS -->
     <section id="screen-teams" class="screen">
-      <div class="card">
-        <h2 class="title small">Modo por equipos</h2>
-        <p class="lead center">¿Cuántos equipos van a jugar?</p>
+      <div class="panel">
+        <header class="screen-head">
+          <span class="head-ico" aria-hidden="true">👥</span>
+          <div>
+            <p class="kicker">Modo por equipos</p>
+            <h2 class="title small">¿Cuántos equipos van a jugar?</h2>
+          </div>
+        </header>
         <div class="segmented" id="teamCount" role="group" aria-label="Cantidad de equipos">
           <button type="button" class="seg" data-n="2">2 equipos</button>
           <button type="button" class="seg" data-n="3">3 equipos</button>
           <button type="button" class="seg" data-n="4">4 equipos</button>
         </div>
-        <p class="hint center">Cada equipo tiene su color. Elige un nombre de la lista o usa “Asignar nombre de preferencia” para escribir el que quieras.</p>
+        <p class="hint">Cada equipo tiene su color. Elige un nombre de la lista o usa “Asignar nombre de preferencia” para escribir el que quieras.</p>
         <div id="teamNames" class="team-names"></div>
         <label class="field">
           Rondas (preguntas por equipo)
@@ -150,19 +186,24 @@
           </select>
         </label>
         <div class="row">
-          <button class="btn ghost" type="button" data-back="screen-menu">← Volver</button>
-          <button id="btnTeamsNext" class="btn primary" type="button">Elegir nivel →</button>
+          <button class="btn ghost" type="button" data-back="screen-menu">Volver</button>
+          <button id="btnTeamsNext" class="btn primary" type="button">Elegir nivel</button>
         </div>
       </div>
     </section>
 
     <!-- NIVELES -->
     <section id="screen-levels" class="screen">
-      <div class="card">
-        <h2 class="title small" id="levelsTitle">Elige un nivel</h2>
-        <p class="lead center" id="levelsSub">Elige un nivel</p>
+      <div class="panel">
+        <header class="screen-head">
+          <span class="head-ico" aria-hidden="true">🏁</span>
+          <div>
+            <p class="kicker" id="levelsTitle">Modo individual</p>
+            <h2 class="title small" id="levelsSub">Elige un nivel</h2>
+          </div>
+        </header>
         <div id="soloLength" class="length-box">
-          <p class="hint center">¿Cuántas preguntas quieres por partida?</p>
+          <p class="hint">¿Cuántas preguntas quieres por partida?</p>
           <div class="segmented two" id="lengthSeg" role="group" aria-label="Cantidad de preguntas">
             <button type="button" class="seg" data-n="20">Pocas preguntas<small>20 preguntas</small></button>
             <button type="button" class="seg" data-n="50">Muchas preguntas<small>50 preguntas</small></button>
@@ -170,41 +211,54 @@
         </div>
         <div id="levelList" class="levels"></div>
         <div class="row">
-          <button id="btnLevelsBack" class="btn ghost" type="button">← Volver</button>
+          <button id="btnLevelsBack" class="btn ghost" type="button">Volver</button>
         </div>
       </div>
     </section>
 
     <!-- JUEGO -->
     <section id="screen-play" class="screen">
-      <div class="card play">
-        <div class="play-head">
-          <span id="playLevel" class="badge"></span>
-          <span id="playProgress" class="badge ghost"></span>
+      <div class="panel play">
+        <div class="play-top">
+          <div class="play-meta">
+            <span id="playLevel" class="badge"></span>
+            <span id="playProgress" class="badge ghost"></span>
+          </div>
+          <div class="ring-timer" id="ringTimer" role="timer" aria-label="Tiempo restante">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="rt-track" cx="60" cy="60" r="52"></circle>
+              <circle class="rt-bar" id="timerRing" cx="60" cy="60" r="52" pathLength="100"></circle>
+            </svg>
+            <span id="timerNum" class="rt-num">20</span>
+          </div>
+          <div id="scoreboard" class="scoreboard"></div>
         </div>
-        <div id="scoreboard" class="scoreboard"></div>
-        <div class="timer"><div id="timerBar" class="timer-bar"></div></div>
+        <div class="progress" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
         <p id="turnInfo" class="turn" aria-live="polite"></p>
         <h3 id="questionText" class="question"></h3>
         <div id="options" class="options"></div>
         <div id="feedback" class="feedback" aria-live="polite" hidden>
-          <p id="feedbackText"></p>
-          <p id="feedbackRef" class="ref"></p>
-          <button id="btnNext" class="btn primary" type="button">Siguiente →</button>
+          <div class="fb-text">
+            <p id="feedbackText"></p>
+            <p id="feedbackRef" class="ref"></p>
+          </div>
+          <button id="btnNext" class="btn primary" type="button">Siguiente</button>
         </div>
-        <button id="btnQuit" class="btn link" type="button">Salir al menú</button>
-        <p class="hint center">Atajos: teclas 1–4 o A–D para responder · Enter para continuar</p>
+        <div class="play-foot">
+          <button id="btnQuit" class="btn link" type="button">Salir al menú</button>
+          <p class="hint keys-hint">Teclas 1–4 o A–D para responder · Enter para continuar</p>
+        </div>
       </div>
     </section>
 
     <!-- RESULTADOS -->
     <section id="screen-result" class="screen">
-      <div class="card center">
-        <div class="logo" aria-hidden="true">🏆</div>
+      <div class="panel center result">
+        <div class="logo" id="resultIcon" aria-hidden="true">🏆</div>
         <h2 class="title small" id="resultTitle">¡Resultados!</h2>
         <div id="resultBody" class="result-body"></div>
         <div class="row">
-          <button id="btnNextLevel" class="btn primary" type="button" hidden>Siguiente nivel →</button>
+          <button id="btnNextLevel" class="btn primary" type="button" hidden>Siguiente nivel</button>
           <button id="btnAgain" class="btn ghost" type="button">🔁 Jugar de nuevo</button>
           <button id="btnToMenu" class="btn ghost" type="button">Menú</button>
         </div>
@@ -217,9 +271,9 @@
     Desafío Bíblico RD · MIPROAA Ministerio Profético Ardiendo Por El Avivamiento
   </footer>
 
-  <script src="audio.js?v=14"></script>
+  <script src="audio.js?v=15"></script>
   <script src="questions.js?v=14"></script>
-  <script src="game.js?v=15"></script>
+  <script src="game.js?v=20"></script>
   <script>
     /* Voz de bienvenida al entrar al juego (audio grabado: suena igual en todos los dispositivos) */
     (function () {
