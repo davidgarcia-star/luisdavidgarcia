@@ -48,12 +48,12 @@
     const box = $("particles");
     if (!box) return;
     // chispas con forma de llamita que suben, se mecen y titilan
-    const n = innerWidth < 600 ? 16 : 26;
+    const n = innerWidth < 600 ? 7 : 12;
     for (let i = 0; i < n; i++) {
       const p = document.createElement("span");
       p.className = "particle";
-      const size = 9 + Math.random() * 14;
-      p.style.cssText = "left:" + (Math.random() * 100).toFixed(1) + "%;--w:" + size.toFixed(1) + "px;--dur:" + (9 + Math.random() * 10).toFixed(1) + "s;--del:" + (-Math.random() * 18).toFixed(1) + "s;--sx:" + (8 + Math.random() * 26).toFixed(0) + "px;--flk:" + (.5 + Math.random() * .6).toFixed(2) + "s";
+      const size = 4 + Math.random() * 5;
+      p.style.cssText = "left:" + (Math.random() * 100).toFixed(1) + "%;--w:" + size.toFixed(1) + "px;--dur:" + (14 + Math.random() * 10).toFixed(1) + "s;--del:" + (-Math.random() * 18).toFixed(1) + "s;--sx:" + (8 + Math.random() * 26).toFixed(0) + "px;--flk:" + (1.2 + Math.random() * .8).toFixed(2) + "s";
       p.appendChild(document.createElement("i"));
       box.appendChild(p);
     }
