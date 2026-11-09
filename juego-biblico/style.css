@@ -697,3 +697,16 @@ select option { color: #111; }
   .welcome-clasica .saludo { font-size: .96rem; margin-bottom: 14px; }
   .welcome-clasica #btnStart, .welcome-clasica .welcome-extras .btn { width: 100%; }
 }
+
+/* Portada compacta: poco texto y el botón Jugar arriba */
+.welcome-clasica .logo-aura { --s: clamp(84px, 22vw, 120px); margin: 4px auto 8px; }
+.welcome-clasica .kicker { margin-bottom: 2px; }
+.welcome-clasica .title { font-size: clamp(2.1rem, 9vw, 3.4rem); margin-bottom: 4px; }
+.welcome-clasica .seo-sub { margin: 0 0 10px; font-size: .92rem; }
+.welcome-clasica .saludo-hola { margin: 0 0 12px; font-size: 1.05rem; }
+.welcome-clasica .saludo-verso { margin: 14px auto 0; max-width: 30em; padding: 8px 12px; border: 0; border-radius: 12px; text-align: center; font-size: .98rem; }
+@media (min-width: 900px) {
+  .welcome-clasica .logo-aura { --s: clamp(80px, 16vh, 170px); }
+  .welcome-clasica .title { font-size: clamp(2.4rem, 6.4vh, 4.4rem); }
+  .welcome-clasica .saludo-hola { font-size: 1.2rem; }
+}
