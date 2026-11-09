@@ -2386,6 +2386,36 @@
             .verse { margin-bottom: 1.4rem; }
         }
 
+        /* ---------- Línea dorada con brillo entre secciones ---------- */
+        .divisor {
+            position: relative;
+            z-index: 5;
+            height: 2px;
+            margin: -1px 0;
+            pointer-events: none;
+            background: linear-gradient(90deg, transparent, rgba(244, 183, 63, .55) 12%, var(--gold) 50%, rgba(244, 183, 63, .55) 88%, transparent);
+            box-shadow: 0 0 12px rgba(244, 183, 63, .8), 0 0 30px rgba(238, 106, 43, .38);
+            clip-path: inset(-24px 0);
+            overflow-x: clip;
+        }
+        .divisor i {
+            position: absolute;
+            top: 50%;
+            left: -30%;
+            width: 26%;
+            height: 8px;
+            margin-top: -4px;
+            border-radius: 50%;
+            background: radial-gradient(closest-side, #fff, rgba(255, 226, 140, .95) 35%, rgba(244, 183, 63, 0));
+            box-shadow: 0 0 18px 5px rgba(255, 214, 102, .5);
+            animation: divisorBrillo 4.5s linear infinite;
+            animation-delay: var(--d, 0s);
+        }
+        @keyframes divisorBrillo { from { left: -30%; } to { left: 104%; } }
+        .visits[hidden] + .divisor { display: none; }  /* sin contador de visitas no se repite la línea */
+        .site-footer::before { display: none; }         /* el pie ya tiene su línea con brillo */
+        @media (prefers-reduced-motion: reduce) { .divisor i { animation: none; left: 37%; } }
+
         /* ---------- Celular ---------- */
         @media (max-width: 600px) {
             .hero-games { gap: .5rem; margin-bottom: 1.1rem; }
@@ -2553,6 +2583,7 @@
     </div>
 
     <!-- ================= BIOGRAFÍA ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-0.0s"><i></i></div>
     <section class="section light" id="biografia">
         <div class="wrap">
             <h2 class="section-title reveal"><span class="wipe-text">Un llamado profético</span></h2>
@@ -2611,6 +2642,7 @@
     </section>
 
     <!-- ================= FRASE ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-3.2s"><i></i></div>
     <section class="statement" aria-label="Frase del evangelista">
         <div class="wrap">
             <blockquote class="reveal">
@@ -2621,6 +2653,7 @@
     </section>
 
     <!-- ================= VISIÓN, MISIÓN Y VALORES ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-1.9s"><i></i></div>
     <section class="section vision" id="vision">
         <div class="wrap">
             <h2 class="section-title reveal"><span class="wipe-text">Visión, misión y valores</span></h2>
@@ -2661,6 +2694,7 @@
     </section>
 
     <!-- ================= JUEGOS BÍBLICOS ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-0.6s"><i></i></div>
     <section class="section light games" id="juegos">
         <div class="wrap">
             <div class="games-head">
@@ -2701,6 +2735,7 @@
     </section>
 
     <!-- ================= PRÉDICAS ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-3.8s"><i></i></div>
     <section class="section dark" id="predicas">
         <div class="wrap">
             <h2 class="section-title reveal"><span class="wipe-text">Prédicas recientes</span></h2>
@@ -2757,6 +2792,7 @@
     </section>
 
     <!-- ================= GALERÍA ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-2.5s"><i></i></div>
     <section class="section light" id="galeria">
         <div class="wrap">
             <h2 class="section-title reveal"><span class="wipe-text">Galería del ministerio</span></h2>
@@ -2774,6 +2810,7 @@
     </section>
 
     <!-- ================= PALABRA DE FUEGO ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-1.2s"><i></i></div>
     <section class="word" aria-label="Versículos">
         <div class="wrap">
             <h2 class="word-title reveal">Palabra de fuego</h2>
@@ -2802,6 +2839,7 @@
     </section>
 
     <!-- ================= PETICIÓN DE ORACIÓN ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-4.4s"><i></i></div>
     <section class="section pray" id="peticion">
         <div class="wrap pray-grid">
             <div class="pray-copy">
@@ -2866,6 +2904,7 @@
     </section>
 
     <!-- ================= DONACIÓN ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-3.1s"><i></i></div>
     <section class="section give" id="donacion">
         <div class="wrap">
             <div class="give-inner">
@@ -2888,6 +2927,7 @@
     </section>
 
     <!-- ================= VISITANTES ================= -->
+    <div class="divisor" aria-hidden="true" style="--d:-1.8s"><i></i></div>
     <section class="visits" id="visitas" hidden>
         <div class="wrap">
             <h2>Gracias por visitarnos</h2>
@@ -2897,6 +2937,8 @@
     </section>
 
 </main>
+
+    <div class="divisor" aria-hidden="true" style="--d:-0.5s"><i></i></div>
 
 <footer class="site-footer">
     <div class="wrap">
