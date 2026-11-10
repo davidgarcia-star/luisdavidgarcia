@@ -2282,6 +2282,8 @@
             transition: border-color .25s ease, background-color .25s ease, transform .25s var(--ease);
         }
         .hero-games a:hover { border-color: var(--gold); transform: translateY(-2px); }
+        @keyframes loNuevo { 50% { transform: scale(1.08); box-shadow: 0 0 22px rgba(255,90,60,.8); } }
+        @media (prefers-reduced-motion: reduce) { .lo-nuevo { animation: none !important; } }
         /* borde dorado con una luz que gira alrededor (mismo efecto que los botones de los juegos) */
         .hero-games a.btn-juego { border-color: rgba(244, 183, 63, .6); box-shadow: 0 0 18px rgba(244, 183, 63, .35); }
         .hero-games a.btn-juego > img, .hero-games a.btn-juego > span:not(.brillo):not(.destellos) { position: relative; z-index: 2; }
@@ -2559,6 +2561,7 @@
                         <span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
                         <img src="./img/juego-biblixia2.jpg" alt="" width="1200" height="630">
                         <span><small>República Dominicana 3D</small>BIBLIXIA 2</span>
+                        <b class="lo-nuevo" style="margin-left:auto;position:relative;z-index:2;flex:none;padding:.35rem .7rem;border-radius:999px;background:linear-gradient(135deg,#ce1126,#ff5a3c);color:#fff;font:800 .8rem/1 var(--font-body);letter-spacing:.04em;box-shadow:0 0 14px rgba(206,17,38,.55);animation:loNuevo 1.6s ease-in-out infinite">¡LO MÁS NUEVO!</b>
                     </a>
                 </nav>
 
