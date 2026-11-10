@@ -2201,6 +2201,8 @@
             color: var(--gold);
             background: rgba(244, 183, 63, .12);
         }
+        .menu .menu-visitas a { display: inline-flex; align-items: center; gap: .4rem; margin-left: .35rem; padding: .45rem .9rem; border: 1px solid rgba(244, 183, 63, .5); border-radius: 999px; background: rgba(244, 183, 63, .1); white-space: nowrap; }
+        .menu .menu-visitas b { color: var(--gold); font-variant-numeric: tabular-nums; }
         .menu .menu-cta .btn { margin-left: .5rem; min-height: 46px; padding: .55rem 1.25rem; font-size: .95rem; }
 
         .nav-toggle {
@@ -2502,6 +2504,7 @@
             <li><a href="#predicas">Prédicas</a></li>
             <li><a href="#galeria">Galería</a></li>
             <li><a href="#peticion">Oración</a></li>
+            <li class="menu-visitas"><a href="#visitas" title="Personas que han visitado el sitio"><i class="fa-solid fa-users" aria-hidden="true"></i> <b id="navVisitas">…</b> <span>Visitantes</span></a></li>
             <li class="menu-cta"><a class="btn btn-gold" href="#donacion"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i> Donar</a></li>
         </ul>
     </div>
@@ -3338,6 +3341,7 @@
         var first = seen ? call('get').catch(function () { return call('hit'); }) : call('hit');
         first.then(function (n) {
             try { localStorage.setItem('miproaa_visited', '1'); } catch (e) {}
+            var nv = document.getElementById('navVisitas'); if (nv) nv.textContent = n.toLocaleString('es-DO');
             visits.hidden = false;
             render(0);
             if ('IntersectionObserver' in window) {
@@ -3349,6 +3353,7 @@
         }).catch(function () {
             // Sin conexión con el servicio: la sección se muestra igual, para que el botón "Visitantes" lleve a algún lado
             visits.hidden = false;
+            var nv = document.getElementById('navVisitas'); if (nv) nv.textContent = '—';
             digitsBox.textContent = 'No disponible por ahora';
             digitsBox.style.padding = '1rem 1.4rem';
         });
