@@ -449,7 +449,7 @@ select option { color: #111; }
 .team-label b { color: var(--text); }
 .team-fields select, .team-fields input { margin-top: 0; }
 
-/* ---------- Niveles: camino de Básico a Master ---------- */
+/* ---------- Niveles: camino de Básico a Máster Superior ---------- */
 .levels { display: grid; gap: 10px; counter-reset: paso; }
 .level-btn {
   position: relative;

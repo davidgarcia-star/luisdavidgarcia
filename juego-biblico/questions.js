@@ -1,5 +1,5 @@
 /* Desafío Bíblico RD – Banco de preguntas
- * 5 niveles x 50 preguntas. Nombres y referencias según La Biblia de las Américas (LBLA).
+ * 6 niveles x 50 preguntas. Nombres y referencias según La Biblia de las Américas (LBLA).
  * Formato: Q(pregunta, respuestaCorrecta, incorrecta1, incorrecta2, incorrecta3, referencia)
  * Las opciones se barajan al jugar. No se reproduce el texto de los versículos,
  * solo la referencia bíblica. */
@@ -11,6 +11,7 @@ const LEVELS = [
   { id: "avanzado", name: "Avanzado", emoji: "🔥", desc: "Genealogías, reyes, profetas y cartas" },
   { id: "experto", name: "Experto", emoji: "👑", desc: "Cifras, capítulos y detalles precisos" },
   { id: "master", name: "Master", emoji: "💎", desc: "Personajes poco conocidos y detalles muy precisos" },
+  { id: "mastersuperior", name: "Máster Superior", emoji: "🏆", desc: "El reto final: nombres, lugares y cifras que casi nadie recuerda" },
 ];
 
 const QUESTIONS = {
@@ -277,5 +278,58 @@ const QUESTIONS = {
     Q("¿Qué arcángel contendió con el diablo por el cuerpo de Moisés?", "Miguel", "Gabriel", "Querubín", "Abadón", "Judas 9"),
     Q("¿Cuántos fueron sellados de cada tribu de Israel en Apocalipsis 7?", "12,000", "144,000", "7,000", "1,000", "Apocalipsis 7:4-8"),
     Q("¿Qué iglesia de Apocalipsis fue reprendida por ser tibia?", "Laodicea", "Sardis", "Pérgamo", "Tiatira", "Apocalipsis 3:14-16"),
+  ],
+
+  mastersuperior: [
+    Q("¿Cuántos años vivió Set, el hijo de Adán?", "912", "930", "905", "969", "Génesis 5:8"),
+    Q("¿Cuántos años tenía Noé cuando las aguas del diluvio vinieron sobre la tierra?", "600", "500", "950", "480", "Génesis 7:6"),
+    Q("¿Cómo se llamaba el siervo de Damasco que Abram pensó que sería su heredero?", "Eliezer", "Lot", "Eleazar", "Ismael", "Génesis 15:2"),
+    Q("¿Qué nombre recibió el pozo donde el ángel del Señor halló a Agar?", "Beer-lajai-roi", "Beerseba", "Esek", "Rehobot", "Génesis 16:7-14"),
+    Q("¿Cuántos siclos de plata pagó Abraham a Efrón por el campo y la cueva de Macpela?", "400", "30", "50", "1,000", "Génesis 23:15-16"),
+    Q("¿Cómo se llamaba la nodriza de Rebeca, sepultada debajo de una encina cerca de Betel?", "Débora", "Zilpa", "Bilha", "Ada", "Génesis 35:8"),
+    Q("¿Qué nombre le puso Raquel a su hijo al morir, antes de que Jacob lo llamara Benjamín?", "Benoni", "Benamí", "Ben-adad", "Benaía", "Génesis 35:18"),
+    Q("¿Cuántos años en total sirvió Jacob a Labán?", "20", "14", "7", "21", "Génesis 31:41"),
+    Q("¿Cómo se llamaba el primogénito de Judá, primer esposo de Tamar, a quien el Señor quitó la vida?", "Er", "Onán", "Sela", "Fares", "Génesis 38:6-7"),
+    Q("¿Cuántos años vivió José?", "110", "120", "147", "175", "Génesis 50:26"),
+    Q("¿Cómo se llamaba el padre de Moisés y Aarón?", "Amram", "Coat", "Izhar", "Leví", "Éxodo 6:20"),
+    Q("¿En qué lugar peleó Israel contra Amalec mientras Moisés alzaba sus manos?", "Refidim", "Mara", "Elim", "Cades", "Éxodo 17:8-11"),
+    Q("¿Qué nombre puso Moisés al altar que edificó tras vencer a Amalec?", "El Señor es mi Estandarte", "El Señor proveerá", "El Señor es Paz", "El Señor que sana", "Éxodo 17:15"),
+    Q("¿Quién fue el ayudante de Bezaleel, de la tribu de Dan, en la obra del tabernáculo?", "Aholiab", "Hur", "Uri", "Nadab", "Éxodo 31:6"),
+    Q("¿Cómo se llamó el lugar donde sepultaron al pueblo que había sido codicioso de carne?", "Kibrot-hataava", "Tabera", "Masah", "Meriba", "Números 11:34"),
+    Q("¿Qué dos hombres profetizaron en el campamento y Josué pidió a Moisés que se lo impidiera?", "Eldad y Medad", "Nadab y Abiú", "Datán y Abiram", "Hur y Aarón", "Números 11:26-28"),
+    Q("¿Cómo se llamaba el padre del adivino Balaam?", "Beor", "Zipor", "Bela", "Peor", "Números 22:5"),
+    Q("¿Cuál era el nombre de Josué antes de que Moisés se lo cambiara?", "Oseas", "Jair", "Igal", "Elisama", "Números 13:16"),
+    Q("¿En qué valle fue apedreado Acán por tomar del anatema?", "Acor", "Ajalón", "Elá", "Escol", "Josué 7:24-26"),
+    Q("Cuando el sol se detuvo en Gabaón, ¿sobre qué valle se detuvo la luna?", "Ajalón", "Acor", "Refaim", "Hinom", "Josué 10:12-13"),
+    Q("¿Qué juez tuvo treinta hijos que cabalgaban sobre treinta asnos?", "Jair", "Tola", "Elón", "Otoniel", "Jueces 10:3-4"),
+    Q("¿Qué palabra usaron los de Galaad para descubrir a los de Efraín en los vados del Jordán?", "Shibolet", "Maranata", "Efata", "Selah", "Jueces 12:5-6"),
+    Q("¿Cómo se llamaba la otra esposa de Elcana, que tenía hijos y provocaba a Ana?", "Penina", "Orfa", "Mical", "Abigail", "1 Samuel 1:2-6"),
+    Q("¿Qué nombre puso Samuel a la piedra que levantó entre Mizpa y Sen?", "Eben-ezer", "Betel", "Gilgal", "Galaad", "1 Samuel 7:12"),
+    Q("¿En qué lugar vivía la médium que consultó el rey Saúl?", "Endor", "Gabaa", "Ramá", "Siclag", "1 Samuel 28:7"),
+    Q("¿En qué monte murieron Saúl y sus hijos peleando contra los filisteos?", "Gilboa", "Carmelo", "Tabor", "Ebal", "1 Samuel 31:1-6"),
+    Q("¿Qué consejero de David se unió a la conspiración de Absalón?", "Ahitofel", "Husai", "Sadoc", "Seba", "2 Samuel 15:12, 31"),
+    Q("¿Quién maldijo a David y le tiró piedras cuando huía de Absalón?", "Simei", "Siba", "Seba", "Abisai", "2 Samuel 16:5-7"),
+    Q("¿Qué profeta, vidente de David, le dio a escoger entre tres castigos?", "Gad", "Natán", "Iddo", "Ahías", "2 Samuel 24:11-13"),
+    Q("¿En la era de quién edificó David un altar para que cesara la plaga?", "Arauna jebuseo", "Obed-edom", "Booz", "Nabal", "2 Samuel 24:18-25"),
+    Q("¿Qué rey de Egipto subió contra Jerusalén y tomó los tesoros del templo en tiempos de Roboam?", "Sisac", "Necao", "So", "Tirhaca", "1 Reyes 14:25-26"),
+    Q("¿Junto a qué arroyo alimentaron los cuervos a Elías?", "Querit", "Cedrón", "Cisón", "Jaboc", "1 Reyes 17:3-6"),
+    Q("¿Qué mayordomo de Acab escondió a cien profetas del Señor en cuevas?", "Abdías", "Micaías", "Jehú", "Giezi", "1 Reyes 18:3-4"),
+    Q("¿Qué rey de Moab ofreció a su hijo primogénito en holocausto sobre la muralla?", "Mesa", "Balac", "Eglón", "Hanún", "2 Reyes 3:4, 26-27"),
+    Q("¿Qué nombre se le daba a la serpiente de bronce que Ezequías hizo pedazos?", "Nehustán", "Moloc", "Dagón", "Asera", "2 Reyes 18:4"),
+    Q("¿Qué etíope, eunuco del rey, sacó a Jeremías de la cisterna?", "Ebed-melec", "Baruc", "Gedalías", "Seraías", "Jeremías 38:7-13"),
+    Q("¿Qué gobernador puso Nabucodonosor sobre Judá y luego fue asesinado por Ismael?", "Gedalías", "Sedequías", "Joacim", "Johanán", "Jeremías 40:7; 41:2"),
+    Q("¿Cómo se llamaba el jefe de los oficiales de Nabucodonosor que cambió los nombres de Daniel y sus amigos?", "Aspenaz", "Arioc", "Nabuzaradán", "Rabsaces", "Daniel 1:3-7"),
+    Q("¿Qué profeta tuvo un hijo llamado Maher-salal-hasbaz?", "Isaías", "Oseas", "Jeremías", "Ezequiel", "Isaías 8:1-3"),
+    Q("¿Cómo se llamaba la mujer de Chuza, mayordomo de Herodes, que servía a Jesús con sus bienes?", "Juana", "Salomé", "Marta", "Lidia", "Lucas 8:3"),
+    Q("¿Qué profeta anunció en Antioquía que habría una gran hambre en toda la tierra?", "Agabo", "Silas", "Manaén", "Judas Barsabás", "Hechos 11:27-28"),
+    Q("¿Cómo se llamaba el principal sacerdote judío cuyos siete hijos intentaron echar fuera demonios?", "Esceva", "Anás", "Ananías", "Caifás", "Hechos 19:13-16"),
+    Q("¿Qué comandante romano escribió una carta al gobernador Félix acerca de Pablo?", "Claudio Lisias", "Julio", "Cornelio", "Sergio Paulo", "Hechos 23:26"),
+    Q("¿Qué orador acusó a Pablo ante el gobernador Félix?", "Tértulo", "Demetrio", "Alejandro", "Gamaliel", "Hechos 24:1-2"),
+    Q("¿Cómo se llamaba el hombre principal de la isla de Malta, cuyo padre fue sanado por Pablo?", "Publio", "Julio", "Trófimo", "Aristarco", "Hechos 28:7-8"),
+    Q("¿Cómo se llamaban la abuela y la madre de Timoteo?", "Loida y Eunice", "Priscila y Febe", "Evodia y Síntique", "Trifena y Trifosa", "2 Timoteo 1:5"),
+    Q("Según 2 Timoteo, ¿cómo se llamaban los que se opusieron a Moisés?", "Janes y Jambres", "Coré y Datán", "Himeneo y Fileto", "Og y Sehón", "2 Timoteo 3:8"),
+    Q("Según 3 Juan, ¿quién «ama ser el primero» entre los hermanos?", "Diótrefes", "Demetrio", "Gayo", "Demas", "3 Juan 9"),
+    Q("¿Cuál es el nombre en griego del ángel del abismo en Apocalipsis 9?", "Apolión", "Abadón", "Belial", "Beelzebú", "Apocalipsis 9:11"),
+    Q("¿Qué testigo fiel fue muerto en Pérgamo, «donde mora Satanás»?", "Antipas", "Esteban", "Epafras", "Trófimo", "Apocalipsis 2:13"),
   ],
 };

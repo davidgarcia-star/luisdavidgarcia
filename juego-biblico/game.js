@@ -542,7 +542,7 @@
   /* ---------- resultados ---------- */
   // Mensaje grande de felicitación según el nivel aprobado (70 % o más)
   function felicidades(levelId, pct) {
-    const T = { basico: ["Aprendiz de la Palabra", "🌱"], intermedio: ["Discípulo de la Palabra", "📗"], avanzado: ["Guerrero de la Fe", "🔥"], experto: ["Experto Bíblico", "👑"], master: ["MÁSTER", "💎"] };
+    const T = { basico: ["Aprendiz de la Palabra", "🌱"], intermedio: ["Discípulo de la Palabra", "📗"], avanzado: ["Guerrero de la Fe", "🔥"], experto: ["Experto Bíblico", "👑"], master: ["MÁSTER", "💎"], mastersuperior: ["MÁSTER SUPERIOR", "🏆"] };
     const [t, e] = T[levelId] || ["Campeón", "🏆"];
     const d = document.createElement("div");
     d.className = "felicidades";
