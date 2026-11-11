@@ -540,6 +540,16 @@
   });
 
   /* ---------- resultados ---------- */
+  // Mensaje grande de felicitación según el nivel aprobado (70 % o más)
+  function felicidades(levelId, pct) {
+    const T = { basico: ["Aprendiz de la Palabra", "🌱"], intermedio: ["Discípulo de la Palabra", "📗"], avanzado: ["Guerrero de la Fe", "🔥"], experto: ["Experto Bíblico", "👑"], master: ["MÁSTER", "💎"] };
+    const [t, e] = T[levelId] || ["Campeón", "🏆"];
+    const d = document.createElement("div");
+    d.className = "felicidades";
+    d.innerHTML = '<span class="f1">¡FELICIDADES!</span><span class="f2">Eres un ' + t + " " + e + "</span>" +
+      (pct >= 100 ? '<span class="f3">⭐ ¡Puntuación perfecta! ⭐</span>' : pct >= 90 ? '<span class="f3">¡Excelente puntuación!</span>' : "");
+    return d;
+  }
   function finish() {
     clearInterval(state.timer);
     state.active = false;
@@ -588,6 +598,7 @@
             ? "✅ ¡Aprobaste! Puedes pasar al siguiente nivel: " + nextLv.name + "."
             : "🎉 ¡Aprobaste el último nivel! Completaste todos los niveles.")
         : "📚 Debes seguir practicando. Necesitas " + PASS_PCT + "% o más para pasar al siguiente nivel.";
+      if (passed) body.appendChild(felicidades(state.level.id, pct));
       body.append(l1, big, l2, verdict);
       $("btnNextLevel").hidden = !state.nextLevel;
       if (state.nextLevel) $("btnNextLevel").textContent = "Siguiente nivel: " + state.nextLevel.name;
@@ -607,6 +618,13 @@
       l.textContent = winners.length > 1
         ? "🤝 ¡Empate entre: " + winners.map((w) => w.name).join(", ") + "!"
         : "🏆 ¡Ganador: " + winners[0].name + "!";
+      if (winners.length === 1) {
+        const f = document.createElement("div");
+        f.className = "felicidades";
+        f.innerHTML = '<span class="f1">¡FELICIDADES!</span><span class="f2"></span>';
+        f.querySelector(".f2").textContent = winners[0].name + ", ¡son los campeones! 🏆";
+        body.appendChild(f);
+      }
       body.appendChild(l);
       const rank = document.createElement("div");
       rank.className = "rank";

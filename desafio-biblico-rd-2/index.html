@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://abacus.jasoncameron.dev; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Desafío Bíblico RD 2">
+  <meta name="theme-color" content="#0a0f1c">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <title>Desafío Bíblico RD 2 – 8 modos de juego | Juego de preguntas bíblicas | MIPROAA</title>
+  <meta name="description" content="Desafío Bíblico RD 2: responde preguntas bíblicas en 8 modos de juego (La Soga, La Pelota al Hoyo, La Aguja y el Globo, El Tanque de Agua, El Muro, La Carrera, Flecha al Blanco y La Honda). 5 niveles (Básico a Master) con La Biblia de las Américas (LBLA). Creado por Luis David Esteban García – MIPROAA.">
+  <meta name="keywords" content="Desafío Bíblico RD 2, Desafio Biblico RD 2, desafío bíblico la soga, juego bíblico, juego de preguntas bíblicas, trivia bíblica, juego cristiano, República Dominicana, MIPROAA, Luis David García">
+  <meta name="author" content="Luis David Esteban García – MIPROAA">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://davidgarcia-star.github.io/luisdavidgarcia/desafio-biblico-rd-2/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_DO">
+  <meta property="og:site_name" content="Desafío Bíblico RD 2">
+  <meta property="og:title" content="Desafío Bíblico RD 2">
+  <meta property="og:description" content="Responde bien y jala la soga a tu lado. Si el hombre fuerte la jala al suyo, pierdes. ¡Juega gratis!">
+  <meta property="og:url" content="https://davidgarcia-star.github.io/luisdavidgarcia/desafio-biblico-rd-2/">
+  <meta property="og:image" content="https://davidgarcia-star.github.io/luisdavidgarcia/juego-biblico/og-desafio-biblico-rd.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["VideoGame", "WebApplication"],
+    "name": "Desafío Bíblico RD 2",
+    "alternateName": ["Desafio Biblico RD 2", "Desafío Bíblico RD parte 2"],
+    "url": "https://davidgarcia-star.github.io/luisdavidgarcia/desafio-biblico-rd-2/",
+    "description": "Juego de preguntas bíblicas de República Dominicana: cada respuesta correcta jala la soga hacia tu lado contra el hombre fuerte. 5 niveles con La Biblia de las Américas (LBLA).",
+    "inLanguage": "es",
+    "genre": ["Trivia", "Educativo", "Juego bíblico"],
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Web, Android, iOS",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Luis David Esteban García" },
+    "publisher": { "@type": "Organization", "name": "MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento", "url": "https://davidgarcia-star.github.io/luisdavidgarcia/" },
+    "countryOfOrigin": { "@type": "Country", "name": "República Dominicana" }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <div class="topbar">
+    <span class="chip chip-visitas" title="Personas que han entrado al juego" aria-live="polite">👥 <b class="js-visitas">…</b> <span class="chip-txt">visitantes</span></span>
+    <div class="topbar-right">
+      <button id="btnHome" class="chip" type="button" title="Volver al inicio">🏠 <span class="chip-lbl">Inicio</span></button>
+      <a class="chip" href="../index.html" title="Ir al sitio web de MIPROAA">🌐 <span class="chip-lbl">Sitio Web</span></a>
+      <button id="btnExit" class="chip chip-salir" type="button" title="Salir del juego">🚪 <span class="chip-lbl">Salir</span></button>
+      <button id="btnFull" class="chip" type="button" hidden title="Pantalla completa (tecla F)">⛶</button>
+      <button id="btnMusic" class="chip" type="button" aria-pressed="true" title="Música">🎵</button>
+      <button id="btnSfx" class="chip" type="button" aria-pressed="true" title="Sonidos">🔊</button>
+    </div>
+  </div>
+
+  <main id="app">
+
+    <!-- PORTAL DE INICIO (ejecutivo) -->
+    <section id="screen-welcome" class="screen active">
+      <div class="hero">
+        <div class="hero-text">
+          <div class="brand">
+            <div class="logo-plate"><img src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="64" height="64"></div>
+            <div class="brand-txt">
+              <span>MIPROAA</span>
+              <small>Ministerio Profético Ardiendo Por El Avivamiento</small>
+            </div>
+          </div>
+          <p class="eyebrow">Juego de preguntas bíblicas · Parte 2</p>
+          <h1 class="title">Desafío Bíblico <span class="rd">RD</span> <span class="two">2</span></h1>
+          <p class="subtitle">8 modos de juego · 5 niveles · gana con el 70 %</p>
+          <p class="lead">Cada respuesta correcta te acerca a la victoria: jala la soga contra el hombre fuerte, mete la pelota en el hoyo, pincha el globo, llena el tanque de agua y mucho más. Responde bien y rápido para ganar.</p>
+          <div class="cta">
+            <button id="btnStart" class="btn primary big" type="button">▶ Comenzar desafío</button>
+            <button id="btnHow" class="btn ghost big" type="button">Cómo se juega</button>
+          </div>
+          <ul class="stats">
+            <li><b>8</b><span>modos</span></li>
+            <li><b>5</b><span>niveles</span></li>
+            <li><b>250</b><span>preguntas</span></li>
+            <li><b>LBLA</b><span>versión bíblica</span></li>
+          </ul>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-card">
+            <div id="miniModes" class="mini-modes"></div>
+            <p class="verse">“Todo lo puedo en Cristo que me fortalece.” <small>Filipenses 4:13 (LBLA)</small></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="howBox" class="how" hidden>
+        <h2>Cómo se juega</h2>
+        <ol>
+          <li><b>Elige un modo de juego</b> y luego un <b>nivel</b> (Básico, Intermedio, Avanzado, Experto o Master). Al ganar un nivel se abre el siguiente en ese modo.</li>
+          <li><b>Responde la pregunta</b> antes de que se acabe el tiempo (20 segundos). Cada partida tiene 20 preguntas y se gana con el <b>70 %</b> (14 correctas). Responder rápido y seguido (racha) da más fuerza.</li>
+          <li><b>Lo que pasa en cada modo:</b>
+            <ul id="howModes"></ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="portal-foot">
+        <div class="links">
+          <a class="btn link-card" href="../juego-biblico/index.html"><span>📖</span> Desafío Bíblico RD (parte 1)</a>
+          <a class="btn link-card" href="https://davidgarcia-star.github.io/biblixia/" rel="noopener"><span>🎮</span> BIBLIXIA 3D</a>
+          <button class="btn link-card js-full" type="button" hidden>⛶ Pantalla completa</button>
+          <a class="btn btn-paypal" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M7.1 21.3H3.6a.6.6 0 0 1-.6-.7L5.9 2.6c.1-.4.4-.6.8-.6h6.6c2.4 0 4.2.6 5.1 1.8.9 1.1 1 2.6.6 4.4-.9 4.5-3.9 6-7.8 6H9.5c-.4 0-.8.3-.8.7l-1.1 6.4c-.1-.1-.3 0-.5 0zm12.5-13.1c-.9 4.7-4 6.6-8.3 6.6h-.9l-1.3 7.9c0 .2.2.4.4.4h2.9c.4 0 .7-.3.8-.7l.6-3.7c.1-.4.4-.7.8-.7h.5c3.4 0 6-1.4 6.8-5.3.3-1.8.1-3.3-1.1-4.3l-.2-.2z"/></svg>
+            Honrar al creador del juego vía PayPal
+          </a>
+        </div>
+        <p id="fullTip" class="hint" hidden>En iPhone: toca <b>Compartir</b> ⬆️ y luego <b>“Agregar a inicio”</b> para verlo en pantalla completa.</p>
+        <div class="creator">
+          <ul class="social" aria-label="Seguir al creador">
+            <li><a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 4.8 12 4.8 12 4.8s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15.1V8.9l5.2 3.1L10 15.1z"/></svg></a></li>
+            <li><a href="https://web.facebook.com/david.estebangarcia.58/?_rdc=1&amp;_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg></a></li>
+            <li><a href="https://www.instagram.com/luis_david_garcia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg></a></li>
+            <li><a href="https://www.tiktok.com/@miproaa" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 3h-3.1v12.2a2.7 2.7 0 1 1-2.7-2.7c.3 0 .6 0 .8.1V9.4a5.9 5.9 0 1 0 5 5.8V9a7.4 7.4 0 0 0 4.3 1.4V7.3A4.4 4.4 0 0 1 16.6 3z"/></svg></a></li>
+          </ul>
+          <p class="credits">Creado por <strong>Luis David Esteban García</strong> de parte de <strong>MIPROAA</strong> – Ministerio Profético Ardiendo Por El Avivamiento</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODOS DE JUEGO -->
+    <section id="screen-modes" class="screen">
+      <div class="panel">
+        <p class="eyebrow">Desafío Bíblico RD 2</p>
+        <h2 class="h2">Elige el modo de juego</h2>
+        <p class="hint">Cada modo tiene su propia forma de ganar. Las preguntas son las mismas en todos.</p>
+        <div id="modeList" class="modes"></div>
+        <div class="row"><button class="btn ghost" type="button" data-go="welcome">Volver</button></div>
+      </div>
+    </section>
+
+    <!-- NIVELES -->
+    <section id="screen-levels" class="screen">
+      <div class="panel">
+        <p class="eyebrow" id="levelsMode">Desafío Bíblico RD 2</p>
+        <h2 class="h2">Elige tu nivel</h2>
+        <p class="hint" id="levelsHint">Gana un nivel para abrir el siguiente.</p>
+        <div id="levelList" class="levels"></div>
+        <div class="row"><button class="btn ghost" type="button" data-go="modes">Cambiar modo</button></div>
+      </div>
+    </section>
+
+    <!-- JUEGO -->
+    <section id="screen-play" class="screen">
+      <div class="panel play">
+        <div class="play-top">
+          <span id="playLevel" class="badge"></span>
+          <span id="playProgress" class="badge ghost"></span>
+          <span id="playStreak" class="badge streak" hidden></span>
+          <div class="ring-timer" role="timer" aria-label="Tiempo restante">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="rt-track" cx="60" cy="60" r="52"></circle>
+              <circle class="rt-bar" id="timerRing" cx="60" cy="60" r="52" pathLength="100"></circle>
+            </svg>
+            <span id="timerNum" class="rt-num">20</span>
+          </div>
+        </div>
+
+        <div class="arena-wrap">
+          <svg id="arena" class="arena" viewBox="0 0 800 250" role="img" aria-label="Escena del modo de juego"></svg>
+          <div id="bubbleMan" class="bubble man" hidden></div>
+          <div id="bubbleYou" class="bubble you" hidden></div>
+        </div>
+        <div class="hudbar">
+          <div class="hb good"><span id="hbGoodLbl"></span><div class="meter"><i id="hbGood"></i></div></div>
+          <div class="hb bad"><span id="hbBadLbl"></span><div class="meter"><i id="hbBad"></i></div></div>
+        </div>
+
+        <h3 id="questionText" class="question"></h3>
+        <div id="options" class="options" role="group" aria-labelledby="questionText"></div>
+        <div id="feedback" class="feedback" aria-live="polite" hidden>
+          <div class="fb-text">
+            <p id="feedbackText"></p>
+            <p id="feedbackRef" class="ref"></p>
+          </div>
+          <button id="btnNext" class="btn primary" type="button">Siguiente</button>
+        </div>
+        <div class="play-foot">
+          <button id="btnQuit" class="btn link" type="button">Salir a los niveles</button>
+          <p class="hint keys-hint">Teclas 1–4 o A–D para responder · Enter para continuar</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="screen-result" class="screen">
+      <div class="panel center result">
+        <div id="resultIcon" class="result-ico" aria-hidden="true">🏆</div>
+        <h2 id="resultTitle" class="h2">¡Resultados!</h2>
+        <div id="resultBody" class="result-body"></div>
+        <div class="row">
+          <button id="btnNextLevel" class="btn primary" type="button" hidden>Siguiente nivel</button>
+          <button id="btnAgain" class="btn ghost" type="button">🔁 Jugar de nuevo</button>
+          <button class="btn ghost" type="button" data-go="levels">Niveles</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">Desafío Bíblico RD 2 · MIPROAA Ministerio Profético Ardiendo Por El Avivamiento</footer>
+
+  <script>
+    /* Navidad: adornos y villancicos del 1 de noviembre al 31 de enero */
+    window.NAVIDAD_CFG = {
+      portal: '#screen-welcome', portalDentro: '.hero-text', portalAntes: '.cta',
+      logo: '#screen-welcome .logo-plate',
+      jugando: function () { var p = document.getElementById('screen-play'); return !!(p && p.classList.contains('active')); }
+    };
+  </script>
+  <script src="navidad.js?v=3"></script>
+  <script src="audio.js?v=1"></script>
+  <script src="questions.js?v=1"></script>
+  <script src="game.js?v=1"></script>
+  <script>
+    /* Pantalla completa (barra superior y portal) */
+    (function () {
+      var botones = [document.getElementById('btnFull')].concat([].slice.call(document.querySelectorAll('.js-full')));
+      var d = document.documentElement, req = d.requestFullscreen || d.webkitRequestFullscreen;
+      var aviso = document.getElementById('fullTip');
+      var esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      var instalado = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+      if (instalado || (!req && !esIOS)) return;
+      function activo() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+      function pintar() { botones.forEach(function (b, i) { if (!b) return; b.hidden = false; b.textContent = i === 0 ? (activo() ? '✕' : '⛶') : (activo() ? '✕ Salir de pantalla completa' : '⛶ Pantalla completa'); }); }
+      function alternar() {
+        if (!req) { if (aviso) aviso.hidden = !aviso.hidden; return; }
+        if (activo()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        else { var r = req.call(d); if (r && r.catch) r.catch(function () { if (aviso) aviso.hidden = false; }); }
+      }
+      botones.forEach(function (b) { if (b) b.onclick = alternar; });
+      document.addEventListener('keydown', function (e) {
+        if (!req || e.repeat || e.ctrlKey || e.metaKey || e.altKey || (e.key || '').toLowerCase() !== 'f') return;
+        var t = e.target && e.target.tagName; if (t === 'INPUT' || t === 'SELECT' || t === 'TEXTAREA') return;
+        e.preventDefault(); alternar();
+      });
+      document.addEventListener('fullscreenchange', pintar); document.addEventListener('webkitfullscreenchange', pintar);
+      pintar();
+    })();
+
+    /* Contador de personas que han entrado al juego (una vez por navegador) */
+    (function () {
+      var BASE = 'https://abacus.jasoncameron.dev/', RUTA = 'miproaa-luisdavidgarcia/desafio-biblico-rd-2';
+      var MARCA = 'dbrd2-contado', CACHE = 'dbrd2-visitas', els = document.querySelectorAll('.js-visitas');
+      function mostrar(n) { var t = Number(n).toLocaleString('es-DO'); for (var i = 0; i < els.length; i++) els[i].textContent = t; }
+      function leer(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+      function guardar(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+      var previo = leer(CACHE); if (previo !== null) mostrar(previo);
+      if (!window.fetch) { mostrar(previo || 0); return; }
+      function pedir(tipo) {
+        return fetch(BASE + tipo + '/' + RUTA + '?t=' + Date.now(), { cache: 'no-store' }).then(function (r) {
+          if (r.status === 404) { var e = new Error('404'); e.noExiste = true; throw e; }
+          if (!r.ok) throw new Error(r.status); return r.json();
+        }).then(function (d) { var v = Number(d && (d.value !== undefined ? d.value : d.count)); if (!isFinite(v) || v < 0) throw new Error('formato'); return Math.floor(v); });
+      }
+      var contado = !!leer(MARCA);
+      var p = contado ? pedir('get').catch(function (e) { if (e.noExiste) { contado = false; return pedir('hit'); } throw e; }) : pedir('hit');
+      function ok(n) { if (!contado) guardar(MARCA, '1'); guardar(CACHE, String(n)); mostrar(n); }
+      p.then(ok).catch(function () { setTimeout(function () { pedir(contado ? 'get' : 'hit').then(ok).catch(function () { if (previo === null) mostrar(0); }); }, 3000); });
+    })();
+  </script>
+</body>
+</html>
