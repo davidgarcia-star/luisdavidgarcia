@@ -2248,6 +2248,9 @@
             .menu .menu-cta .btn { display: flex; width: 100%; margin: .5rem 0 0; min-height: 52px; }
             /* con el menú abierto, la cápsula queda sólida para que no se vea la portada detrás */
             .site-header.open .wrap.nav { background: #0A0A0A; -webkit-backdrop-filter: none; backdrop-filter: none; }
+            /* al bajar, la cápsula del menú se esconde hacia arriba; al subir, vuelve a aparecer */
+            .site-header { transition: transform .35s ease, background-color .3s ease, box-shadow .3s ease; will-change: transform; }
+            .site-header.nav-oculto { transform: translateY(calc(-100% - 24px)); pointer-events: none; }
         }
 
         /* ---------- Portada ---------- */
@@ -3040,11 +3043,22 @@
     var bar = document.getElementById('progress');
     var heroImg = document.getElementById('heroImg');
     var ticking = false;
+    var navMovil = window.matchMedia('(max-width: 1080px)');
+    var ultimoY = window.scrollY;
 
     function onScroll() {
         var y = window.scrollY;
         var max = document.documentElement.scrollHeight - window.innerHeight;
         header.classList.toggle('solid', y > 40);
+        /* Celular: esconder el menú al bajar y mostrarlo al subir */
+        if (!navMovil.matches || menu.classList.contains('open') || y < 80) {
+            header.classList.remove('nav-oculto');
+        } else if (y > ultimoY + 6) {
+            header.classList.add('nav-oculto');      // bajando
+        } else if (y < ultimoY - 6) {
+            header.classList.remove('nav-oculto');   // subiendo
+        }
+        if (Math.abs(y - ultimoY) > 6 || y < 80) ultimoY = y;
         bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
         if (!reduce && heroImg && y < window.innerHeight) {
             heroImg.style.transform = 'translateY(' + (y * 0.12).toFixed(1) + 'px) scale(' + (1 + y * 0.00008).toFixed(4) + ')';
