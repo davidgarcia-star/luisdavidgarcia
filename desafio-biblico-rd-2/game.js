@@ -522,6 +522,7 @@
     if (name === "result" && !state.finished) name = "welcome";
     if (name !== "play") stopLoop();
     SCREENS.forEach((s) => $("screen-" + s).classList.toggle("active", s === name));
+    document.body.dataset.screen = name;
     if (ROUTE[name] !== h) history.replaceState(null, "", "#" + ROUTE[name]);
     if (window.Sound) Sound.setTrack(name === "play" ? "game" : "menu");
     if (name === "modes") drawModes();
@@ -532,14 +533,22 @@
   window.addEventListener("hashchange", render);
   document.querySelectorAll("[data-go]").forEach((b) => (b.onclick = () => { click(); go(b.dataset.go); }));
 
-  const click = () => { if (window.Sound) { Sound.start(); Sound.click(); } };
+  // El sonido de cada toque lo pone el detector global de abajo (como en la parte 1: suena al tocar o al presionar cualquier tecla)
+  const click = () => { if (window.Sound) Sound.start(); };
   document.addEventListener("pointerdown", () => window.Sound && Sound.start(), { once: true });
+  document.addEventListener("click", (e) => {
+    if (!window.Sound) return;
+    Sound.start();
+    const t = e.target && e.target.closest ? e.target.closest(".opt, #btnStart, #btnSfx, #btnMusic") : null;
+    if (t) return; // las respuestas ya suenan (correcto / incorrecto) y Jugar tiene su fanfarria
+    Sound.key();
+  }, true);
 
   /* ---------------- portal ---------------- */
-  $("miniModes").innerHTML = MODES.map((m) => `<div><p style="margin:0"><span>${m.ico}</span>${m.name}</p></div>`).join("");
-  $("howModes").innerHTML = MODES.map((m) => `<li>${m.ico} ${m.how}</li>`).join("");
   $("btnStart").onclick = () => { if (window.Sound) { Sound.start(); Sound.triumph(); } go("modes"); };
-  $("btnHow").onclick = () => { click(); const b = $("howBox"); b.hidden = !b.hidden; if (!b.hidden) b.scrollIntoView({ behavior: "smooth", block: "start" }); };
+  $("btnHow").onclick = () => { click(); $("howBox").hidden = false; };
+  $("btnHowClose").onclick = () => { click(); $("howBox").hidden = true; };
+  $("howBox").addEventListener("click", (e) => { if (e.target.id === "howBox") $("howBox").hidden = true; });
   $("btnHome").onclick = () => { click(); stopLoop(); state.M = null; go("welcome"); };
   $("btnExit").onclick = () => { click(); location.href = "../index.html"; };
 
@@ -560,21 +569,22 @@
       const n = LEVELS.filter((l) => won(m.id, l.id)).length;
       const b = document.createElement("button");
       b.className = "mode"; b.type = "button";
-      b.innerHTML = `<span class="ico">${m.ico}</span><b>${m.name}</b><small>${m.desc}</small><span class="prog">${n ? "✓ " + n + " de 5 niveles ganados" : "Nuevo"}</span>`;
-      b.onclick = () => { click(); state.mode = m; go("levels"); };
+      b.title = m.desc;
+      b.innerHTML = `<span class="ico">${m.ico}</span><b>${m.name}</b><span class="prog">${n ? "✓ " + n + " de 5" : "Nuevo"}</span>`;
+      b.onclick = () => { click(); if (window.Sound) Sound.welcome(); state.mode = m; go("levels"); };
       box.appendChild(b);
     });
   }
   function drawLevels() {
     const m = state.mode;
     $("levelsMode").textContent = m.ico + " " + m.name;
-    $("levelsHint").textContent = m.desc + " Gana un nivel para abrir el siguiente.";
+    $("levelsHint").textContent = m.desc;
     const box = $("levelList"); box.innerHTML = "";
     LEVELS.forEach((l, i) => {
       const open = unlocked(m.id, i), w = won(m.id, l.id);
       const b = document.createElement("button");
       b.className = "level"; b.type = "button"; b.disabled = !open;
-      b.innerHTML = `<span class="em">${l.emoji}</span><span class="txt"><b>${l.name}</b><small>${l.desc}</small></span><span class="st ${open ? "" : "lock"}">${w ? "✓ Ganado" : open ? "Jugar ▶" : "🔒 Bloqueado"}</span>`;
+      b.innerHTML = `<span class="em">${l.emoji}</span><span class="txt"><b>${l.name}</b></span><span class="st ${open ? "" : "lock"}">${w ? "✓ Ganado" : open ? "Jugar ▶" : "🔒"}</span>`;
       b.onclick = () => { click(); startGame(i); };
       box.appendChild(b);
     });

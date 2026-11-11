@@ -48,7 +48,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=1">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
   <canvas id="confetti" aria-hidden="true"></canvas>
@@ -57,8 +57,7 @@
     <span class="chip chip-visitas" title="Personas que han entrado al juego" aria-live="polite">👥 <b class="js-visitas">…</b> <span class="chip-txt">visitantes</span></span>
     <div class="topbar-right">
       <button id="btnHome" class="chip" type="button" title="Volver al inicio">🏠 <span class="chip-lbl">Inicio</span></button>
-      <a class="chip" href="../index.html" title="Ir al sitio web de MIPROAA">🌐 <span class="chip-lbl">Sitio Web</span></a>
-      <button id="btnExit" class="chip chip-salir" type="button" title="Salir del juego">🚪 <span class="chip-lbl">Salir</span></button>
+      <button id="btnExit" class="chip chip-salir" type="button" title="Salir al sitio web de MIPROAA">🚪 <span class="chip-lbl">Salir</span></button>
       <button id="btnFull" class="chip" type="button" hidden title="Pantalla completa (tecla F)">⛶</button>
       <button id="btnMusic" class="chip" type="button" aria-pressed="true" title="Música">🎵</button>
       <button id="btnSfx" class="chip" type="button" aria-pressed="true" title="Sonidos">🔊</button>
@@ -67,70 +66,39 @@
 
   <main id="app">
 
-    <!-- PORTAL DE INICIO (ejecutivo) -->
+    <!-- PORTAL DE INICIO (ejecutivo y compacto: todo cabe en una pantalla) -->
     <section id="screen-welcome" class="screen active">
-      <div class="hero">
-        <div class="hero-text">
-          <div class="brand">
-            <div class="logo-plate"><img src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="64" height="64"></div>
-            <div class="brand-txt">
-              <span>MIPROAA</span>
-              <small>Ministerio Profético Ardiendo Por El Avivamiento</small>
-            </div>
-          </div>
-          <p class="eyebrow">Juego de preguntas bíblicas · Parte 2</p>
-          <h1 class="title">Desafío Bíblico <span class="rd">RD</span> <span class="two">2</span></h1>
-          <p class="subtitle">8 modos de juego · 5 niveles · gana con el 70 %</p>
-          <p class="lead">Cada respuesta correcta te acerca a la victoria: jala la soga contra el hombre fuerte, mete la pelota en el hoyo, pincha el globo, llena el tanque de agua y mucho más. Responde bien y rápido para ganar.</p>
-          <div class="cta">
-            <button id="btnStart" class="btn primary big" type="button">▶ Comenzar desafío</button>
-            <button id="btnHow" class="btn ghost big" type="button">Cómo se juega</button>
-          </div>
-          <ul class="stats">
-            <li><b>8</b><span>modos</span></li>
-            <li><b>5</b><span>niveles</span></li>
-            <li><b>250</b><span>preguntas</span></li>
-            <li><b>LBLA</b><span>versión bíblica</span></li>
-          </ul>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="art-card">
-            <div id="miniModes" class="mini-modes"></div>
-            <p class="verse">“Todo lo puedo en Cristo que me fortalece.” <small>Filipenses 4:13 (LBLA)</small></p>
+      <div class="hero-text portal">
+        <div class="brand">
+          <div class="logo-plate"><img src="logo.png" alt="Logo de MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento" width="64" height="64"></div>
+          <div class="brand-txt">
+            <span>MIPROAA</span>
+            <small>Ministerio Profético Ardiendo Por El Avivamiento</small>
           </div>
         </div>
-      </div>
-
-      <div id="howBox" class="how" hidden>
-        <h2>Cómo se juega</h2>
-        <ol>
-          <li><b>Elige un modo de juego</b> y luego un <b>nivel</b> (Básico, Intermedio, Avanzado, Experto o Master). Al ganar un nivel se abre el siguiente en ese modo.</li>
-          <li><b>Responde la pregunta</b> antes de que se acabe el tiempo (20 segundos). Cada partida tiene 20 preguntas y se gana con el <b>70 %</b> (14 correctas). Responder rápido y seguido (racha) da más fuerza.</li>
-          <li><b>Lo que pasa en cada modo:</b>
-            <ul id="howModes"></ul>
-          </li>
-        </ol>
-      </div>
-
-      <div class="portal-foot">
+        <h1 class="title">Desafío Bíblico <span class="rd">RD</span> <span class="two">2</span></h1>
+        <p class="subtitle">8 modos · 5 niveles · gana con el 70 %</p>
+        <div class="cta">
+          <button id="btnStart" class="btn primary big" type="button">▶ Jugar</button>
+          <button id="btnHow" class="btn ghost" type="button">Cómo se juega</button>
+        </div>
         <div class="links">
-          <a class="btn link-card" href="../juego-biblico/index.html"><span>📖</span> Desafío Bíblico RD (parte 1)</a>
-          <a class="btn link-card" href="https://davidgarcia-star.github.io/biblixia/" rel="noopener"><span>🎮</span> BIBLIXIA 3D</a>
-          <button class="btn link-card js-full" type="button" hidden>⛶ Pantalla completa</button>
-          <a class="btn btn-paypal" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M7.1 21.3H3.6a.6.6 0 0 1-.6-.7L5.9 2.6c.1-.4.4-.6.8-.6h6.6c2.4 0 4.2.6 5.1 1.8.9 1.1 1 2.6.6 4.4-.9 4.5-3.9 6-7.8 6H9.5c-.4 0-.8.3-.8.7l-1.1 6.4c-.1-.1-.3 0-.5 0zm12.5-13.1c-.9 4.7-4 6.6-8.3 6.6h-.9l-1.3 7.9c0 .2.2.4.4.4h2.9c.4 0 .7-.3.8-.7l.6-3.7c.1-.4.4-.7.8-.7h.5c3.4 0 6-1.4 6.8-5.3.3-1.8.1-3.3-1.1-4.3l-.2-.2z"/></svg>
-            Honrar al creador del juego vía PayPal
-          </a>
+          <a class="btn mini" href="../juego-biblico/index.html">📖 Parte 1</a>
+          <a class="btn mini" href="https://davidgarcia-star.github.io/biblixia/" rel="noopener">🎮 BIBLIXIA</a>
+          <a class="btn mini btn-paypal" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">Honrar al creador (PayPal)</a>
         </div>
-        <p id="fullTip" class="hint" hidden>En iPhone: toca <b>Compartir</b> ⬆️ y luego <b>“Agregar a inicio”</b> para verlo en pantalla completa.</p>
-        <div class="creator">
-          <ul class="social" aria-label="Seguir al creador">
-            <li><a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 4.8 12 4.8 12 4.8s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15.1V8.9l5.2 3.1L10 15.1z"/></svg></a></li>
-            <li><a href="https://web.facebook.com/david.estebangarcia.58/?_rdc=1&amp;_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg></a></li>
-            <li><a href="https://www.instagram.com/luis_david_garcia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg></a></li>
-            <li><a href="https://www.tiktok.com/@miproaa" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.6 3h-3.1v12.2a2.7 2.7 0 1 1-2.7-2.7c.3 0 .6 0 .8.1V9.4a5.9 5.9 0 1 0 5 5.8V9a7.4 7.4 0 0 0 4.3 1.4V7.3A4.4 4.4 0 0 1 16.6 3z"/></svg></a></li>
-          </ul>
-          <p class="credits">Creado por <strong>Luis David Esteban García</strong> de parte de <strong>MIPROAA</strong> – Ministerio Profético Ardiendo Por El Avivamiento</p>
+        <p class="credits">Creado por <strong>Luis David Esteban García</strong> · MIPROAA</p>
+      </div>
+
+      <div id="howBox" class="how-modal" hidden>
+        <div class="how" role="dialog" aria-modal="true" aria-labelledby="howTitle">
+          <h2 id="howTitle">Cómo se juega</h2>
+          <ol>
+            <li>Toca <b>Jugar</b>, elige un <b>modo</b> (La Soga, La Pelota…) y un <b>nivel</b>.</li>
+            <li>Responde antes de 20 segundos. Son 20 preguntas y ganas con el <b>70 %</b> (14 correctas).</li>
+            <li>Al ganar un nivel se abre el siguiente.</li>
+          </ol>
+          <button id="btnHowClose" class="btn primary" type="button">Entendido</button>
         </div>
       </div>
     </section>
@@ -140,7 +108,6 @@
       <div class="panel">
         <p class="eyebrow">Desafío Bíblico RD 2</p>
         <h2 class="h2">Elige el modo de juego</h2>
-        <p class="hint">Cada modo tiene su propia forma de ganar. Las preguntas son las mismas en todos.</p>
         <div id="modeList" class="modes"></div>
         <div class="row"><button class="btn ghost" type="button" data-go="welcome">Volver</button></div>
       </div>
@@ -151,7 +118,7 @@
       <div class="panel">
         <p class="eyebrow" id="levelsMode">Desafío Bíblico RD 2</p>
         <h2 class="h2">Elige tu nivel</h2>
-        <p class="hint" id="levelsHint">Gana un nivel para abrir el siguiente.</p>
+        <p class="hint" id="levelsHint"></p>
         <div id="levelList" class="levels"></div>
         <div class="row"><button class="btn ghost" type="button" data-go="modes">Cambiar modo</button></div>
       </div>
@@ -214,7 +181,6 @@
     </section>
   </main>
 
-  <footer class="foot">Desafío Bíblico RD 2 · MIPROAA Ministerio Profético Ardiendo Por El Avivamiento</footer>
 
   <script>
     /* Navidad: adornos y villancicos del 1 de noviembre al 31 de enero */
@@ -225,9 +191,30 @@
     };
   </script>
   <script src="navidad.js?v=3"></script>
-  <script src="audio.js?v=1"></script>
+  <script src="audio.js?v=2"></script>
   <script src="questions.js?v=1"></script>
-  <script src="game.js?v=1"></script>
+  <script src="game.js?v=2"></script>
+  <script>
+    /* Voz de bienvenida al entrar al juego (la misma grabación de la parte 1) */
+    (function () {
+      var voz = new Audio('../juego-biblico/bienvenida.mp3?v=1');
+      voz.preload = 'auto';
+      var sonado = false, intentando = false, EVENTOS = ['click', 'pointerup', 'touchend', 'keydown'];
+      function quitar() { EVENTOS.forEach(function (ev) { document.removeEventListener(ev, sonar, true); }); }
+      function sonar() {
+        if (sonado || intentando) return;
+        try { if (window.Sound && !Sound.sfxOn) return; } catch (e) {}
+        var w = document.getElementById('screen-welcome');
+        if (w && !w.classList.contains('active')) { quitar(); return; }
+        intentando = true;
+        var p = voz.play();
+        if (p && p.then) p.then(function () { intentando = false; sonado = true; quitar(); }).catch(function () { intentando = false; });
+        else { sonado = true; quitar(); }
+      }
+      EVENTOS.forEach(function (ev) { document.addEventListener(ev, sonar, true); });
+      window.addEventListener('load', function () { setTimeout(sonar, 400); });
+    })();
+  </script>
   <script>
     /* Pantalla completa (barra superior y portal) */
     (function () {
