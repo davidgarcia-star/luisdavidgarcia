@@ -254,7 +254,16 @@
     Desafío Bíblico RD · MIPROAA Ministerio Profético Ardiendo Por El Avivamiento
   </footer>
 
-  <script src="audio.js?v=15"></script>
+  <script>
+    /* Navidad: adornos y villancicos del 1 de noviembre al 31 de enero */
+    window.NAVIDAD_CFG = {
+      portal: '#screen-welcome', portalDentro: '.welcome-clasica', portalAntes: '.saludo-hola',
+      logo: '.logo-plate',
+      jugando: function () { var p = document.getElementById('screen-play'); return !!(p && p.classList.contains('active')); }
+    };
+  </script>
+  <script src="navidad.js?v=1"></script>
+  <script src="audio.js?v=16"></script>
   <script src="questions.js?v=14"></script>
   <script src="game.js?v=21"></script>
   <script>

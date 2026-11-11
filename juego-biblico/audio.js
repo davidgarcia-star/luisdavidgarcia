@@ -124,8 +124,17 @@ const Sound = (() => {
     }
   }
 
+  // Temporada navideña (navidad.js): en los menús suenan villancicos en lugar de la pista "menu"
+  let xmas = null;
+  const usarNavidad = () => trackName === "menu" && window.Navidad && window.Navidad.activo;
   function scheduler() {
     if (!ctx) return;
+    if (usarNavidad()) {
+      if (!xmas) xmas = window.Navidad.musica(ctx, musicGain, 1);
+      nextTime = ctx.currentTime + 0.15;
+      return;
+    }
+    if (xmas) { xmas.stop(); xmas = null; }
     while (nextTime < ctx.currentTime + 0.6) {
       scheduleStep(nextTime, step);
       nextTime += stepLen();
