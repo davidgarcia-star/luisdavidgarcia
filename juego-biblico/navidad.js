@@ -3,8 +3,8 @@
    Creado para los juegos de Luis David Esteban García · MIPROAA
    - Se activa solo del 1 de noviembre al 31 de enero (temporada navideña dominicana).
    - Para probar en otra fecha: agrega ?navidad=1 a la dirección (o ?navidad=0 para quitarla).
-   - Adornos: guirnalda de luces, nieve suave, gorro navideño en el logo y cartel
-     "¡Feliz Navidad!" con versículo (LBLA) en el portal de inicio.
+   - Adornos: nieve suave, gorro navideño en el logo y cartel "¡Feliz Navidad!"
+     con versículos (LBLA) en el portal de inicio. (Sin guirnalda arriba para no tapar los iconos.)
    - Música: villancicos tradicionales de dominio público (Noche de paz, Cascabeles,
      Al mundo paz) tocados con Web Audio, sin archivos externos.
    Configuración opcional antes de cargar este archivo:
@@ -132,6 +132,7 @@
       'font-family:Georgia,"Times New Roman",serif;animation:nvLatido 2.4s ease-in-out infinite}' +
     '.nv-cartel p{margin:4px 0 0;font-size:clamp(12px,2.8vw,14px);line-height:1.35;opacity:.95}' +
     '.nv-cartel small{display:block;margin-top:2px;font-size:11px;opacity:.8}' +
+    '.nv-cartel hr{border:0;border-top:1px solid rgba(255,211,77,.45);width:60%;margin:8px auto 4px}' +
     '@keyframes nvLatido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}' +
     '.nv-gorro{position:absolute;width:62%;max-width:70px;left:50%;top:-30%;transform:translateX(-30%) rotate(18deg);z-index:5;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}' +
     '@media (prefers-reduced-motion:reduce){.nv-luz,.nv-cartel b{animation:none}}';
@@ -189,13 +190,12 @@
   function cartel() {
     var d = document.createElement('div'); d.className = 'nv-cartel'; d.setAttribute('role', 'note');
     d.innerHTML = anoNuevo
-      ? '<b>🎄 ¡Feliz Navidad y próspero ' + anio + '! 🎆</b><p>«Las misericordias del SEÑOR jamás terminan, pues nunca fallan sus bondades; son nuevas cada mañana; ¡grande es tu fidelidad!»</p><small>Lamentaciones 3:22-23 (LBLA)</small>'
-      : '<b>🎄 ¡Feliz Navidad! 🎁</b><p>«Porque os ha nacido hoy, en la ciudad de David, un Salvador, que es Cristo el Señor.»</p><small>Lucas 2:11 (LBLA)</small>';
+      ? '<b>🎄 ¡Feliz Navidad y próspero ' + anio + '! 🎆</b><p>«Las misericordias del SEÑOR jamás terminan, pues nunca fallan sus bondades; son nuevas cada mañana; ¡grande es tu fidelidad!»</p><small>Lamentaciones 3:22-23 (LBLA)</small><hr><p>«…y le pondrán por nombre Emmanuel, que traducido significa: Dios con nosotros.»</p><small>Mateo 1:23 (LBLA)</small>'
+      : '<b>🎄 ¡Feliz Navidad! 🎁</b><p>«Porque os ha nacido hoy, en la ciudad de David, un Salvador, que es Cristo el Señor.»</p><small>Lucas 2:11 (LBLA)</small><hr><p>«…y le pondrán por nombre Emmanuel, que traducido significa: Dios con nosotros.»</p><small>Mateo 1:23 (LBLA)</small>';
     return d;
   }
 
   function montar() {
-    document.body.appendChild(guirnalda());
     document.body.appendChild(nieve());
     var a = document.createElement('div'); a.className = 'nv-esquina izq'; a.textContent = '🎄'; a.setAttribute('aria-hidden', 'true');
     var b = document.createElement('div'); b.className = 'nv-esquina der'; b.textContent = '🎁'; b.setAttribute('aria-hidden', 'true');
