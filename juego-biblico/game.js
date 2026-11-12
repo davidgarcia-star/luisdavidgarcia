@@ -555,8 +555,12 @@
     state.active = false;
     state.finished = true;
     Sound.fanfare();
-    confetti(180);
-    setTimeout(() => confetti(120), 500);
+    // El confeti solo celebra cuando se aprueba (o en equipos); si no, taparía el mensaje de ánimo
+    const celebra = state.mode !== "solo" || Math.round((state.correctCount / state.total) * 100) >= PASS_PCT;
+    if (celebra) {
+      confetti(180);
+      setTimeout(() => confetti(120), 500);
+    }
     const body = $("resultBody");
     body.innerHTML = "";
     if (state.mode === "solo") {
