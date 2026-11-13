@@ -96,7 +96,7 @@ body::before {
 /* ---------- Barra superior ---------- */
 .topbar {
   position: sticky; top: 0; z-index: 10;
-  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px;
   padding: 10px 14px;
   background: rgba(3, 8, 22, .72);
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
@@ -660,7 +660,9 @@ select option { color: #111; }
   .stats { gap: 6px; }
   .score-ring { width: 150px; height: 150px; }
 }
-@media (max-width: 360px) { .chip-lbl { display: none; } .title { font-size: 2.1rem; } }
+/* En celulares la barra no cabe con textos: se ocultan las etiquetas (los botones conservan aria-label) */
+@media (max-width: 440px) { .chip-lbl { display: none; } }
+@media (max-width: 360px) { .title { font-size: 2.1rem; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
