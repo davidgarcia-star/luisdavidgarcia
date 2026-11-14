@@ -512,6 +512,7 @@ select option { color: #111; }
 
 .turn { min-height: 1.3em; margin: 0 0 6px; color: var(--tc, var(--gold)); font-weight: 700; text-align: center; }
 .turn .dot { display: inline-block; width: 12px; height: 12px; margin-right: 6px; border-radius: 50%; background: var(--tc); box-shadow: 0 0 10px var(--tc); vertical-align: -1px; }
+.question:focus { outline: none; }
 .question { margin: 6px auto 22px; max-width: 30em; font: 700 clamp(1.5rem, 5vw, 2.3rem)/1.15 var(--display); text-align: center; text-wrap: balance; animation: entra .45s var(--ease) both; }
 
 .options { display: grid; gap: 10px; }

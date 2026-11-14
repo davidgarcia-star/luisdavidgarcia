@@ -416,7 +416,10 @@
       turn.append(dot, "Turno de: " + state.teamNames[state.turn]);
     }
     $("questionText").textContent = item.q;
+    // Accesibilidad: al ocultar "Siguiente" el foco se perdía; se lleva a la nueva pregunta
+    const hadFocus = document.activeElement === $("btnNext");
     $("feedback").hidden = true;
+    if (hadFocus) $("questionText").focus({ preventScroll: true });
     applyTeamTheme();
     renderScoreboard();
 
