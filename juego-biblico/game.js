@@ -180,7 +180,7 @@
   $("btnExit").onclick = () => {
     Sound.click();
     window.close();
-    setTimeout(() => { if (!window.closed) location.href = "../index.html"; }, 250);
+    setTimeout(() => { if (!window.closed) location.href = "https://davidgarcia-star.github.io/luisdavidgarcia/"; }, 250);
   };
   $("btnSolo").onclick = () => { Sound.click(); state.mode = "solo"; go("levels"); };
   $("btnTeams").onclick = () => { Sound.click(); state.mode = "teams"; go("teams"); };

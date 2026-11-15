@@ -550,7 +550,7 @@
   $("btnHowClose").onclick = () => { click(); $("howBox").hidden = true; };
   $("howBox").addEventListener("click", (e) => { if (e.target.id === "howBox") $("howBox").hidden = true; });
   $("btnHome").onclick = () => { click(); stopLoop(); state.M = null; go("welcome"); };
-  $("btnExit").onclick = () => { click(); location.href = "../index.html"; };
+  $("btnExit").onclick = () => { click(); location.href = "https://davidgarcia-star.github.io/luisdavidgarcia/"; };
 
   function refreshSound() {
     if (!window.Sound) return;
