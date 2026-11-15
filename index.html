@@ -2489,9 +2489,9 @@
 <div class="a11y-lupa" id="a11yLupa" aria-hidden="true" hidden></div>
 <div class="a11y-guia" id="a11yGuia" aria-hidden="true" hidden></div>
 <div class="a11y-mascara" id="a11yMascara" aria-hidden="true" hidden></div>
-<audio id="bgm" loop preload="none" src="./audio/instrumental.m4a"></audio>
+<audio id="bgm" loop preload="none" src="./audio/donde-el-fuego-habita.mp3"></audio>
 
-<button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Reproducir música instrumental">
+<button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Reproducir música de fondo">
     <svg id="musicIcon" viewBox="0 0 512 512" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7v336c0 44.2-43 80-96 80s-96-35.8-96-80 43-80 96-80c11.2 0 22 1.6 32 4.6V147L192 223.8V432c0 44.2-43 80-96 80S0 476.2 0 432s43-80 96-80c11.2 0 22 1.6 32 4.6V200 128c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/></svg>
     <span id="musicLabel" class="sr-only">Reproducir</span>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -3554,7 +3554,7 @@
         function ui(on, auto) {
             playing = on;
             mBtn.setAttribute('aria-pressed', String(on));
-            mBtn.setAttribute('aria-label', on ? 'Pausar música instrumental' : 'Reproducir música instrumental');
+            mBtn.setAttribute('aria-label', on ? 'Pausar música de fondo' : 'Reproducir música de fondo');
             mLabel.textContent = on ? 'Pausar' : 'Reproducir';
                 // Si se detuvo sola (por el video), no se guarda como una decisión de la persona
             if (!auto) { try { localStorage.setItem('miproaa_music', on ? '1' : '0'); } catch (e) {} }
@@ -3607,7 +3607,7 @@
             // Si suena la instrumental, la canción de su autoría en YouTube se pausa sola
             try { if (ytp && ytp.pauseVideo) ytp.pauseVideo(); } catch (e) {}
             ui(true);
-            // Si existe audio/instrumental.mp3 se usa; si no, suena el colchón generado
+            // Si existe audio/donde-el-fuego-habita.mp3 se usa; si no, suena el colchón generado
             if (mode !== 'synth') {
                 bgm.volume = 0;
                 var pr = bgm.play();
