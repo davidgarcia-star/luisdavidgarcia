@@ -230,7 +230,31 @@
     ['Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.', 'Salmos 46:1'],
     ['Venid a mí, todos los que estáis cansados y cargados, y yo os haré descansar.', 'Mateo 11:28'],
     ['Que las misericordias del SEÑOR jamás terminan, pues nunca fallan sus bondades; son nuevas cada mañana; ¡grande es tu fidelidad!', 'Lamentaciones 3:22-23'],
-    ['Porque yo sé los planes que tengo para vosotros —declara el SEÑOR— planes de bienestar y no de calamidad, para daros un futuro y una esperanza.', 'Jeremías 29:11']
+    ['Porque yo sé los planes que tengo para vosotros —declara el SEÑOR— planes de bienestar y no de calamidad, para daros un futuro y una esperanza.', 'Jeremías 29:11'],
+    ['Lámpara es a mis pies tu palabra, y luz para mi camino.', 'Salmos 119:105'],
+    ['Pero buscad primero su reino y su justicia, y todas estas cosas os serán añadidas.', 'Mateo 6:33'],
+    ['Yo soy el camino, y la verdad, y la vida; nadie viene al Padre sino por mí.', 'Juan 14:6'],
+    ['Porque por gracia habéis sido salvados por medio de la fe, y esto no de vosotros, sino que es don de Dios.', 'Efesios 2:8'],
+    ['Pon tu delicia en el SEÑOR, y Él te dará las peticiones de tu corazón.', 'Salmos 37:4'],
+    ['El que no ama no conoce a Dios, porque Dios es amor.', '1 Juan 4:8'],
+    ['Ahora bien, la fe es la certeza de lo que se espera, la convicción de lo que no se ve.', 'Hebreos 11:1'],
+    ['Este es el día que el SEÑOR ha hecho; regocijémonos y alegrémonos en él.', 'Salmos 118:24'],
+    ['Pero los que esperan en el SEÑOR renovarán sus fuerzas; se remontarán con alas como las águilas, correrán y no se cansarán, caminarán y no se fatigarán.', 'Isaías 40:31'],
+    ['Vosotros sois la luz del mundo. Una ciudad situada sobre un monte no se puede ocultar.', 'Mateo 5:14'],
+    ['El nombre del SEÑOR es torre fuerte, a ella corre el justo y está a salvo.', 'Proverbios 18:10'],
+    ['El SEÑOR es mi luz y mi salvación; ¿a quién temeré? El SEÑOR es la fortaleza de mi vida; ¿de quién tendré temor?', 'Salmos 27:1'],
+    ['Porque no nos ha dado Dios espíritu de timidez, sino de poder, de amor y de dominio propio.', '2 Timoteo 1:7'],
+    ['Acercaos a Dios, y Él se acercará a vosotros.', 'Santiago 4:8'],
+    ['Echando toda vuestra ansiedad sobre Él, porque Él tiene cuidado de vosotros.', '1 Pedro 5:7'],
+    ['Mi socorro viene del SEÑOR, que hizo los cielos y la tierra.', 'Salmos 121:2'],
+    ['Y conoceréis la verdad, y la verdad os hará libres.', 'Juan 8:32'],
+    ['El que habita al amparo del Altísimo morará a la sombra del Omnipotente.', 'Salmos 91:1'],
+    ['Y ahora permanecen la fe, la esperanza y el amor, estos tres; pero el mayor de ellos es el amor.', '1 Corintios 13:13'],
+    ['El SEÑOR peleará por vosotros mientras vosotros os quedáis callados.', 'Éxodo 14:14'],
+    ['El SEÑOR te bendiga y te guarde; el SEÑOR haga resplandecer su rostro sobre ti, y tenga de ti misericordia; el SEÑOR alce sobre ti su rostro, y te dé paz.', 'Números 6:24-26'],
+    ['Y el SEÑOR irá delante de ti; Él estará contigo, no te dejará ni te desamparará; no temas ni te acobardes.', 'Deuteronomio 31:8'],
+    ['Dad gracias al SEÑOR, porque Él es bueno; porque para siempre es su misericordia.', '1 Crónicas 16:34'],
+    ['No os entristezcáis, porque la alegría del SEÑOR es vuestra fortaleza.', 'Nehemías 8:10']
   ];
   function regalo(boton) {
     var fondo = document.createElement('div'); fondo.className = 'nv-rf';
@@ -238,10 +262,23 @@
       '<h3 id="nvRT">¡Un regalo para ti!</h3><blockquote id="nvRV"></blockquote><cite id="nvRR"></cite>' +
       '<div class="acc"><button type="button" class="otro">🎁 Otro versículo</button><button type="button" class="cerrar">Cerrar</button></div></div>';
     document.body.appendChild(fondo);
-    var ultimo = -1;
+    // Orden al azar que recorre TODOS los versículos sin repetir; se recuerda entre visitas y entre los 4 juegos
+    var K = 'nv_regalo_bolsa_v1';
+    function siguiente() {
+      var b = null; try { b = JSON.parse(localStorage.getItem(K)); } catch (e) {}
+      if (!b || !b.o || b.n !== REGALOS.length || b.i >= b.o.length) {
+        var antes = b && b.o ? b.o[b.o.length - 1] : -1, o = [];
+        for (var k = 0; k < REGALOS.length; k++) o.push(k);
+        for (var j = o.length - 1; j > 0; j--) { var r = Math.floor(Math.random() * (j + 1)), t = o[j]; o[j] = o[r]; o[r] = t; }
+        if (o[0] === antes && o.length > 1) { o[0] = o[1]; o[1] = antes; } // que el primero de la nueva vuelta no repita el último
+        b = { o: o, i: 0, n: REGALOS.length };
+      }
+      var i = b.o[b.i++];
+      try { localStorage.setItem(K, JSON.stringify(b)); } catch (e) {}
+      return i;
+    }
     function nuevo() {
-      var i; do { i = Math.floor(Math.random() * REGALOS.length); } while (i === ultimo && REGALOS.length > 1);
-      ultimo = i;
+      var i = siguiente();
       fondo.querySelector('#nvRV').textContent = '«' + REGALOS[i][0] + '»';
       fondo.querySelector('#nvRR').textContent = REGALOS[i][1] + ' (LBLA)';
       var ico = fondo.querySelector('.ico'); ico.style.animation = 'none'; void ico.offsetWidth; ico.style.animation = '';
