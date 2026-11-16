@@ -4329,7 +4329,7 @@
 /* Estadísticas privadas: hombres y mujeres registrados y países aproximados (solo con la clave del creador) */
 (function () {
     var btn = document.getElementById('statsBtn'); if (!btn || typeof HTMLDialogElement !== 'function') { if (btn) btn.hidden = true; return; }
-    var HASH = '70553dc18c92804da19f8f5c9fbb598a975a1585e14d52d4da23a8fdd735ec06'; // SHA-256 de la clave
+    var HASH = '96a5fd2828a6fc64f5d6de5735fcfa7814b71a930478b530c698b5d5121cf39f'; // SHA-256 de la clave
     var API = 'https://abacus.jasoncameron.dev/get/miproaa-estadisticas/';
     var PAISES = { do: 'República Dominicana', us: 'Estados Unidos', pr: 'Puerto Rico', ht: 'Haití', cu: 'Cuba', mx: 'México', co: 'Colombia', pe: 'Perú', ve: 'Venezuela', ec: 'Ecuador', bo: 'Bolivia', cl: 'Chile', ar: 'Argentina', uy: 'Uruguay', py: 'Paraguay', br: 'Brasil', pa: 'Panamá', cr: 'Costa Rica', ni: 'Nicaragua', hn: 'Honduras', sv: 'El Salvador', gt: 'Guatemala', jm: 'Jamaica', aw: 'Aruba', cw: 'Curazao', tt: 'Trinidad y Tobago', ca: 'Canadá', es: 'España', it: 'Italia', fr: 'Francia', gb: 'Reino Unido', de: 'Alemania', pt: 'Portugal', nl: 'Países Bajos', ch: 'Suiza', be: 'Bélgica', otros: 'Otros países' };
     var dlg = document.createElement('dialog'); dlg.className = 'stats-dlg'; dlg.setAttribute('aria-label', 'Estadísticas de visitantes');
