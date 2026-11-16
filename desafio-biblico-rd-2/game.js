@@ -98,7 +98,7 @@
      LOS 6 MODOS DE JUEGO
      Cada modo: create(svg, k) → { tick(dt), frame(dt), correct(tf, streak), wrong(timeout),
                                     status(), final(), hud(), summary() }
-     k = nivel 0..4 (Básico..Master). tf = fracción del tiempo que sobró (0..1).
+     k = nivel 0..4 (Básico..Máster). tf = fracción del tiempo que sobró (0..1).
      ===================================================================== */
   const MODES = [
     {
@@ -287,7 +287,7 @@
           wrong(timeout) { riv = Math.min(100, riv + step + (timeout ? 2 : 0)); },
           status() { return me >= 100 ? "win" : riv >= 100 ? "lose" : null; },
           final() { return me > riv ? "win" : "lose"; },
-          hud() { return { good: me / 100, goodLbl: `Tú ${Math.round(me)}%`, bad: riv / 100, badLbl: `Rival ${Math.round(riv)}%` }; },
+          hud() { return { good: me / 100, goodLbl: `Tú ${Math.round(me)} %`, bad: riv / 100, badLbl: `Rival ${Math.round(riv)} %` }; },
           winTxt: "¡Llegaste primero a la meta! «…corramos con paciencia la carrera que tenemos por delante» (Hebreos 12:1).",
           loseTxt: "Tu rival llegó primero a la meta.",
         };
@@ -375,7 +375,7 @@
           wrong(timeout) { d = Math.max(0, d - stepIn - (timeout ? 2 : 0)); fx.thud(); },
           status() { return hits >= hits0 ? "win" : d <= 0 ? "lose" : null; },
           final() { return hits >= hits0 ? "win" : "lose"; },
-          hud() { return { good: hits / hits0, goodLbl: `Golpes ${hits} de ${hits0}`, bad: 1 - d / 100, badLbl: `El gigante se acerca ${Math.round(100 - d)}%` }; },
+          hud() { return { good: hits / hits0, goodLbl: `Golpes ${hits} de ${hits0}`, bad: 1 - d / 100, badLbl: `El gigante se acerca ${Math.round(100 - d)} %` }; },
           winTxt: "¡Derribaste al gigante! «…la batalla es del SEÑOR…» (1 Samuel 17:47).",
           loseTxt: "El gigante te alcanzó.",
         };
@@ -494,7 +494,7 @@
           wrong() { errs++; return pour(false); },
           status() { return fill >= NEED ? "win" : errs >= MAXERR ? "lose" : null; },
           final() { return fill >= NEED ? "win" : "lose"; },
-          hud() { return { good: fill / NEED, goodLbl: `Tanque ${Math.round(fill / NEED * 100)}% lleno`, bad: errs / MAXERR, badLbl: `Cubos derramados ${errs} de ${MAXERR}` }; },
+          hud() { return { good: fill / NEED, goodLbl: `Tanque ${Math.round(fill / NEED * 100)} % lleno`, bad: errs / MAXERR, badLbl: `Cubos derramados ${errs} de ${MAXERR}` }; },
           winTxt: "¡El tanque está lleno! Lograste el 70 %.",
           loseTxt: "Se derramó demasiada agua y el tanque no se llenó.",
         };
@@ -750,7 +750,7 @@
       (win ? felicidades(l.id, pct) : "") +
       `<p class="big">${win ? M.winTxt : M.loseTxt}</p>` +
       `<p>${m.ico} ${m.name} · ${l.emoji} ${l.name}</p>` +
-      `<p>Respuestas correctas: <b>${state.correct} de ${state.answered}</b> (${pct}%) · Mejor racha: <b>${state.best}</b></p>` +
+      `<p>Respuestas correctas: <b>${state.correct} de ${state.answered}</b> (${pct} %) · Mejor racha: <b>${state.best}</b></p>` +
       (nextTxt ? `<p>${nextTxt}</p>` : "") +
       `<p class="rv">${win ? "«Todo lo puedo en Cristo que me fortalece.» — Filipenses 4:13" : "«¡Sé fuerte y valiente!» — Josué 1:9"}</p>`;
     $("btnNextLevel").hidden = next == null;

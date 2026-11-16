@@ -582,10 +582,10 @@
       const ring = document.createElement("div");
       ring.className = "score-ring";
       ring.setAttribute("role", "img");
-      ring.setAttribute("aria-label", pct + "% de aciertos");
+      ring.setAttribute("aria-label", pct + " % de aciertos");
       ring.innerHTML = '<svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="srGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset=".55" stop-color="#f4c542"/><stop offset="1" stop-color="#ff7a2f"/></linearGradient></defs>' +
         '<circle class="sr-track" cx="60" cy="60" r="52"/><circle class="sr-bar" cx="60" cy="60" r="52" pathLength="100" style="stroke-dashoffset:100"/></svg>' +
-        '<div class="sr-num"><b>' + pct + '%</b><span>de aciertos</span></div>';
+        '<div class="sr-num"><b>' + pct + ' %</b><span>de aciertos</span></div>';
       requestAnimationFrame(() => requestAnimationFrame(() => { const b = ring.querySelector(".sr-bar"); if (b) b.style.strokeDashoffset = String(100 - pct); }));
       const big = document.createElement("div");
       big.className = "stats";

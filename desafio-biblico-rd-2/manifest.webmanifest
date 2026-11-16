@@ -1,0 +1,18 @@
+{
+  "name": "Desafío Bíblico RD 2",
+  "short_name": "Desafío RD 2",
+  "description": "Preguntas bíblicas en 8 modos de juego y 5 niveles, con la Biblia LBLA.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0f1c",
+  "theme_color": "#0a0f1c",
+  "categories": ["games", "education"],
+  "icons": [
+    { "src": "../icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "../icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "../icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

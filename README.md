@@ -1,4 +1,4 @@
-# MIPROAA – Ministerio Profético Ardiendo Por El Avivamiento
+# MIPROAA – Ministerio Profético Ardiendo por el Avivamiento
 
 🌐 **Sitio web:** https://davidgarcia-star.github.io/luisdavidgarcia/
 
@@ -18,3 +18,6 @@ Creado por **Luis David Esteban García** · MIPROAA.
 - Facebook: https://www.facebook.com/david.estebangarcia.58/
 - Instagram: https://www.instagram.com/luis_david_garcia/
 - TikTok: https://www.tiktok.com/@miproaa
+
+## 🔒 Privacidad
+Política de privacidad del sitio y de los juegos: https://davidgarcia-star.github.io/luisdavidgarcia/privacidad.html

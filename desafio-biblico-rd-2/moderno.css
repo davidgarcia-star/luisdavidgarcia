@@ -67,3 +67,7 @@
 @media (prefers-reduced-motion: reduce) {
   .btn.primary::after, .opt, .opt.ok, .opt.bad, .opt.ok::after, .question, .badge.streak { animation: none !important; }
 }
+
+/* Créditos: enlace a la política de privacidad */
+.credits a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.credits a:hover { color: var(--gold2); }

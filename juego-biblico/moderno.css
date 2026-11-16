@@ -74,3 +74,7 @@
 @media (prefers-reduced-motion: reduce) {
   .btn.primary::after, .progress-bar, .opt, .opt.correct::after { animation: none !important; }
 }
+
+/* Pie: enlace a la política de privacidad */
+.foot a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.foot a:hover { color: var(--gold); }
