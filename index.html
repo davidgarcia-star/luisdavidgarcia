@@ -2484,6 +2484,69 @@
         @keyframes divisorBrillo { from { left: -30%; } to { left: 104%; } }
         .visits[hidden] + .divisor { display: none; }  /* sin contador de visitas no se repite la línea */
         .site-footer::before { display: none; }         /* el pie ya tiene su línea con brillo */
+        /* ---------- Pie de página moderno: brillo cálido, puntos de luz y tarjetas de vidrio ---------- */
+        .site-footer {
+            overflow: hidden; isolation: isolate;
+            background:
+                radial-gradient(900px 420px at 8% 0%, rgba(244, 183, 63, .14), transparent 62%),
+                radial-gradient(820px 480px at 96% 100%, rgba(238, 106, 43, .18), transparent 62%),
+                linear-gradient(180deg, #110c07 0%, #070504 55%, #000 100%);
+        }
+        .site-footer::after {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background-image: radial-gradient(rgba(244, 183, 63, .22) 1px, transparent 1.3px);
+            background-size: 24px 24px;
+            -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, .7), transparent 75%);
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, .7), transparent 75%);
+        }
+        .foot-deco { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .foot-deco i { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .5; animation: pieFlota 14s ease-in-out infinite alternate; }
+        .foot-deco i:nth-child(1) { width: 340px; height: 340px; left: -80px; top: 30%; background: rgba(244, 183, 63, .35); }
+        .foot-deco i:nth-child(2) { width: 300px; height: 300px; right: 8%; top: -120px; background: rgba(238, 106, 43, .3); animation-duration: 18s; }
+        .foot-deco i:nth-child(3) { width: 260px; height: 260px; right: -60px; bottom: -80px; background: rgba(206, 17, 38, .22); animation-duration: 22s; }
+        @keyframes pieFlota { to { transform: translate(40px, -30px) scale(1.12); } }
+        .footer-grid > nav, .footer-grid > div:not(.footer-brand) {
+            padding: 1.4rem 1.4rem 1.2rem; border-radius: 20px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .015));
+            border: 1px solid rgba(244, 183, 63, .16);
+            box-shadow: 0 20px 50px -30px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .05);
+            -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+            transition: border-color .3s ease, transform .3s var(--ease);
+        }
+        .footer-grid > nav:hover, .footer-grid > div:not(.footer-brand):hover { border-color: rgba(244, 183, 63, .38); transform: translateY(-3px); }
+        .site-footer h3 { position: relative; padding-bottom: .65rem; margin-bottom: .9rem; }
+        .site-footer h3::after { content: ""; position: absolute; left: 0; bottom: 0; width: 44px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--ember, #EE6A2B)); }
+        .site-footer ul.links a { position: relative; padding-left: 1.05rem; }
+        .site-footer ul.links a::before { content: "›"; position: absolute; left: 0; top: .28rem; color: var(--gold); font-weight: 700; transition: transform .25s var(--ease); }
+        .site-footer ul.links a:hover::before { transform: translateX(3px); }
+        .foot-lema { margin-top: .9rem !important; max-width: 30ch; font-size: .95rem; line-height: 1.55; }
+        .foot-cta {
+            display: inline-flex; align-items: center; gap: .5rem; margin-top: 1.1rem; padding: .7rem 1.2rem; border-radius: 999px;
+            background: linear-gradient(135deg, #ffe08a, var(--gold)); color: #1a1205; font-weight: 700; text-decoration: none;
+            box-shadow: 0 10px 26px -10px rgba(244, 183, 63, .8); transition: transform .25s var(--ease), box-shadow .25s ease;
+        }
+        .foot-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -10px rgba(244, 183, 63, .95); }
+        .site-footer .copyright {
+            margin-top: 2.6rem; padding: 1rem 1.2rem; border-top: 0; border-radius: 16px; line-height: 1.6;
+            background: rgba(255, 255, 255, .035); border: 1px solid rgba(244, 183, 63, .14);
+        }
+        .copyright .sep { color: var(--gold); margin: 0 .3rem; }
+        .footer-grid { align-items: start; }
+        .site-footer .social { display: flex; flex-wrap: wrap; gap: .55rem; }
+        .site-footer .social a { width: 44px; height: 44px; }
+        .foot-wa { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.1rem; color: var(--parchment); text-decoration: none; font-weight: 600; font-size: .95rem; }
+        .foot-wa i { color: #25D366; font-size: 1.15rem; }
+        .foot-wa:hover { color: var(--gold); }
+        .foot-nota { margin-top: .8rem !important; font-size: .88rem; line-height: 1.5; }
+        .copyright .bandera-rd, .world .bandera-rd { margin: 0 .3rem; }
+        .bandera-rd { display: inline-block; vertical-align: -2px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(255, 255, 255, .25); }
+        .site-footer .legal { margin-top: .9rem; }
+        @media (max-width: 600px) {
+            .footer-grid > nav, .footer-grid > div:not(.footer-brand) { padding: 1.1rem 1.1rem 1rem; }
+            .copyright { border-radius: 14px; font-size: .88rem; }
+        }
+        @media (prefers-reduced-motion: reduce) { .foot-deco i { animation: none; } .footer-grid > nav:hover, .footer-grid > div:not(.footer-brand):hover { transform: none; } }
+
         @media (prefers-reduced-motion: reduce) { .divisor i { animation: none; left: 37%; } }
 
         /* ---------- Celular ---------- */
@@ -3036,7 +3099,7 @@
                     <i class="fa-brands fa-paypal" aria-hidden="true"></i> Donar por PayPal
                 </a>
 
-                <p class="world reveal"><span aria-hidden="true">🇩🇴</span> Desde República Dominicana para el mundo <span aria-hidden="true">🌍</span></p>
+                <p class="world reveal"><svg class="bandera-rd" viewBox="0 0 30 20" width="22" height="15" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><rect width="13" height="8" fill="#002D62"/><rect x="17" width="13" height="8" fill="#CE1126"/><rect y="12" width="13" height="8" fill="#CE1126"/><rect x="17" y="12" width="13" height="8" fill="#002D62"/></svg> Desde República Dominicana para el mundo <span aria-hidden="true">🌍</span></p>
             </div>
         </div>
     </section>
@@ -3056,12 +3119,15 @@
     <div class="divisor" aria-hidden="true" style="--d:-0.5s"><i></i></div>
 
 <footer class="site-footer">
+    <div class="foot-deco" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="wrap">
         <div class="footer-grid">
             <div class="footer-brand">
                 <span class="logo-aura foot-aura"><span class="aura-halo" aria-hidden="true"></span><span class="aura-rayos" aria-hidden="true"></span><span class="aura-anillo" aria-hidden="true"></span><span class="aura-chispas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="logo-plate"><img src="./juego-biblico/logo.png" alt="Logo del ministerio Ardiendo por el Avivamiento" width="84" height="84" loading="lazy"></span></span>
                 <h2>Ministerio Profético</h2>
                 <p>Ardiendo por el Avivamiento</p>
+                <p class="foot-lema">Levantando una generación encendida por el Espíritu Santo, desde República Dominicana para el mundo.</p>
+                <a class="foot-cta" href="#peticion"><i class="fa-solid fa-hands-praying" aria-hidden="true"></i> Pedir oración</a>
             </div>
 
             <nav aria-label="Enlaces rápidos">
@@ -3096,11 +3162,13 @@
                     <li><a href="https://www.youtube.com/@PROFETALUISDAVIDGARCIA.OFICIAL" target="_blank" rel="me noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a></li>
                     <li><a href="https://www.tiktok.com/@miproaa" target="_blank" rel="me noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a></li>
                 </ul>
+                <p class="foot-nota">Prédicas, transmisiones en vivo y adoración profética.</p>
+                <a class="foot-wa" href="https://wa.me/18095289608?text=Bendiciones%20Evangelista%20Luis%20David%20Garc%C3%ADa" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Escríbenos por WhatsApp</a>
             </div>
         </div>
 
         <p class="copyright">
-            &copy; <span id="year">2026</span> Evangelista Luis David García | República Dominicana <span aria-hidden="true">🇩🇴</span>
+            &copy; <span id="year">2026</span> Evangelista Luis David García <span class="sep" aria-hidden="true">·</span> República Dominicana <svg class="bandera-rd" viewBox="0 0 30 20" width="22" height="15" role="img" aria-label="Bandera de República Dominicana"><rect width="30" height="20" fill="#fff"/><rect width="13" height="8" fill="#002D62"/><rect x="17" width="13" height="8" fill="#CE1126"/><rect y="12" width="13" height="8" fill="#CE1126"/><rect x="17" y="12" width="13" height="8" fill="#002D62"/></svg>
         </p>
         <p class="legal"><a href="privacidad.html">Política de privacidad</a></p>
     </div>
