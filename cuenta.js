@@ -196,6 +196,22 @@
     '.cta-acc{display:flex;flex-direction:column;gap:8px;margin-top:12px}.cta-acc button{padding:12px;border-radius:12px;border:0;font:inherit;font-weight:700;cursor:pointer}' +
     '.cta-pri{background:linear-gradient(180deg,#ffe08a,#f2b93b);color:#1a1a2e}.cta-pri:disabled{opacity:.6;cursor:wait}' +
     '.cta-sec{background:#252d52;color:#eef1ff}.cta-ter{background:transparent;color:#aab2dd;text-decoration:underline}' +
+    '.cta-intro{position:fixed;inset:0;z-index:99993;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto;' +
+      'background:radial-gradient(70% 50% at 50% 0%,rgba(40,80,184,.35),transparent 70%),radial-gradient(60% 40% at 50% 100%,rgba(244,183,63,.18),transparent 70%),linear-gradient(180deg,#071433,#030817);' +
+      'font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#eef1ff;text-align:center}' +
+    '.cta-intro.on{display:flex}' +
+    '.cta-ic{width:100%;max-width:420px;padding:26px 22px 20px;border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid rgba(255,215,120,.45);box-shadow:0 30px 80px rgba(0,0,0,.55);animation:ctaEntra .35s ease}' +
+    '@keyframes ctaEntra{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}' +
+    '.cta-ic .ico{font-size:46px;line-height:1;margin-bottom:6px}.cta-ic h2{margin:0 0 8px;font-size:24px;line-height:1.2;color:#ffd778}' +
+    '.cta-ic p{margin:0 0 16px;color:#cfd6f5;font-size:14.5px}' +
+    '.cta-op{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 10px;padding:13px 15px;border-radius:16px;text-align:left;cursor:pointer;font:inherit;border:1px solid transparent;transition:transform .15s ease}' +
+    '.cta-op:active{transform:scale(.98)}.cta-op .e{font-size:26px;flex:none}.cta-op b{display:block;font-size:16px}.cta-op small{display:block;font-size:12.5px;line-height:1.35;margin-top:2px}' +
+    '.cta-op.a{background:linear-gradient(135deg,#ffe08a,#f2b93b);color:#1a1a2e;box-shadow:0 10px 26px -10px rgba(244,183,63,.8)}.cta-op.a small{color:#3b2f0e}' +
+    '.cta-op.b{background:#1d2a55;color:#fff;border-color:#3a4c8c}.cta-op.b small{color:#b9c3ec}' +
+    '.cta-op.c{background:transparent;color:#eef1ff;border-color:rgba(255,255,255,.25)}.cta-op.c small{color:#ffb3b3}' +
+    '.cta-op:focus-visible{outline:3px solid #ffe066;outline-offset:2px}' +
+    '.cta-ic .pie{margin:8px 0 0;font-size:12.5px;color:#9aa6d6}' +
+    '@media (prefers-reduced-motion:reduce){.cta-ic{animation:none}}' +
     '.cta-cab{display:flex;align-items:center;justify-content:space-between;gap:10px}.cta-cab h2{margin:0}' +
     '.cta-q{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid #ffd778;background:rgba(255,215,120,.12);color:#ffd778;font:800 18px/1 system-ui,sans-serif;cursor:pointer}' +
     '.cta-q[aria-expanded=true]{background:#ffd778;color:#1a1a2e}.cta-q:focus-visible{outline:3px solid #fff;outline-offset:2px}' +
@@ -242,6 +258,7 @@
   function hace(t) { var s = Math.round((Date.now() - t) / 1000); return s < 60 ? 'hace unos segundos' : s < 3600 ? 'hace ' + Math.round(s / 60) + ' min' : 'hoy'; }
 
   function pintar() {
+    if (sesion && introActiva) quitarIntro('cuenta');
     btn.innerHTML = sesion ? '👤 ' + esc(sesion.u) + ' <span class="ok">✓</span>' : '💾 Guardar avance';
     btn.title = sesion ? 'Tu avance se guarda en la nube' : 'Opcional: crea un usuario para seguir tu juego en otro equipo';
     if (!fondo.classList.contains('on')) return;
@@ -327,7 +344,7 @@
     if (a === 'ya') { b.disabled = true; sincronizar().then(function (cambio) { if (cambio) location.reload(); }); }
   }
   function abrir() { escribir(AVISO_K, '1'); tip.classList.remove('on'); fondo.classList.add('on'); pintar(); var i = caja.querySelector('input'); if (i && matchMedia('(pointer:fine)').matches) i.focus(); }
-  function cerrar() { fondo.classList.remove('on'); pintar(); }
+  function cerrar() { fondo.classList.remove('on'); pintar(); if (introActiva && !sesion) intro.classList.add('on'); }
 
   // Mostrar el botón solo cuando se ve una pantalla del menú (no durante el juego)
   function visible(sel) {
@@ -336,18 +353,41 @@
     var s = getComputedStyle(el); return s.display !== 'none' && s.visibility !== 'hidden' && +s.opacity > 0.05;
   }
   var enMenu = function () { return !PANTALLAS.length || PANTALLAS.some(visible); };
+  var intro = document.createElement('div'); intro.className = 'cta-intro'; intro.setAttribute('role', 'dialog'); intro.setAttribute('aria-modal', 'true'); intro.setAttribute('aria-labelledby', 'cta-intro-t');
+  intro.innerHTML = '<div class="cta-ic"><div class="ico" aria-hidden="true">💾</div>' +
+    '<h2 id="cta-intro-t">¿Quieres guardar tu avance?</h2>' +
+    '<p>Entra con tu usuario y tu <b>historial y avance del juego se guardarán</b>, y te seguirán a cualquier teléfono, tablet o computadora. Es <b>opcional</b> y no necesitas correo. Sirve para los 4 juegos.</p>' +
+    '<button type="button" class="cta-op a" data-i="entrar"><span class="e" aria-hidden="true">🔐</span><span><b>Entrar con mi usuario</b><small>Mi historial y avance se guardan</small></span></button>' +
+    '<button type="button" class="cta-op b" data-i="crear"><span class="e" aria-hidden="true">✨</span><span><b>Crear mi usuario</b><small>Gratis y sin correo, en menos de un minuto</small></span></button>' +
+    '<button type="button" class="cta-op c" data-i="invitado"><span class="e" aria-hidden="true">▶</span><span><b>Jugar sin registrarme</b><small>⚠️ Mi historial y avance del juego NO se guardarán en una cuenta</small></span></button>' +
+    '<p class="pie">Sin usuario, el avance solo queda en este equipo y se pierde si cambias de equipo o borras los datos del navegador.</p></div>';
+  var INTRO_K = 'cuenta_eleccion';
+  var introActiva = false;
+  function mostrarIntro() { introActiva = true; intro.classList.add('on'); setTimeout(function () { var b = intro.querySelector('.cta-op'); if (b && matchMedia('(pointer:fine)').matches) b.focus(); }, 60); }
+  function quitarIntro(eleccion) { introActiva = false; intro.classList.remove('on'); try { sessionStorage.setItem(INTRO_K, eleccion); } catch (e) {} }
+  ['keydown', 'keyup', 'keypress', 'pointerdown', 'mousedown', 'touchstart', 'wheel'].forEach(function (t) { intro.addEventListener(t, function (e) { e.stopPropagation(); }, { passive: true }); });
+  [].forEach.call(intro.querySelectorAll('[data-i]'), function (b) {
+    b.addEventListener('click', function (e) {
+      e.stopPropagation(); var i = b.getAttribute('data-i');
+      if (i === 'invitado') { escribir(AVISO_K, '1'); quitarIntro('invitado'); return; }
+      modo = i; intro.classList.remove('on'); abrir();
+    });
+  });
   var tip = document.createElement('div'); tip.className = 'cta-tip'; tip.setAttribute('role', 'status');
   tip.innerHTML = '<button type="button" aria-label="Cerrar aviso">×</button><b>💾 Tu avance se guarda solo en este equipo.</b> Para seguir jugando en otro teléfono o computadora sin perderlo, toca «Guardar avance» y crea tu usuario y clave (sin correo).';
   tip.firstChild.addEventListener('click', function (e) { e.stopPropagation(); escribir(AVISO_K, '1'); tip.classList.remove('on'); });
   tip.addEventListener('click', function () { escribir(AVISO_K, '1'); tip.classList.remove('on'); abrir(); });
   function revisar() {
     var m = enMenu(); btn.classList.toggle('on', m);
-    tip.classList.toggle('on', m && !sesion && !leer(AVISO_K) && !fondo.classList.contains('on'));
+    tip.classList.toggle('on', m && !sesion && !leer(AVISO_K) && !fondo.classList.contains('on') && !introActiva);
   }
 
   function iniciar() {
-    document.body.appendChild(btn); document.body.appendChild(tip); document.body.appendChild(fondo);
+    document.body.appendChild(btn); document.body.appendChild(tip); document.body.appendChild(intro); document.body.appendChild(fondo);
     pintar(); revisar(); setInterval(revisar, 700);
+    // Pantalla de inicio: sale al abrir el juego si no se ha entrado con usuario (una vez por visita)
+    var elegido = null; try { elegido = sessionStorage.getItem(INTRO_K); } catch (e) {}
+    if (!sesion && !elegido) mostrarIntro();
     // Enlaces opcionales en las páginas: <button data-cuenta-abrir hidden>…</button>
     [].forEach.call(document.querySelectorAll('[data-cuenta-abrir]'), function (el) {
       el.hidden = false; el.addEventListener('click', function (e) { e.preventDefault(); abrir(); });
