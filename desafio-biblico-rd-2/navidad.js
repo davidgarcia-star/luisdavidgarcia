@@ -135,7 +135,26 @@
     '.nv-cartel small{display:block;margin-top:2px;font-size:11px;opacity:.8}' +
     '@keyframes nvLatido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}' +
     '.nv-gorro{position:absolute;width:62%;max-width:70px;left:50%;top:-30%;transform:translateX(-30%) rotate(18deg);z-index:5;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}' +
-    '@media (prefers-reduced-motion:reduce){.nv-luz,.nv-cartel b{animation:none}}';
+    '.nv-esquina.der{pointer-events:auto;cursor:pointer;background:none;border:0;padding:0;line-height:1;font-family:inherit;animation:nvRegalo 3s ease-in-out infinite}' +
+    '@keyframes nvRegalo{0%,78%,100%{transform:rotate(0) scale(1)}82%{transform:rotate(-12deg) scale(1.12)}86%{transform:rotate(10deg) scale(1.12)}90%{transform:rotate(-6deg) scale(1.05)}94%{transform:rotate(4deg)}}' +
+    '.nv-esquina.der:focus-visible{outline:3px solid #ffd34d;outline-offset:4px;border-radius:12px}' +
+    'body.nv-jugando .nv-esquina.der{pointer-events:none}' +
+    'html.navidad .sg-btn{bottom:84px!important}' +
+    '.nv-rf{position:fixed;inset:0;z-index:99997;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(5,8,20,.72)}' +
+    '.nv-rf.on{display:flex}' +
+    '.nv-rc{width:100%;max-width:400px;padding:22px 20px 18px;border-radius:22px;text-align:center;color:#fff;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;' +
+      'background:linear-gradient(180deg,#b01224,#78081a);border:2px solid #ffd34d;box-shadow:0 24px 60px rgba(0,0,0,.55);animation:nvAbre .45s cubic-bezier(.2,.9,.3,1.3)}' +
+    '@keyframes nvAbre{from{opacity:0;transform:scale(.6) rotate(-6deg)}to{opacity:1;transform:none}}' +
+    '.nv-rc .ico{font-size:52px;line-height:1;animation:nvSalta .8s ease}' +
+    '@keyframes nvSalta{0%{transform:translateY(20px) scale(.5)}60%{transform:translateY(-10px) scale(1.15)}100%{transform:none}}' +
+    '.nv-rc h3{margin:6px 0 10px;font:700 22px/1.2 Georgia,"Times New Roman",serif;color:#ffe27a}' +
+    '.nv-rc blockquote{margin:0 0 6px;font:italic 17px/1.5 Georgia,"Times New Roman",serif}' +
+    '.nv-rc cite{display:block;font-style:normal;font-weight:700;color:#ffe27a;font-size:14px;margin-bottom:14px}' +
+    '.nv-rc .acc{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}' +
+    '.nv-rc button{padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;font-weight:700;font-size:14px;line-height:1;font-family:inherit;cursor:pointer}' +
+    '.nv-rc button.otro{background:linear-gradient(135deg,#ffe08a,#f4c542);color:#5a0a14;border-color:transparent}' +
+    '.nv-rc button:focus-visible{outline:3px solid #fff;outline-offset:2px}' +
+    '@media (prefers-reduced-motion:reduce){.nv-luz,.nv-cartel b,.nv-esquina.der,.nv-rc,.nv-rc .ico{animation:none}}';
   var st = document.createElement('style'); st.id = 'nvEstilos'; st.textContent = css;
   (document.head || document.documentElement).appendChild(st);
 
@@ -194,11 +213,56 @@
     return d;
   }
 
+  /* El regalo de la esquina: al tocarlo muestra un versículo bíblico (LBLA) al azar */
+  var REGALOS = [
+    ['He aquí, la virgen concebirá y dará a luz un hijo, y le pondrán por nombre Emmanuel, que traducido significa: Dios con nosotros.', 'Mateo 1:23'],
+    ['Porque os ha nacido hoy, en la ciudad de David, un Salvador, que es Cristo el Señor.', 'Lucas 2:11'],
+    ['Gloria a Dios en las alturas, y en la tierra paz entre los hombres en quienes Él se complace.', 'Lucas 2:14'],
+    ['Y el Verbo se hizo carne, y habitó entre nosotros, y vimos su gloria, gloria como del unigénito del Padre, lleno de gracia y de verdad.', 'Juan 1:14'],
+    ['Porque un niño nos ha nacido, un hijo nos ha sido dado, y la soberanía reposará sobre sus hombros; y se llamará su nombre Admirable Consejero, Dios Poderoso, Padre Eterno, Príncipe de Paz.', 'Isaías 9:6'],
+    ['Porque de tal manera amó Dios al mundo, que dio a su Hijo unigénito, para que todo aquel que cree en Él, no se pierda, mas tenga vida eterna.', 'Juan 3:16'],
+    ['El SEÑOR es mi pastor, nada me faltará.', 'Salmos 23:1'],
+    ['Todo lo puedo en Cristo que me fortalece.', 'Filipenses 4:13'],
+    ['Confía en el SEÑOR con todo tu corazón, y no te apoyes en tu propio entendimiento.', 'Proverbios 3:5'],
+    ['¡Sé fuerte y valiente! No temas ni te acobardes, porque el SEÑOR tu Dios estará contigo dondequiera que vayas.', 'Josué 1:9'],
+    ['Y sabemos que para los que aman a Dios, todas las cosas cooperan para bien, esto es, para los que son llamados conforme a su propósito.', 'Romanos 8:28'],
+    ['No temas, porque yo estoy contigo; no te desalientes, porque yo soy tu Dios. Te fortaleceré, ciertamente te ayudaré.', 'Isaías 41:10'],
+    ['Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.', 'Salmos 46:1'],
+    ['Venid a mí, todos los que estáis cansados y cargados, y yo os haré descansar.', 'Mateo 11:28'],
+    ['Que las misericordias del SEÑOR jamás terminan, pues nunca fallan sus bondades; son nuevas cada mañana; ¡grande es tu fidelidad!', 'Lamentaciones 3:22-23'],
+    ['Porque yo sé los planes que tengo para vosotros —declara el SEÑOR— planes de bienestar y no de calamidad, para daros un futuro y una esperanza.', 'Jeremías 29:11']
+  ];
+  function regalo(boton) {
+    var fondo = document.createElement('div'); fondo.className = 'nv-rf';
+    fondo.innerHTML = '<div class="nv-rc" role="dialog" aria-modal="true" aria-labelledby="nvRT"><div class="ico" aria-hidden="true">🎁</div>' +
+      '<h3 id="nvRT">¡Un regalo para ti!</h3><blockquote id="nvRV"></blockquote><cite id="nvRR"></cite>' +
+      '<div class="acc"><button type="button" class="otro">🎁 Otro versículo</button><button type="button" class="cerrar">Cerrar</button></div></div>';
+    document.body.appendChild(fondo);
+    var ultimo = -1;
+    function nuevo() {
+      var i; do { i = Math.floor(Math.random() * REGALOS.length); } while (i === ultimo && REGALOS.length > 1);
+      ultimo = i;
+      fondo.querySelector('#nvRV').textContent = '«' + REGALOS[i][0] + '»';
+      fondo.querySelector('#nvRR').textContent = REGALOS[i][1] + ' (LBLA)';
+      var ico = fondo.querySelector('.ico'); ico.style.animation = 'none'; void ico.offsetWidth; ico.style.animation = '';
+    }
+    function cerrar() { fondo.classList.remove('on'); try { boton.focus(); } catch (e) {} }
+    boton.addEventListener('click', function (e) { e.stopPropagation(); nuevo(); fondo.classList.add('on'); fondo.querySelector('.otro').focus(); });
+    fondo.querySelector('.otro').addEventListener('click', nuevo);
+    fondo.querySelector('.cerrar').addEventListener('click', cerrar);
+    fondo.addEventListener('click', function (e) { if (e.target === fondo) cerrar(); });
+    ['keydown', 'keyup', 'pointerdown', 'mousedown', 'touchstart'].forEach(function (t) {
+      fondo.addEventListener(t, function (e) { e.stopPropagation(); if (t === 'keydown' && e.key === 'Escape') cerrar(); }, { passive: true });
+    });
+  }
+
   function montar() {
     document.body.appendChild(nieve());
     var a = document.createElement('div'); a.className = 'nv-esquina izq'; a.textContent = '🎄'; a.setAttribute('aria-hidden', 'true');
-    var b = document.createElement('div'); b.className = 'nv-esquina der'; b.textContent = '🎁'; b.setAttribute('aria-hidden', 'true');
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'nv-esquina der'; b.textContent = '🎁';
+    b.setAttribute('aria-label', 'Regalo sorpresa: toca para ver un versículo de la Biblia'); b.title = '¡Tócame! Tengo un versículo para ti';
     document.body.appendChild(a); document.body.appendChild(b);
+    regalo(b);
     if (cfg.portal) {
       var p = document.querySelector(cfg.portal);
       if (p) { var dentro = cfg.portalDentro ? p.querySelector(cfg.portalDentro) : null; (dentro || p).insertBefore(cartel(), cfg.portalAntes ? (dentro || p).querySelector(cfg.portalAntes) : (dentro || p).firstChild); }
