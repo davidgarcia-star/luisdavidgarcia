@@ -14,8 +14,8 @@
 
   /* ---- Configuración de Firebase (plan gratis). Ver README / instrucciones ---- */
   var CONFIG = {
-    apiKey: '',      // Firebase → Configuración del proyecto → "Clave de API web"
-    projectId: ''    // Firebase → Configuración del proyecto → "ID del proyecto"
+    apiKey: 'AIzaSyCnYkLEbVg6xqcMUcoqFGHnVTKy2TBRgLQ',  // Firebase → Configuración del proyecto → "Clave de API web"
+    projectId: 'juegos-miproaa'                        // Firebase → Configuración del proyecto → "ID del proyecto"
   };
   var PRUEBA = /[?&]cuenta=probar\b/.test(location.search);
   if ((!CONFIG.apiKey || !CONFIG.projectId) && !PRUEBA) return; // hasta configurarlo no se muestra nada
