@@ -961,8 +961,20 @@
             object-position: 50% 20%;
             -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 55%, transparent 100%);
             mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 55%, transparent 100%);
-            will-change: transform;
+            will-change: transform, opacity;
+            animation: fotoDesaparece 7s ease-in-out 2.5s infinite;
         }
+
+        /* La foto desaparece de repente y vuelve a aparecer con un destello dorado */
+        @keyframes fotoDesaparece {
+            0%, 80%  { opacity: 1; filter: none; }
+            81%      { opacity: 0; filter: blur(6px) brightness(1.6); }
+            88%      { opacity: 0; filter: blur(6px) brightness(1.6); }
+            92%      { opacity: 1; filter: brightness(1.45) drop-shadow(0 0 24px rgba(244, 183, 63, .8)); }
+            97%, 100% { opacity: 1; filter: none; }
+        }
+        @media (prefers-reduced-motion: reduce) { .hero-photo img { animation: none; } }
+        html.a11y-still .hero-photo img { animation: none !important; }
 
         /* Aro brillante que gira alrededor del evangelista */
         .ring {
@@ -971,7 +983,7 @@
             z-index: 2;
             border-radius: 50%;
             pointer-events: none;
-            animation: spin 6s linear infinite;
+            animation: spin 2.4s linear infinite;
             filter: drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 16px var(--ember));
         }
 
@@ -1005,7 +1017,7 @@
             border: 2px dashed rgba(244, 183, 63, .4);
             border-radius: 50%;
             pointer-events: none;
-            animation: spin 40s linear infinite reverse;
+            animation: spin 14s linear infinite reverse;
         }
 
         @keyframes spin {

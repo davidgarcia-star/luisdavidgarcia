@@ -1,0 +1,76 @@
+/* =========================================================
+   Desafío Bíblico RD – capa MODERNA (nov. 2026)
+   Vidrio, brillos suaves y micro-animaciones sobre el diseño base.
+   ========================================================= */
+/* Paneles de vidrio con borde de luz */
+.panel, .card {
+  background: linear-gradient(160deg, rgba(28, 48, 104, .62), rgba(10, 20, 48, .72));
+  backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .85), inset 0 1px 0 rgba(255, 255, 255, .08);
+  border-color: rgba(255, 214, 120, .26);
+}
+
+/* Botones principales con brillo que pasa */
+.btn.primary { position: relative; overflow: hidden; background: linear-gradient(135deg, #ffe08a, #f4c542 45%, #ff9a3c); box-shadow: 0 12px 30px -10px rgba(255, 170, 50, .75), inset 0 1px 0 rgba(255, 255, 255, .55); }
+.btn.primary::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .55), transparent); transform: skewX(-20deg);
+  animation: mdBrillo 3.8s ease-in-out infinite;
+}
+@keyframes mdBrillo { 0%, 60% { left: -60%; } 100% { left: 130%; } }
+.btn:active, .opt:active:not(:disabled), .mode-card:active, .level-btn:active { transform: scale(.97); }
+
+/* Opciones de respuesta: entran una tras otra, con letra en degradado */
+.opt {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
+  border-radius: 18px; box-shadow: 0 6px 18px -10px rgba(0, 0, 0, .6);
+  animation: mdOpt .45s cubic-bezier(.2, .8, .2, 1) both;
+  transition: transform .18s ease, border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.options .opt:nth-child(1) { animation-delay: .05s; }
+.options .opt:nth-child(2) { animation-delay: .12s; }
+.options .opt:nth-child(3) { animation-delay: .19s; }
+.options .opt:nth-child(4) { animation-delay: .26s; }
+@keyframes mdOpt { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+.opt:hover:not(:disabled) { box-shadow: 0 14px 30px -14px rgba(244, 197, 66, .7), 0 0 0 1px rgba(244, 197, 66, .35); }
+.opt .key { background: linear-gradient(135deg, rgba(255, 224, 138, .25), rgba(255, 122, 47, .2)); box-shadow: inset 0 0 0 1px rgba(244, 197, 66, .35); transition: transform .2s ease; }
+.opt:hover:not(:disabled) .key { transform: scale(1.08) rotate(-4deg); }
+.opt.correct { box-shadow: 0 0 0 2px rgba(47, 191, 113, .55), 0 0 30px -4px rgba(47, 191, 113, .7); }
+.opt.correct .key { background: var(--ok); color: #fff; box-shadow: none; }
+.opt.wrong .key { background: var(--bad); color: #fff; box-shadow: none; }
+.opt.correct::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .35), transparent 70%);
+  animation: mdBarrido .8s ease-out .1s both;
+}
+@keyframes mdBarrido { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+/* Barra de progreso con degradado que brilla */
+.progress { height: 8px; border-radius: 999px; background: rgba(255, 255, 255, .08); overflow: hidden; }
+.progress-bar {
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ffe08a, #f4c542 40%, #ff7a2f, #ffe08a) 0 0 / 200% 100%;
+  box-shadow: 0 0 14px rgba(255, 170, 50, .6);
+  animation: mdFluye 2.5s linear infinite; transition: width .5s cubic-bezier(.2, .8, .2, 1);
+}
+@keyframes mdFluye { to { background-position: -200% 0; } }
+
+/* Pregunta y aviso de respuesta */
+.question { text-shadow: 0 2px 18px rgba(120, 150, 255, .25); }
+.feedback { position: relative; overflow: hidden; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.feedback::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--muted); }
+.feedback.ok::before { background: var(--ok); box-shadow: 0 0 14px var(--ok); }
+.feedback.bad::before { background: var(--bad); box-shadow: 0 0 14px var(--bad); }
+
+/* Marcador, modos y niveles */
+.score-chip { background: linear-gradient(160deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .03)); box-shadow: 0 8px 20px -12px rgba(0, 0, 0, .7); transition: transform .25s ease; }
+.score-chip.active { transform: translateY(-2px); }
+.mode-card, .level-btn { background: linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .025)); }
+.mode-ico { background: linear-gradient(135deg, rgba(255, 224, 138, .25), rgba(255, 122, 47, .18)); box-shadow: 0 10px 24px -12px rgba(255, 160, 50, .7); }
+.mode-card:hover .mode-ico { animation: mdBota .6s ease; }
+@keyframes mdBota { 40% { transform: translateY(-6px) rotate(-6deg); } 70% { transform: translateY(1px) rotate(3deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn.primary::after, .progress-bar, .opt, .opt.correct::after { animation: none !important; }
+}

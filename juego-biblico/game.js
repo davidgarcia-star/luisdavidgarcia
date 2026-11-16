@@ -494,9 +494,11 @@
       Sound.correct();
       const r = buttons[opts.indexOf(correct)].getBoundingClientRect();
       confetti(28, r.left + r.width / 2, r.top);
+      if (window.Animo) Animo.acierto(state.streak);
     } else {
       state.streak = 0;
       Sound.wrong();
+      if (window.Animo) Animo.fallo(i === -1);
     }
     $("feedbackText").textContent = ok
       ? "✅ ¡Correcto!"

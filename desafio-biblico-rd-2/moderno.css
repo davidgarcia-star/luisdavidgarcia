@@ -1,0 +1,69 @@
+/* =========================================================
+   Desafío Bíblico RD 2 – capa MODERNA (nov. 2026)
+   Vidrio ejecutivo, brillos dorados y micro-animaciones.
+   ========================================================= */
+.panel {
+  position: relative;
+  background: linear-gradient(160deg, rgba(26, 38, 66, .78), rgba(12, 18, 34, .82));
+  backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 30px 80px -36px rgba(0, 0, 0, .85), inset 0 1px 0 rgba(255, 255, 255, .07);
+  border-color: rgba(243, 217, 142, .24);
+}
+.btn { transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease, filter .2s ease; }
+.btn.primary { position: relative; overflow: hidden; background: linear-gradient(135deg, #f7e3a6, #d9b45a 55%, #c5953a); box-shadow: 0 12px 30px -10px rgba(217, 180, 90, .8), inset 0 1px 0 rgba(255, 255, 255, .55); }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn.primary::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .55), transparent); transform: skewX(-20deg);
+  animation: mdBrillo 3.8s ease-in-out infinite;
+}
+@keyframes mdBrillo { 0%, 60% { left: -60%; } 100% { left: 130%; } }
+
+/* Opciones */
+.opt {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .025));
+  box-shadow: 0 6px 16px -10px rgba(0, 0, 0, .6);
+  animation: mdOpt .4s cubic-bezier(.2, .8, .2, 1) both;
+  transition: transform .18s ease, border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.options .opt:nth-child(1) { animation-delay: .04s; }
+.options .opt:nth-child(2) { animation-delay: .1s; }
+.options .opt:nth-child(3) { animation-delay: .16s; }
+.options .opt:nth-child(4) { animation-delay: .22s; }
+@keyframes mdOpt { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+.opt:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 28px -14px rgba(217, 180, 90, .75), 0 0 0 1px rgba(217, 180, 90, .35); }
+.opt:active:not(:disabled), .mode:active, .level:active:not(:disabled) { transform: scale(.97); }
+.opt .l { background: linear-gradient(135deg, rgba(243, 217, 142, .28), rgba(79, 140, 255, .2)); color: var(--gold2); box-shadow: inset 0 0 0 1px rgba(217, 180, 90, .35); transition: transform .2s ease; }
+.opt:hover:not(:disabled) .l { transform: scale(1.1) rotate(-4deg); }
+.opt.ok { box-shadow: 0 0 0 2px rgba(54, 201, 138, .55), 0 0 26px -4px rgba(54, 201, 138, .7); animation: mdOk .5s ease; }
+.opt.ok .l { background: var(--green); color: #fff; box-shadow: none; }
+.opt.bad { animation: mdNo .45s ease; }
+.opt.bad .l { background: var(--red); color: #fff; box-shadow: none; }
+@keyframes mdOk { 40% { transform: scale(1.04); } }
+@keyframes mdNo { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.opt.ok::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .3), transparent 70%);
+  animation: mdBarrido .8s ease-out .1s both;
+}
+@keyframes mdBarrido { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+/* Pregunta, insignias y aviso */
+.question { font-weight: 700; text-shadow: 0 2px 16px rgba(79, 140, 255, .25); animation: mdOpt .4s ease both; }
+.badge { box-shadow: inset 0 0 0 1px rgba(217, 180, 90, .25); }
+.badge.streak { animation: mdLate 1.2s ease-in-out infinite; }
+@keyframes mdLate { 50% { transform: scale(1.07); box-shadow: 0 0 16px rgba(239, 120, 50, .55); } }
+.feedback { overflow: hidden; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.feedback { border-left: 4px solid var(--gold); }
+
+/* Modos y niveles */
+.mode, .level { background: linear-gradient(135deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)); transition: transform .18s ease, border-color .2s ease, box-shadow .2s ease; }
+.mode:hover, .level:hover:not(:disabled) { box-shadow: 0 16px 34px -18px rgba(217, 180, 90, .7); }
+.mode .ico { background: linear-gradient(135deg, rgba(243, 217, 142, .22), rgba(79, 140, 255, .18)); }
+.mode:hover .ico { animation: mdBota .6s ease; }
+@keyframes mdBota { 40% { transform: translateY(-6px) rotate(-6deg); } 70% { transform: translateY(1px) rotate(3deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn.primary::after, .opt, .opt.ok, .opt.bad, .opt.ok::after, .question, .badge.streak { animation: none !important; }
+}

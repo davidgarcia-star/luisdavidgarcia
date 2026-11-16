@@ -664,11 +664,13 @@
       say("you", pick(m.you));
       if (m.man.ok.length && Math.random() < .5) setTimeout(() => say("man", pick(m.man.ok)), 500);
       $("feedbackText").textContent = state.streak >= 3 ? `¡Correcto! 🔥 Racha de ${state.streak}` : "¡Correcto!";
+      if (window.Animo) Animo.acierto(state.streak);
     } else {
       state.streak = 0;
       if (window.Sound) Sound.wrong();
       if (m.man.bad.length) say("man", pick(m.man.bad)); else if (m.miss) say("you", pick(m.miss));
       $("feedbackText").textContent = (timeout ? "⏰ ¡Se acabó el tiempo! " : "Incorrecto. ") + "La respuesta es: " + cur.correctText;
+      if (window.Animo) Animo.fallo(timeout);
     }
     $("feedbackRef").textContent = "Referencia: " + cur.q.r + " (LBLA)";
     paintStreak();
