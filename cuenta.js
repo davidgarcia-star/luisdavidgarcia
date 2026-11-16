@@ -53,7 +53,7 @@
   function auth(accion, usuario, clave) {
     return pedir('https://identitytoolkit.googleapis.com/v1/accounts:' + accion + '?key=' + CONFIG.apiKey, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: usuario + DOMINIO, password: clave, returnSecureToken: true })
+      body: JSON.stringify({ email: usuario.indexOf('@') > 0 ? usuario : usuario + DOMINIO, password: clave, returnSecureToken: true })
     }).then(function (j) {
       sesion = { u: usuario, uid: j.localId, id: j.idToken, rt: j.refreshToken, exp: Date.now() + (+j.expiresIn || 3600) * 1000 };
       guardarSesion();
@@ -196,6 +196,12 @@
     '.cta-acc{display:flex;flex-direction:column;gap:8px;margin-top:12px}.cta-acc button{padding:12px;border-radius:12px;border:0;font:inherit;font-weight:700;cursor:pointer}' +
     '.cta-pri{background:linear-gradient(180deg,#ffe08a,#f2b93b);color:#1a1a2e}.cta-pri:disabled{opacity:.6;cursor:wait}' +
     '.cta-sec{background:#252d52;color:#eef1ff}.cta-ter{background:transparent;color:#aab2dd;text-decoration:underline}' +
+    '.cta-cab{display:flex;align-items:center;justify-content:space-between;gap:10px}.cta-cab h2{margin:0}' +
+    '.cta-q{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid #ffd778;background:rgba(255,215,120,.12);color:#ffd778;font:800 18px/1 system-ui,sans-serif;cursor:pointer}' +
+    '.cta-q[aria-expanded=true]{background:#ffd778;color:#1a1a2e}.cta-q:focus-visible{outline:3px solid #fff;outline-offset:2px}' +
+    '.cta-ayuda{margin:12px 0 4px;padding:12px 14px;border-radius:12px;background:#0c1124;border:1px solid rgba(255,215,120,.4);font-size:13.5px;line-height:1.55}' +
+    '.cta-ayuda h3{margin:0 0 8px;font-size:15px;color:#ffd778}.cta-ayuda p{margin:0 0 8px;color:#dfe3ff;font-size:13.5px}.cta-ayuda ul{margin:0 0 8px;padding-left:18px;color:#dfe3ff}' +
+    '.cta-ayuda code,.cta-caja label small{font-family:ui-monospace,Consolas,monospace;background:rgba(255,255,255,.08);padding:1px 5px;border-radius:5px;color:#ffe4a3}.cta-caja label small{font-family:inherit;background:none;color:#aab2dd;font-weight:400}' +
     '.cta-aviso{margin:4px 0 12px;padding:10px 12px;border-radius:12px;background:rgba(120,170,255,.12);border:1px solid rgba(120,170,255,.35);color:#dfe8ff;font-size:13.5px;line-height:1.5}' +
     '.cta-req{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:2px;font-size:12.5px;color:#ffb3b3}.cta-req li.si{color:#7be38f}' +
     '.cta-tip{position:fixed;left:12px;bottom:58px;z-index:99991;max-width:min(300px,calc(100vw - 24px));padding:10px 32px 10px 12px;border-radius:12px;background:#1d2547;color:#eef1ff;border:1px solid rgba(255,215,120,.55);box-shadow:0 8px 24px rgba(0,0,0,.45);font:13px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:none}' +
@@ -223,7 +229,7 @@
     ['una MAYÚSCULA', function (c) { return /[A-ZÁÉÍÓÚÑ]/.test(c); }],
     ['una minúscula', function (c) { return /[a-záéíóúñ]/.test(c); }],
     ['un número', function (c) { return /\d/.test(c); }],
-    ['un carácter especial (! @ # $ % & * ? …)', function (c) { return /[^A-Za-z0-9ÁÉÍÓÚÑáéíóúñ\s]/.test(c); }]
+    ['un carácter especial: ! ? # $ % & * @ . - _', function (c) { return /[^A-Za-z0-9ÁÉÍÓÚÑáéíóúñ\s]/.test(c); }]
   ];
   var claveFuerte = function (c) { return REQ.every(function (r) { return r[1](c); }); };
   function pintarReq() {
@@ -231,6 +237,7 @@
     l.innerHTML = REQ.map(function (r) { var ok = r[1](i.value); return '<li class="' + (ok ? 'si' : '') + '">' + (ok ? '✓ ' : '• ') + r[0] + '</li>'; }).join('');
   }
   var AVISO_K = 'cuenta_aviso_visto';
+  var ayuda = false;
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   function hace(t) { var s = Math.round((Date.now() - t) / 1000); return s < 60 ? 'hace unos segundos' : s < 3600 ? 'hace ' + Math.round(s / 60) + ' min' : 'hoy'; }
 
@@ -247,11 +254,21 @@
         '<button class="cta-ter" data-a="salir">Salir de la cuenta</button></div>';
     } else {
       var crear = modo === 'crear';
-      caja.innerHTML = '<h2>💾 Guarda tu avance</h2>' +
+      caja.innerHTML = '<div class="cta-cab"><h2>💾 Guarda tu avance</h2><button type="button" class="cta-q" aria-expanded="' + (ayuda ? 'true' : 'false') + '" aria-controls="cta-ayuda" title="Ayuda: cómo registrarte">?</button></div>' +
+        '<div class="cta-ayuda" id="cta-ayuda"' + (ayuda ? '' : ' hidden') + '>' +
+          '<h3>❓ Cómo registrarte</h3>' +
+          '<p><b>1. Usuario o correo</b><br>Escribe un nombre de usuario de 3 a 20 letras o números, sin espacios ni acentos (puedes usar <code>.</code> <code>_</code> <code>-</code>).<br>Ejemplos: <code>david_rd</code> · <code>maria.2026</code><br>O, si prefieres, un correo <b>aunque sea inventado</b>: no tiene que existir y no te enviaremos nada. Ej.: <code>davidjuega@juego.com</code></p>' +
+          '<p><b>2. Clave</b> (mínimo 8 caracteres). Debe tener:</p><ul>' +
+          '<li>una <b>MAYÚSCULA</b>: A B C … Z</li><li>una <b>minúscula</b>: a b c … z</li><li>un <b>número</b>: 0 1 2 … 9</li>' +
+          '<li>un <b>carácter especial</b>: <code>! ? # $ % &amp; * @ . - _ + =</code></li></ul>' +
+          '<p>Ejemplos de claves válidas: <code>Biblia#2026</code> · <code>Moises!25</code> · <code>David_Rd7</code><br>El espacio no cuenta como carácter especial.</p>' +
+          '<p><b>3. Anótalos.</b> Guarda tu usuario y clave en un lugar seguro: si los olvidas no se pueden recuperar.</p>' +
+          '<p><b>4. En otro equipo</b>, toca «Ya tengo usuario» y entra con los mismos datos.</p>' +
+        '</div>' +
         '<div class="cta-aviso"><b>📱 Sin usuario:</b> tu avance se guarda <b>solo en este equipo</b> (este teléfono o computadora), mientras no borres los datos del navegador.<br><b>☁️ Con usuario y clave:</b> tu avance te sigue a <b>cualquier equipo</b>.</div>' +
         '<p>Es <b>opcional</b> y <b>no necesitas correo</b>: solo un usuario y una clave. Sirve para los 4 juegos.</p>' +
         '<div class="cta-tabs" role="tablist"><button data-m="entrar" class="' + (crear ? '' : 'sel') + '">Ya tengo usuario</button><button data-m="crear" class="' + (crear ? 'sel' : '') + '">Crear usuario</button></div>' +
-        '<form novalidate><label for="cta-u">Usuario</label><input id="cta-u" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20" placeholder="ej. david_rd">' +
+        '<form novalidate><label for="cta-u">Usuario o correo <small>(puede ser inventado)</small></label><input id="cta-u" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="60" placeholder="ej. david_rd o david@juego.com">' +
         '<label for="cta-c">Clave</label><input id="cta-c" type="password" autocomplete="' + (crear ? 'new-password' : 'current-password') + '" maxlength="40" placeholder="' + (crear ? 'mínimo 8, ej. Fe2026!' : 'tu clave') + '">' +
         (crear ? '<ul class="cta-req" id="cta-req" aria-live="polite"></ul>' : '') +
         (crear ? '<label for="cta-c2">Repite la clave</label><input id="cta-c2" type="password" autocomplete="new-password" maxlength="40">' : '') +
@@ -268,14 +285,17 @@
         [].forEach.call(caja.querySelectorAll('input[type=password],input.cta-pw'), function (i) { i.type = t; i.classList.add('cta-pw'); });
       });
     }
+    var q = caja.querySelector('.cta-q');
+    if (q) q.onclick = function () { ayuda = !ayuda; q.setAttribute('aria-expanded', String(ayuda)); caja.querySelector('#cta-ayuda').hidden = !ayuda; if (ayuda) caja.querySelector('#cta-ayuda').scrollIntoView({ block: 'nearest' }); };
     [].forEach.call(caja.querySelectorAll('[data-m]'), function (b) { b.onclick = function () { modo = b.getAttribute('data-m'); pintar(); }; });
     [].forEach.call(caja.querySelectorAll('[data-a]'), function (b) { b.onclick = function () { accion(b.getAttribute('data-a'), b); }; });
   }
 
   function mensaje(t, bien) { var e = caja.querySelector('#cta-err') || caja.querySelector('.cta-err'); if (e) { e.textContent = t; e.classList.toggle('bien', !!bien); } }
   function traducir(m) {
-    if (/EMAIL_EXISTS/.test(m)) return 'Ese usuario ya existe. Elige otro o entra con "Ya tengo usuario".';
-    if (/INVALID_LOGIN|INVALID_PASSWORD|EMAIL_NOT_FOUND|INVALID_EMAIL/.test(m)) return 'Usuario o clave incorrectos.';
+    if (/EMAIL_EXISTS/.test(m)) return 'Ese usuario o correo ya existe. Elige otro o entra con "Ya tengo usuario".';
+    if (/INVALID_EMAIL/.test(m)) return 'Ese correo no está bien escrito. Ej.: david@juego.com (puede ser inventado).';
+    if (/INVALID_LOGIN|INVALID_PASSWORD|EMAIL_NOT_FOUND/.test(m)) return 'Usuario o clave incorrectos.';
     if (/WEAK_PASSWORD|PASSWORD_DOES_NOT_MEET/.test(m)) return 'La clave debe tener 8 caracteres o más, con mayúscula, minúscula, número y carácter especial.';
     if (/TOO_MANY/.test(m)) return 'Demasiados intentos. Espera unos minutos y vuelve a intentar.';
     if (/USER_DISABLED/.test(m)) return 'Este usuario fue desactivado.';
@@ -286,7 +306,9 @@
     var u = (caja.querySelector('#cta-u').value || '').trim().toLowerCase();
     var c = caja.querySelector('#cta-c').value || '';
     var c2 = caja.querySelector('#cta-c2');
-    if (!/^[a-z0-9._-]{3,20}$/.test(u)) return mensaje('El usuario debe tener de 3 a 20 letras o números, sin espacios, ñ ni acentos (puedes usar . _ -).');
+    if (u.indexOf('@') >= 0) {
+      if (!/^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(u) || u.length > 60) return mensaje('Ese correo no está bien escrito. Debe tener @ y un punto, ej. david@juego.com (puede ser inventado).');
+    } else if (!/^[a-z0-9._-]{3,20}$/.test(u)) return mensaje('El usuario debe tener de 3 a 20 letras o números, sin espacios, ñ ni acentos (puedes usar . _ -). O escribe un correo, aunque sea inventado.');
     if (modo === 'crear' && !claveFuerte(c)) { pintarReq(); return mensaje('La clave debe tener 8 caracteres o más, con mayúscula, minúscula, número y carácter especial.'); }
     if (!c) return mensaje('Escribe tu clave.');
     if (c2 && c2.value !== c) return mensaje('Las dos claves no son iguales.');
