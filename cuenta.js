@@ -17,7 +17,8 @@
     apiKey: '',      // Firebase → Configuración del proyecto → "Clave de API web"
     projectId: ''    // Firebase → Configuración del proyecto → "ID del proyecto"
   };
-  if (!CONFIG.apiKey || !CONFIG.projectId) return; // hasta configurarlo no se muestra nada
+  var PRUEBA = /[?&]cuenta=probar\b/.test(location.search);
+  if ((!CONFIG.apiKey || !CONFIG.projectId) && !PRUEBA) return; // hasta configurarlo no se muestra nada
 
   var ls;
   try { ls = window.localStorage; ls.getItem('x'); } catch (e) { return; }
@@ -194,7 +195,12 @@
     '.cta-err{min-height:18px;margin-top:10px;color:#ff8f8f;font-size:13px;font-weight:600}.cta-err.bien{color:#7be38f}' +
     '.cta-acc{display:flex;flex-direction:column;gap:8px;margin-top:12px}.cta-acc button{padding:12px;border-radius:12px;border:0;font:inherit;font-weight:700;cursor:pointer}' +
     '.cta-pri{background:linear-gradient(180deg,#ffe08a,#f2b93b);color:#1a1a2e}.cta-pri:disabled{opacity:.6;cursor:wait}' +
-    '.cta-sec{background:#252d52;color:#eef1ff}.cta-ter{background:transparent;color:#aab2dd;text-decoration:underline}';
+    '.cta-sec{background:#252d52;color:#eef1ff}.cta-ter{background:transparent;color:#aab2dd;text-decoration:underline}' +
+    '.cta-aviso{margin:4px 0 12px;padding:10px 12px;border-radius:12px;background:rgba(120,170,255,.12);border:1px solid rgba(120,170,255,.35);color:#dfe8ff;font-size:13.5px;line-height:1.5}' +
+    '.cta-req{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:2px;font-size:12.5px;color:#ffb3b3}.cta-req li.si{color:#7be38f}' +
+    '.cta-tip{position:fixed;left:12px;bottom:58px;z-index:99991;max-width:min(300px,calc(100vw - 24px));padding:10px 32px 10px 12px;border-radius:12px;background:#1d2547;color:#eef1ff;border:1px solid rgba(255,215,120,.55);box-shadow:0 8px 24px rgba(0,0,0,.45);font:13px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:none}' +
+    '.cta-tip.on{display:block}.cta-tip b{color:#ffd778}.cta-tip button{position:absolute;top:4px;right:6px;border:0;background:none;color:#aab2dd;font-size:18px;cursor:pointer;line-height:1}' +
+    '.cta-tip:after{content:"";position:absolute;left:22px;bottom:-7px;width:12px;height:12px;background:#1d2547;border-right:1px solid rgba(255,215,120,.55);border-bottom:1px solid rgba(255,215,120,.55);transform:rotate(45deg)}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
   var btn = document.createElement('button');
@@ -211,6 +217,20 @@
   btn.addEventListener('click', function (e) { e.stopPropagation(); abrir(); });
 
   var modo = 'entrar';
+  // Clave fuerte: mínimo 8 caracteres, con mayúscula, minúscula, número y carácter especial
+  var REQ = [
+    ['8 caracteres o más', function (c) { return c.length >= 8; }],
+    ['una MAYÚSCULA', function (c) { return /[A-ZÁÉÍÓÚÑ]/.test(c); }],
+    ['una minúscula', function (c) { return /[a-záéíóúñ]/.test(c); }],
+    ['un número', function (c) { return /\d/.test(c); }],
+    ['un carácter especial (! @ # $ % & * ? …)', function (c) { return /[^A-Za-z0-9ÁÉÍÓÚÑáéíóúñ\s]/.test(c); }]
+  ];
+  var claveFuerte = function (c) { return REQ.every(function (r) { return r[1](c); }); };
+  function pintarReq() {
+    var l = caja.querySelector('#cta-req'), i = caja.querySelector('#cta-c'); if (!l || !i) return;
+    l.innerHTML = REQ.map(function (r) { var ok = r[1](i.value); return '<li class="' + (ok ? 'si' : '') + '">' + (ok ? '✓ ' : '• ') + r[0] + '</li>'; }).join('');
+  }
+  var AVISO_K = 'cuenta_aviso_visto';
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   function hace(t) { var s = Math.round((Date.now() - t) / 1000); return s < 60 ? 'hace unos segundos' : s < 3600 ? 'hace ' + Math.round(s / 60) + ' min' : 'hoy'; }
 
@@ -220,7 +240,7 @@
     if (!fondo.classList.contains('on')) return;
     if (sesion) {
       caja.innerHTML = '<h2>👤 ' + esc(sesion.u) + '</h2>' +
-        '<p>Tu avance se guarda solo en la nube. En otro teléfono o computadora, entra con este mismo usuario y clave y seguirás donde te quedaste. Sirve para los 4 juegos.</p>' +
+        '<p>Tu avance se guarda en este equipo y también en la nube. En otro teléfono, tablet o computadora, entra con este mismo usuario y clave y seguirás donde te quedaste. Sirve para los 4 juegos.</p>' +
         '<div class="cta-err' + (errorMsg ? '' : ' bien') + '">' + (errorMsg ? esc(errorMsg) : ultimoOk ? '✓ Avance guardado ' + hace(ultimoOk) : '') + '</div>' +
         '<div class="cta-acc"><button class="cta-pri" data-a="ya">☁️ Guardar ahora</button>' +
         '<button class="cta-sec" data-a="cerrar">Seguir jugando</button>' +
@@ -228,10 +248,12 @@
     } else {
       var crear = modo === 'crear';
       caja.innerHTML = '<h2>💾 Guarda tu avance</h2>' +
-        '<p>Es <b>opcional</b>. Crea un usuario y una clave (no necesitas correo) para seguir tu juego desde cualquier teléfono, tablet o computadora.</p>' +
+        '<div class="cta-aviso"><b>📱 Sin usuario:</b> tu avance se guarda <b>solo en este equipo</b> (este teléfono o computadora), mientras no borres los datos del navegador.<br><b>☁️ Con usuario y clave:</b> tu avance te sigue a <b>cualquier equipo</b>.</div>' +
+        '<p>Es <b>opcional</b> y <b>no necesitas correo</b>: solo un usuario y una clave. Sirve para los 4 juegos.</p>' +
         '<div class="cta-tabs" role="tablist"><button data-m="entrar" class="' + (crear ? '' : 'sel') + '">Ya tengo usuario</button><button data-m="crear" class="' + (crear ? 'sel' : '') + '">Crear usuario</button></div>' +
         '<form novalidate><label for="cta-u">Usuario</label><input id="cta-u" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20" placeholder="ej. david_rd">' +
-        '<label for="cta-c">Clave</label><input id="cta-c" type="password" autocomplete="' + (crear ? 'new-password' : 'current-password') + '" maxlength="40" placeholder="mínimo 6 caracteres">' +
+        '<label for="cta-c">Clave</label><input id="cta-c" type="password" autocomplete="' + (crear ? 'new-password' : 'current-password') + '" maxlength="40" placeholder="' + (crear ? 'mínimo 8, ej. Fe2026!' : 'tu clave') + '">' +
+        (crear ? '<ul class="cta-req" id="cta-req" aria-live="polite"></ul>' : '') +
         (crear ? '<label for="cta-c2">Repite la clave</label><input id="cta-c2" type="password" autocomplete="new-password" maxlength="40">' : '') +
         '<label class="cta-ver"><input type="checkbox" id="cta-ver"> Mostrar clave</label>' +
         (crear ? '<div class="cta-nota">✍️ Anota tu usuario y clave. Como no usamos correo, si los olvidas no se pueden recuperar.</div>' : '') +
@@ -239,6 +261,7 @@
         '<div class="cta-acc"><button class="cta-pri" type="submit">' + (crear ? 'Crear usuario y guardar' : 'Entrar y recuperar mi avance') + '</button>' +
         '<button class="cta-ter" type="button" data-a="cerrar">Ahora no</button></div></form>';
       var f = caja.querySelector('form');
+      if (crear) { caja.querySelector('#cta-c').addEventListener('input', pintarReq); pintarReq(); }
       f.addEventListener('submit', function (e) { e.preventDefault(); enviar(); });
       caja.querySelector('#cta-ver').addEventListener('change', function () {
         var t = this.checked ? 'text' : 'password';
@@ -253,7 +276,7 @@
   function traducir(m) {
     if (/EMAIL_EXISTS/.test(m)) return 'Ese usuario ya existe. Elige otro o entra con "Ya tengo usuario".';
     if (/INVALID_LOGIN|INVALID_PASSWORD|EMAIL_NOT_FOUND|INVALID_EMAIL/.test(m)) return 'Usuario o clave incorrectos.';
-    if (/WEAK_PASSWORD/.test(m)) return 'La clave debe tener al menos 6 caracteres.';
+    if (/WEAK_PASSWORD|PASSWORD_DOES_NOT_MEET/.test(m)) return 'La clave debe tener 8 caracteres o más, con mayúscula, minúscula, número y carácter especial.';
     if (/TOO_MANY/.test(m)) return 'Demasiados intentos. Espera unos minutos y vuelve a intentar.';
     if (/USER_DISABLED/.test(m)) return 'Este usuario fue desactivado.';
     if (/fetch|network|Failed/i.test(m)) return 'Sin conexión a internet. Intenta de nuevo.';
@@ -264,7 +287,8 @@
     var c = caja.querySelector('#cta-c').value || '';
     var c2 = caja.querySelector('#cta-c2');
     if (!/^[a-z0-9._-]{3,20}$/.test(u)) return mensaje('El usuario debe tener de 3 a 20 letras o números, sin espacios, ñ ni acentos (puedes usar . _ -).');
-    if (c.length < 6) return mensaje('La clave debe tener al menos 6 caracteres.');
+    if (modo === 'crear' && !claveFuerte(c)) { pintarReq(); return mensaje('La clave debe tener 8 caracteres o más, con mayúscula, minúscula, número y carácter especial.'); }
+    if (!c) return mensaje('Escribe tu clave.');
     if (c2 && c2.value !== c) return mensaje('Las dos claves no son iguales.');
     var b = caja.querySelector('.cta-pri'); b.disabled = true; mensaje(modo === 'crear' ? 'Creando tu usuario…' : 'Entrando…', true);
     auth(modo === 'crear' ? 'signUp' : 'signInWithPassword', u, c).then(function () {
@@ -280,7 +304,7 @@
     if (a === 'salir') { sesion = null; ultimaNube = null; guardarSesion(); pintar(); return; } // el avance sigue en este equipo
     if (a === 'ya') { b.disabled = true; sincronizar().then(function (cambio) { if (cambio) location.reload(); }); }
   }
-  function abrir() { fondo.classList.add('on'); pintar(); var i = caja.querySelector('input'); if (i && matchMedia('(pointer:fine)').matches) i.focus(); }
+  function abrir() { escribir(AVISO_K, '1'); tip.classList.remove('on'); fondo.classList.add('on'); pintar(); var i = caja.querySelector('input'); if (i && matchMedia('(pointer:fine)').matches) i.focus(); }
   function cerrar() { fondo.classList.remove('on'); pintar(); }
 
   // Mostrar el botón solo cuando se ve una pantalla del menú (no durante el juego)
@@ -290,10 +314,17 @@
     var s = getComputedStyle(el); return s.display !== 'none' && s.visibility !== 'hidden' && +s.opacity > 0.05;
   }
   var enMenu = function () { return !PANTALLAS.length || PANTALLAS.some(visible); };
-  function revisar() { btn.classList.toggle('on', enMenu()); }
+  var tip = document.createElement('div'); tip.className = 'cta-tip'; tip.setAttribute('role', 'status');
+  tip.innerHTML = '<button type="button" aria-label="Cerrar aviso">×</button><b>💾 Tu avance se guarda solo en este equipo.</b> Para seguir jugando en otro teléfono o computadora sin perderlo, toca «Guardar avance» y crea tu usuario y clave (sin correo).';
+  tip.firstChild.addEventListener('click', function (e) { e.stopPropagation(); escribir(AVISO_K, '1'); tip.classList.remove('on'); });
+  tip.addEventListener('click', function () { escribir(AVISO_K, '1'); tip.classList.remove('on'); abrir(); });
+  function revisar() {
+    var m = enMenu(); btn.classList.toggle('on', m);
+    tip.classList.toggle('on', m && !sesion && !leer(AVISO_K) && !fondo.classList.contains('on'));
+  }
 
   function iniciar() {
-    document.body.appendChild(btn); document.body.appendChild(fondo);
+    document.body.appendChild(btn); document.body.appendChild(tip); document.body.appendChild(fondo);
     pintar(); revisar(); setInterval(revisar, 700);
     // Enlaces opcionales en las páginas: <button data-cuenta-abrir hidden>…</button>
     [].forEach.call(document.querySelectorAll('[data-cuenta-abrir]'), function (el) {
