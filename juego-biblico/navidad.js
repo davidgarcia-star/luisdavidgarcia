@@ -151,8 +151,7 @@
     '.nv-rc blockquote{margin:0 0 6px;font:italic 17px/1.5 Georgia,"Times New Roman",serif}' +
     '.nv-rc cite{display:block;font-style:normal;font-weight:700;color:#ffe27a;font-size:14px;margin-bottom:14px}' +
     '.nv-rc .acc{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}' +
-    '.nv-rc button{padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;font-weight:700;font-size:14px;line-height:1;font-family:inherit;cursor:pointer}' +
-    '.nv-rc button.otro{background:linear-gradient(135deg,#ffe08a,#f4c542);color:#5a0a14;border-color:transparent}' +
+    '.nv-rc button{padding:10px 22px;border-radius:999px;border:0;background:linear-gradient(135deg,#ffe08a,#f4c542);color:#5a0a14;font-weight:700;font-size:14px;line-height:1;font-family:inherit;cursor:pointer}' +
     '.nv-rc button:focus-visible{outline:3px solid #fff;outline-offset:2px}' +
     '@media (prefers-reduced-motion:reduce){.nv-luz,.nv-cartel b,.nv-esquina.der,.nv-rc,.nv-rc .ico{animation:none}}';
   var st = document.createElement('style'); st.id = 'nvEstilos'; st.textContent = css;
@@ -260,32 +259,33 @@
     var fondo = document.createElement('div'); fondo.className = 'nv-rf';
     fondo.innerHTML = '<div class="nv-rc" role="dialog" aria-modal="true" aria-labelledby="nvRT"><div class="ico" aria-hidden="true">🎁</div>' +
       '<h3 id="nvRT">¡Un regalo para ti!</h3><blockquote id="nvRV"></blockquote><cite id="nvRR"></cite>' +
-      '<div class="acc"><button type="button" class="otro">🎁 Otro versículo</button><button type="button" class="cerrar">Cerrar</button></div></div>';
+      '<div class="acc"><button type="button" class="cerrar">Cerrar</button></div></div>';
     document.body.appendChild(fondo);
-    // Orden al azar que recorre TODOS los versículos sin repetir; se recuerda entre visitas y entre los 4 juegos
-    var K = 'nv_regalo_bolsa_v1';
+    // UN SOLO versículo por cada entrada al juego: se elige una vez y no se puede pedir otro.
+    // En la próxima entrada sale el siguiente de la bolsa (recorre todos sin repetir, entre los 4 juegos).
+    var K = 'nv_regalo_bolsa_v1', elegido = -1;
     function siguiente() {
       var b = null; try { b = JSON.parse(localStorage.getItem(K)); } catch (e) {}
       if (!b || !b.o || b.n !== REGALOS.length || b.i >= b.o.length) {
         var antes = b && b.o ? b.o[b.o.length - 1] : -1, o = [];
         for (var k = 0; k < REGALOS.length; k++) o.push(k);
         for (var j = o.length - 1; j > 0; j--) { var r = Math.floor(Math.random() * (j + 1)), t = o[j]; o[j] = o[r]; o[r] = t; }
-        if (o[0] === antes && o.length > 1) { o[0] = o[1]; o[1] = antes; } // que el primero de la nueva vuelta no repita el último
+        if (o[0] === antes && o.length > 1) { o[0] = o[1]; o[1] = antes; }
         b = { o: o, i: 0, n: REGALOS.length };
       }
       var i = b.o[b.i++];
       try { localStorage.setItem(K, JSON.stringify(b)); } catch (e) {}
       return i;
     }
-    function nuevo() {
-      var i = siguiente();
-      fondo.querySelector('#nvRV').textContent = '«' + REGALOS[i][0] + '»';
-      fondo.querySelector('#nvRR').textContent = REGALOS[i][1] + ' (LBLA)';
-      var ico = fondo.querySelector('.ico'); ico.style.animation = 'none'; void ico.offsetWidth; ico.style.animation = '';
+    function mostrar() {
+      if (elegido < 0) {
+        elegido = siguiente();
+        fondo.querySelector('#nvRV').textContent = '«' + REGALOS[elegido][0] + '»';
+        fondo.querySelector('#nvRR').textContent = REGALOS[elegido][1] + ' (LBLA)';
+      }
     }
     function cerrar() { fondo.classList.remove('on'); try { boton.focus(); } catch (e) {} }
-    boton.addEventListener('click', function (e) { e.stopPropagation(); nuevo(); fondo.classList.add('on'); fondo.querySelector('.otro').focus(); });
-    fondo.querySelector('.otro').addEventListener('click', nuevo);
+    boton.addEventListener('click', function (e) { e.stopPropagation(); mostrar(); fondo.classList.add('on'); fondo.querySelector('.cerrar').focus(); });
     fondo.querySelector('.cerrar').addEventListener('click', cerrar);
     fondo.addEventListener('click', function (e) { if (e.target === fondo) cerrar(); });
     ['keydown', 'keyup', 'pointerdown', 'mousedown', 'touchstart'].forEach(function (t) {
