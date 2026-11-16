@@ -2489,7 +2489,7 @@
 <div class="a11y-lupa" id="a11yLupa" aria-hidden="true" hidden></div>
 <div class="a11y-guia" id="a11yGuia" aria-hidden="true" hidden></div>
 <div class="a11y-mascara" id="a11yMascara" aria-hidden="true" hidden></div>
-<audio id="bgm" loop preload="none" src="./audio/a-sky-wide-open.mp3"></audio>
+<audio id="bgm" loop preload="auto" src="./audio/a-sky-wide-open.mp3"></audio>
 
 <button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Reproducir música de fondo">
     <svg id="musicIcon" viewBox="0 0 512 512" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7v336c0 44.2-43 80-96 80s-96-35.8-96-80 43-80 96-80c11.2 0 22 1.6 32 4.6V147L192 223.8V432c0 44.2-43 80-96 80S0 476.2 0 432s43-80 96-80c11.2 0 22 1.6 32 4.6V200 128c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/></svg>
@@ -3653,26 +3653,53 @@
             else if (wasOn && playing) { if (mode === 'file') bgm.play(); else startSynth(); }
         });
 
-        // Quien la activó antes: arranca con su primer toque en la página
+        // Música automática: suena sola al entrar al sitio (celular, laptop o PC).
+        // Si el navegador no deja sonar nada antes de que la persona interactúe,
+        // arranca con su primer toque, clic, tecla o deslizamiento de dedo.
+        // Solo no suena si esa persona la pausó antes con el botón.
         var pref = null;
         try { pref = localStorage.getItem('miproaa_music'); } catch (e) {}
-        if (pref === '1') {
-            var resume = function (e) {
-                document.removeEventListener('pointerdown', resume);
-                document.removeEventListener('keydown', resume);
-                // Si tocó el propio botón, el clic ya se encarga de encenderla
-                if (e && e.target && e.target.closest && e.target.closest('#musicBtn')) return;
-                if (!playing) turnOn();
-            };
-            document.addEventListener('pointerdown', resume);
-            document.addEventListener('keydown', resume);
-        } else if (pref === null) {
-            setTimeout(function () {
-                if (!playing) {
-                    mTip.classList.add('show');
-                    setTimeout(function () { mTip.classList.remove('show'); }, 5000);
+        var EVT = ['pointerdown', 'pointerup', 'touchstart', 'touchend', 'click', 'mousedown', 'keydown'];
+        function quitarEspera() { EVT.forEach(function (ev) { document.removeEventListener(ev, alTocar, true); }); }
+        function alTocar(e) {
+            // Si tocó el propio botón de música, el clic ya se encarga
+            if (e && e.target && e.target.closest && e.target.closest('#musicBtn')) { quitarEspera(); return; }
+            if (playing) { quitarEspera(); return; }
+            bgm.volume = 0;
+            var pr = bgm.play();
+            var ok = function () { quitarEspera(); mode = 'file'; ui(true, true); mTip.classList.remove('show'); fadeFile(volObjetivo()); };
+            if (pr && pr.then) pr.then(ok).catch(function () {}); else ok();
+        }
+        // Mientras habla la voz de bienvenida, la instrumental va más suave
+        function volObjetivo() {
+            var v = window.__vozBienvenida;
+            if (v && !v.paused && !v.ended) {
+                if (!v.__bajoMusica) {
+                    v.__bajoMusica = true;
+                    v.addEventListener('ended', function () { if (playing && mode === 'file') fadeFile(.6); });
+                    v.addEventListener('pause', function () { if (playing && mode === 'file') fadeFile(.6); });
                 }
-            }, 3500);
+                return .22;
+            }
+            return .6;
+        }
+        function autoArranque() {
+            if (playing) return;
+            bgm.volume = 0;
+            var pr = bgm.play();
+            if (pr && pr.then) {
+                pr.then(function () { mode = 'file'; ui(true, true); fadeFile(volObjetivo()); })
+                  .catch(function () {
+                      // Bloqueado por el navegador: suena con el primer toque y se muestra el aviso
+                      EVT.forEach(function (ev) { document.addEventListener(ev, alTocar, true); });
+                      mTip.classList.add('show');
+                      setTimeout(function () { mTip.classList.remove('show'); }, 6000);
+                  });
+            } else { mode = 'file'; ui(true, true); fadeFile(volObjetivo()); }
+        }
+        if (pref !== '0') {
+            autoArranque();
+            if (document.readyState !== 'complete') window.addEventListener('load', function () { if (!playing) autoArranque(); });
         }
     }
 

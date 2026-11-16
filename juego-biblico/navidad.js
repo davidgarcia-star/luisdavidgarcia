@@ -1,7 +1,7 @@
 /* =========================================================
    NAVIDAD – adornos y música navideña de temporada
    Creado para los juegos de Luis David Esteban García · MIPROAA
-   - Se activa solo del 1 de noviembre al 31 de enero (temporada navideña dominicana).
+   - Se activa solo del 1 de noviembre al 9 de enero; desde el 10 de enero se quita sola.
    - Para probar en otra fecha: agrega ?navidad=1 a la dirección (o ?navidad=0 para quitarla).
    - Adornos: nieve suave, gorro navideño en el logo y cartel "¡Feliz Navidad!"
      con versículos (LBLA) en el portal de inicio. (Sin guirnalda arriba para no tapar los iconos.)
@@ -18,12 +18,13 @@
 (function () {
   'use strict';
   var hoy = new Date(), mes = hoy.getMonth(), dia = hoy.getDate();
-  var activo = mes === 10 || mes === 11 || mes === 0; // noviembre, diciembre y enero
+  // Del 1 de noviembre al 9 de enero. Desde el 10 de enero se quita todo lo navideño solo (sin tocar nada)
+  var activo = mes === 10 || mes === 11 || (mes === 0 && dia < 10);
   try {
     var q = new URLSearchParams(location.search).get('navidad');
     if (q === '1') activo = true; else if (q === '0') activo = false;
   } catch (e) {}
-  var anoNuevo = (mes === 11 && dia >= 26) || mes === 0;
+  var anoNuevo = (mes === 11 && dia >= 26) || (mes === 0 && dia < 10);
   var anio = mes === 0 ? hoy.getFullYear() : hoy.getFullYear() + 1;
 
   /* ---------------- Música navideña ----------------
