@@ -961,20 +961,9 @@
             object-position: 50% 20%;
             -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 55%, transparent 100%);
             mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 55%, transparent 100%);
-            will-change: transform, opacity;
-            animation: fotoDesaparece 7s ease-in-out 2.5s infinite;
+            will-change: transform;
         }
 
-        /* La foto desaparece de repente y vuelve a aparecer con un destello dorado */
-        @keyframes fotoDesaparece {
-            0%, 80%  { opacity: 1; filter: none; }
-            81%      { opacity: 0; filter: blur(6px) brightness(1.6); }
-            88%      { opacity: 0; filter: blur(6px) brightness(1.6); }
-            92%      { opacity: 1; filter: brightness(1.45) drop-shadow(0 0 24px rgba(244, 183, 63, .8)); }
-            97%, 100% { opacity: 1; filter: none; }
-        }
-        @media (prefers-reduced-motion: reduce) { .hero-photo img { animation: none; } }
-        html.a11y-still .hero-photo img { animation: none !important; }
 
         /* Aro brillante que gira alrededor del evangelista */
         .ring {
@@ -2271,10 +2260,25 @@
             .menu .menu-cta .btn { display: flex; width: 100%; margin: .5rem 0 0; min-height: 52px; }
             /* con el menú abierto, la cápsula queda sólida para que no se vea la portada detrás */
             .site-header.open .wrap.nav { background: #0A0A0A; -webkit-backdrop-filter: none; backdrop-filter: none; }
-            /* al bajar, la cápsula del menú se esconde hacia arriba; al subir, vuelve a aparecer */
-            .site-header { transition: transform .35s ease, background-color .3s ease, box-shadow .3s ease; will-change: transform; }
-            .site-header.nav-oculto { transform: translateY(calc(-100% - 24px)); pointer-events: none; }
         }
+        /* Al bajar, la barra de inicio (logo MIPROAA y menú) se esconde hacia arriba; al subir, vuelve a aparecer (celular, tableta y PC) */
+        .site-header { transition: transform .35s ease, background-color .3s ease, box-shadow .3s ease; will-change: transform; }
+        .site-header.nav-oculto { transform: translateY(calc(-100% - 24px)); pointer-events: none; }
+
+
+        /* ---------- Botones pequeños: bajar al final / subir al inicio ---------- */
+        .ir-btns { position: fixed; right: calc(var(--fab-r, 14px) + 6px); bottom: calc(var(--fab-b, 14px) + 62px); z-index: 8990; display: flex; flex-direction: column; gap: 8px; }
+        .ir-btn {
+            width: 34px; height: 34px; padding: 0; display: grid; place-items: center; cursor: pointer;
+            border-radius: 50%; border: 1px solid rgba(244, 183, 63, .55); color: var(--gold);
+            background: rgba(10, 10, 10, .72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .45); font-size: .9rem;
+            transition: opacity .3s ease, transform .3s ease, background-color .2s ease, color .2s ease;
+        }
+        .ir-btn:hover, .ir-btn:focus-visible { background: var(--gold); color: #0A0A0A; transform: translateY(-2px); }
+        .ir-btn:focus-visible { outline: 3px solid #FFE066; outline-offset: 3px; }
+        .ir-btn.oculto { opacity: 0; transform: scale(.6); pointer-events: none; }
+        .ir-btn.oculto[hidden] { display: none; }
 
         /* ---------- Portada ---------- */
         .hero { padding-bottom: 4rem; }
@@ -2511,6 +2515,10 @@
 <p class="music-tip" id="musicTip" role="status">Toca para escuchar</p>
 
 
+<div class="ir-btns">
+    <button class="ir-btn oculto" id="irArriba" type="button" aria-label="Subir al inicio de la página" title="Subir al inicio"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+    <button class="ir-btn" id="irAbajo" type="button" aria-label="Bajar al final de la página" title="Bajar al final"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></button>
+</div>
 <header class="site-header" id="siteHeader">
     <div class="wrap nav">
         <a class="brand" href="#inicio" aria-label="MIPROAA, ir al inicio">
@@ -3093,8 +3101,8 @@
         var y = window.scrollY;
         var max = document.documentElement.scrollHeight - window.innerHeight;
         header.classList.toggle('solid', y > 40);
-        /* Celular: esconder el menú al bajar y mostrarlo al subir */
-        if (!navMovil.matches || menu.classList.contains('open') || y < 80) {
+        /* Esconder la barra de inicio al bajar y mostrarla al subir (en todas las pantallas) */
+        if (menu.classList.contains('open') || y < 80 || header.contains(document.activeElement)) {
             header.classList.remove('nav-oculto');
         } else if (y > ultimoY + 6) {
             header.classList.add('nav-oculto');      // bajando
@@ -4139,6 +4147,26 @@
         if (!pendiente) { pendiente = true; requestAnimationFrame(revisar); }
     }, { passive: true });
     if (movil.addEventListener) movil.addEventListener('change', revisar);
+})();
+</script>
+<script>
+/* Botones pequeños: «Bajar al final» (arriba y en medio) y «Subir al inicio» (desde la mitad y al final) */
+(function () {
+    var arriba = document.getElementById('irArriba'), abajo = document.getElementById('irAbajo');
+    if (!arriba || !abajo) return;
+    var suave = !window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'auto';
+    arriba.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: suave }); });
+    abajo.addEventListener('click', function () { window.scrollTo({ top: document.documentElement.scrollHeight, behavior: suave }); });
+    var pend = false;
+    function revisar() {
+        pend = false;
+        var y = window.scrollY, max = document.documentElement.scrollHeight - window.innerHeight;
+        arriba.classList.toggle('oculto', !(max > 0 && y >= max * 0.4));
+        abajo.classList.toggle('oculto', !(max > 0 && y < max - 120));
+    }
+    window.addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(revisar); } }, { passive: true });
+    window.addEventListener('resize', revisar);
+    revisar();
 })();
 </script>
 </body>
