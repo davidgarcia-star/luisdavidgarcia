@@ -533,7 +533,9 @@
   // Atajos de teclado en la pantalla de juego
   document.addEventListener("keydown", (e) => {
     if (!$("screen-play").classList.contains("active")) return;
-    if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT")) return;
+    if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable)) return;
+    // Evita respuestas accidentales con atajos del navegador (Ctrl+D, Ctrl+C, Cmd+A…) o tecla mantenida
+    if (e.ctrlKey || e.metaKey || e.altKey || e.repeat || !e.key) return;
     const k = e.key.toLowerCase();
     if (!state.locked) {
       const map = { "1": 0, "2": 1, "3": 2, "4": 3, a: 0, b: 1, c: 2, d: 3 };
