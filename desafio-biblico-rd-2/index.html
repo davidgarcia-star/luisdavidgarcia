@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://abacus.jasoncameron.dev https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://api.web3forms.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <script>/* Protección: que nadie meta esta página dentro de otra (clickjacking) */if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.style.display = 'none'; } }</script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -212,7 +213,7 @@
   <script src="questions.js?v=2"></script>
   <script src="animo.js?v=1"></script>
   <script src="../pais.js?v=1"></script>
-  <script src="../cuenta.js?v=7" data-pantallas="#screen-welcome,#screen-modes,#screen-levels"></script>
+  <script src="../cuenta.js?v=8" data-pantallas="#screen-welcome,#screen-modes,#screen-levels"></script>
   <script src="game.js?v=4"></script>
   <script src="../sugerencias.js?v=1" data-origen="Desafío Bíblico RD 2" data-pantallas="#screen-welcome,#screen-modes,#screen-levels,#screen-result"></script>
   <script>

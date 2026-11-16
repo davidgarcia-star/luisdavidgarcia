@@ -1,0 +1,35 @@
+rules_version = '2';
+// Reglas de seguridad de Firestore para el proyecto "juegos-miproaa"
+// (cuentas de jugador de BIBLIXIA, BIBLIXIA 2, Desafío Bíblico RD y Desafío Bíblico RD 2).
+// Cómo ponerlas: Firebase → Firestore Database → pestaña "Reglas" → borrar lo que hay,
+// pegar TODO este archivo y tocar "Publicar".
+//
+// Qué hacen:
+//  - Cada jugador solo puede leer, guardar o borrar SU PROPIO avance (jugadores/{su uid}).
+//  - Nadie puede ver la lista de jugadores ni el avance de otra persona.
+//  - Solo se aceptan los 3 campos que usan los juegos, con tamaño limitado.
+//  - Cualquier otra colección queda cerrada.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /jugadores/{uid} {
+      function esDueno() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+      function datosValidos() {
+        let d = request.resource.data;
+        return d.keys().hasOnly(['datos', 'usuario', 't'])
+          && d.datos is string && d.datos.size() < 900000
+          && d.usuario is string && d.usuario.size() <= 60
+          && d.t is int;
+      }
+      allow get, delete: if esDueno();
+      allow create, update: if esDueno() && datosValidos();
+      allow list: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self' https://abacus.jasoncameron.dev https://noembed.com https://api.web3forms.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me">
     <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script>/* Protección: que nadie meta esta página dentro de otra (clickjacking) */if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.style.display = 'none'; } }</script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#040B1D">
     <meta name="color-scheme" content="dark">
@@ -4329,7 +4330,10 @@
 /* Estadísticas privadas: hombres y mujeres registrados y países aproximados (solo con la clave del creador) */
 (function () {
     var btn = document.getElementById('statsBtn'); if (!btn || typeof HTMLDialogElement !== 'function') { if (btn) btn.hidden = true; return; }
-    var HASH = '96a5fd2828a6fc64f5d6de5735fcfa7814b71a930478b530c698b5d5121cf39f'; // SHA-256 de la clave
+    // La clave NO está escrita aquí: solo su huella cifrada con PBKDF2-SHA256 (310 000 vueltas y sal aleatoria),
+    // para que nadie pueda adivinarla probando millones de claves por segundo.
+    var SAL = '4629f03f57fd14625a3e81d0f298bb9d', VUELTAS = 310000, HUELLA = 'c086bd80e918d5d887599737efc3e3ef87c508d74b30544b238844128126a04d';
+    var fallos = 0, esperaHasta = 0;
     var API = 'https://abacus.jasoncameron.dev/get/miproaa-estadisticas/';
     var PAISES = { do: 'República Dominicana', us: 'Estados Unidos', pr: 'Puerto Rico', ht: 'Haití', cu: 'Cuba', mx: 'México', co: 'Colombia', pe: 'Perú', ve: 'Venezuela', ec: 'Ecuador', bo: 'Bolivia', cl: 'Chile', ar: 'Argentina', uy: 'Uruguay', py: 'Paraguay', br: 'Brasil', pa: 'Panamá', cr: 'Costa Rica', ni: 'Nicaragua', hn: 'Honduras', sv: 'El Salvador', gt: 'Guatemala', jm: 'Jamaica', aw: 'Aruba', cw: 'Curazao', tt: 'Trinidad y Tobago', ca: 'Canadá', es: 'España', it: 'Italia', fr: 'Francia', gb: 'Reino Unido', de: 'Alemania', pt: 'Portugal', nl: 'Países Bajos', ch: 'Suiza', be: 'Bélgica', otros: 'Otros países' };
     var dlg = document.createElement('dialog'); dlg.className = 'stats-dlg'; dlg.setAttribute('aria-label', 'Estadísticas de visitantes');
@@ -4344,10 +4348,22 @@
         dlg.querySelector('form').onsubmit = function (e) {
             e.preventDefault();
             var v = dlg.querySelector('#statsClave').value;
-            if (!window.crypto || !crypto.subtle) { dlg.querySelector('#statsErr').textContent = 'Este navegador no permite verificar la clave.'; return; }
-            crypto.subtle.digest('SHA-256', new TextEncoder().encode(v)).then(function (buf) {
+            var err = dlg.querySelector('#statsErr');
+            if (!window.crypto || !crypto.subtle) { err.textContent = 'Este navegador no permite verificar la clave.'; return; }
+            var falta = Math.ceil((esperaHasta - Date.now()) / 1000);
+            if (falta > 0) { err.textContent = 'Demasiados intentos. Espera ' + falta + ' segundos.'; return; }
+            var sal = new Uint8Array(SAL.match(/../g).map(function (x) { return parseInt(x, 16); }));
+            err.textContent = 'Verificando…';
+            crypto.subtle.importKey('raw', new TextEncoder().encode(v), 'PBKDF2', false, ['deriveBits']).then(function (k) {
+                return crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: sal, iterations: VUELTAS }, k, 256);
+            }).then(function (buf) {
                 var h = Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
-                if (h !== HASH) { dlg.querySelector('#statsErr').textContent = 'Clave incorrecta.'; return; }
+                if (h !== HUELLA) {
+                    fallos++; if (fallos >= 5) { esperaHasta = Date.now() + 60000 * Math.min(fallos - 4, 10); }
+                    err.textContent = fallos >= 5 ? 'Clave incorrecta. Espera ' + Math.round((esperaHasta - Date.now()) / 1000) + ' segundos para intentar de nuevo.' : 'Clave incorrecta.';
+                    return;
+                }
+                fallos = 0; err.textContent = '';
                 try { sessionStorage.setItem('miproaa_stats_ok', '1'); } catch (er) {}
                 mostrar();
             });
@@ -4380,7 +4396,7 @@
                     (reg ? filas([['👨 Hombres', h, 'h'], ['👩 Mujeres', m, 'm'], ['🤐 Prefieren no decir', n, '']], reg) : '<p class="stats-nota">Todavía nadie se ha registrado.</p>') + '</div>' +
                     '<div class="stats-bloque"><h3>🌎 Países (' + totP.toLocaleString('es-DO') + ' equipos)</h3>' +
                     (totP ? filas(paises, totP) : '<p class="stats-nota">Todavía no hay datos de países.</p>') + '</div>' +
-                    '<p class="stats-nota">Hombres y mujeres: lo que cada persona eligió (opcional) al crear su usuario. Países: aproximado por la zona horaria del equipo; cada equipo se cuenta una vez, desde el 15 de noviembre de 2026. No se guardan datos personales.</p>' +
+                    '<p class="stats-nota">Hombres y mujeres: lo que cada persona eligió al crear su usuario (obligatorio desde el 15 de noviembre de 2026). Países: aproximado por la zona horaria del equipo; cada equipo se cuenta una vez, desde el 15 de noviembre de 2026. No se guardan datos personales.</p>' +
                     '<div class="stats-acc"><button type="button" class="ok" data-cerrar>Cerrar</button></div></div>';
                 dlg.querySelector('[data-cerrar]').onclick = function () { dlg.close(); };
             });

@@ -297,7 +297,7 @@
         '<form novalidate><label for="cta-u">Usuario o correo <small>(puede ser inventado)</small></label><input id="cta-u" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="60" placeholder="ej. david_rd o david@juego.com">' +
         '<label for="cta-c">Clave</label><input id="cta-c" type="password" autocomplete="' + (crear ? 'new-password' : 'current-password') + '" maxlength="40" placeholder="' + (crear ? 'mínimo 8, ej. Fe2026!' : 'tu clave') + '">' +
         (crear ? '<ul class="cta-req" id="cta-req" aria-live="polite"></ul>' : '') +
-        (crear ? '<label for="cta-g">Soy <small>(opcional, solo para estadísticas)</small></label><select id="cta-g" class="cta-sel"><option value="nodice">Prefiero no decir</option><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select>' : '') +
+        (crear ? '<label for="cta-g">Soy <small>(obligatorio, solo para estadísticas)</small></label><select id="cta-g" class="cta-sel" required><option value="" selected disabled>— Elige hombre o mujer —</option><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select>' : '') +
         (crear ? '<label for="cta-c2">Repite la clave</label><input id="cta-c2" type="password" autocomplete="new-password" maxlength="40">' : '') +
         '<label class="cta-ver"><input type="checkbox" id="cta-ver"> Mostrar clave</label>' +
         (crear ? '<div class="cta-nota">✍️ Anota tu usuario y clave. Como no usamos correo, si los olvidas no se pueden recuperar.</div>' : '') +
@@ -339,11 +339,13 @@
     if (modo === 'crear' && !claveFuerte(c)) { pintarReq(); return mensaje('La clave debe tener 8 caracteres o más, con mayúscula, minúscula, número y carácter especial.'); }
     if (!c) return mensaje('Escribe tu clave.');
     if (c2 && c2.value !== c) return mensaje('Las dos claves no son iguales.');
+    var gSel0 = caja.querySelector('#cta-g');
+    if (modo === 'crear' && gSel0 && !/^(hombre|mujer)$/.test(gSel0.value)) { gSel0.focus(); return mensaje('Elige si eres hombre o mujer para crear tu usuario.'); }
     var b = caja.querySelector('.cta-pri'); b.disabled = true; mensaje(modo === 'crear' ? 'Creando tu usuario…' : 'Entrando…', true);
     var gSel = caja.querySelector('#cta-g'), genero = gSel ? gSel.value : '';
     auth(modo === 'crear' ? 'signUp' : 'signInWithPassword', u, c).then(function () {
-      // Estadística anónima: solo se suma 1 a «hombre», «mujer» o «prefiere no decir»
-      if (modo === 'crear' && /^(hombre|mujer|nodice)$/.test(genero)) fetch('https://abacus.jasoncameron.dev/hit/miproaa-estadisticas/genero-' + genero, { cache: 'no-store' }).catch(function () {});
+      // Estadística anónima: solo se suma 1 a «hombre» o «mujer» (sin unirlo al usuario)
+      if (modo === 'crear' && /^(hombre|mujer)$/.test(genero)) fetch('https://abacus.jasoncameron.dev/hit/miproaa-estadisticas/genero-' + genero, { cache: 'no-store' }).catch(function () {});
       mensaje('Buscando tu avance…', true);
       return sincronizar();
     }).then(function (cambio) {
