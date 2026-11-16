@@ -209,6 +209,14 @@
     '.cta-op.a{background:linear-gradient(135deg,#ffe08a,#f2b93b);color:#1a1a2e;box-shadow:0 10px 26px -10px rgba(244,183,63,.8)}.cta-op.a small{color:#3b2f0e}' +
     '.cta-op.b{background:#1d2a55;color:#fff;border-color:#3a4c8c}.cta-op.b small{color:#b9c3ec}' +
     '.cta-op.c{background:transparent;color:#eef1ff;border-color:rgba(255,255,255,.25)}.cta-op.c small{color:#ffb3b3}' +
+    '.cta-destacado{position:relative;overflow:visible;margin-top:12px;animation:ctaLate 1.6s ease-in-out infinite}' +
+    '.cta-destacado:before{content:"";position:absolute;inset:-4px;border-radius:20px;border:2px solid rgba(255,224,138,.9);animation:ctaAro 1.6s ease-out infinite;pointer-events:none}' +
+    '.cta-destacado:after{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.6) 50%,transparent 65%) no-repeat;background-size:250% 100%;animation:ctaBrillo 2.4s ease-in-out infinite;pointer-events:none}' +
+    '.cta-reco{position:absolute;top:-11px;right:12px;z-index:2;padding:3px 9px;border-radius:999px;background:linear-gradient(135deg,#ce1126,#ff5a3c);color:#fff;font-size:11.5px;font-weight:800;letter-spacing:.02em;box-shadow:0 4px 12px rgba(206,17,38,.5)}' +
+    '@keyframes ctaLate{0%,100%{transform:scale(1);box-shadow:0 10px 26px -10px rgba(244,183,63,.8)}50%{transform:scale(1.035);box-shadow:0 0 0 6px rgba(244,183,63,.18),0 14px 34px -8px rgba(244,183,63,1)}}' +
+    '@keyframes ctaAro{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.08)}}' +
+    '@keyframes ctaBrillo{0%,50%{background-position:130% 0}100%{background-position:-30% 0}}' +
+    '@media (prefers-reduced-motion:reduce){.cta-destacado,.cta-destacado:before,.cta-destacado:after{animation:none}}' +
     '.cta-op:focus-visible{outline:3px solid #ffe066;outline-offset:2px}' +
     '.cta-ic .pie{margin:8px 0 0;font-size:12.5px;color:#9aa6d6}' +
     '@media (prefers-reduced-motion:reduce){.cta-ic{animation:none}}' +
@@ -357,8 +365,8 @@
   intro.innerHTML = '<div class="cta-ic"><div class="ico" aria-hidden="true">💾</div>' +
     '<h2 id="cta-intro-t">¿Quieres guardar tu avance?</h2>' +
     '<p>Entra con tu usuario y tu <b>historial y avance del juego se guardarán</b>, y te seguirán a cualquier teléfono, tablet o computadora. Es <b>opcional</b> y no necesitas correo. Sirve para los 4 juegos.</p>' +
-    '<button type="button" class="cta-op a" data-i="entrar"><span class="e" aria-hidden="true">🔐</span><span><b>Entrar con mi usuario</b><small>Mi historial y avance se guardan</small></span></button>' +
-    '<button type="button" class="cta-op b" data-i="crear"><span class="e" aria-hidden="true">✨</span><span><b>Crear mi usuario</b><small>Gratis y sin correo, en menos de un minuto</small></span></button>' +
+    '<button type="button" class="cta-op a cta-destacado" data-i="crear"><span class="cta-reco">⭐ Recomendado</span><span class="e" aria-hidden="true">✨</span><span><b>Crear mi usuario</b><small>Guarda tu historial y avance · gratis y sin correo</small></span></button>' +
+    '<button type="button" class="cta-op b" data-i="entrar"><span class="e" aria-hidden="true">🔐</span><span><b>Ya tengo usuario: entrar</b><small>Mi historial y avance se guardan</small></span></button>' +
     '<button type="button" class="cta-op c" data-i="invitado"><span class="e" aria-hidden="true">▶</span><span><b>Jugar sin registrarme</b><small>⚠️ Mi historial y avance del juego NO se guardarán en una cuenta</small></span></button>' +
     '<p class="pie">Sin usuario, el avance solo queda en este equipo y se pierde si cambias de equipo o borras los datos del navegador.</p></div>';
   var INTRO_K = 'cuenta_eleccion';
