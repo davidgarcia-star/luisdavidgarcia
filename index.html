@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self' https://abacus.jasoncameron.dev https://noembed.com https://api.web3forms.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#07112A">
+    <meta name="theme-color" content="#040B1D">
     <meta name="color-scheme" content="dark">
     <title>MIPROAA – Ministerio Profético Ardiendo por el Avivamiento | Evangelista Luis David García</title>
     <meta name="description" content="Sitio oficial de MIPROAA y del Evangelista Luis David García (República Dominicana): prédicas, biografía, petición de oración y 4 juegos bíblicos gratis.">
@@ -156,10 +156,10 @@
            ============================================ */
         :root {
             /* Azul marino tomado del fondo de la foto principal, combinado con el dorado */
-            --void: #040A16;
-            --night: #07112A;
-            --indigo: #0C1B3D;
-            --royal: #183062;
+            --void: #02060F;
+            --night: #040B1D;
+            --indigo: #08132D;
+            --royal: #10224A;
             --azul-luz: #2850B8;
             --gold: #F4B73F;
             --ember: #EE6A2B;
@@ -713,8 +713,8 @@
             overflow: hidden;
             background:
                 radial-gradient(55% 45% at 78% 100%, rgba(238, 106, 43, .45), transparent 70%),
-                radial-gradient(48% 60% at 76% 42%, rgba(40, 80, 184, .38), transparent 72%),
-                radial-gradient(70% 60% at 8% 0%, rgba(40, 80, 184, .22), transparent 70%),
+                radial-gradient(48% 60% at 76% 42%, rgba(40, 80, 184, .26), transparent 72%),
+                radial-gradient(70% 60% at 8% 0%, rgba(40, 80, 184, .14), transparent 70%),
                 linear-gradient(180deg, var(--night), var(--void));
         }
 
@@ -1955,7 +1955,7 @@
             width: clamp(34px, 9vw, 54px);
             height: clamp(48px, 12vw, 72px);
             border-radius: 12px;
-            background: linear-gradient(180deg, #13254C, var(--void));
+            background: linear-gradient(180deg, #0B1A3A, var(--void));
             color: var(--gold);
             font: 800 clamp(1.8rem, 6vw, 3rem)/1 var(--font-display);
             font-variant-numeric: tabular-nums;
@@ -2089,8 +2089,23 @@
 
         /* Celular: los botones flotantes (música y accesibilidad) se esconden al bajar
            para no tapar el texto, y vuelven a salir al subir o al llegar al final */
+        .dock-movil { display: none; }
+        .music-tip { display: none !important; }   /* sin el aviso «Toca para escuchar» */
         @media (max-width: 768px) {
-            body { padding-bottom: 64px; }
+            body { padding-bottom: 70px; }
+            .dock-movil { display: block; }
+            /* Barra de abajo: música, subir/bajar, sugerencias y accesibilidad viven aquí, en su propio espacio */
+            .dock-movil { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; height: calc(58px + env(safe-area-inset-bottom, 0px));
+                background: linear-gradient(180deg, rgba(4, 11, 29, .9), rgba(2, 6, 15, .97)); border-top: 1px solid rgba(244, 183, 63, .35);
+                box-shadow: 0 -8px 24px rgba(0, 0, 0, .45); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+            .music { left: 14px !important; bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important; translate: none !important; opacity: 1 !important; pointer-events: auto !important; }
+            .music-tip { left: 10px !important; bottom: calc(66px + env(safe-area-inset-bottom, 0px)) !important; z-index: 46; }
+            html { --fab-b: calc(9px + env(safe-area-inset-bottom, 0px)); --fab-r: 14px; }
+            .a11y-btn { width: 40px !important; height: 40px !important; translate: none !important; opacity: 1 !important; pointer-events: auto !important; z-index: 9000; }
+            .a11y-btn svg { width: 24px; height: 24px; }
+            .ir-btns { left: 66px !important; right: auto !important; bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important; flex-direction: row !important; gap: 8px !important; z-index: 41 !important; }
+            .sg-btn { left: auto !important; right: 66px !important; bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important; padding: 7px 11px !important; z-index: 41 !important; }
+            .a11y-panel { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
             .music { transition: transform .25s var(--ease), background-color .25s ease, box-shadow .25s ease, translate .35s ease, opacity .35s ease; }
             .a11y-btn { transition: translate .35s ease, opacity .35s ease; }
             html.fab-oculto .music,
@@ -2283,7 +2298,7 @@
                 padding: .6rem;
                 border: 1px solid var(--hair);
                 border-radius: var(--r-lg);
-                background: #07112A;
+                background: #040B1D;
                 box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
                 max-height: calc(100svh - 110px);
                 overflow-y: auto;
@@ -2291,7 +2306,7 @@
             .menu a:not(.btn) { padding: .85rem 1rem; font-size: 1.05rem; border-radius: 14px; }
             .menu .menu-cta .btn { display: flex; width: 100%; margin: .5rem 0 0; min-height: 52px; }
             /* con el menú abierto, la cápsula queda sólida para que no se vea la portada detrás */
-            .site-header.open .wrap.nav { background: #07112A; -webkit-backdrop-filter: none; backdrop-filter: none; }
+            .site-header.open .wrap.nav { background: #040B1D; -webkit-backdrop-filter: none; backdrop-filter: none; }
         }
         /* Al bajar, la barra de inicio (logo MIPROAA y menú) se esconde hacia arriba; al subir, vuelve a aparecer (celular, tableta y PC) */
         .site-header { transition: transform .35s ease, background-color .3s ease, box-shadow .3s ease; will-change: transform; }
@@ -2307,7 +2322,7 @@
             box-shadow: 0 6px 18px rgba(0, 0, 0, .45); font-size: .9rem;
             transition: opacity .3s ease, transform .3s ease, background-color .2s ease, color .2s ease;
         }
-        .ir-btn:hover, .ir-btn:focus-visible { background: var(--gold); color: #07112A; transform: translateY(-2px); }
+        .ir-btn:hover, .ir-btn:focus-visible { background: var(--gold); color: #040B1D; transform: translateY(-2px); }
         .ir-btn:focus-visible { outline: 3px solid #FFE066; outline-offset: 3px; }
         .ir-btn.oculto { opacity: 0; transform: scale(.6); pointer-events: none; }
         .ir-btn.oculto[hidden] { display: none; }
@@ -2493,7 +2508,7 @@
             background:
                 radial-gradient(900px 420px at 8% 0%, rgba(244, 183, 63, .13), transparent 62%),
                 radial-gradient(820px 480px at 96% 100%, rgba(40, 80, 184, .32), transparent 62%),
-                linear-gradient(180deg, #0C1B3D 0%, #07112A 55%, #040A16 100%);
+                linear-gradient(180deg, #08132D 0%, #040B1D 55%, #02060F 100%);
         }
         .site-footer::after {
             content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
@@ -2609,9 +2624,10 @@
     <span id="musicLabel" class="sr-only">Reproducir</span>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
 </button>
-<p class="music-tip" id="musicTip" role="status">Toca para escuchar</p>
+<p class="music-tip" id="musicTip" hidden></p>
 
 
+<div class="dock-movil" aria-hidden="true"></div>
 <div class="ir-btns">
     <button class="ir-btn oculto" id="irArriba" type="button" aria-label="Subir al inicio de la página" title="Subir al inicio"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
     <button class="ir-btn" id="irAbajo" type="button" aria-label="Bajar al final de la página" title="Bajar al final"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></button>
