@@ -189,6 +189,7 @@
     '.cta-tabs button.sel{background:#ffd778;color:#1a1a2e;border-color:#ffd778}' +
     '.cta-caja label{display:block;font-size:13px;font-weight:600;margin:10px 0 4px;color:#dfe3ff}' +
     '.cta-caja input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;border:1px solid #3a4475;background:#0c1124;color:#fff;font:inherit;font-size:16px}' +
+    '.cta-sel{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;border:1px solid #3a4475;background:#0c1124;color:#fff;font:inherit;font-size:16px}' +
     '.cta-caja input:focus{outline:2px solid #ffd778;border-color:transparent}' +
     '.cta-ver{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:13px;color:#c9cfee;cursor:pointer}.cta-ver input{width:auto}' +
     '.cta-nota{margin-top:12px;padding:9px 11px;border-radius:10px;background:rgba(255,215,120,.1);color:#ffe4a3;font-size:13px}' +
@@ -296,6 +297,7 @@
         '<form novalidate><label for="cta-u">Usuario o correo <small>(puede ser inventado)</small></label><input id="cta-u" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="60" placeholder="ej. david_rd o david@juego.com">' +
         '<label for="cta-c">Clave</label><input id="cta-c" type="password" autocomplete="' + (crear ? 'new-password' : 'current-password') + '" maxlength="40" placeholder="' + (crear ? 'mínimo 8, ej. Fe2026!' : 'tu clave') + '">' +
         (crear ? '<ul class="cta-req" id="cta-req" aria-live="polite"></ul>' : '') +
+        (crear ? '<label for="cta-g">Soy <small>(opcional, solo para estadísticas)</small></label><select id="cta-g" class="cta-sel"><option value="nodice">Prefiero no decir</option><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select>' : '') +
         (crear ? '<label for="cta-c2">Repite la clave</label><input id="cta-c2" type="password" autocomplete="new-password" maxlength="40">' : '') +
         '<label class="cta-ver"><input type="checkbox" id="cta-ver"> Mostrar clave</label>' +
         (crear ? '<div class="cta-nota">✍️ Anota tu usuario y clave. Como no usamos correo, si los olvidas no se pueden recuperar.</div>' : '') +
@@ -338,7 +340,10 @@
     if (!c) return mensaje('Escribe tu clave.');
     if (c2 && c2.value !== c) return mensaje('Las dos claves no son iguales.');
     var b = caja.querySelector('.cta-pri'); b.disabled = true; mensaje(modo === 'crear' ? 'Creando tu usuario…' : 'Entrando…', true);
+    var gSel = caja.querySelector('#cta-g'), genero = gSel ? gSel.value : '';
     auth(modo === 'crear' ? 'signUp' : 'signInWithPassword', u, c).then(function () {
+      // Estadística anónima: solo se suma 1 a «hombre», «mujer» o «prefiere no decir»
+      if (modo === 'crear' && /^(hombre|mujer|nodice)$/.test(genero)) fetch('https://abacus.jasoncameron.dev/hit/miproaa-estadisticas/genero-' + genero, { cache: 'no-store' }).catch(function () {});
       mensaje('Buscando tu avance…', true);
       return sincronizar();
     }).then(function (cambio) {

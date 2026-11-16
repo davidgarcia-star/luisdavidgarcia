@@ -2089,6 +2089,31 @@
 
         /* Celular: los botones flotantes (música y accesibilidad) se esconden al bajar
            para no tapar el texto, y vuelven a salir al subir o al llegar al final */
+
+        /* ---------- Estadísticas privadas (solo con clave) ---------- */
+        .stats-btn { margin-top: 1.1rem; padding: .55rem 1rem; border-radius: 999px; border: 1px solid rgba(244, 183, 63, .45); background: rgba(255, 255, 255, .04); color: var(--ash); font: 600 .9rem/1 var(--font-body); cursor: pointer; }
+        .stats-btn:hover { color: var(--gold); border-color: var(--gold); }
+        .stats-dlg { width: min(520px, calc(100vw - 24px)); max-height: calc(100dvh - 40px); padding: 0; border: 1px solid rgba(244, 183, 63, .45); border-radius: 20px; background: linear-gradient(160deg, #0b1838, #040B1D); color: var(--parchment); box-shadow: 0 30px 80px rgba(0, 0, 0, .7); }
+        .stats-dlg::backdrop { background: rgba(2, 6, 15, .75); }
+        .stats-in { padding: 1.4rem 1.3rem 1.2rem; }
+        .stats-in h2 { margin: 0 0 .3rem; font: 700 1.6rem/1.1 var(--font-display); color: var(--gold); }
+        .stats-in p.sub { margin: 0 0 1rem; color: var(--ash); font-size: .9rem; }
+        .stats-in label { display: block; margin: .4rem 0 .35rem; font-weight: 600; }
+        .stats-in input { width: 100%; box-sizing: border-box; padding: .7rem .85rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, .2); background: rgba(0, 0, 0, .35); color: #fff; font: inherit; }
+        .stats-acc { display: flex; gap: .6rem; justify-content: flex-end; margin-top: 1rem; flex-wrap: wrap; }
+        .stats-acc button { padding: .65rem 1.1rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .25); background: transparent; color: #fff; font: 700 .95rem/1 var(--font-body); cursor: pointer; }
+        .stats-acc .ok { background: linear-gradient(135deg, #ffe08a, var(--gold)); color: #1a1205; border-color: transparent; }
+        .stats-err { min-height: 1.2em; margin: .6rem 0 0; color: #ff9a9a; font-size: .9rem; }
+        .stats-bloque { margin: 1rem 0 0; padding: .9rem 1rem; border-radius: 14px; background: rgba(255, 255, 255, .04); border: 1px solid rgba(244, 183, 63, .15); }
+        .stats-bloque h3 { margin: 0 0 .6rem; font: 700 1.1rem/1.2 var(--font-display); color: var(--gold); }
+        .stats-fila { display: grid; grid-template-columns: 9.5rem 1fr 3rem; gap: .6rem; align-items: center; margin: .35rem 0; font-size: .92rem; }
+        .stats-barra { height: 10px; border-radius: 999px; background: rgba(255, 255, 255, .08); overflow: hidden; }
+        .stats-barra i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--gold), var(--ember)); }
+        .stats-barra.h i { background: linear-gradient(90deg, #4f8cff, #2850B8); }
+        .stats-barra.m i { background: linear-gradient(90deg, #ff7eb6, #d6457f); }
+        .stats-fila b { text-align: right; }
+        .stats-nota { margin: .8rem 0 0; color: #9aa6c6; font-size: .8rem; line-height: 1.45; }
+        @media (max-width: 480px) { .stats-fila { grid-template-columns: 7.5rem 1fr 2.6rem; font-size: .86rem; } }
         .dock-movil { display: none; }
         .music-tip { display: none !important; }   /* sin el aviso «Toca para escuchar» */
         @media (max-width: 768px) {
@@ -3130,6 +3155,7 @@
             <h2>Gracias por visitarnos</h2>
             <p>Personas que ya han entrado a este sitio web</p>
             <div class="digits" id="visitDigits" role="img" aria-label="Visitantes"></div>
+            <button type="button" class="stats-btn" id="statsBtn" aria-haspopup="dialog"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Estadísticas</button>
         </div>
     </section>
 
@@ -4296,6 +4322,74 @@
     window.addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(revisar); } }, { passive: true });
     window.addEventListener('resize', revisar);
     revisar();
+})();
+</script>
+<script src="pais.js?v=1"></script>
+<script>
+/* Estadísticas privadas: hombres y mujeres registrados y países aproximados (solo con la clave del creador) */
+(function () {
+    var btn = document.getElementById('statsBtn'); if (!btn || typeof HTMLDialogElement !== 'function') { if (btn) btn.hidden = true; return; }
+    var HASH = '70553dc18c92804da19f8f5c9fbb598a975a1585e14d52d4da23a8fdd735ec06'; // SHA-256 de la clave
+    var API = 'https://abacus.jasoncameron.dev/get/miproaa-estadisticas/';
+    var PAISES = { do: 'República Dominicana', us: 'Estados Unidos', pr: 'Puerto Rico', ht: 'Haití', cu: 'Cuba', mx: 'México', co: 'Colombia', pe: 'Perú', ve: 'Venezuela', ec: 'Ecuador', bo: 'Bolivia', cl: 'Chile', ar: 'Argentina', uy: 'Uruguay', py: 'Paraguay', br: 'Brasil', pa: 'Panamá', cr: 'Costa Rica', ni: 'Nicaragua', hn: 'Honduras', sv: 'El Salvador', gt: 'Guatemala', jm: 'Jamaica', aw: 'Aruba', cw: 'Curazao', tt: 'Trinidad y Tobago', ca: 'Canadá', es: 'España', it: 'Italia', fr: 'Francia', gb: 'Reino Unido', de: 'Alemania', pt: 'Portugal', nl: 'Países Bajos', ch: 'Suiza', be: 'Bélgica', otros: 'Otros países' };
+    var dlg = document.createElement('dialog'); dlg.className = 'stats-dlg'; dlg.setAttribute('aria-label', 'Estadísticas de visitantes');
+    document.body.appendChild(dlg);
+    var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+    function pedirClave() {
+        dlg.innerHTML = '<form class="stats-in" method="dialog"><h2>📊 Estadísticas</h2><p class="sub">Solo para el creador del sitio.</p>' +
+            '<label for="statsClave">Clave</label><input id="statsClave" type="password" autocomplete="current-password">' +
+            '<p class="stats-err" id="statsErr" role="alert"></p>' +
+            '<div class="stats-acc"><button type="button" data-cerrar>Cancelar</button><button type="submit" class="ok">Ver estadísticas</button></div></form>';
+        dlg.querySelector('[data-cerrar]').onclick = function () { dlg.close(); };
+        dlg.querySelector('form').onsubmit = function (e) {
+            e.preventDefault();
+            var v = dlg.querySelector('#statsClave').value;
+            if (!window.crypto || !crypto.subtle) { dlg.querySelector('#statsErr').textContent = 'Este navegador no permite verificar la clave.'; return; }
+            crypto.subtle.digest('SHA-256', new TextEncoder().encode(v)).then(function (buf) {
+                var h = Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+                if (h !== HASH) { dlg.querySelector('#statsErr').textContent = 'Clave incorrecta.'; return; }
+                try { sessionStorage.setItem('miproaa_stats_ok', '1'); } catch (er) {}
+                mostrar();
+            });
+        };
+        dlg.showModal(); setTimeout(function () { var i = dlg.querySelector('#statsClave'); if (i) i.focus(); }, 30);
+    }
+    function obtener(clave) {
+        return fetch(API + clave + '?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : { value: 0 }; })
+            .then(function (j) { var n = Number(j && (j.value !== undefined ? j.value : j.count)); return isFinite(n) ? n : 0; })
+            .catch(function () { return 0; });
+    }
+    function filas(lista, total, clase) {
+        return lista.map(function (x) {
+            var pct = total ? Math.round(x[1] / total * 100) : 0;
+            return '<div class="stats-fila"><span>' + esc(x[0]) + '</span><span class="stats-barra ' + (x[2] || clase || '') + '"><i style="width:' + pct + '%"></i></span><b>' + x[1].toLocaleString('es-DO') + '</b></div>';
+        }).join('');
+    }
+    function mostrar() {
+        dlg.innerHTML = '<div class="stats-in"><h2>📊 Estadísticas</h2><p class="sub">Cargando…</p></div>';
+        if (!dlg.open) dlg.showModal();
+        var claves = Object.keys(PAISES);
+        Promise.all([obtener('genero-hombre'), obtener('genero-mujer'), obtener('genero-nodice')].concat(claves.map(function (k) { return obtener('pais-' + k); })))
+            .then(function (v) {
+                var h = v[0], m = v[1], n = v[2], reg = h + m + n;
+                var paises = claves.map(function (k, i) { return [PAISES[k], v[3 + i]]; }).filter(function (x) { return x[1] > 0; }).sort(function (a, b) { return b[1] - a[1]; });
+                var totP = paises.reduce(function (a, x) { return a + x[1]; }, 0);
+                var visitas = (document.getElementById('navVisitas') || {}).textContent || '…';
+                dlg.innerHTML = '<div class="stats-in"><h2>📊 Estadísticas</h2><p class="sub">Visitantes del sitio: <b>' + esc(visitas) + '</b></p>' +
+                    '<div class="stats-bloque"><h3>👥 Usuarios registrados en los juegos: ' + reg.toLocaleString('es-DO') + '</h3>' +
+                    (reg ? filas([['👨 Hombres', h, 'h'], ['👩 Mujeres', m, 'm'], ['🤐 Prefieren no decir', n, '']], reg) : '<p class="stats-nota">Todavía nadie se ha registrado.</p>') + '</div>' +
+                    '<div class="stats-bloque"><h3>🌎 Países (' + totP.toLocaleString('es-DO') + ' equipos)</h3>' +
+                    (totP ? filas(paises, totP) : '<p class="stats-nota">Todavía no hay datos de países.</p>') + '</div>' +
+                    '<p class="stats-nota">Hombres y mujeres: lo que cada persona eligió (opcional) al crear su usuario. Países: aproximado por la zona horaria del equipo; cada equipo se cuenta una vez, desde el 15 de noviembre de 2026. No se guardan datos personales.</p>' +
+                    '<div class="stats-acc"><button type="button" class="ok" data-cerrar>Cerrar</button></div></div>';
+                dlg.querySelector('[data-cerrar]').onclick = function () { dlg.close(); };
+            });
+    }
+    btn.addEventListener('click', function () {
+        var ok = false; try { ok = sessionStorage.getItem('miproaa_stats_ok') === '1'; } catch (e) {}
+        if (ok) mostrar(); else pedirClave();
+    });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
 })();
 </script>
 <script src="sugerencias.js?v=1" data-origen="Sitio web de MIPROAA" data-lado="left" data-abajo="62"></script>
