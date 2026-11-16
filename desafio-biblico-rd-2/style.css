@@ -297,3 +297,8 @@ main { flex: 1; min-height: 0; width: 100%; overflow-y: auto; display: flex; fle
 body[data-screen="welcome"] #btnHome { display: none; }
 @media (max-width: 600px) { .arena { max-height: min(32dvh, 240px); } }
 @media (max-width: 600px) and (max-height: 640px) { .arena { max-height: 22dvh; } }
+
+/* Ajuste a la pantalla (también en pantalla completa): si algo no cabe, nada se corta arriba y se puede ver completo */
+.screen.active { flex: 1 0 auto; justify-content: safe center; }
+main { scrollbar-width: thin; scrollbar-color: rgba(244, 197, 66, .65) transparent; }
+main::-webkit-scrollbar { width: 8px; } main::-webkit-scrollbar-thumb { background: rgba(244, 197, 66, .6); border-radius: 8px; } main::-webkit-scrollbar-track { background: transparent; }

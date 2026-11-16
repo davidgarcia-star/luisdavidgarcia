@@ -726,3 +726,12 @@ select option { color: #111; }
 .felicidades .f3 { margin-top: 6px; font-weight: 700; color: var(--gold-2); }
 @keyframes felPop { from { transform: scale(.6); opacity: 0; } }
 @keyframes felBrillo { to { background-position: -200% 0; } }
+
+/* ---------- Ajuste a la pantalla (también en pantalla completa): nada se corta ---------- */
+@media (min-width: 900px) {
+  .screen > .panel { scrollbar-width: thin; scrollbar-color: rgba(244, 197, 66, .65) transparent; }
+  .screen > .panel::-webkit-scrollbar { display: block; width: 8px; }
+  .screen > .panel::-webkit-scrollbar-thumb { background: rgba(244, 197, 66, .6); border-radius: 8px; }
+  .screen > .panel::-webkit-scrollbar-track { background: transparent; }
+}
+.welcome-clasica .welcome-extras .btn-paypal { grid-column: 1 / -1; justify-self: center; }
