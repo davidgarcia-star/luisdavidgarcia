@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://davidgarcia-star.github.io/luisdavidgarcia/</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image><image:loc>https://davidgarcia-star.github.io/luisdavidgarcia/img/og-miproaa.jpg</image:loc></image:image>
@@ -11,21 +11,21 @@
   </url>
   <url>
     <loc>https://davidgarcia-star.github.io/luisdavidgarcia/juego-biblico/</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image><image:loc>https://davidgarcia-star.github.io/luisdavidgarcia/juego-biblico/og-desafio-biblico-rd.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://davidgarcia-star.github.io/luisdavidgarcia/desafio-biblico-rd-2/</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image><image:loc>https://davidgarcia-star.github.io/luisdavidgarcia/img/juego-desafio2.jpg</image:loc></image:image>
   </url>
   <url>
     <loc>https://davidgarcia-star.github.io/luisdavidgarcia/privacidad.html</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
