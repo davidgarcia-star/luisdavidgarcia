@@ -10,7 +10,7 @@
     <meta name="color-scheme" content="dark">
     <title>MIPROAA – Ministerio Profético Ardiendo por el Avivamiento | Evangelista Luis David García</title>
     <meta name="description" content="Sitio oficial de MIPROAA y del Evangelista Luis David García (República Dominicana): prédicas, biografía, petición de oración y 4 juegos bíblicos gratis.">
-    <meta name="keywords" content="MIPROAA, Ministerio Profético Ardiendo Por El Avivamiento, Ministerio Profetico Ardiendo por el Avivamiento, Ardiendo por el Avivamiento, Luis David García, Luis David Esteban García, Evangelista Luis David García, Profeta Luis David García, República Dominicana, Desafío Bíblico RD, Desafío Bíblico RD 2, Desafio Biblico RD 2, BIBLIXIA, BIBLIXIA 2, juego bíblico, juego biblico, juegos bíblicos, juegos biblicos, juego de la Biblia, juegos de la Biblia, juego de la Biblia gratis, desafío bíblico, desafio biblico, juego bíblico gratis, juegos bíblicos gratis, juego bíblico online, juego bíblico para niños, juego bíblico para jóvenes, juego bíblico para la iglesia, juego cristiano, juegos cristianos, trivia bíblica, preguntas bíblicas, preguntas y respuestas de la Biblia, juego bíblico dominicano">
+    <meta name="keywords" content="MIPROAA, BIBLIXIA 3, biblixia 3, Ministerio Profético Ardiendo Por El Avivamiento, Ministerio Profetico Ardiendo por el Avivamiento, Ardiendo por el Avivamiento, Luis David García, Luis David Esteban García, Evangelista Luis David García, Profeta Luis David García, República Dominicana, Desafío Bíblico RD, Desafío Bíblico RD 2, Desafio Biblico RD 2, BIBLIXIA, BIBLIXIA 2, juego bíblico, juego biblico, juegos bíblicos, juegos biblicos, juego de la Biblia, juegos de la Biblia, juego de la Biblia gratis, desafío bíblico, desafio biblico, juego bíblico gratis, juegos bíblicos gratis, juego bíblico online, juego bíblico para niños, juego bíblico para jóvenes, juego bíblico para la iglesia, juego cristiano, juegos cristianos, trivia bíblica, preguntas bíblicas, preguntas y respuestas de la Biblia, juego bíblico dominicano">
     <meta name="author" content="Luis David Esteban García – MIPROAA">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="icon" href="favicon.ico" sizes="48x48">
@@ -114,6 +114,13 @@
           "url": "https://davidgarcia-star.github.io/biblixia2/",
           "description": "Juego bíblico 3D en el mapa de República Dominicana: lleva a los personajes de la Biblia a las 32 provincias en 12 transportes.",
           "isAccessibleForFree": true
+        },
+        {
+          "@type": "VideoGame",
+          "name": "BIBLIXIA 3",
+          "url": "https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/",
+          "description": "Juego bíblico 3D de carrera: corre, salta, agáchate y monta a caballo por 6 mundos bíblicos y recolecta 72 versículos.",
+          "isAccessibleForFree": true
         }
       ],
       "keywords": "juego bíblico, juego biblico, juegos bíblicos, juegos biblicos, juego de la Biblia, juegos de la Biblia, juego de la Biblia gratis, desafío bíblico, desafio biblico, juego bíblico gratis, juegos bíblicos gratis, juego bíblico online, juego bíblico para niños, juego bíblico para jóvenes, juego bíblico para la iglesia, juego cristiano"
@@ -121,7 +128,7 @@
     {
       "@type": "ItemList",
       "name": "Juegos bíblicos gratis de MIPROAA",
-      "description": "Juegos de la Biblia gratis: Desafío Bíblico RD, Desafío Bíblico RD 2, BIBLIXIA y BIBLIXIA 2.",
+      "description": "Juegos de la Biblia gratis: Desafío Bíblico RD, Desafío Bíblico RD 2, BIBLIXIA, BIBLIXIA 2 y BIBLIXIA 3.",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -170,6 +177,19 @@
             "name": "BIBLIXIA 2",
             "url": "https://davidgarcia-star.github.io/biblixia2/",
             "description": "Juego bíblico 3D en el mapa de las 32 provincias de República Dominicana.",
+            "genre": "Juego bíblico",
+            "inLanguage": "es",
+            "isAccessibleForFree": true
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "VideoGame",
+            "name": "BIBLIXIA 3",
+            "url": "https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/",
+            "description": "Juego bíblico 3D de carrera por 6 mundos bíblicos con 72 versículos.",
             "genre": "Juego bíblico",
             "inLanguage": "es",
             "isAccessibleForFree": true
@@ -2524,6 +2544,43 @@
         .game-tags li { padding: .3rem .75rem; border: 1px solid var(--hair); border-radius: 999px; font-size: .88rem; color: var(--parchment); }
         .game-body .btn { align-self: flex-start; margin-top: auto; }
 
+        /* ---------- Juegos: presentación ultra (luz dorada, bordes vivos, destellos) ---------- */
+        .games { overflow: hidden; isolation: isolate; background: radial-gradient(90% 60% at 50% -5%, #1e3f86 0%, #0b1834 48%, #040915 100%); }
+        .games::before { content: ""; position: absolute; left: 50%; top: -30%; width: 220%; height: 160%; transform: translateX(-50%); transform-origin: 50% 0;
+            background: repeating-conic-gradient(from 0deg at 50% 0%, rgba(255, 210, 120, .13) 0deg 4deg, transparent 4deg 16deg);
+            -webkit-mask: radial-gradient(60% 70% at 50% 0%, #000 20%, transparent 75%); mask: radial-gradient(60% 70% at 50% 0%, #000 20%, transparent 75%);
+            animation: juegos-rayos 40s linear infinite; pointer-events: none; z-index: -1; }
+        .games::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: -1; opacity: .55;
+            background-image: radial-gradient(2px 2px at 12% 30%, #ffe7a8, transparent), radial-gradient(1.5px 1.5px at 78% 22%, #fff, transparent), radial-gradient(2px 2px at 46% 64%, #ffd36b, transparent),
+              radial-gradient(1.5px 1.5px at 88% 72%, #ffe7a8, transparent), radial-gradient(1.5px 1.5px at 28% 86%, #fff, transparent), radial-gradient(2px 2px at 64% 40%, #ffd36b, transparent);
+            animation: juegos-chispas 7s ease-in-out infinite alternate; }
+        @keyframes juegos-rayos { to { transform: translateX(-50%) rotate(16deg); } }
+        @keyframes juegos-chispas { from { opacity: .25; transform: translateY(6px); } to { opacity: .7; transform: translateY(-6px); } }
+        .games .section-title { filter: drop-shadow(0 0 22px rgba(255, 190, 70, .35)); }
+        .games-head p { color: #d6dff0; }
+        @property --borde-ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+        .game { position: relative; isolation: isolate; transition: transform .5s var(--ease), box-shadow .5s var(--ease);
+            box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .9), 0 0 0 1px rgba(244, 183, 63, .25); }
+        .game::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px; z-index: 3; pointer-events: none;
+            background: conic-gradient(from var(--borde-ang), #fff3c4, #f4b73f, #8a5a12, #f4b73f, #fff3c4, #c48a1c, #fff3c4);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+            animation: juegos-borde 5s linear infinite; opacity: .85; }
+        @keyframes juegos-borde { to { --borde-ang: 360deg; } }
+        .game:hover { transform: translateY(-8px); box-shadow: 0 46px 80px -34px rgba(0, 0, 0, .95), 0 0 46px rgba(244, 183, 63, .32); }
+        .game-cover { position: relative; }
+        .game-cover::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, .38) 46%, transparent 58%); transform: translateX(-130%);
+            animation: juegos-brillo 6s ease-in-out infinite; }
+        .game:nth-child(2) .game-cover::after { animation-delay: 1.2s; } .game:nth-child(3) .game-cover::after { animation-delay: 2.4s; }
+        .game:nth-child(4) .game-cover::after { animation-delay: 3.6s; } .game:nth-child(5) .game-cover::after { animation-delay: 4.8s; }
+        @keyframes juegos-brillo { 0%, 62% { transform: translateX(-130%); } 82%, 100% { transform: translateX(130%); } }
+        .game-hero .game-body h3 { font-size: clamp(2.2rem, 4vw, 3rem); text-shadow: 0 0 24px rgba(244, 183, 63, .45); }
+        @media (min-width: 860px) {
+            .game-hero { grid-column: 1 / -1; display: grid; grid-template-columns: 1.4fr 1fr; }
+            .game-hero .game-cover { aspect-ratio: auto; height: 100%; min-height: 340px; }
+        }
+        @media (prefers-reduced-motion: reduce) { .games::before, .games::after, .game::before, .game-cover::after { animation: none; } }
+
         /* ---------- Prédicas y galería ---------- */
         .banner-wrap, .video, .sermon-list { border-radius: var(--r-lg); }
         .sermon-list { border: 1px solid var(--hair); }
@@ -2797,6 +2854,11 @@
                     <a class="btn-juego" href="https://davidgarcia-star.github.io/biblixia2/">
                         <picture><source type="image/webp" srcset="./img/juego-biblixia2-240.webp"><img src="./img/juego-biblixia2.jpg" alt="" width="240" height="126" decoding="async"></picture>
                         <span><small>República Dominicana 3D</small>BIBLIXIA 2</span>
+                    </a>
+                    <a class="btn-juego" href="https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/">
+                        <span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                        <picture><source type="image/webp" srcset="./img/juego-biblixia3-240.webp"><img src="./img/juego-biblixia3.jpg" alt="" width="240" height="126" decoding="async"></picture>
+                        <span><small>Carrera en 3D</small>BIBLIXIA 3</span>
                         <b class="lo-nuevo">¡NUEVO!</b>
                     </a>
                 </nav>
@@ -2944,14 +3006,28 @@
 
     <!-- ================= JUEGOS BÍBLICOS ================= -->
     <div class="divisor" aria-hidden="true" style="--d:-0.6s"><i></i></div>
-    <section class="section light games" id="juegos">
+    <section class="section dark games" id="juegos">
         <div class="wrap">
             <div class="games-head">
                 <h2 class="section-title reveal"><span class="wipe-text">Juegos bíblicos</span></h2>
-                <p class="reveal">Cuatro juegos bíblicos gratis, creados por el Evangelista Luis David García, para aprender la Palabra jugando en familia, en la iglesia o en la escuela bíblica: el desafío bíblico de preguntas de la Biblia y las aventuras en 3D de BIBLIXIA.</p>
+                <p class="reveal">Cinco juegos bíblicos gratis, creados por el Evangelista Luis David García, para aprender la Palabra jugando en familia, en la iglesia o en la escuela bíblica: el desafío bíblico de preguntas de la Biblia y las aventuras en 3D de BIBLIXIA.</p>
             </div>
 
             <div class="games-grid">
+                <article class="game reveal game-hero">
+                    <a class="game-cover" href="https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/" tabindex="-1" aria-hidden="true">
+                        <picture><source type="image/webp" srcset="./img/juego-biblixia3-600.webp 600w, ./img/juego-biblixia3.webp 1200w" sizes="(max-width: 859px) 92vw, 600px"><img src="./img/juego-biblixia3.jpg" alt="" width="1200" height="630" loading="lazy" decoding="async"></picture>
+                    </a>
+                    <div class="game-body">
+                        <h3>BIBLIXIA 3 <span class="tag-nuevo">¡Nuevo!</span></h3>
+                        <p>La Carrera de la Fe, en 3D realista: corre, salta, agáchate, planea con tu manto y monta a caballo por el Edén, el desierto del Éxodo, el Jordán, Jericó, Jerusalén y el mar de Galilea. Toma los pergaminos y lee 72 versículos. Se desbloquea al terminar BIBLIXIA 2.</p>
+                        <ul class="game-tags" aria-label="Contenido">
+                            <li>6 mundos</li><li>24 niveles</li><li>72 versículos</li><li>Biblia LBLA</li>
+                        </ul>
+                        <a class="btn btn-gold btn-pulse btn-juego" href="https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/"><span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="btn-texto"><i class="fa-solid fa-person-running" aria-hidden="true"></i> Jugar BIBLIXIA 3</span></a>
+                    </div>
+                </article>
+
                 <article class="game reveal">
                     <a class="game-cover" href="https://davidgarcia-star.github.io/luisdavidgarcia/desafio-biblico-rd-2/" tabindex="-1" aria-hidden="true">
                         <picture><source type="image/webp" srcset="./img/juego-desafio2-600.webp 600w, ./img/juego-desafio2.webp 1200w" sizes="(max-width: 859px) 92vw, 600px"><img src="./img/juego-desafio2.jpg" alt="" width="1200" height="630" loading="lazy" decoding="async"></picture>
@@ -2971,7 +3047,7 @@
                         <picture><source type="image/webp" srcset="./img/juego-biblixia2-600.webp 600w, ./img/juego-biblixia2.webp 1200w" sizes="(max-width: 859px) 92vw, 600px"><img src="./img/juego-biblixia2.jpg" alt="" width="1200" height="630" loading="lazy" decoding="async"></picture>
                     </a>
                     <div class="game-body">
-                        <h3>BIBLIXIA 2 <span class="tag-nuevo">¡Nuevo!</span></h3>
+                        <h3>BIBLIXIA 2</h3>
                         <p>Recorre en 3D las 32 provincias de República Dominicana y lleva a profetas, apóstoles y personajes de la Biblia a su destino a tiempo, en carro, motor, guagua, caballo, tren, avión, helicóptero o lancha. Cada uno te cuenta su historia y te regala un tesoro bíblico.</p>
                         <ul class="game-tags" aria-label="Contenido">
                             <li>32 provincias</li><li>12 transportes</li><li>Biblia LBLA</li>
@@ -3251,6 +3327,7 @@
                     <li><a href="desafio-biblico-rd-2/">Desafío Bíblico RD 2</a></li>
                     <li><a href="https://davidgarcia-star.github.io/biblixia/">BIBLIXIA</a></li>
                     <li><a href="https://davidgarcia-star.github.io/biblixia2/">BIBLIXIA 2</a></li>
+                    <li><a href="biblixia3/">BIBLIXIA 3</a></li>
                 </ul>
             </nav>
 

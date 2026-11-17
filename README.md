@@ -10,6 +10,7 @@
 | Desafío Bíblico RD 2 | ▶ [Jugar Desafío Bíblico RD 2](https://davidgarcia-star.github.io/luisdavidgarcia/desafio-biblico-rd-2/) |
 | BIBLIXIA (3D) | ▶ [Jugar BIBLIXIA](https://davidgarcia-star.github.io/biblixia/) |
 | BIBLIXIA 2 (República Dominicana 3D) | ▶ [Jugar BIBLIXIA 2](https://davidgarcia-star.github.io/biblixia2/) |
+| BIBLIXIA 3 (La Carrera de la Fe, 3D) | ▶ [Jugar BIBLIXIA 3](https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/) |
 
 Creado por **Luis David Esteban García** · MIPROAA.
 

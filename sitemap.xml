@@ -24,6 +24,13 @@
     <image:image><image:loc>https://davidgarcia-star.github.io/luisdavidgarcia/img/juego-desafio2.jpg</image:loc></image:image>
   </url>
   <url>
+    <loc>https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image><image:loc>https://davidgarcia-star.github.io/luisdavidgarcia/img/juego-biblixia3.jpg</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://davidgarcia-star.github.io/luisdavidgarcia/privacidad.html</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>yearly</changefreq>
