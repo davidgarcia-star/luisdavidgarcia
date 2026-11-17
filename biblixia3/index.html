@@ -72,7 +72,7 @@ h2{font-family:Georgia,"Times New Roman",serif;color:var(--gold);margin:8px 0 12
 .cb{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));width:66px;height:66px;border-radius:50%;border:1px solid rgba(217,180,90,.6);background:rgba(6,12,26,.42);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:5;touch-action:none;cursor:pointer;padding:0;color:#f3ede0}
 .cb b{font-size:8.5px;font-weight:600;letter-spacing:.04em;margin-top:-3px;opacity:.85}
 .cb.down{background:rgba(217,180,90,.45)}
-#btnL{left:calc(16px + env(safe-area-inset-left))}#btnR{left:calc(94px + env(safe-area-inset-left))}#btnD{right:calc(16px + env(safe-area-inset-right))}
+#btnL{left:calc(16px + env(safe-area-inset-left))}#btnR{left:calc(94px + env(safe-area-inset-left))}#btnD{right:calc(16px + env(safe-area-inset-right))}#btnF{right:calc(16px + env(safe-area-inset-right));bottom:calc(94px + env(safe-area-inset-bottom));background:rgba(140,40,20,.55)}@media (pointer:fine){#btnF{bottom:calc(80px + env(safe-area-inset-bottom))}}
 @media (pointer:fine){.cb{width:54px;height:54px;opacity:.8}#btnR{left:calc(80px + env(safe-area-inset-left))}}
 .lv .md{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#cfe0ff;opacity:.85;margin-top:1px}
 #banner{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(110,24,24,.9);color:#fff;font-size:11px;text-align:center;padding:3px;display:none}
@@ -106,6 +106,7 @@ h2{font-family:Georgia,"Times New Roman",serif;color:var(--gold);margin:8px 0 12
 <button id="btnL" class="cb" aria-label="Izquierda"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f3ede0" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg></button>
 <button id="btnR" class="cb" aria-label="Derecha"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f3ede0" stroke-width="2.4"><path d="M9 5l7 7-7 7"/></svg></button>
 <button id="btnD" class="cb" aria-label="Agacharse"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f3ede0" stroke-width="2.4"><path d="M5 9l7 7 7-7"/></svg><b>Agacharse</b></button>
+<button id="btnF" class="cb" aria-label="Espada o lanzar piedra"><svg viewBox="0 0 24 24" width="28" height="28" fill="#f3ede0"><circle cx="15" cy="9" r="4.5"/><path d="M3 18c4-1 7-4 9-7" stroke="#f3ede0" stroke-width="2" fill="none"/></svg><b>Espada</b></button>
 <div id="safeProbe" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
 
 <div class="screen dark" id="sLock">
@@ -1262,7 +1263,7 @@ const AU={ctx:null,on:LS.get('biblixia3_sonido',true),master:null,mus:null,noise
    case'check':this.nz(t,.6,.12,'lowpass',200,1800,1);[69,74].forEach((m,i)=>this.harp(m,t+.1+i*.12,.08));break;
    case'win':[62,63,66,67,69,70,72,74,75,78,79,81].forEach((m,i)=>this.harp(m,t+i*.055,.065));this.pad(50,t+.6,2.8,.05);this.pad(57,t+.6,2.8,.04);this.pad(66,t+.6,2.8,.03);break;
    case'lose':[69,66,63,62].forEach((m,i)=>this.harp(m-12,t+i*.22,.09));break;
-   case'splash':this.nz(t,.6,.25,'lowpass',1500,300,1);break;case'click':this.osc('sine',1200,t,.05,.04);break;
+   case'splash':this.nz(t,.6,.25,'lowpass',1500,300,1);break;case'click':this.osc('sine',1200,t,.05,.04);break;case'slash':this.nz(t,.16,.16,'bandpass',2600,700,2);break;case'throw':this.nz(t,.18,.14,'bandpass',900,2200,1.5);break;case'crack':this.nz(t,.25,.22,'lowpass',1200,200,1);this.osc('sine',90,t,.2,.2);break;
    case'heart':[74,78,81].forEach((m,i)=>this.harp(m,t+i*.07,.07));break}},
  TR:{menu:{bpm:64,mel:[74,null,72,70,69,null,null,null,70,null,69,67,66,null,null,null,67,69,70,null,69,67,66,63,62,null,null,null,null,null,null,null],menu:true},
   game:{bpm:104,mel:[62,63,66,67,69,67,66,63,62,null,66,67,69,70,69,null,70,72,70,69,67,69,66,63,66,67,63,62,62,null,null,null]}},
@@ -1288,7 +1289,7 @@ function genLevel(w,l){
  const enemy=(ex,type,ey)=>{type=type||WORLDS[w].enemy;const d=ENEMY_DIM[type],fly=type==='crow',bo=type==='boulder';
   lv.enemies.push({type,x:ex,y:fly?ey:-d[1],w:d[0],h:d[1],vx:bo?0:-(fly?40:R(22,38)+diff*22),minX:ex-(fly?90:55),maxX:ex+(fly?90:55),fly,bo,baseY:ey,ph:rnd()*6,dead:false,dy:0,active:!bo,rot:0})};
  const targets=[.24,.55,.84].map(f=>f*L);let si=0,check=false;let mountDone=!(l%2===1||(w>=3&&l===2));
- if(li===0)lv.hints=[[140,TOUCH?'Toca la pantalla para saltar':'Barra espaciadora: saltar'],[430,'Mantén presionado para saltar más alto y tomar el pergamino'],[1060,'En el aire, mantén presionado para planear con el manto'],[1330,TOUCH?'Mantén el botón de abajo a la derecha para agacharte':'Flecha abajo: agacharte']];
+ if(li===0)lv.hints=[[140,TOUCH?'Toca la pantalla para saltar':'Barra espaciadora: saltar'],[430,'Mantén presionado para saltar más alto y tomar el pergamino'],[1060,'En el aire, mantén presionado para planear con el manto'],[1330,TOUCH?'Mantén el botón de abajo a la derecha para agacharte':'Flecha abajo: agacharte'],[1900,TOUCH?'Botón Espada: saca la espada y vence a la serpiente':'Mantén la tecla B: saca la espada y vence a la serpiente']];
  if(li===1)lv.hints=[[60,TOUCH?'Nivel libre: usa las flechas para ir adelante o atrás':'Nivel libre: flechas izquierda y derecha para moverte',4],[700,'Puedes devolverte a recoger monedas y pergaminos']];
  x=330;row(150,6,-20);
  const placeScroll=k=>{const v=(k+li)%3;
@@ -1329,7 +1330,7 @@ let W=innerWidth,H=innerHeight,DPR=1,state='boot',G=null,P=null,SC=null,SCW=-1,T
 const HUM={};let HORSE=null,PL=null;
 const isLocked=li=>li>prog.un;
 function newPlayer(x){return{x,y:-46,vx:0,vy:0,w:14,h:46,onGround:true,coyote:0,buffer:0,holdT:0,held:false,pressed:false,glideT:.9,gliding:false,inv:0,mounted:false,ph:0,hph:0,prevB:0,plat:null,splash:false,air:0,crouch:false,face:1}}
-const INP={L:false,R:false,D:false};
+const INP={L:false,R:false,D:false,F:false};
 function dims(){const fx=P.x+P.w/2,fy=P.y+P.h;P.w=P.mounted?44:14;P.h=P.mounted?62:(P.crouch?30:46);P.x=fx-P.w/2;P.y=fy-P.h}
 function setMounted(m){P.mounted=m;if(m)P.crouch=false;dims()}
 function canStand(){const h=P.mounted?62:46,b={x:P.x+1,y:P.y+P.h-h,w:P.w-2,h:h-1};return!G.lv.solids.some(s=>!s.ground&&ov(b,s))}
@@ -1343,17 +1344,18 @@ function press(){if(state!=='play')return;AU.init();if(!P.pressed){P.pressed=tru
 function release(){if(!P)return;P.pressed=false;P.held=false}
 cv.addEventListener('pointerdown',e=>{e.preventDefault();press()});
 addEventListener('pointerup',release);addEventListener('pointercancel',release);
-addEventListener('keydown',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA')INP.L=true;if(e.code==='ArrowRight'||e.code==='KeyD')INP.R=true;if(e.code==='ArrowDown'||e.code==='KeyS'){INP.D=true;e.preventDefault()}
+addEventListener('keydown',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA')INP.L=true;if(e.code==='ArrowRight'||e.code==='KeyD')INP.R=true;if(e.code==='ArrowDown'||e.code==='KeyS'){INP.D=true;e.preventDefault()}if(e.code==='KeyF'||e.code==='KeyX'||e.code==='Enter'||e.code==='KeyB')INP.F=true;
  if(e.repeat)return;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();press()}
  if(e.code==='Escape'||e.code==='KeyP'){if(state==='play')pause();else if(state==='pause')resume()}});
-addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')release();if(e.code==='ArrowLeft'||e.code==='KeyA')INP.L=false;if(e.code==='ArrowRight'||e.code==='KeyD')INP.R=false;if(e.code==='ArrowDown'||e.code==='KeyS')INP.D=false});
+addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')release();if(e.code==='ArrowLeft'||e.code==='KeyA')INP.L=false;if(e.code==='ArrowRight'||e.code==='KeyD')INP.R=false;if(e.code==='ArrowDown'||e.code==='KeyS')INP.D=false;if(e.code==='KeyF'||e.code==='KeyX'||e.code==='Enter'||e.code==='KeyB')INP.F=false});
 const TOUCH=matchMedia('(pointer:coarse)').matches||('ontouchstart' in window);
-for(const [id,k] of [['btnL','L'],['btnR','R'],['btnD','D']]){const b=document.getElementById(id);
+for(const [id,k] of [['btnL','L'],['btnR','R'],['btnD','D'],['btnF','F']]){const b=document.getElementById(id);
  const on=e=>{e.preventDefault();e.stopPropagation();AU.init();INP[k]=true;b.classList.add('down');try{b.setPointerCapture(e.pointerId)}catch(_){}};
  const off=e=>{INP[k]=false;b.classList.remove('down')};
  b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('lostpointercapture',off);b.addEventListener('contextmenu',e=>e.preventDefault())}
+function updF(){const b=document.getElementById('btnF');if(b)b.querySelector('b').textContent=P&&P.mounted?'Lanzar':'Espada'}
 function showCtrl(on){const free=on&&G&&G.lv.free;document.getElementById('btnL').style.display=free?'flex':'none';document.getElementById('btnR').style.display=free?'flex':'none';
- document.getElementById('btnD').style.display=on?'flex':'none';if(!on){INP.L=INP.R=INP.D=false}}
+ document.getElementById('btnD').style.display=on?'flex':'none';document.getElementById('btnF').style.display=on?'flex':'none';updF();if(!on){INP.L=INP.R=INP.D=INP.F=false}}
 /* pantalla completa */
 const fsEl=document.documentElement;
 function isFS(){return!!(document.fullscreenElement||document.webkitFullscreenElement)}
@@ -1369,7 +1371,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='p
 const ov=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
 function doJump(){P.vy=P.mounted?-475:-430;P.holdT=.26;P.coyote=0;P.onGround=false;P.plat=null;AU.fx('jump')}
 function hurt(){if(P.inv>0)return;shakeT=.25;
- if(P.mounted){G.flee={x:P.x+P.w/2,y:P.y+P.h,t:0,dir:P.face};setMounted(false);P.inv=1.5;P.vy=-260;AU.fx('hurt');toast('Perdiste el caballo');return}
+ if(P.mounted){G.flee={x:P.x+P.w/2,y:P.y+P.h,t:0,dir:P.face};setMounted(false);showCtrl(true);P.inv=1.5;P.vy=-260;AU.fx('hurt');toast('Perdiste el caballo');return}
  G.hearts--;P.inv=1.6;P.vy=-280;AU.fx('hurt');if(G.hearts<=0)endLevel(false,'Te quedaste sin corazones')}
 function pit(){G.hearts--;AU.fx('hurt');if(G.hearts<=0){endLevel(false,'Te caíste… ¡inténtalo otra vez!');return}
  if(P.mounted){setMounted(false)}const rx=G.lv.check&&G.lv.check.on?G.lv.check.x+10:60;Object.assign(P,newPlayer(rx));P.inv=1.5}
@@ -1411,8 +1413,21 @@ function update(dt){const lv=G.lv;
  for(const o of lv.luces){if(!o.t&&Math.abs(o.x-(P.x+P.w/2))<12+P.w/2&&o.y>P.y-8&&o.y<P.y+P.h+8){o.t=1;G.luces++;AU.fx('coin');sparks(o.x,o.y,5);
   if(G.luces%50===0&&G.hearts<5){G.hearts++;AU.fx('heart');toast('¡Corazón extra!')}}}
  for(const s of lv.scrolls){if(!s.t&&ov(P,{x:s.x-11,y:s.y-11,w:22,h:22})){s.t=1;G.got[s.k]=true;AU.fx('scroll');sparks(s.x,s.y,12);openVerse(lv.w,lv.l,s.k);return}}
- const m=lv.mount;if(m&&!m.taken&&!P.mounted&&ov(P,{x:m.x-26,y:-44,w:52,h:44})){m.taken=true;setMounted(true);AU.fx('mount');toast('¡Montaste el caballo!')}
+ const m=lv.mount;if(m&&!m.taken&&!P.mounted&&ov(P,{x:m.x-26,y:-44,w:52,h:44})){m.taken=true;setMounted(true);AU.fx('mount');toast(TOUCH?'¡Montaste el caballo! Toca LANZAR para tirar piedras':'¡Montaste el caballo! Tecla F para tirar piedras',3);showCtrl(true)}
  if(lv.check&&!lv.check.on&&P.x>lv.check.x){lv.check.on=true;AU.fx('check');toast('Punto de control')}
+ // piedras lanzadas desde el caballo
+ G.cd=(G.cd||0)-dt;if(P.mounted&&INP.F&&G.cd<=0){G.cd=.38;const sx=P.x+(P.face>0?P.w:0),sy=P.y+24,svx=P.face*430+P.vx*.5;let svy=-60;
+  let best=null;for(const e of lv.enemies){if(e.dead||e.gone)continue;const dx=(e.x+e.w/2-sx)*P.face;if(dx>10&&dx<320&&(!best||dx<best.dx))best={e,dx}}
+  if(best){const tt=best.dx/Math.abs(svx),ty=best.e.y+best.e.h/2;svy=(ty-sy)/tt-.5*420*tt}
+  G.shots.push({x:sx,y:sy,vx:svx,vy:svy,life:1.3});AU.fx('throw')}
+ for(const sh of G.shots){sh.life-=dt;sh.vy+=420*dt;sh.x+=sh.vx*dt;sh.y+=sh.vy*dt;const b={x:sh.x-4,y:sh.y-4,w:8,h:8};
+  for(const e of lv.enemies){if(e.dead||e.gone||!ov(b,e))continue;if(e.bo){e.gone=true;e.dead=true}else{e.dead=true;e.dy=-220}sh.life=0;AU.fx('crack');dust(e.x+e.w/2,e.y+e.h/2,10);break}
+  if(sh.life>0&&lv.solids.some(s=>ov(b,s))){sh.life=0;dust(sh.x,sh.y,3,.5)}}
+ G.shots=G.shots.filter(sh=>sh.life>0);
+ // espada (a pie): mantener B o el botón Espada
+ G.swCd=(G.swCd||0)-dt;G.slash=(G.slash||0)-dt;if(!P.mounted&&INP.F&&G.swCd<=0){G.slash=.32;G.swCd=.42;AU.fx('slash')}
+ if(!P.mounted&&G.slash>0&&G.slash<.27){const hb={x:P.face>0?P.x+P.w-2:P.x-36,y:P.y+2,w:38,h:P.h-2};
+  for(const e of lv.enemies){if(e.dead||e.gone||!ov(hb,e))continue;if(e.bo){e.gone=true;e.dead=true}else{e.dead=true;e.dy=-240}AU.fx('crack');dust(e.x+e.w/2,e.y+e.h/2,10)}}
  if(G.flee){G.flee.t+=dt;G.flee.x-=210*dt*(G.flee.dir||1);if(G.flee.t>2.2)G.flee=null}
  for(const h of lv.hints)if(!h.d&&P.x>h[0]){h.d=1;toast(h[1],3.2)}
  if(P.onGround&&Math.abs(P.vx)>40&&Math.random()<dt*6)dust(P.x+P.w/2-4*P.face,P.y+P.h,1,.5);
@@ -1469,6 +1484,11 @@ function syncLevel(dt){const lv=G.lv,S=SC,t=T;let si=0;
  // ambiente
  if(S.cairn){const on=lv.check&&lv.check.on;for(let i=0;i<S.cairn.fire.length;i++){const f=S.cairn.fire[i];f.vis=on;if(on&&i<3){f.s=[10+Math.sin(t*17+i)*1.5,24+Math.sin(t*13+i*2)*4,1]}}
   if(on&&Math.random()<dt*8)spawnP(lv.check.x+12+(Math.random()-.5)*6,30,-30,(Math.random()-.5)*10,30+Math.random()*30,1,2.5,OBJ.sparkM,-5)}
+ // espada
+ {const sw=Hm.sword;const show=!P.mounted&&(INP.F||G.slash>0);sw.vis=show;if(show&&!P.mounted){const J=Hm.J;if(G.slash>0){const pr=1-G.slash/.32;J.shR.r[2]=(-115+205*pr)*DEG;J.elR.r[2]=15*DEG}else{J.shR.r[2]=35*DEG;J.elR.r[2]=70*DEG}}}
+ if(SC.lastM!==P.mounted){SC.lastM=P.mounted;updF()}
+ // piedras
+ SC.stones=SC.stones||[];for(let i=0;i<Math.max(G.shots.length,SC.stones.length);i++){let n=SC.stones[i];if(!n){n=new Node(OBJ.boulder,OBJ.boulderM);n.s=[.32,.32,.32];SC.dyn.add(n);SC.stones.push(n)}const sh=G.shots[i];n.vis=!!sh;if(sh){n.p=[sh.x,-sh.y,0];n.r=[t*9,t*7,0]}}
  sharedAmbient(dt)}
 function sharedAmbient(dt){const S=SC,t=T;for(const tc of S.torches){tc[0].s=[9+Math.sin(t*19+tc[0].p[0])*1.4,17+Math.sin(t*14+tc[0].p[0])*3,1];tc[1].mat.tint[3]=.65+.12*Math.sin(t*11+tc[0].p[0])}
  if(S.boats)for(const b of S.boats){b.p[1]=WORLDS[SCW].water.y+1+Math.sin(t*1.2+b.ph)*1.6;b.r[2]=Math.sin(t*.9+b.ph)*.05;b.p[0]+=dt*4*(b.r[1]?-1:1)}
@@ -1540,7 +1560,7 @@ async function startLevel(li){const w=li/4|0,l=li%4;state='loading';showScreen(n
  setLoading(true,`Mundo ${w+1}: ${WORLDS[w].name}`,.15);AU.init();await nextFrame();
  if(CUR_W!==w){loadWorld(w);setLoading(true,null,.55);await nextFrame()}
  const lv=genLevel(w,l);const speed=148+w*6;
- G={lv,li,hearts:3,luces:0,speed,time:Math.ceil(lv.L/speed*1.9+25),got:[false,false,false],prev:prog.m[li]||0,flee:null,winT:0};
+ G={lv,li,shots:[],hearts:3,luces:0,speed,time:Math.ceil(lv.L/speed*1.9+25),got:[false,false,false],prev:prog.m[li]||0,flee:null,winT:0};
  PARTS.length=0;SHADOWS.length=0;TOASTS=[];
  SC=buildLevelScene(lv);SCW=w;setLoading(true,null,.9);await nextFrame();
  P=newPlayer(60);for(const k in HUM)HUM[k].root.remove();const Hm=HUM[charSel];PL.add(Hm.root);Hm.root.s=[HS,HS,HS];HORSE.root.vis=false;
@@ -1607,6 +1627,9 @@ const salir=()=>{location.href=SITIO_URL};
 document.getElementById('bExit').onclick=salir;document.getElementById('lockOut').onclick=salir;document.getElementById('goB2').onclick=()=>{location.href=BIBLIXIA2_URL};
 document.addEventListener('pointerdown',()=>{if(!AU.ctx&&(state==='menu')){AU.init();AU.music('menu')}},{once:true});
 
+function addSword(H){const g=new Geo(),gd=new Geo(),hl=new Geo();box(g,-.011,-.98,-.0035,.011,-.13,.0035,1);box(gd,-.02,-.135,-.075,.02,-.11,.075,1);box(hl,-.016,-.12,-.016,.016,.02,.016,1);
+ const n=new Node();n.add(NN(g,mat(TX.white,[.82,.84,.88],{spec:1.6})));n.add(NN(gd,mat(TX.white,[.85,.65,.25],{spec:1.2})));n.add(NN(hl,mat(TX.leather,[.3,.18,.1])));
+ n.p=[.02,-.06,0];n.r=[0,0,.25];n.vis=false;H.J.haR.add(n);H.sword=n}
 /* ---------------- ARRANQUE ---------------- */
 async function boot(){
  if(!PROTEGIDO)prog.un=23; // modo de prueba (fuera de github.io): todos los niveles abiertos
@@ -1617,7 +1640,7 @@ async function boot(){
  initNoise();setLoading(true,null,.25);await nextFrame();
  initGlobalTextures();setLoading(true,null,.45);await nextFrame();
  initObjects();SKYQ=mkMesh(quadXY(new Geo(),0,-1,0,2,2));PL=new Node();
- HUM.h=buildHuman('h');HUM.m=buildHuman('m');HORSE=buildQuad('horse');PL.add(HORSE.root);mkIcons();
+ HUM.h=buildHuman('h');HUM.m=buildHuman('m');for(const k in HUM)addSword(HUM[k]);HORSE=buildQuad('horse');PL.add(HORSE.root);mkIcons();
  const pc=paintParch(512,256,false).toDataURL('image/jpeg',.82);document.getElementById('vBox').style.backgroundImage=`url(${pc})`;
  setLoading(true,null,.7);await nextFrame();
  buildShowcase(Math.min(5,Math.floor(prog.un/4)));state='menu';setLoading(false);
