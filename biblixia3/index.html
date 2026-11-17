@@ -115,7 +115,8 @@ h2{font-family:Georgia,"Times New Roman",serif;color:var(--gold);margin:8px 0 12
 <div class="screen dark" id="sLock">
  <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="#d9b45a" stroke-width="1.6"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
  <h2>BIBLIXIA 3 está bloqueado</h2>
- <p style="text-align:center;max-width:460px;line-height:1.55">Para jugar <b>BIBLIXIA 3 – La Carrera de la Fe</b> primero debes terminar todas las misiones de <b>BIBLIXIA 2</b>.</p>
+ <p style="text-align:center;max-width:460px;line-height:1.55">Para jugar <b>BIBLIXIA 3 – La Carrera de la Fe</b> primero debes pasar <b>3 misiones</b> (llevar a 3 personajes a tiempo) en <b>BIBLIXIA 2</b>.</p>
+ <p id="lockProg" style="text-align:center;color:#d9b45a;font-weight:650;margin:2px 0 10px"></p>
  <button class="btn pri" id="goB2">Ir a BIBLIXIA 2</button>
  <button class="btn" id="lockOut">Salir</button>
 </div>
@@ -1220,6 +1221,9 @@ const VERSOS=[
    ===================================================================== */
 const SITIO_URL='https://davidgarcia-star.github.io/luisdavidgarcia/',BIBLIXIA2_URL='https://davidgarcia-star.github.io/biblixia2/',CLAVE_B2='biblixia2_completado';
 const PROTEGIDO=/\.github\.io$/i.test(location.hostname);
+/* BIBLIXIA 3 se abre al pasar 3 misiones en BIBLIXIA 2 (mismo sitio github.io: se lee su avance guardado, que también llega con la cuenta) */
+const b2Pasadas=()=>{const s=LS.get('biblixia2_v1',null);return s&&s.done?Object.values(s.done).filter(v=>v>0).length:0};
+const b3Abierto=()=>LS.raw('biblixia3_desbloqueado')==='si'||LS.raw(CLAVE_B2)==='si'||b2Pasadas()>=3;
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},raw(k){try{return localStorage.getItem(k)}catch(e){return null}}};
 let prog=LS.get('biblixia3_progreso',{un:0,m:{}});if(typeof prog.un!=='number'||!prog.m)prog={un:0,m:{}};
@@ -1647,7 +1651,7 @@ async function boot(){
  const pc=paintParch(512,256,false).toDataURL('image/jpeg',.82);document.getElementById('vBox').style.backgroundImage=`url(${pc})`;
  setLoading(true,null,.7);await nextFrame();
  buildShowcase(Math.min(5,Math.floor(prog.un/4)));state='menu';setLoading(false);
- if(PROTEGIDO&&LS.raw(CLAVE_B2)!=='si')showScreen('sLock');else{if(!PROTEGIDO)document.getElementById('banner').style.display='block';showScreen('sMenu')}
+ if(PROTEGIDO&&!b3Abierto()){const n=Math.min(b2Pasadas(),3);document.getElementById('lockProg').textContent='Llevas '+n+' de 3 misiones pasadas en BIBLIXIA 2.';showScreen('sLock')}else{if(!PROTEGIDO)document.getElementById('banner').style.display='block';showScreen('sMenu')}
  last=performance.now();requestAnimationFrame(frame)}
 boot().catch(e=>{console.error(e);setLoading(false);const n=document.getElementById('noGL');n.querySelector('p').textContent='Error al iniciar: '+e.message;n.classList.add('on')});
 

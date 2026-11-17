@@ -8,6 +8,8 @@ rules_version = '2';
 //  - Cada jugador solo puede leer, guardar o borrar SU PROPIO avance (jugadores/{su uid}).
 //  - Nadie puede ver la lista de jugadores ni el avance de otra persona.
 //  - Solo se aceptan los 3 campos que usan los juegos, con tamaño limitado.
+//  - Contador de visitantes del sitio (contadores/sitio): cualquiera lo puede leer y solo
+//    se puede subir de 1 en 1 (respaldo para cuando el contador de Abacus no responde).
 //  - Cualquier otra colección queda cerrada.
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -26,6 +28,18 @@ service cloud.firestore {
       allow get, delete: if esDueno();
       allow create, update: if esDueno() && datosValidos();
       allow list: if false;
+    }
+
+    match /contadores/{id} {
+      allow get: if id == 'sitio';
+      allow create: if id == 'sitio'
+        && request.resource.data.keys().hasOnly(['n'])
+        && request.resource.data.n is int
+        && request.resource.data.n >= 0 && request.resource.data.n < 10000000;
+      allow update: if id == 'sitio'
+        && request.resource.data.keys().hasOnly(['n'])
+        && request.resource.data.n == resource.data.n + 1;
+      allow list, delete: if false;
     }
 
     match /{document=**} {

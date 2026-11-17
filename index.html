@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self' https://abacus.jasoncameron.dev https://noembed.com https://api.web3forms.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self' https://abacus.jasoncameron.dev https://firestore.googleapis.com https://noembed.com https://api.web3forms.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <script>/* Protección: que nadie meta esta página dentro de otra (clickjacking) */if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.style.display = 'none'; } }</script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -3689,25 +3689,59 @@
             requestAnimationFrame(step);
         }
 
-        // Nuevo visitante: suma 1. Quien ya visitó en este navegador: solo se lee el total.
-        var first = seen ? call('get').catch(function () { return call('hit'); }) : call('hit');
-        first.then(function (n) {
-            try { localStorage.setItem('miproaa_visited', '1'); } catch (e) {}
+        /* Respaldo: si Abacus no responde, se usa un contador propio en Firebase (proyecto juegos-miproaa,
+           documento contadores/sitio, que las reglas solo dejan subir de 1 en 1) y el último total que vio este equipo. */
+        var FS = 'https://firestore.googleapis.com/v1/projects/juegos-miproaa/databases/(default)/documents';
+        var FDOC = 'projects/juegos-miproaa/databases/(default)/documents/contadores/sitio';
+        var FKEY = 'AIzaSyCnYkLEbVg6xqcMUcoqFGHnVTKy2TBRgLQ'; // clave web pública de Firebase (la misma de cuenta.js)
+        var CACHE = 'miproaa_visitas_n';
+        var guardado = 0;
+        try { guardado = Math.floor(Number(localStorage.getItem(CACHE))) || 0; } catch (e) {}
+        var nav0 = document.getElementById('navVisitas'); if (nav0 && guardado) nav0.textContent = guardado.toLocaleString('es-DO');
+        function fsPedir(url, body) {
+            var ctl = ('AbortController' in window) ? new AbortController() : null;
+            var t = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+            var op = body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {};
+            if (ctl) op.signal = ctl.signal;
+            return fetch(url, op).then(function (r) { clearTimeout(t); return r.json().then(function (j) { if (!r.ok) throw new Error(r.status); return j; }); });
+        }
+        function fsLeer() { return fsPedir(FS + '/contadores/sitio?key=' + FKEY).then(function (j) { var v = Math.floor(Number(j && j.fields && j.fields.n && j.fields.n.integerValue)); if (!isFinite(v) || v < 0) throw new Error('formato'); return v; }); }
+        function fsSumar() { return fsPedir(FS + ':commit?key=' + FKEY, { writes: [{ transform: { document: FDOC, fieldTransforms: [{ fieldPath: 'n', increment: { integerValue: '1' } }] }, currentDocument: { exists: true } }] }); }
+        function fsCrear(n) { return fsPedir(FS + ':commit?key=' + FKEY, { writes: [{ update: { name: FDOC, fields: { n: { integerValue: String(n) } } }, currentDocument: { exists: false } }] }); }
+        function espera(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+        function mostrar(n) {
+            try { localStorage.setItem('miproaa_visited', '1'); localStorage.setItem(CACHE, String(n)); } catch (e) {}
             var nv = document.getElementById('navVisitas'); if (nv) nv.textContent = n.toLocaleString('es-DO');
             visits.hidden = false;
-            render(0);
+            digitsBox.style.padding = ''; render(0);
             if ('IntersectionObserver' in window) {
                 var io2 = new IntersectionObserver(function (en) {
                     if (en[0].isIntersecting) { io2.disconnect(); countUp(n); }
                 }, { threshold: .4 });
                 io2.observe(visits);
             } else { render(n); }
+        }
+
+        // Nuevo visitante: suma 1 (en Abacus y en el respaldo). Quien ya visitó en este navegador: solo se lee el total.
+        var sumoFs = seen ? Promise.resolve(null) : fsSumar().then(function () { return true; }, function () { return false; });
+        var abacus = seen
+            ? call('get').catch(function () { return espera(1500).then(function () { return call('get'); }); })
+            : call('hit').catch(function () { return espera(1500).then(function () { return call('hit'); }); });
+        abacus.then(function (n) {
+            mostrar(n);
+            // si el respaldo todavía no existe, se crea con el total de Abacus
+            sumoFs.then(function (ok) { if (ok !== true) fsLeer().catch(function () { return fsCrear(n); }).catch(function () {}); });
         }).catch(function () {
-            // Sin conexión con el servicio: la sección se muestra igual, para que el botón "Visitantes" lleve a algún lado
-            visits.hidden = false;
-            var nv = document.getElementById('navVisitas'); if (nv) nv.textContent = '—';
-            digitsBox.textContent = 'No disponible por ahora';
-            digitsBox.style.padding = '1rem 1.4rem';
+            // Abacus no responde: se muestra el respaldo de Firebase o el último total visto en este equipo
+            sumoFs.then(fsLeer).then(function (f) { mostrar(Math.max(f, guardado)); }).catch(function () {
+                if (guardado) { mostrar(guardado); return; }
+                // sin ningún dato: la sección se muestra igual, para que el botón "Visitantes" lleve a algún lado
+                visits.hidden = false;
+                var nv = document.getElementById('navVisitas'); if (nv) nv.textContent = '—';
+                digitsBox.textContent = 'No disponible por ahora';
+                digitsBox.style.padding = '1rem 1.4rem';
+            });
         });
     }
 
