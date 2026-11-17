@@ -181,7 +181,7 @@ h2{font-family:Georgia,"Times New Roman",serif;color:var(--gold);margin:8px 0 12
 
 <div id="loading"><div class="lt">BIBLIXIA 3</div><div id="ltxt">Cargando…</div><div class="lbar"><i id="lbar"></i></div></div>
 <div id="noGL"><h2>Tu navegador no puede mostrar gráficos 3D</h2><p>Abre el juego en Google Chrome actualizado o activa la aceleración por hardware.</p></div>
-<div id="banner">MODO DE PRUEBA: en tu sitio publicado (github.io) se exige terminar BIBLIXIA 2.</div>
+<div id="banner">MODO DE PRUEBA: todos los niveles abiertos. En tu sitio se exige terminar BIBLIXIA 2 y los niveles se abren en orden.</div>
 <script>
 'use strict';
 /* =====================================================================
@@ -1609,6 +1609,7 @@ document.addEventListener('pointerdown',()=>{if(!AU.ctx&&(state==='menu')){AU.in
 
 /* ---------------- ARRANQUE ---------------- */
 async function boot(){
+ if(!PROTEGIDO)prog.un=23; // modo de prueba (fuera de github.io): todos los niveles abiertos
  const aa=!((navigator.deviceMemory||4)<=3||(navigator.hardwareConcurrency||4)<=4)&&QUALITY.mode!=='baja';
  setLoading(true,'Preparando el mundo…',.05);
  if(!initGL(cv,aa)){setLoading(false);document.getElementById('noGL').classList.add('on');return}
