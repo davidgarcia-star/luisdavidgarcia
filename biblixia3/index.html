@@ -112,6 +112,7 @@ h2{font-family:Georgia,"Times New Roman",serif;color:var(--gold);margin:8px 0 12
 <button id="btnF" class="cb" aria-label="Espada o lanzar piedra"><svg viewBox="0 0 24 24" width="28" height="28" fill="#f3ede0"><circle cx="15" cy="9" r="4.5"/><path d="M3 18c4-1 7-4 9-7" stroke="#f3ede0" stroke-width="2" fill="none"/></svg><b>Espada</b></button>
 <div id="safeProbe" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
 
+<script src="../felicidades.js?v=1"></script>
 <div class="screen dark" id="sLock">
  <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="#d9b45a" stroke-width="1.6"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
  <h2>BIBLIXIA 3 está bloqueado</h2>
@@ -1583,7 +1584,7 @@ function showEnd(win,msg){const li=G.li,w=G.lv.w,l=G.lv.l;state='end';document.g
  if(win){prog.m[li]=(prog.m[li]||0)|mask;if(li+1>prog.un)prog.un=Math.min(23,li+1);if(li===23){prog.fin=true;try{localStorage.setItem('biblixia3_completado','si')}catch(e){}}saveProg();
   eT.textContent=li===23?'¡Terminaste BIBLIXIA 3!':'Nivel completado';
   eR.innerHTML=(G.lv.free?'':'')+`Pergaminos <b>${bits(mask)}/3</b> &nbsp;·&nbsp; Monedas <b>${G.luces}</b>`+(bits(mask)<3?'<br><small>Repite el nivel para encontrar los pergaminos que faltan.</small>':'');
-  eN.style.display=li<23?'block':'none';if(li===23)eR.innerHTML+='<br><br><i>«Corramos con paciencia la carrera que tenemos por delante».</i><br><small>Hebreos 12:1</small>'}
+  eN.style.display=li<23?'block':'none';if(li===23){eR.innerHTML+='<br><br><i>«Corramos con paciencia la carrera que tenemos por delante».</i><br><small>Hebreos 12:1</small>';setTimeout(()=>window.Felicidades&&Felicidades.mostrar({juego:'BIBLIXIA 3',niveles:WORLDS.map(x=>x.name),texto:'Terminaste los '+WORLDS.length+' mundos de La Carrera de la Fe',siguiente:{nombre:'Desafío Bíblico RD',url:SITIO_URL+'juego-biblico/'},sonido:AU.on!==false}),900)}}
  else{eT.textContent='Inténtalo de nuevo';eR.textContent=msg||'';eN.style.display='none'}
  eV.innerHTML='';G.got.forEach((g,k)=>{if(g){const v=VERSOS[w][l*3+k];const d=document.createElement('div');d.className='vcard';d.innerHTML='<b></b><span></span>';d.querySelector('b').textContent=v[0];d.querySelector('span').textContent=v[1];eV.appendChild(d)}});
  showScreen('sEnd');AU.music('menu')}

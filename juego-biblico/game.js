@@ -610,6 +610,8 @@
             : "🎉 ¡Aprobaste el último nivel! Completaste todos los niveles.")
         : "📚 Debes seguir practicando. Necesitas " + PASS_PCT + "% o más para pasar al siguiente nivel.";
       if (passed) body.appendChild(felicidades(state.level.id, pct));
+      // portada de FELICIDADES al aprobar el último nivel (Máster Superior)
+      if (passed && !nextLv && window.Felicidades) setTimeout(() => Felicidades.mostrar({ juego: "Desafío Bíblico RD", niveles: LEVELS.map((x) => x.name), texto: pct + " % de aciertos en " + state.level.name, siguiente: { nombre: "Desafío Bíblico RD 2", url: "../desafio-biblico-rd-2/" }, sonido: Sound.sfxOn !== false }), 900);
       body.append(l1, big, l2, verdict);
       $("btnNextLevel").hidden = !state.nextLevel;
       if (state.nextLevel) $("btnNextLevel").textContent = "Siguiente nivel: " + state.nextLevel.name;

@@ -756,6 +756,14 @@
     $("btnNextLevel").hidden = next == null;
     state.nextLevel = next;
     go("result");
+    // portada de FELICIDADES al aprobar el último nivel de una prueba (y especial si ya ganó todas)
+    if (win && next == null && window.Felicidades) {
+      const todas = MODES.every((x) => LEVELS.every((v) => won(x.id, v.id)));
+      setTimeout(() => Felicidades.mostrar({ juego: "Desafío Bíblico RD 2 · " + m.ico + " " + m.name,
+        titulo: todas ? "¡Has aprobado todos los niveles de todas las pruebas!" : "¡Has aprobado todos los niveles!",
+        niveles: LEVELS.map((v) => v.emoji + " " + v.name), texto: todas ? "Ganaste las " + MODES.length + " pruebas del Desafío" : "Completaste todos los niveles de " + m.name,
+        siguiente: todas ? { nombre: "BIBLIXIA", url: "https://davidgarcia-star.github.io/biblixia/" } : null, sonido: !window.Sound || Sound.sfxOn !== false }), 900);
+    }
   }
   // Mensaje grande de felicitación según el nivel ganado
   function felicidades(levelId, pct) {
