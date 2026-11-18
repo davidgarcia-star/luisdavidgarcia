@@ -175,7 +175,8 @@
     '.cmb-glove.bump{display:inline-block;animation:cmbbump .9s infinite}@keyframes cmbbump{0%,100%{transform:scale(1)}50%{transform:scale(1.35) rotate(10deg)}}' +
     '.cmb-combo{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:linear-gradient(90deg,#f28a3b,#ef3b3b);color:#fff;font-size:12px;font-weight:800;animation:cmbpop .4s}' +
     '@keyframes cmbpop{0%{transform:scale(.3)}70%{transform:scale(1.2)}100%{transform:scale(1)}}' +
-    '.cmb-ko{font-size:64px;font-weight:900;text-align:center;color:#ffd778;text-shadow:0 0 22px #f28a3b,-3px 0 #000,3px 0 #000,0 3px #000;animation:cmbko .9s cubic-bezier(.2,1.6,.4,1)}' +
+    '.cmb-ko{font-size:clamp(40px,12vw,64px);white-space:nowrap;font-weight:900;text-align:center;color:#ffd778;text-shadow:0 0 22px #f28a3b,-3px 0 #000,3px 0 #000,0 3px #000;animation:cmbko .9s cubic-bezier(.2,1.6,.4,1)}' +
+    '.cmb-ko.pierde{color:#ff8f8f;text-shadow:0 0 22px #b3122e,-3px 0 #000,3px 0 #000,0 3px #000}' +
     '@keyframes cmbko{0%{transform:scale(4) rotate(-20deg);opacity:0}100%{transform:none;opacity:1}}' +
     '.cmb-conf{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:cmbconf linear forwards}' +
     '@keyframes cmbconf{to{transform:translate(var(--dx),110vh) rotate(var(--r));opacity:.8}}' +
@@ -457,9 +458,10 @@
     var titulo = empate ? '🤝 ¡Empate!' : gano ? '🏆 ¡Ganaste el combate!' : '🥊 ¡Buen combate!';
     var detalle = abandono ? esc(r.nom || 'Tu rival') + ' salió del combate antes de terminar.' :
       (yo.pts === r.pts && !empate ? 'Empataron en aciertos; ganó quien respondió más rápido.' : '');
-    var ko = gano && !abandono && yo.pts - (r.pts || 0) >= 3;
-    if (gano) { confeti(); sfx(ko ? 'ko' : 'campana'); } else if (empate) sfx('amor'); else sfx('llanto');
-    pintar((ko ? '<div class="cmb-ko">K.O.</div>' : '') + '<div class="cmb-big">' + titulo + '</div>' +
+    // letrero grande en inglés, como en los juegos de pelea: YOU WIN / YOU LOSE / DRAW
+    if (gano) { confeti(); sfx('ko'); } else if (empate) sfx('amor'); else sfx('llanto');
+    var letrero = empate ? 'DRAW' : gano ? 'YOU WIN!' : 'YOU LOSE';
+    pintar('<div class="cmb-ko' + (gano || empate ? '' : ' pierde') + '">' + letrero + '</div><div class="cmb-big">' + titulo + '</div>' +
       '<div class="cmb-vs"><div class="cmb-p"><b>' + esc(yo.nom) + '</b><span class="pts">' + yo.pts + '</span> <small>de ' + S.n + ' · ' + (yo.ms / 1000).toFixed(1) + ' s</small></div><span class="cmb-glove">🥊</span>' +
       '<div class="cmb-p riv"><b>' + esc(r.nom || 'Rival') + '</b><span class="pts">' + (r.pts || 0) + '</span> <small>de ' + S.n + (r.ms ? ' · ' + (r.ms / 1000).toFixed(1) + ' s' : '') + '</small></div></div>' +
       (detalle ? '<p class="cmb-c">' + detalle + '</p>' : '') +
