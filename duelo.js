@@ -47,25 +47,65 @@
     var src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); src.buffer = b; f.type = tipo || 'lowpass'; f.frequency.value = frec || 1200; g.gain.value = vol || .3;
     src.connect(f); f.connect(g); g.connect(a.destination); src.start(t);
   }
+  // Voz sintetizada: cuerdas vocales (diente de sierra con vibrato) + aire, pasadas por "formantes"
+  // (las resonancias de la boca) para que suene como una vocal humana: a, e, o, u, m…
+  var VOC = { a: [[800, 7, 1], [1200, 9, .5], [2600, 12, .12]], e: [[500, 7, 1], [1800, 10, .45], [2600, 12, .15]],
+    o: [[480, 7, 1], [820, 8, .5], [2500, 12, .08]], u: [[320, 7, 1], [800, 8, .3], [2400, 12, .05]], m: [[260, 5, 1], [1100, 12, .08], [2300, 14, .03]] };
+  function voz(o) {
+    var a = ac(); if (!a) return; var t = a.currentTime + (o.t0 || 0), d = o.dur || .3, src = a.createOscillator(), env = a.createGain(), sal = a.createGain();
+    src.type = 'sawtooth'; var f = o.f || [[0, 220]];
+    src.frequency.setValueAtTime(f[0][1], t); for (var k = 1; k < f.length; k++) src.frequency.linearRampToValueAtTime(f[k][1], t + f[k][0] * d);
+    var lfo = a.createOscillator(), lg = a.createGain(); lfo.frequency.value = o.vibF || 5.5; lg.gain.value = o.vib || 4; lfo.connect(lg); lg.connect(src.frequency);
+    var ent = a.createGain(); ent.gain.value = 1; src.connect(ent);
+    if (o.aire) { var n = Math.floor(a.sampleRate * (d + .1)), b = a.createBuffer(1, n, a.sampleRate), cd = b.getChannelData(0); for (var q = 0; q < n; q++) cd[q] = Math.random() * 2 - 1; var ns = a.createBufferSource(), ng = a.createGain(); ns.buffer = b; ng.gain.value = o.aire; ns.connect(ng); ng.connect(ent); ns.start(t); ns.stop(t + d + .1); }
+    if (o.trem) { var tl = a.createOscillator(), tg = a.createGain(), tm = a.createGain(); tl.frequency.value = o.trem; tg.gain.value = .5; tm.gain.value = .5; tl.connect(tg); tg.connect(tm.gain); ent.connect(tm); ent = tm; tl.start(t); tl.stop(t + d + .1); }
+    (VOC[o.v] || VOC.a).forEach(function (fm) { var bp = a.createBiquadFilter(), g = a.createGain(); bp.type = 'bandpass'; bp.frequency.value = fm[0] * (o.boca || 1); bp.Q.value = fm[1]; g.gain.value = fm[2] * 3; ent.connect(bp); bp.connect(g); g.connect(env); });
+    var at = o.at || .025, v = o.vol || .25;
+    env.gain.setValueAtTime(0.0001, t); env.gain.exponentialRampToValueAtTime(v, t + at); env.gain.setValueAtTime(v, t + Math.max(at, d * .6)); env.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    env.connect(sal); sal.connect(a.destination); src.start(t); src.stop(t + d + .1); lfo.start(t); lfo.stop(t + d + .1);
+  }
+  // golpe de aire/consonante (j, ch, ff…) y palmada
+  function soplo(dur, frec, vol, t0, q) {
+    var a = ac(); if (!a) return; var t = a.currentTime + (t0 || 0), n = Math.max(1, Math.floor(a.sampleRate * dur)), b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0);
+    for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2);
+    var s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); s.buffer = b; f.type = 'bandpass'; f.frequency.value = frec; f.Q.value = q || 1.2; g.gain.value = vol;
+    s.connect(f); f.connect(g); g.connect(a.destination); s.start(t);
+  }
   var SFX = {
-    risa: function () { for (var i = 0; i < 5; i++) tono(620 - i * 25, 520 - i * 25, .09, 'square', .07, i * .12); },
-    llanto: function () { tono(520, 300, .5, 'sine', .16); tono(480, 260, .6, 'sine', .14, .5); tono(440, 220, .7, 'triangle', .12, 1.05); },
-    amor: function () { tono(880, 0, .25, 'sine', .14); tono(1175, 0, .35, 'sine', .14, .16); tono(1568, 0, .5, 'sine', .1, .32); },
-    enojo: function () { tono(120, 80, .45, 'sawtooth', .14); ruido(.4, 400, .2); tono(90, 60, .35, 'sawtooth', .12, .3); },
-    aplauso: function () { for (var i = 0; i < 9; i++) ruido(.05, 3000, .25, i * .085 + Math.random() * .03, 'highpass'); },
-    fuego: function () { ruido(.7, 900, .3); tono(200, 700, .5, 'sawtooth', .05); },
-    susto: function () { tono(300, 1300, .35, 'triangle', .16); },
-    amen: function () { tono(523, 0, .9, 'sine', .08); tono(659, 0, .9, 'sine', .07, .05); tono(784, 0, 1, 'sine', .07, .1); },
-    fuerza: function () { tono(330, 0, .12, 'square', .1); tono(440, 0, .12, 'square', .1, .13); tono(660, 0, .3, 'square', .1, .26); },
-    golpe: function () { ruido(.18, 600, .5); tono(150, 50, .2, 'sine', .3); },
-    fresco: function () { tono(700, 0, .1, 'triangle', .1); tono(940, 0, .25, 'triangle', .1, .12); },
-    pensar: function () { tono(400, 0, .15, 'sine', .09); tono(450, 0, .15, 'sine', .09, .25); tono(500, 0, .3, 'sine', .09, .5); },
-    msg: function () { tono(660, 990, .12, 'sine', .14); },
-    pum: function () { ruido(.15, 700, .45); tono(180, 60, .18, 'sine', .25); },
-    duele: function () { ruido(.12, 300, .3); tono(110, 70, .2, 'square', .08); },
+    // «¡ja, ja, ja, ja!»: cada sílaba con su "j" de aire y una "a" que va bajando de tono
+    risa: function () { var p = 300 + Math.random() * 60; for (var i = 0; i < 6; i++) { var t = i * .15; soplo(.04, 1600, .18, t); voz({ t0: t + .03, dur: .11, f: [[0, p - i * 12], [1, p - i * 12 - 30]], v: 'a', vol: .2, aire: .15, vib: 2 }); } },
+    // sollozo: «¡buaaa!» con la voz temblando, respiración entrecortada y otro llanto
+    llanto: function () { voz({ dur: .9, f: [[0, 430], [.25, 520], [1, 330]], v: 'a', boca: .9, vol: .2, vib: 14, vibF: 7, aire: .25, at: .08 }); soplo(.18, 900, .12, .95, .8); soplo(.14, 900, .1, 1.18, .8); voz({ t0: 1.35, dur: 1, f: [[0, 400], [.2, 480], [1, 290]], v: 'u', vol: .17, vib: 16, vibF: 6.5, aire: .3, at: .1 }); },
+    // beso «mua» y campanitas de corazón
+    amor: function () { soplo(.03, 2500, .3, 0, 3); voz({ t0: .03, dur: .22, f: [[0, 360], [1, 300]], v: 'u', vol: .14, aire: .2 }); [1047, 1319, 1568, 2093].forEach(function (fq, i) { tono(fq, 0, .6, 'sine', .07, .25 + i * .1); }); },
+    // gruñido «¡grrr!» (voz grave con vibración rápida de la garganta) y resoplido
+    enojo: function () { voz({ dur: .75, f: [[0, 95], [.5, 120], [1, 85]], v: 'o', vol: .28, trem: 32, aire: .5, vib: 6 }); soplo(.35, 500, .25, .7, .7); },
+    // aplausos de un grupo: muchas palmadas sueltas a distinto tiempo y tono
+    aplauso: function () { for (var i = 0; i < 46; i++) soplo(.022 + Math.random() * .02, 900 + Math.random() * 1800, .22 + Math.random() * .25, Math.random() * 1.7 * Math.pow(Math.random(), .3), 1.5); },
+    // fuego: rugido de llama (ruido grave) y chasquidos de leña
+    fuego: function () { ruido(1.2, 500, .35); ruido(1, 1800, .08, .1, 'highpass'); for (var i = 0; i < 16; i++) soplo(.006 + Math.random() * .01, 2500 + Math.random() * 3000, .35 + Math.random() * .4, Math.random() * 1.1, .7); },
+    // «¡aaah!» de susto que sube de golpe
+    susto: function () { soplo(.05, 1200, .2, 0); voz({ t0: .02, dur: .6, f: [[0, 320], [.2, 760], [1, 640]], v: 'a', boca: 1.15, vol: .2, vib: 10, vibF: 8, aire: .3 }); },
+    // coro «¡Amén!»: varias voces en acorde, entrada suave
+    amen: function () { [[220, 0], [277, .5], [330, -.5], [440, .3]].forEach(function (x, i) { voz({ dur: .55, f: [[0, x[0] + x[1]]], v: 'a', vol: .07, vib: 3, at: .15, t0: i * .01 }); voz({ t0: .55, dur: 1.3, f: [[0, x[0] * 1.0 + x[1]]], v: 'e', vol: .07, vib: 4, at: .12 }); voz({ t0: 1.5, dur: .5, f: [[0, x[0] + x[1]]], v: 'm', vol: .06, vib: 3 }); }); },
+    // «¡uff!» de esfuerzo y fanfarria corta
+    fuerza: function () { soplo(.08, 700, .25, 0, .8); voz({ t0: .04, dur: .25, f: [[0, 150], [1, 110]], v: 'u', vol: .25, aire: .4 }); tono(392, 0, .14, 'square', .07, .3); tono(523, 0, .14, 'square', .07, .44); tono(784, 0, .4, 'square', .08, .58); },
+    // puñetazo: golpe sordo en el cuerpo + chasquido
+    golpe: function () { soplo(.03, 3000, .35, 0, .8); tono(140, 45, .25, 'sine', .45); ruido(.2, 500, .4); },
+    // silbido de "qué fresco" (fiu-fiuuu)
+    fresco: function () { tono(1300, 2400, .18, 'sine', .12); tono(1200, 2600, .1, 'sine', .1, .3); tono(2600, 1100, .5, 'sine', .11, .4); },
+    // «mmm…» pensando, tono que sube como pregunta
+    pensar: function () { voz({ dur: 1.1, f: [[0, 140], [.6, 150], [1, 195]], v: 'm', vol: .3, vib: 2, at: .1 }); },
+    msg: function () { tono(880, 0, .07, 'sine', .14); tono(1320, 0, .14, 'sine', .12, .08); },
+    pum: function () { soplo(.025, 3000, .3, 0, .8); ruido(.15, 700, .45); tono(180, 55, .2, 'sine', .3); },
+    duele: function () { ruido(.12, 300, .3); voz({ t0: .05, dur: .3, f: [[0, 380], [1, 260]], v: 'a', vol: .14, aire: .3 }); },
     combo: function () { tono(660, 0, .08, 'square', .08); tono(880, 0, .08, 'square', .08, .08); tono(1320, 0, .2, 'square', .08, .16); },
-    campana: function () { tono(1046, 0, 1.2, 'triangle', .2); tono(1046, 0, 1.2, 'triangle', .15, .35); },
-    ko: function () { ruido(.3, 500, .5); tono(200, 40, .6, 'sawtooth', .2); tono(523, 0, .3, 'square', .1, .6); tono(659, 0, .3, 'square', .1, .8); tono(784, 0, .6, 'square', .1, 1); }
+    campana: function () { [0, .35].forEach(function (d) { tono(1046, 0, 1.4, 'triangle', .18, d); tono(2093, 0, .7, 'sine', .05, d); tono(2794, 0, .4, 'sine', .03, d); }); },
+    // K.O.: golpe, campana y el público aplaudiendo
+    ko: function () { SFX.golpe(); tono(523, 0, .3, 'square', .1, .6); tono(659, 0, .3, 'square', .1, .8); tono(784, 0, .6, 'square', .1, 1); setTimeout(function () { SFX.aplauso(); }, 900); },
+    // perder: «ay…» triste y trombón que baja (wah-wah-wah-waaa)
+    pierde: function () { [392, 370, 349].forEach(function (fq, i) { voz({ t0: i * .42, dur: .38, f: [[0, fq], [1, fq * .96]], v: 'o', vol: .16, vib: 3, at: .04 }); }); voz({ t0: 1.26, dur: 1.2, f: [[0, 330], [1, 300]], v: 'o', vol: .17, vib: 9, vibF: 5, at: .05 }); },
+    alerta: function () { tono(784, 0, .12, 'triangle', .14); tono(1047, 0, .25, 'triangle', .14, .13); }
   };
   var sfx = function (n) { try { SFX[n] && SFX[n](); } catch (e) {} };
   var script = document.currentScript;
@@ -176,6 +216,10 @@
     '.cmb-combo{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:linear-gradient(90deg,#f28a3b,#ef3b3b);color:#fff;font-size:12px;font-weight:800;animation:cmbpop .4s}' +
     '@keyframes cmbpop{0%{transform:scale(.3)}70%{transform:scale(1.2)}100%{transform:scale(1)}}' +
     '.cmb-ko{font-size:clamp(40px,12vw,64px);white-space:nowrap;font-weight:900;text-align:center;color:#ffd778;text-shadow:0 0 22px #f28a3b,-3px 0 #000,3px 0 #000,0 3px #000;animation:cmbko .9s cubic-bezier(.2,1.6,.4,1)}' +
+    '.cmb-cara{font-size:72px;line-height:1;text-align:center;margin:4px 0 0;animation:cmbCara 1s cubic-bezier(.2,1.6,.4,1) both,cmbSalta 1.6s ease-in-out 1s infinite}.cmb-cara.triste{animation:cmbCara 1s cubic-bezier(.2,1.6,.4,1) both,cmbTriste 2.4s ease-in-out 1s infinite}' +
+    '@keyframes cmbCara{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:none;opacity:1}}@keyframes cmbSalta{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px) rotate(6deg)}}@keyframes cmbTriste{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg) translateY(3px)}70%{transform:rotate(8deg) translateY(3px)}}' +
+    '.cmb-inv{display:none;margin:12px 0 0;padding:12px;border-radius:14px;border:1px solid #ffd778;background:rgba(255,215,120,.12);text-align:center;color:#ffe9b8;animation:cmbCara .5s ease both}.cmb-inv.on{display:block}.cmb-inv .cmb-btn{margin-top:10px}' +
+    '@media (prefers-reduced-motion:reduce){.cmb-cara,.cmb-cara.triste{animation:none}}' +
     '.cmb-ko.pierde{color:#ff8f8f;text-shadow:0 0 22px #b3122e,-3px 0 #000,3px 0 #000,0 3px #000}' +
     '@keyframes cmbko{0%{transform:scale(4) rotate(-20deg);opacity:0}100%{transform:none;opacity:1}}' +
     '.cmb-conf{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:cmbconf linear forwards}' +
@@ -194,8 +238,8 @@
   var box = $('#cmbBox', root);
 
   /* ---------------- estado ---------------- */
-  var S = null, pollT = 0, qT = 0, stepT = 0;
-  function limpiar() { clearTimeout(pollT); clearInterval(qT); clearTimeout(stepT); pollT = 0; qT = 0; stepT = 0; }
+  var S = null, pollT = 0, qT = 0, stepT = 0, revT = 0;
+  function limpiar() { clearTimeout(pollT); clearInterval(qT); clearTimeout(stepT); clearTimeout(revT); pollT = 0; qT = 0; stepT = 0; revT = 0; }
   function barraOn(on) { barra.classList.toggle('on', !!on); root.classList.toggle('rxon', !!on); }
   function cerrar() {
     limpiar(); S = null; barraOn(false); fx.innerHTML = ''; root.classList.remove('on'); document.documentElement.style.overflow = ''; document.documentElement.classList.remove('cmb-abierto');
@@ -207,6 +251,7 @@
   function pintar(html) { box.innerHTML = cab + html; var x = $('[data-x]', box); if (x) x.onclick = function () { snd('click'); salir(); }; root.scrollTop = 0; }
   function salir() {
     if (S && S.jugando && !S.yo.fin && !confirm('¿Salir del combate? Tu rival ganará.')) return;
+    if (S && S.terminado) avisarSalida();
     if (S && S.code && S.yo && !S.yo.fin && S.lado) { S.yo.fin = true; S.yo.t = Date.now(); guardarLado(S.code, S.lado, S.yo).catch(function () {}); }
     cerrar();
   }
@@ -362,7 +407,13 @@
   function alLeer(d) {
     var r = d[S.otro]; if (!r) return;
     var antes = S.riv || {};
-    if (r.rx && r.rx !== S.vistoRx) { var primera = S.vistoRx === undefined; S.vistoRx = r.rx; if (!primera) mostrarRx(r.rx, true); }
+    if (r.rx && r.rx !== S.vistoRx) {
+      var primera = S.vistoRx === undefined; S.vistoRx = r.rx;
+      var mv = /^v:([A-Z0-9]{6}):/.exec(r.rx);
+      if (mv) { S.riv = r; if (S.terminado) invitacion(mv[1]); else S.invPendiente = mv[1]; }
+      else if (/^x:/.test(r.rx)) { S.riv = r; if (S.terminado) rivalSalio(); }
+      else if (!primera) mostrarRx(r.rx, true);
+    }
     if (S.jugando && (r.pts || 0) > (antes.pts || 0)) {
       setTimeout(function () { var me = $('#cmbVs .cmb-p:not(.riv)', box); if (me) { me.classList.remove('cmb-hit'); void me.offsetWidth; me.classList.add('cmb-hit'); } pum('¡Ay!', false); sfx('duele'); }, 50);
     }
@@ -455,20 +506,79 @@
     else if (yo.pts !== r.pts) gano = yo.pts > r.pts;
     else if (yo.ms !== r.ms) gano = yo.ms < r.ms;
     else { empate = true; gano = false; }
-    var titulo = empate ? '🤝 ¡Empate!' : gano ? '🏆 ¡Ganaste el combate!' : '🥊 ¡Buen combate!';
+    var titulo = empate ? '🤝 ¡Empate!' : gano ? '🏆 ¡Ganaste el combate!' : '¡Perdiste!';
+    var cara = empate ? '🤝' : gano ? '😄' : '😢';
     var detalle = abandono ? esc(r.nom || 'Tu rival') + ' salió del combate antes de terminar.' :
       (yo.pts === r.pts && !empate ? 'Empataron en aciertos; ganó quien respondió más rápido.' : '');
     // letrero grande en inglés, como en los juegos de pelea: YOU WIN / YOU LOSE / DRAW
-    if (gano) { confeti(); sfx('ko'); } else if (empate) sfx('amor'); else sfx('llanto');
+    if (gano) { confeti(); sfx('ko'); } else if (empate) sfx('amor'); else sfx('pierde');
     var letrero = empate ? 'DRAW' : gano ? 'YOU WIN!' : 'YOU LOSE';
-    pintar('<div class="cmb-ko' + (gano || empate ? '' : ' pierde') + '">' + letrero + '</div><div class="cmb-big">' + titulo + '</div>' +
+    pintar('<div class="cmb-ko' + (gano || empate ? '' : ' pierde') + '">' + letrero + '</div><div class="cmb-cara' + (gano || empate ? '' : ' triste') + '" aria-hidden="true">' + cara + '</div><div class="cmb-big">' + titulo + '</div>' +
       '<div class="cmb-vs"><div class="cmb-p"><b>' + esc(yo.nom) + '</b><span class="pts">' + yo.pts + '</span> <small>de ' + S.n + ' · ' + (yo.ms / 1000).toFixed(1) + ' s</small></div><span class="cmb-glove">🥊</span>' +
       '<div class="cmb-p riv"><b>' + esc(r.nom || 'Rival') + '</b><span class="pts">' + (r.pts || 0) + '</span> <small>de ' + S.n + (r.ms ? ' · ' + (r.ms / 1000).toFixed(1) + ' s' : '') + '</small></div></div>' +
       (detalle ? '<p class="cmb-c">' + detalle + '</p>' : '') +
       '<p class="ver cmb-c">«Pero gracias a Dios, que nos da la victoria por medio de nuestro Señor Jesucristo» — 1 Corintios 15:57</p>' +
-      '<button class="cmb-btn" type="button" id="cmbOtra">🥊 Otro combate</button><button class="cmb-btn ter" type="button" id="cmbFin">Volver al juego</button>');
-    $('#cmbOtra', box).onclick = function () { snd('click'); S = null; menu(); };
-    $('#cmbFin', box).onclick = function () { snd('click'); cerrar(); };
+      '<div class="cmb-inv" id="cmbInv"></div>' +
+      (abandono ? '' : '<button class="cmb-btn" type="button" id="cmbRe">🔁 Jugar de nuevo con ' + esc(r.nom || 'esta persona') + '</button>') +
+      '<button class="cmb-btn' + (abandono ? '' : ' sec') + '" type="button" id="cmbOtra">🥊 Otro combate</button><button class="cmb-btn ter" type="button" id="cmbFin">Volver al juego</button>');
+    S.abandono = abandono;
+    if ($('#cmbRe', box)) $('#cmbRe', box).onclick = function () { snd('click'); revancha(this); };
+    $('#cmbOtra', box).onclick = function () { snd('click'); avisarSalida(); S = null; menu(); };
+    $('#cmbFin', box).onclick = function () { snd('click'); avisarSalida(); cerrar(); };
+    if (S.invPendiente) invitacion(S.invPendiente);
+  }
+  /* ---------------- jugar de nuevo con la misma persona ----------------
+     Se crea un combate nuevo (mismo nivel y cantidad, preguntas nuevas) y se avisa al rival
+     por el campo «rx» del combate anterior ("v:CÓDIGO:hora"); así no hay que cambiar las reglas.
+     Si los dos piden la revancha a la vez, el que creó el primer combate se queda con la suya. */
+  function avisarSalida() { if (S && S.code && S.terminado) { S.yo.rx = 'x:0:' + Date.now().toString(36); S.yo.t = Date.now(); guardarLado(S.code, S.lado, S.yo).catch(function () {}); } }
+  function revancha(btn) {
+    if (!S || !S.terminado) return;
+    if (S.invPendiente) return aceptar(S.invPendiente, btn);
+    var viejo = S, nom = S.yo.nom, inv = $('#cmbInv', box);
+    btn.disabled = true; btn.textContent = '⏳ Preparando…';
+    var code = nuevoCodigo(), seed = Math.floor(Math.random() * 2147483647), qs = preguntas(viejo.lvl, viejo.n, seed);
+    var data = { lvl: viejo.lvl, n: viejo.n, qs: qs.join(','), seed: seed, h: jugadorNuevo(nom), t: Date.now() };
+    crearDoc(code, data).then(function () {
+      if (S !== viejo) return;
+      viejo.miRevancha = code;
+      viejo.yo.rx = 'v:' + code + ':' + Date.now().toString(36); viejo.yo.t = Date.now();
+      guardarLado(viejo.code, viejo.lado, viejo.yo).catch(function () {});
+      btn.textContent = '⏳ Esperando a que ' + (viejo.riv.nom || 'tu rival') + ' acepte…';
+      if (inv && !viejo.rivSalio) { inv.className = 'cmb-inv on'; inv.innerHTML = '🔁 Le enviaste la invitación a <b>' + esc(viejo.riv.nom || 'tu rival') + '</b>. Empezará cuando acepte.'; }
+      var mira = function () {
+        leer(code).then(function (d) {
+          if (S !== viejo || viejo.miRevancha !== code) return;
+          if (d.g && d.g.nom) { limpiar(); S = { code: code, lado: 'h', otro: 'g', lvl: data.lvl, n: data.n, qs: qs, seed: seed, yo: data.h, riv: d.g }; snd('triumph'); cuentaAtras(); return; }
+          revT = setTimeout(mira, 1800);
+        }).catch(function () { if (S === viejo) revT = setTimeout(mira, 3000); });
+      };
+      revT = setTimeout(mira, 1500);
+    }).catch(function (e) { btn.disabled = false; btn.textContent = '🔁 Jugar de nuevo'; if (inv) { inv.className = 'cmb-inv on'; inv.textContent = msgError(e); } });
+  }
+  function aceptar(code, btn) {
+    var inv = $('#cmbInv', box) || document.createElement('div');
+    if (btn) btn.disabled = true;
+    clearTimeout(revT); var viejo = S; viejo.miRevancha = null;
+    unir(viejo.yo.nom, code, btn || document.createElement('button'), inv);
+  }
+  function invitacion(code) {
+    if (!S || !S.terminado) return;
+    S.invPendiente = code;
+    if (S.miRevancha) { if (S.lado === 'h') return; return aceptar(code, $('#cmbRe', box)); } // los dos la pidieron a la vez
+    var inv = $('#cmbInv', box); if (!inv) return;
+    inv.className = 'cmb-inv on';
+    inv.innerHTML = '🔁 <b>' + esc(S.riv.nom || 'Tu rival') + '</b> quiere jugar de nuevo contigo.<button class="cmb-btn" type="button" id="cmbSi">✅ ¡Aceptar la revancha!</button>';
+    sfx('alerta'); burbuja('¿Jugamos otra vez? 🔁', true, S.riv.nom || 'Rival');
+    var re = $('#cmbRe', box); if (re) re.style.display = 'none';
+    $('#cmbSi', box).onclick = function () { snd('click'); aceptar(code, this); };
+  }
+  function rivalSalio() {
+    if (!S || !S.terminado || S.rivSalio) return; S.rivSalio = true;
+    var re = $('#cmbRe', box), inv = $('#cmbInv', box);
+    if (re) { re.disabled = true; re.textContent = '🚪 ' + (S.riv.nom || 'Tu rival') + ' ya salió del combate'; }
+    if (inv) { inv.className = 'cmb-inv on'; inv.innerHTML = (S.riv.nom ? '<b>' + esc(S.riv.nom) + '</b>' : 'Tu rival') + ' ya salió. Crea «Otro combate» y envíale el código nuevo.'; }
+    if (S.miRevancha) { clearTimeout(revT); S.miRevancha = null; }
   }
   document.addEventListener('keydown', function (e) { if (root.classList.contains('on') && S && S.tecla && !/INPUT|TEXTAREA/.test((e.target || {}).tagName || '')) S.tecla(e); });
   addEventListener('pagehide', function () { if (S && S.jugando && !S.yo.fin && S.code) { try { S.yo.fin = true; S.yo.t = Date.now(); var f = {}; f[S.lado] = aFS(S.yo); fetch(BASE + S.code + '?updateMask.fieldPaths=' + S.lado + '&key=' + KEY, { method: 'PATCH', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: f }) }); } catch (e) {} } });
