@@ -302,3 +302,9 @@ body[data-screen="welcome"] #btnHome { display: none; }
 .screen.active { flex: 1 0 auto; justify-content: safe center; }
 main { scrollbar-width: thin; scrollbar-color: rgba(244, 197, 66, .65) transparent; }
 main::-webkit-scrollbar { width: 8px; } main::-webkit-scrollbar-thumb { background: rgba(244, 197, 66, .6); border-radius: 8px; } main::-webkit-scrollbar-track { background: transparent; }
+/* Cantidad de preguntas (Rápido 10 / Normal 20) y aviso del reto final */
+.len-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.len-seg button { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.len-seg button small { font-weight: 500; opacity: .75; font-size: 12px; }
+.len-seg button.sel { border-color: #d9b45a; background: rgba(217, 180, 90, .2); box-shadow: 0 0 0 2px rgba(217, 180, 90, .35) inset; }
+.level .txt small.lv-hard { display: block; font-size: 12px; color: #ffb36b; font-weight: 600; margin-top: 2px; }

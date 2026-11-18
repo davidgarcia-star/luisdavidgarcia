@@ -18,10 +18,14 @@
   const PRESET_NAMES = ["Leones de Judá", "Águilas de Fuego", "Guerreros de Fe", "Hijos de la Luz"];
   const CUSTOM = "custom";
   const PASS_PCT = 70;   // porcentaje mínimo para aprobar un nivel
+  // Máster Superior es el reto final: aunque sean pocas preguntas, hay que acertar el 90 % y con solo 12 segundos
+  const HARD = "mastersuperior";
+  const passPct = (lv) => (lv && lv.id === HARD ? 90 : PASS_PCT);
+  const timeQ = () => (state.level && state.level.id === HARD ? 12 : TIME_PER_Q);
 
   const state = {
     mode: "solo",          // "solo" | "teams"
-    soloCount: 20,         // 20 (pocas) o 50 (muchas)
+    soloCount: 20,         // 10 (rápido), 20 (intermedio) o 35 (muchas)
     teamCount: 2,
     teamCfg: PRESET_NAMES.map((_, i) => ({ choice: String(i), custom: "" })),
     teamNames: [],
@@ -279,6 +283,9 @@
     go("levels");
   };
 
+  // la cantidad de preguntas elegida la última vez (si era 50, que ya no existe, queda en 35)
+  try { const n = +localStorage.getItem("dbrd_len"); if ([10, 20, 35].includes(n)) state.soloCount = n; } catch (e) {}
+
   /* ---------- niveles ---------- */
   function buildLevels() {
     const solo = state.mode === "solo";
@@ -303,8 +310,8 @@
       const locked = solo && idx > 0 && !isPassed(LEVELS[idx - 1].id);
       const passed = solo && isPassed(lv.id);
       const desc = locked
-        ? "Bloqueado · aprueba " + LEVELS[idx - 1].name + " con " + PASS_PCT + "% o más"
-        : lv.desc + " · " + n + " preguntas";
+        ? "Bloqueado · aprueba " + LEVELS[idx - 1].name + " con " + passPct(LEVELS[idx - 1]) + "% o más"
+        : lv.desc + " · " + n + " preguntas" + (lv.id === HARD ? " · 🔥 Reto final: necesitas el 90 % y tienes 12 segundos por pregunta" : "");
       b.innerHTML =
         '<span class="level-step">' + (locked ? "🔒" : passed ? "✓" : idx + 1) + "</span>" +
         '<span class="level-emoji" aria-hidden="true">' + lv.emoji + "</span>" +
@@ -328,6 +335,7 @@
     if (!b) return;
     Sound.click();
     state.soloCount = Number(b.dataset.n);
+    try { localStorage.setItem("dbrd_len", String(state.soloCount)); } catch (er) {}
     buildLevels();
   });
 
@@ -345,7 +353,7 @@
     state.level = lv;
     const pool = shuffle(QUESTIONS[lv.id]);
     if (state.mode === "solo") {
-      state.queue = pool.slice(0, state.soloCount);       // 20 (pocas) o 50 (muchas)
+      state.queue = pool.slice(0, state.soloCount);       // 10, 20 o 35 preguntas
       state.scores = [0];
     } else {
       state.queue = pool.slice(0, teamQuestionCount(pool.length));
@@ -443,7 +451,7 @@
 
   function startTimer() {
     clearInterval(state.timer);
-    state.timeLeft = TIME_PER_Q;
+    state.timeLeft = timeQ();
     updateTimerBar();
     state.timer = setInterval(() => {
       state.timeLeft -= 0.25;
@@ -457,7 +465,7 @@
   }
   // Reloj circular: el anillo se vacía y cambia de oro a naranja y a rojo
   function updateTimerBar() {
-    const pct = Math.max(0, (state.timeLeft / TIME_PER_Q) * 100);
+    const pct = Math.max(0, (state.timeLeft / timeQ()) * 100);
     $("timerRing").style.strokeDashoffset = String(100 - pct);
     $("timerNum").textContent = String(Math.max(0, Math.ceil(state.timeLeft)));
     const ring = $("ringTimer");
@@ -563,7 +571,7 @@
     state.finished = true;
     Sound.fanfare();
     // El confeti solo celebra cuando se aprueba (o en equipos); si no, taparía el mensaje de ánimo
-    const celebra = state.mode !== "solo" || Math.round((state.correctCount / state.total) * 100) >= PASS_PCT;
+    const celebra = state.mode !== "solo" || Math.round((state.correctCount / state.total) * 100) >= passPct(state.level);
     if (celebra) {
       confetti(180);
       setTimeout(() => confetti(120), 500);
@@ -574,7 +582,7 @@
       const n = state.total;
       const pct = Math.round((state.correctCount / n) * 100);
       saveBest(state.level.id, n, state.correctCount);
-      const passed = pct >= PASS_PCT;
+      const passed = pct >= passPct(state.level);
       if (passed) setPassed(state.level.id);
       const li = LEVELS.findIndex((l) => l.id === state.level.id);
       const nextLv = LEVELS[li + 1] || null;
@@ -608,7 +616,7 @@
         ? (nextLv
             ? "✅ ¡Aprobaste! Puedes pasar al siguiente nivel: " + nextLv.name + "."
             : "🎉 ¡Aprobaste el último nivel! Completaste todos los niveles.")
-        : "📚 Debes seguir practicando. Necesitas " + PASS_PCT + "% o más para pasar al siguiente nivel.";
+        : "📚 Debes seguir practicando. Necesitas " + passPct(state.level) + "% o más para pasar al siguiente nivel.";
       if (passed) body.appendChild(felicidades(state.level.id, pct));
       // portada de FELICIDADES al aprobar el último nivel (Máster Superior)
       if (passed && !nextLv && window.Felicidades) setTimeout(() => Felicidades.mostrar({ juego: "Desafío Bíblico RD", niveles: LEVELS.map((x) => x.name), texto: pct + " % de aciertos en " + state.level.name, siguiente: { nombre: "Desafío Bíblico RD 2", url: "../desafio-biblico-rd-2/" }, sonido: Sound.sfxOn !== false }), 900);

@@ -2,10 +2,16 @@
  * Usa el mismo banco de preguntas (LBLA) y la música de Desafío Bíblico RD. */
 (() => {
   const $ = (id) => document.getElementById(id);
-  const TIME_PER_Q = 20;
-  // Regla del 70 %: cada partida tiene 20 preguntas; se gana con 14 correctas (70 %)
-  // y se pierde al llegar a 7 errores (ya no se puede alcanzar el 70 %).
-  const NQ = 20, NEED = 14, MAXERR = NQ - NEED + 1;
+  // Regla del 70 %: la partida normal tiene 20 preguntas (se gana con 14) y la rápida 10 (se gana con 7);
+  // se pierde al llegar a los errores con los que ya no se puede alcanzar el 70 %.
+  // El último nivel (Máster) es el reto final: 90 % para ganar y solo 12 segundos por pregunta.
+  const LENS = [10, 20];
+  let TIME_PER_Q = 20, NQ = 20, NEED = 14, MAXERR = NQ - NEED + 1, PCT = 70;
+  let qLen = 20; try { qLen = +localStorage.getItem("dbrd2_len") === 10 ? 10 : 20; } catch (e) {}
+  function setRules(i) {
+    const last = i === LEVELS.length - 1;
+    NQ = qLen; PCT = last ? 90 : 70; NEED = Math.ceil(NQ * PCT / 100); MAXERR = NQ - NEED + 1; TIME_PER_Q = last ? 12 : 20;
+  }
   const LETTERS = ["A", "B", "C", "D"];
   const GROUND = 215;
   const ROUTE = { welcome: "inicio", modes: "modos", levels: "niveles", play: "juego", result: "resultados" };
@@ -295,7 +301,7 @@
     },
     {
       id: "flecha", ico: "🎯", name: "Flecha al Blanco",
-      desc: "20 flechas. Si respondes bien, la flecha da en el blanco. Acierta 14 para ganar.",
+      get desc() { return "Tienes una flecha por pregunta. Si respondes bien, la flecha da en el blanco. Acierta el 70 % (o el 90 % en Máster) para ganar."; },
       how: "<b>Flecha al Blanco:</b> tienes 20 flechas. Si respondes bien la flecha da en el blanco (más rápido = más cerca del centro: 10, 8 o 6 puntos). Si fallas, la flecha se pierde. Da 14 veces en el blanco (70 %) para ganar.",
       man: { ok: [], bad: [] },
       you: ["¡Al centro!", "¡En el blanco!", "¡Buen tiro!"],
@@ -334,7 +340,7 @@
           status() { if (hits >= need) return "win"; if (used - hits >= MAXERR) return "lose"; return null; },
           final() { return hits >= need ? "win" : "lose"; },
           hud() { return { good: hits / need, goodLbl: `En el blanco ${hits} de ${need}`, bad: (used - hits) / MAXERR, badLbl: `Fallos ${used - hits} de ${MAXERR}` }; },
-          winTxt: "¡Diste en el blanco 14 veces!",
+          winTxt: `¡Diste en el blanco ${NEED} veces!`,
           loseTxt: "Se perdieron demasiadas flechas.",
         };
       },
@@ -346,7 +352,7 @@
       man: { ok: ["¡Ay, mi cabeza!", "¡Uf!", "¡Grrr!"], bad: ["¡Ahí voy!", "¡Ja, fallaste!", "¡No me detienes!"] },
       you: ["¡En el nombre del SEÑOR!", "¡Toma!", "¡Piedra!"],
       create(svg, k) {
-        const drift = 0.8 + 0.2 * k, stepIn = 7 + k, hits0 = 5 + k;
+        const drift = 0.8 + 0.2 * k, stepIn = 7 + k, hits0 = Math.min(5 + Math.round(k), NEED);
         let d = 100, vis = 100, hits = 0, knock = 0, down = 0;
         const X = (dd) => 240 + dd * 4.1;
         svg.innerHTML = sky("#3b2a1f", "#a0703f") + groundSvg("#8a6a3a", "#a5834f") +
@@ -431,7 +437,7 @@
           status() { return hits >= NEED ? "win" : errs >= MAXERR ? "lose" : null; },
           final() { return hits >= NEED ? "win" : "lose"; },
           hud() { return { good: hits / NEED, goodLbl: `Pinchazos ${hits} de ${NEED}`, bad: errs / MAXERR, badLbl: `Fallos ${errs} de ${MAXERR}` }; },
-          winTxt: "¡El globo explotó! ¡PUM! Lograste el 70 %.",
+          winTxt: `¡El globo explotó! ¡PUM! Lograste el ${PCT} %.`,
           loseTxt: "La aguja falló demasiadas veces y el globo quedó entero.",
         };
       },
@@ -495,7 +501,7 @@
           status() { return fill >= NEED ? "win" : errs >= MAXERR ? "lose" : null; },
           final() { return fill >= NEED ? "win" : "lose"; },
           hud() { return { good: fill / NEED, goodLbl: `Tanque ${Math.round(fill / NEED * 100)} % lleno`, bad: errs / MAXERR, badLbl: `Cubos derramados ${errs} de ${MAXERR}` }; },
-          winTxt: "¡El tanque está lleno! Lograste el 70 %.",
+          winTxt: `¡El tanque está lleno! Lograste el ${PCT} %.`,
           loseTxt: "Se derramó demasiada agua y el tanque no se llenó.",
         };
       },
@@ -580,11 +586,16 @@
     $("levelsMode").textContent = m.ico + " " + m.name;
     $("levelsHint").textContent = m.desc;
     const box = $("levelList"); box.innerHTML = "";
+    // cantidad de preguntas: 10 (atajo rápido) o 20 (normal)
+    const seg = document.createElement("div"); seg.className = "len-seg";
+    seg.innerHTML = LENS.map((n) => `<button type="button" class="${n === qLen ? "sel" : ""}" data-n="${n}">${n === 10 ? "⚡ Rápido" : "📖 Normal"}<small>${n} preguntas</small></button>`).join("");
+    seg.onclick = (e) => { const b = e.target.closest("button"); if (!b) return; click(); qLen = +b.dataset.n; try { localStorage.setItem("dbrd2_len", qLen); } catch (er) {} drawLevels(); };
+    box.appendChild(seg);
     LEVELS.forEach((l, i) => {
       const open = unlocked(m.id, i), w = won(m.id, l.id);
       const b = document.createElement("button");
       b.className = "level"; b.type = "button"; b.disabled = !open;
-      b.innerHTML = `<span class="em">${l.emoji}</span><span class="txt"><b>${l.name}</b></span><span class="st ${open ? "" : "lock"}">${w ? "✓ Ganado" : open ? "Jugar ▶" : "🔒"}</span>`;
+      b.innerHTML = `<span class="em">${l.emoji}</span><span class="txt"><b>${l.name}</b>${i === LEVELS.length - 1 ? `<small class="lv-hard">🔥 Reto final: 90 % y 12 s por pregunta</small>` : ""}</span><span class="st ${open ? "" : "lock"}">${w ? "✓ Ganado" : open ? "Jugar ▶" : "🔒"}</span>`;
       b.onclick = () => { click(); startGame(i); };
       box.appendChild(b);
     });
@@ -594,7 +605,9 @@
   function startGame(i) {
     const l = LEVELS[i];
     state.level = l; state.k = i;
-    state.M = state.mode.create($("arena"), i);
+    setRules(i);
+    // en el reto final los rivales (soga, carrera, honda…) también aprietan más
+    state.M = state.mode.create($("arena"), i === LEVELS.length - 1 ? i + 1.5 : i);
     state.queue = shuffle(QUESTIONS[l.id]).slice(0, NQ);
     Object.assign(state, { index: 0, streak: 0, best: 0, correct: 0, answered: 0, over: null, finished: false, busy: false });
     $("playLevel").textContent = state.mode.ico + " " + state.mode.name + " · " + l.name;
