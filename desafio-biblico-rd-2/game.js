@@ -601,6 +601,23 @@
     });
   }
 
+
+  // Rotación de preguntas: primero salen las que el jugador todavía no ha visto en ese nivel;
+  // cuando ya las vio todas, empieza una vuelta nueva. Así no se repiten siempre las mismas.
+  const qHash = (t) => { let h = 5381; for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
+  const seenKey = (id) => "dbrd2_vistas_" + id;
+  const loadSeen = (id) => { try { return new Set(JSON.parse(localStorage.getItem(seenKey(id)) || "[]")); } catch (e) { return new Set(); } };
+  function rotOrder(id) {
+    const seen = loadSeen(id), all = QUESTIONS[id];
+    return shuffle(all.filter((q) => !seen.has(qHash(q.q)))).concat(shuffle(all.filter((q) => seen.has(qHash(q.q)))));
+  }
+  function markSeen(id, list) {
+    let seen = loadSeen(id); list.forEach((q) => seen.add(qHash(q.q)));
+    const ids = new Set(QUESTIONS[id].map((q) => qHash(q.q)));
+    if ([...ids].every((x) => seen.has(x))) seen = new Set(list.map((q) => qHash(q.q))); // vuelta completa: empieza otra
+    try { localStorage.setItem(seenKey(id), JSON.stringify([...seen].filter((x) => ids.has(x)))); } catch (e) {}
+  }
+
   /* ---------------- partida ---------------- */
   function startGame(i) {
     const l = LEVELS[i];
@@ -608,7 +625,7 @@
     setRules(i);
     // en el reto final los rivales (soga, carrera, honda…) también aprietan más
     state.M = state.mode.create($("arena"), i === LEVELS.length - 1 ? i + 1.5 : i);
-    state.queue = shuffle(QUESTIONS[l.id]).slice(0, NQ);
+    state.queue = shuffle(rotOrder(l.id).slice(0, NQ)); markSeen(l.id, state.queue);
     Object.assign(state, { index: 0, streak: 0, best: 0, correct: 0, answered: 0, over: null, finished: false, busy: false });
     $("playLevel").textContent = state.mode.ico + " " + state.mode.name + " · " + l.name;
     $("bubbleMan").hidden = $("bubbleYou").hidden = true;

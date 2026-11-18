@@ -348,10 +348,27 @@
     return rounds * state.teamCount;
   }
 
+
+  // Rotación de preguntas: primero salen las que el jugador todavía no ha visto en ese nivel;
+  // cuando ya las vio todas, empieza una vuelta nueva. Así no se repiten siempre las mismas.
+  const qHash = (t) => { let h = 5381; for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
+  const seenKey = (id) => "dbrd_vistas_" + id;
+  const loadSeen = (id) => { try { return new Set(JSON.parse(localStorage.getItem(seenKey(id)) || "[]")); } catch (e) { return new Set(); } };
+  function rotOrder(id) {
+    const seen = loadSeen(id), all = QUESTIONS[id];
+    return shuffle(all.filter((q) => !seen.has(qHash(q.q)))).concat(shuffle(all.filter((q) => seen.has(qHash(q.q)))));
+  }
+  function markSeen(id, list) {
+    let seen = loadSeen(id); list.forEach((q) => seen.add(qHash(q.q)));
+    const ids = new Set(QUESTIONS[id].map((q) => qHash(q.q)));
+    if ([...ids].every((x) => seen.has(x))) seen = new Set(list.map((q) => qHash(q.q))); // vuelta completa: empieza otra
+    try { localStorage.setItem(seenKey(id), JSON.stringify([...seen].filter((x) => ids.has(x)))); } catch (e) {}
+  }
+
   /* ---------- partida ---------- */
   function startGame(lv) {
     state.level = lv;
-    const pool = shuffle(QUESTIONS[lv.id]);
+    const pool = rotOrder(lv.id);
     if (state.mode === "solo") {
       state.queue = pool.slice(0, state.soloCount);       // 10, 20 o 35 preguntas
       state.scores = [0];
@@ -359,6 +376,8 @@
       state.queue = pool.slice(0, teamQuestionCount(pool.length));
       state.scores = state.teamNames.map(() => 0);
     }
+    markSeen(lv.id, state.queue);
+    state.queue = shuffle(state.queue);
     state.total = state.queue.length;
     state.index = 0;
     state.correctCount = 0;
