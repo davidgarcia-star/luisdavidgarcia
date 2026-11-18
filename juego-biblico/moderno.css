@@ -79,3 +79,8 @@
 .foot a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .foot a:hover { color: var(--gold); }
 
+
+/* Celular: espacio al final para que el botón flotante «Guardar avance» y el regalo no tapen el pie ni el enlace de Privacidad */
+@media (max-width: 899px) {
+  .foot { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+}
