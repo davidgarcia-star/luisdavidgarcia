@@ -12,7 +12,8 @@ rules_version = '2';
 //    se puede subir de 1 en 1 (respaldo para cuando el contador de Abacus no responde).
 //  - Combate de la Fe (duelos/{código}): partidas en línea 1 contra 1 de Desafío Bíblico RD 1 y 2.
 //    Quien tiene el código puede leer esa partida; no se puede ver la lista de partidas.
-//    Solo se aceptan los campos del juego, con tamaño limitado, y no se pueden borrar.
+//    Solo se aceptan los campos del juego (incluida la última reacción o mensaje rápido, «rx»),
+//    con tamaño limitado, y no se pueden borrar.
 //  - Cualquier otra colección queda cerrada.
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -47,7 +48,8 @@ service cloud.firestore {
 
     match /duelos/{code} {
       function jugador(p) {
-        return p is map && p.keys().hasOnly(['nom', 'pts', 'i', 'ms', 'fin', 't'])
+        return p is map && p.keys().hasOnly(['nom', 'pts', 'i', 'ms', 'fin', 't', 'rx'])
+          && (!('rx' in p) || (p.rx is string && p.rx.size() <= 24))
           && p.nom is string && p.nom.size() > 0 && p.nom.size() <= 20
           && p.pts is int && p.pts >= 0 && p.pts <= 35
           && p.i is int && p.i >= 0 && p.i <= 35

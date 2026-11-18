@@ -28,6 +28,46 @@
   var TIEMPO = 20;              // segundos por pregunta
   var POLL = 1500;              // cada cuánto se mira al rival (ms)
   var LETRAS = ['A', 'B', 'C', 'D'];
+  // Reacciones y mensajes rápidos (no se puede escribir libre: así todo queda con respeto)
+  var REAC = [['😂', 'risa'], ['😭', 'llanto'], ['💕', 'amor'], ['😡', 'enojo'], ['👏', 'aplauso'], ['🔥', 'fuego'], ['😱', 'susto'], ['🙏', 'amen'], ['💪', 'fuerza'], ['🥊', 'golpe'], ['😎', 'fresco'], ['🤔', 'pensar']];
+  var MSGS = ['¡Hola! 👋', '¡Bendiciones! 🙌', '¡Shalom! 🕊️', '¿Cómo estás?', 'Bien, ¿y tú?', '¡Hoy voy a ganar! 🏆', '¡Te voy a vencer! 🥊', 'Siento que perderás 😏', '¡Buena respuesta! 👍', '¡Uy, casi! 😅', '¡Esa estaba difícil!', '¡Gloria a Dios! 🙌', '¡Amén! 🙏', '¡Vamos, tú puedes!', '¡Buen combate! 🤝', '¿La revancha? 🔁', '¡Dios te bendiga! ✨', '¡Me ganaste esta vez! 😄'];
+
+  /* ---------------- sonidos propios del combate (sintetizados, sin archivos) ---------------- */
+  var AC = null;
+  function ac() { if (window.Sound && Sound.sfxOn === false) return null; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); return AC; } catch (e) { return null; } }
+  function tono(f0, f1, dur, tipo, vol, t0) {
+    var a = ac(); if (!a) return; var t = a.currentTime + (t0 || 0), o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || 'sine'; o.frequency.setValueAtTime(f0, t); if (f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || .2, t + .02); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + .05);
+  }
+  function ruido(dur, frec, vol, t0, tipo) {
+    var a = ac(); if (!a) return; var t = a.currentTime + (t0 || 0), n = Math.floor(a.sampleRate * dur), b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0);
+    for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+    var src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); src.buffer = b; f.type = tipo || 'lowpass'; f.frequency.value = frec || 1200; g.gain.value = vol || .3;
+    src.connect(f); f.connect(g); g.connect(a.destination); src.start(t);
+  }
+  var SFX = {
+    risa: function () { for (var i = 0; i < 5; i++) tono(620 - i * 25, 520 - i * 25, .09, 'square', .07, i * .12); },
+    llanto: function () { tono(520, 300, .5, 'sine', .16); tono(480, 260, .6, 'sine', .14, .5); tono(440, 220, .7, 'triangle', .12, 1.05); },
+    amor: function () { tono(880, 0, .25, 'sine', .14); tono(1175, 0, .35, 'sine', .14, .16); tono(1568, 0, .5, 'sine', .1, .32); },
+    enojo: function () { tono(120, 80, .45, 'sawtooth', .14); ruido(.4, 400, .2); tono(90, 60, .35, 'sawtooth', .12, .3); },
+    aplauso: function () { for (var i = 0; i < 9; i++) ruido(.05, 3000, .25, i * .085 + Math.random() * .03, 'highpass'); },
+    fuego: function () { ruido(.7, 900, .3); tono(200, 700, .5, 'sawtooth', .05); },
+    susto: function () { tono(300, 1300, .35, 'triangle', .16); },
+    amen: function () { tono(523, 0, .9, 'sine', .08); tono(659, 0, .9, 'sine', .07, .05); tono(784, 0, 1, 'sine', .07, .1); },
+    fuerza: function () { tono(330, 0, .12, 'square', .1); tono(440, 0, .12, 'square', .1, .13); tono(660, 0, .3, 'square', .1, .26); },
+    golpe: function () { ruido(.18, 600, .5); tono(150, 50, .2, 'sine', .3); },
+    fresco: function () { tono(700, 0, .1, 'triangle', .1); tono(940, 0, .25, 'triangle', .1, .12); },
+    pensar: function () { tono(400, 0, .15, 'sine', .09); tono(450, 0, .15, 'sine', .09, .25); tono(500, 0, .3, 'sine', .09, .5); },
+    msg: function () { tono(660, 990, .12, 'sine', .14); },
+    pum: function () { ruido(.15, 700, .45); tono(180, 60, .18, 'sine', .25); },
+    duele: function () { ruido(.12, 300, .3); tono(110, 70, .2, 'square', .08); },
+    combo: function () { tono(660, 0, .08, 'square', .08); tono(880, 0, .08, 'square', .08, .08); tono(1320, 0, .2, 'square', .08, .16); },
+    campana: function () { tono(1046, 0, 1.2, 'triangle', .2); tono(1046, 0, 1.2, 'triangle', .15, .35); },
+    ko: function () { ruido(.3, 500, .5); tono(200, 40, .6, 'sawtooth', .2); tono(523, 0, .3, 'square', .1, .6); tono(659, 0, .3, 'square', .1, .8); tono(784, 0, .6, 'square', .1, 1); }
+  };
+  var sfx = function (n) { try { SFX[n] && SFX[n](); } catch (e) {} };
   var script = document.currentScript;
   var JUEGO = (script && script.getAttribute('data-juego')) || 'Desafío Bíblico RD';
   var BANCO = (typeof QUESTIONS !== 'undefined') ? QUESTIONS : null;
@@ -80,8 +120,9 @@
   function msgError(e) {
     if (!navigator.onLine || /fetch|network/i.test(e.message)) return 'Sin conexión a internet. Revisa tu conexión e intenta otra vez.';
     if (e.status === 404) return 'No existe un combate con ese código. Revisa las letras.';
-    if (e.status === 403) return 'El combate en línea todavía no está activado en el servidor (faltan las reglas de Firebase).';
-    return 'No se pudo conectar (' + e.message + '). Intenta otra vez.';
+    if (e.status === 403) return 'Firebase no dio permiso (PERMISSION_DENIED): hay que publicar las reglas nuevas de «firestore.rules» en Firebase → Firestore Database → Reglas.';
+    if (e.status === 400 || e.status === 412) return 'Firebase rechazó la solicitud (' + e.message + '). Revisa que las reglas publicadas sean las más nuevas.';
+    return 'No se pudo conectar con Firebase (' + e.message + '). Intenta otra vez.';
   }
 
   /* ---------------- estilos ---------------- */
@@ -114,20 +155,52 @@
     '.cmb-wait{display:inline-block;width:14px;height:14px;border:3px solid #ffd778;border-right-color:transparent;border-radius:50%;animation:cmbspin 1s linear infinite;vertical-align:-2px;margin-right:6px}' +
     '@keyframes cmbspin{to{transform:rotate(360deg)}}' +
     '.modes #btnCombate{grid-column:1/-1}' +
+    '.cmb-rx{position:fixed;left:0;right:0;bottom:0;z-index:99993;display:none;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(8,11,28,.97),rgba(8,11,28,.85));border-top:1px solid rgba(255,215,120,.35)}' +
+    '.cmb-rx.on{display:block}.cmb-rx .fila{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;max-width:620px;margin:0 auto}.cmb-rx .fila::-webkit-scrollbar{display:none}' +
+    '.cmb-rx .em{flex:none;width:46px;height:46px;border-radius:14px;border:1px solid #3a4475;background:#151c3c;font-size:25px;cursor:pointer;transition:transform .1s}.cmb-rx .em:active{transform:scale(.88)}' +
+    '.cmb-rx .msg{flex:none;padding:0 13px;height:38px;border-radius:999px;border:1px solid #3a4475;background:#1b2350;color:#eef1ff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}' +
+    '.cmb-rx .msg:active{transform:scale(.93)}.cmb-rx .fila+.fila{margin-top:7px}.cmb-rx .tit{max-width:620px;margin:0 auto 5px;font-size:11px;letter-spacing:.08em;color:#aab2dd;text-transform:uppercase}' +
+    '.cmb.rxon .cmb-box{margin-bottom:130px}' +
+    '.cmb-fx{position:fixed;inset:0;z-index:99994;pointer-events:none;overflow:hidden}' +
+    '.cmb-fl{position:absolute;font-size:46px;animation:cmbfl 2.2s ease-out forwards;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}' +
+    '@keyframes cmbfl{0%{transform:translate(-50%,0) scale(.3);opacity:0}15%{transform:translate(-50%,-30px) scale(1.25);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),-260px) scale(1);opacity:0}}' +
+    '.cmb-bub{position:absolute;max-width:240px;padding:9px 14px;border-radius:16px;font-weight:700;font-size:15px;color:#1a1a2e;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.45);animation:cmbbub 3s ease forwards;transform:translateX(-50%)}' +
+    '.cmb-bub.yo{background:#ffe08a}.cmb-bub small{display:block;font-size:11px;font-weight:600;opacity:.6}' +
+    '@keyframes cmbbub{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}10%{opacity:1;transform:translate(-50%,0) scale(1.05)}18%{transform:translate(-50%,0) scale(1)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-18px)}}' +
+    '.cmb-shake{animation:cmbsh .45s}@keyframes cmbsh{0%,100%{transform:none}20%{transform:translateX(-8px) rotate(-1deg)}40%{transform:translateX(7px) rotate(1deg)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}' +
+    '.cmb-hit{animation:cmbhit .5s}@keyframes cmbhit{0%{background:#121a38}30%{background:rgba(239,90,90,.45);transform:scale(.95)}100%{background:#121a38;transform:none}}' +
+    '.cmb-pum{position:absolute;font-size:30px;font-weight:900;color:#ffd778;text-shadow:0 0 12px #f28a3b,-2px 0 #000,2px 0 #000,0 2px #000;animation:cmbpum .8s ease-out forwards}' +
+    '@keyframes cmbpum{0%{transform:translate(-50%,-50%) scale(.2) rotate(-12deg);opacity:0}30%{transform:translate(-50%,-50%) scale(1.3) rotate(6deg);opacity:1}100%{transform:translate(-50%,-90%) scale(1);opacity:0}}' +
+    '.cmb-glove.punch{display:inline-block;animation:cmbpunch .5s}@keyframes cmbpunch{0%{transform:none}40%{transform:translateX(22px) scale(1.4) rotate(-15deg)}100%{transform:none}}' +
+    '.cmb-glove.bump{display:inline-block;animation:cmbbump .9s infinite}@keyframes cmbbump{0%,100%{transform:scale(1)}50%{transform:scale(1.35) rotate(10deg)}}' +
+    '.cmb-combo{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:linear-gradient(90deg,#f28a3b,#ef3b3b);color:#fff;font-size:12px;font-weight:800;animation:cmbpop .4s}' +
+    '@keyframes cmbpop{0%{transform:scale(.3)}70%{transform:scale(1.2)}100%{transform:scale(1)}}' +
+    '.cmb-ko{font-size:64px;font-weight:900;text-align:center;color:#ffd778;text-shadow:0 0 22px #f28a3b,-3px 0 #000,3px 0 #000,0 3px #000;animation:cmbko .9s cubic-bezier(.2,1.6,.4,1)}' +
+    '@keyframes cmbko{0%{transform:scale(4) rotate(-20deg);opacity:0}100%{transform:none;opacity:1}}' +
+    '.cmb-conf{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:cmbconf linear forwards}' +
+    '@keyframes cmbconf{to{transform:translate(var(--dx),110vh) rotate(var(--r));opacity:.8}}' +
+    'html.cmb-abierto .cta-btn,html.cmb-abierto .cta-tip{display:none!important}' +
     '.cmb-x{float:right;background:none;border:0;color:#aab2dd;font-size:22px;cursor:pointer;line-height:1}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
   var root = document.createElement('div'); root.className = 'cmb'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-label', 'Combate de la Fe');
   root.innerHTML = '<div class="cmb-box" id="cmbBox"></div>'; document.body.appendChild(root);
+  var fx = document.createElement('div'); fx.className = 'cmb-fx'; document.body.appendChild(fx);
+  var barra = document.createElement('div'); barra.className = 'cmb-rx';
+  barra.innerHTML = '<div class="tit">Reacciona y saluda a tu rival</div><div class="fila">' +
+    REAC.map(function (r, i) { return '<button class="em" type="button" data-r="' + i + '" aria-label="' + r[1] + '">' + r[0] + '</button>'; }).join('') + '</div>' +
+    '<div class="fila">' + MSGS.map(function (m, i) { return '<button class="msg" type="button" data-m="' + i + '">' + m + '</button>'; }).join('') + '</div>';
+  document.body.appendChild(barra);
   var box = $('#cmbBox', root);
 
   /* ---------------- estado ---------------- */
-  var S = null, pollT = 0, qT = 0;
-  function limpiar() { clearTimeout(pollT); clearInterval(qT); pollT = 0; qT = 0; }
+  var S = null, pollT = 0, qT = 0, stepT = 0;
+  function limpiar() { clearTimeout(pollT); clearInterval(qT); clearTimeout(stepT); pollT = 0; qT = 0; stepT = 0; }
+  function barraOn(on) { barra.classList.toggle('on', !!on); root.classList.toggle('rxon', !!on); }
   function cerrar() {
-    limpiar(); S = null; root.classList.remove('on'); document.documentElement.style.overflow = '';
+    limpiar(); S = null; barraOn(false); fx.innerHTML = ''; root.classList.remove('on'); document.documentElement.style.overflow = ''; document.documentElement.classList.remove('cmb-abierto');
     if (/[?&]combate=/.test(location.search)) history.replaceState(null, '', location.pathname + location.hash);
   }
-  function abrir() { root.classList.add('on'); document.documentElement.style.overflow = 'hidden'; }
+  function abrir() { root.classList.add('on'); document.documentElement.style.overflow = 'hidden'; document.documentElement.classList.add('cmb-abierto'); }
   function nombre() { return (ls.get('combate_nombre') || '').slice(0, 20); }
   var cab = '<button class="cmb-x" type="button" data-x aria-label="Cerrar">✕</button><h2><span class="cmb-glove">🥊</span> Combate de la Fe</h2>';
   function pintar(html) { box.innerHTML = cab + html; var x = $('[data-x]', box); if (x) x.onclick = function () { snd('click'); salir(); }; root.scrollTop = 0; }
@@ -167,7 +240,7 @@
     var r = rng(seed), lista = BANCO[lvl].map(function (_, i) { return i; });
     return barajar(lista, r).slice(0, n);
   }
-  function jugadorNuevo(nom) { return { nom: nom, pts: 0, i: 0, ms: 0, fin: false, t: Date.now() }; }
+  function jugadorNuevo(nom) { return { nom: nom, pts: 0, i: 0, ms: 0, fin: false, t: Date.now(), rx: '' }; }
 
   function crear(nom, btn, err, intento) {
     btn.disabled = true; err.textContent = '';
@@ -227,36 +300,105 @@
     }).catch(function (e) { btn.disabled = false; err.textContent = msgError(e); });
   }
 
+  /* ---------------- reacciones, mensajes y efectos ---------------- */
+  function posPanel(rival) {
+    var el = $(rival ? '.cmb-p.riv' : '.cmb-p', box);
+    if (!el) return { x: innerWidth * (rival ? .75 : .25), y: innerHeight * .3 };
+    var r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+  function flotar(emoji, rival, n) {
+    var p = posPanel(rival);
+    for (var i = 0; i < (n || 5); i++) (function (i) {
+      setTimeout(function () {
+        var e = document.createElement('div'); e.className = 'cmb-fl'; e.textContent = emoji;
+        e.style.left = (p.x + (Math.random() - .5) * 60) + 'px'; e.style.top = (p.y + 10) + 'px';
+        e.style.setProperty('--dx', ((Math.random() - .5) * 140) + 'px'); e.style.fontSize = (34 + Math.random() * 26) + 'px';
+        fx.appendChild(e); setTimeout(function () { e.remove(); }, 2300);
+      }, i * 110);
+    })(i);
+  }
+  function burbuja(texto, rival, quien) {
+    var p = posPanel(rival), e = document.createElement('div'); e.className = 'cmb-bub' + (rival ? '' : ' yo');
+    e.innerHTML = '<small>' + esc(quien) + '</small>' + esc(texto);
+    e.style.left = Math.max(130, Math.min(innerWidth - 130, p.x)) + 'px'; e.style.top = Math.max(8, p.y - 80) + 'px';
+    [].forEach.call(fx.querySelectorAll('.cmb-bub' + (rival ? ':not(.yo)' : '.yo')), function (b) { b.remove(); });
+    fx.appendChild(e); setTimeout(function () { e.remove(); }, 3100);
+  }
+  function mostrarRx(rx, rival) {
+    var m = /^([rm]):(\d+):/.exec(rx || ''); if (!m) return;
+    var i = +m[2], quien = rival ? (S.riv && S.riv.nom) || 'Rival' : 'Tú';
+    if (m[1] === 'r' && REAC[i]) { flotar(REAC[i][0], rival, rival ? 7 : 4); sfx(REAC[i][1]); if (REAC[i][1] === 'enojo' || REAC[i][1] === 'golpe') sacudir(); }
+    else if (m[1] === 'm' && MSGS[i]) { burbuja(MSGS[i], rival, quien); sfx('msg'); }
+  }
+  var ultimoEnvio = 0;
+  function enviar(tipo, i) {
+    if (!S || !S.code || !S.riv) return;
+    var ahora = Date.now(); if (ahora - ultimoEnvio < 900) return; ultimoEnvio = ahora;
+    S.yo.rx = tipo + ':' + i + ':' + ahora.toString(36); S.yo.t = ahora;
+    mostrarRx(S.yo.rx, false);
+    guardarLado(S.code, S.lado, S.yo).catch(function () {});
+  }
+  barra.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-r],[data-m]'); if (!b) return;
+    if (b.dataset.r != null) enviar('r', +b.dataset.r); else enviar('m', +b.dataset.m);
+  });
+  function sacudir() { box.classList.remove('cmb-shake'); void box.offsetWidth; box.classList.add('cmb-shake'); }
+  function pum(texto, rival) {
+    var p = posPanel(rival), e = document.createElement('div'); e.className = 'cmb-pum'; e.textContent = texto;
+    e.style.left = p.x + 'px'; e.style.top = p.y + 'px'; fx.appendChild(e); setTimeout(function () { e.remove(); }, 850);
+  }
+  function golpeGuante() { var g = $('#cmbVs .cmb-glove', box); if (g) { g.classList.remove('punch'); void g.offsetWidth; g.classList.add('punch'); } }
+  function confeti() {
+    var cs = ['#ffd778', '#f28a3b', '#36c98a', '#3e8bff', '#ef5a5a', '#a970ff'];
+    for (var i = 0; i < 90; i++) {
+      var c = document.createElement('div'); c.className = 'cmb-conf'; c.style.left = (Math.random() * 100) + 'vw'; c.style.background = cs[i % cs.length];
+      c.style.setProperty('--dx', ((Math.random() - .5) * 200) + 'px'); c.style.setProperty('--r', (Math.random() * 900) + 'deg');
+      c.style.animationDuration = (2.2 + Math.random() * 2) + 's'; c.style.animationDelay = (Math.random() * .6) + 's';
+      fx.appendChild(c); (function (c) { setTimeout(function () { c.remove(); }, 5000); })(c);
+    }
+  }
+  // lo que llega del rival en cada consulta: reacciones nuevas y sus aciertos (te "golpean")
+  function alLeer(d) {
+    var r = d[S.otro]; if (!r) return;
+    var antes = S.riv || {};
+    if (r.rx && r.rx !== S.vistoRx) { var primera = S.vistoRx === undefined; S.vistoRx = r.rx; if (!primera) mostrarRx(r.rx, true); }
+    if (S.jugando && (r.pts || 0) > (antes.pts || 0)) {
+      setTimeout(function () { var me = $('#cmbVs .cmb-p:not(.riv)', box); if (me) { me.classList.remove('cmb-hit'); void me.offsetWidth; me.classList.add('cmb-hit'); } pum('¡Ay!', false); sfx('duele'); }, 50);
+    }
+    S.riv = r;
+  }
+
   /* ---------------- partida ---------------- */
   function cuentaAtras() {
-    limpiar();
+    limpiar(); barraOn(true); S.vistoRx = S.riv && S.riv.rx ? S.riv.rx : undefined; if (S.vistoRx === undefined) S.vistoRx = '';
+    sondear();
     var n = 3, lv = NIVELES.filter(function (l) { return l.id === S.lvl; })[0];
     var paso = function () {
-      pintar('<div class="cmb-vs"><div class="cmb-p"><b>' + esc(S.yo.nom) + '</b><small>Tú</small></div><span class="cmb-glove">🥊</span><div class="cmb-p riv"><b>' + esc(S.riv.nom) + '</b><small>Rival</small></div></div>' +
+      pintar('<div class="cmb-vs"><div class="cmb-p"><b>' + esc(S.yo.nom) + '</b><small>Tú</small></div><span class="cmb-glove bump">🥊</span><div class="cmb-p riv"><b>' + esc(S.riv.nom) + '</b><small>Rival</small></div></div>' +
         '<p class="cmb-c">' + lv.emoji + ' ' + lv.name + ' · ' + S.n + ' preguntas · ' + TIEMPO + ' s cada una</p><div class="cmb-big">' + (n ? n : '¡A pelear la buena batalla!') + '</div>');
-      snd('tick');
-      if (n-- <= 0) { setTimeout(empezar, 700); return; }
-      pollT = setTimeout(paso, 900);
+      if (n) tono(440, 0, .15, 'square', .1); else sfx('campana');
+      if (n-- <= 0) { stepT = setTimeout(empezar, 900); return; }
+      stepT = setTimeout(paso, 900);
     };
     paso();
   }
   function empezar() {
     S.jugando = true; S.idx = 0; S.r = rng(S.seed ^ 0x5bd1e995);
     S.yo.i = 0; S.yo.pts = 0; S.yo.ms = 0; S.yo.fin = false;
-    sondear();
+    S.racha = 0;
     pregunta();
   }
   function sondear() {
     clearTimeout(pollT);
     pollT = setTimeout(function () {
       if (!S) return;
-      leer(S.code).then(function (d) { if (!S) return; if (d[S.otro]) S.riv = d[S.otro]; marcador(); revisarFin(); }).catch(function () {}).then(function () { if (S && !S.terminado) sondear(); });
-    }, POLL);
+      leer(S.code).then(function (d) { if (!S) return; alLeer(d); marcador(); revisarFin(); }).catch(function () {}).then(function () { if (S) sondear(); });
+    }, S && S.terminado ? 2500 : POLL);
   }
   function marcador() {
     var el = $('#cmbVs', box); if (!el || !S.riv) return;
     var r = S.riv;
-    el.innerHTML = '<div class="cmb-p"><b>' + esc(S.yo.nom) + '</b><span class="pts">' + S.yo.pts + '</span> <small>' + S.yo.i + ' / ' + S.n + '</small></div><span class="cmb-glove">🥊</span>' +
+    el.innerHTML = '<div class="cmb-p"><b>' + esc(S.yo.nom) + '</b><span class="pts">' + S.yo.pts + '</span> <small>' + S.yo.i + ' / ' + S.n + '</small>' + (S.racha >= 3 ? '<span class="cmb-combo">🔥 x' + S.racha + '</span>' : '') + '</div><span class="cmb-glove">🥊</span>' +
       '<div class="cmb-p riv"><b>' + esc(r.nom) + '</b><span class="pts">' + (r.pts || 0) + '</span> <small>' + (r.fin && r.i < S.n ? 'salió' : (r.i || 0) + ' / ' + S.n) + '</small></div>';
   }
   function pregunta() {
@@ -279,8 +421,11 @@
       $('#cmbRef', box).textContent = (ok ? '✅ ¡Correcto!' : (i == null ? '⏰ Se acabó el tiempo.' : '❌ Era: ' + correcta)) + (q.r ? ' · ' + q.r : '');
       snd(ok ? 'correct' : 'wrong');
       S.yo.i = S.idx + 1; S.yo.ms += ms; if (ok) S.yo.pts++; S.yo.t = Date.now();
+      S.racha = ok ? (S.racha || 0) + 1 : 0;
       guardarLado(S.code, S.lado, S.yo).catch(function () {});
       marcador();
+      if (ok) { golpeGuante(); sfx('pum'); pum(S.racha >= 3 ? '¡COMBO x' + S.racha + '!' : ['¡PUM!', '¡ZAS!', '¡BAM!'][S.idx % 3], true); if (S.racha >= 3) sfx('combo'); }
+      else sacudir();
       S.idx++; setTimeout(function () { if (S) pregunta(); }, ok ? 1100 : 1900);
     };
     $('#cmbAns', box).onclick = function (e) { var b = e.target.closest('[data-i]'); if (b) responder(+b.dataset.i); };
@@ -303,7 +448,7 @@
     if (!S || !S.yo.fin || S.terminado) return;
     var r = S.riv || {}, caido = !r.fin && Date.now() - (r.t || 0) > 75000; // el rival dejó de responder
     if (!r.fin && !caido) return;
-    S.terminado = true; S.jugando = false; limpiar();
+    S.terminado = true; S.jugando = false; clearInterval(qT); clearTimeout(stepT);
     var yo = S.yo, abandono = caido || (r.fin && (r.i || 0) < S.n), gano, empate = false;
     if (abandono) gano = true;
     else if (yo.pts !== r.pts) gano = yo.pts > r.pts;
@@ -312,8 +457,9 @@
     var titulo = empate ? '🤝 ¡Empate!' : gano ? '🏆 ¡Ganaste el combate!' : '🥊 ¡Buen combate!';
     var detalle = abandono ? esc(r.nom || 'Tu rival') + ' salió del combate antes de terminar.' :
       (yo.pts === r.pts && !empate ? 'Empataron en aciertos; ganó quien respondió más rápido.' : '');
-    snd(gano || empate ? 'triumph' : 'wrong');
-    pintar('<div class="cmb-big">' + titulo + '</div>' +
+    var ko = gano && !abandono && yo.pts - (r.pts || 0) >= 3;
+    if (gano) { confeti(); sfx(ko ? 'ko' : 'campana'); } else if (empate) sfx('amor'); else sfx('llanto');
+    pintar((ko ? '<div class="cmb-ko">K.O.</div>' : '') + '<div class="cmb-big">' + titulo + '</div>' +
       '<div class="cmb-vs"><div class="cmb-p"><b>' + esc(yo.nom) + '</b><span class="pts">' + yo.pts + '</span> <small>de ' + S.n + ' · ' + (yo.ms / 1000).toFixed(1) + ' s</small></div><span class="cmb-glove">🥊</span>' +
       '<div class="cmb-p riv"><b>' + esc(r.nom || 'Rival') + '</b><span class="pts">' + (r.pts || 0) + '</span> <small>de ' + S.n + (r.ms ? ' · ' + (r.ms / 1000).toFixed(1) + ' s' : '') + '</small></div></div>' +
       (detalle ? '<p class="cmb-c">' + detalle + '</p>' : '') +
