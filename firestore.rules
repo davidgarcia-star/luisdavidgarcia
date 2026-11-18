@@ -10,6 +10,9 @@ rules_version = '2';
 //  - Solo se aceptan los 3 campos que usan los juegos, con tamaño limitado.
 //  - Contador de visitantes del sitio (contadores/sitio): cualquiera lo puede leer y solo
 //    se puede subir de 1 en 1 (respaldo para cuando el contador de Abacus no responde).
+//  - Combate de la Fe (duelos/{código}): partidas en línea 1 contra 1 de Desafío Bíblico RD 1 y 2.
+//    Quien tiene el código puede leer esa partida; no se puede ver la lista de partidas.
+//    Solo se aceptan los campos del juego, con tamaño limitado, y no se pueden borrar.
 //  - Cualquier otra colección queda cerrada.
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -39,6 +42,31 @@ service cloud.firestore {
       allow update: if id == 'sitio'
         && request.resource.data.keys().hasOnly(['n'])
         && request.resource.data.n == resource.data.n + 1;
+      allow list, delete: if false;
+    }
+
+    match /duelos/{code} {
+      function jugador(p) {
+        return p is map && p.keys().hasOnly(['nom', 'pts', 'i', 'ms', 'fin', 't'])
+          && p.nom is string && p.nom.size() > 0 && p.nom.size() <= 20
+          && p.pts is int && p.pts >= 0 && p.pts <= 35
+          && p.i is int && p.i >= 0 && p.i <= 35
+          && p.ms is int && p.ms >= 0 && p.ms < 2000000
+          && p.fin is bool && p.t is int;
+      }
+      allow get: if code.size() == 6;
+      allow create: if code.size() == 6
+        && request.resource.data.keys().hasOnly(['lvl', 'n', 'qs', 'seed', 'h', 't'])
+        && request.resource.data.lvl in ['basico', 'intermedio', 'avanzado']
+        && request.resource.data.n in [10, 20, 35]
+        && request.resource.data.qs is string && request.resource.data.qs.size() < 300
+        && request.resource.data.seed is int && request.resource.data.t is int
+        && jugador(request.resource.data.h);
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['h', 'g'])
+        && jugador(request.resource.data.h)
+        && (!('g' in request.resource.data) || jugador(request.resource.data.g))
+        // el segundo jugador solo entra si el lugar está libre; después solo actualiza su propio marcador
+        && (!('g' in resource.data) || request.resource.data.g.nom == resource.data.g.nom);
       allow list, delete: if false;
     }
 

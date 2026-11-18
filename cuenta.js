@@ -129,7 +129,9 @@
       if (!AVANCE.test(k)) continue;
       if (r[k] === undefined) { r[k] = nube[k]; continue; }
       var a, b; try { a = JSON.parse(r[k]); b = JSON.parse(nube[k]); } catch (e) { r[k] = nubeNueva ? nube[k] : r[k]; continue; }
-      var v = unir(a, b, nubeNueva, null);
+      // "Empezar desde cero" (BIBLIXIA 2): si un lado se reinició después que el otro, gana ese lado completo
+      var ra = (a && a.reinicio) || 0, rb = (b && b.reinicio) || 0;
+      var v = ra !== rb ? (ra > rb ? a : b) : unir(a, b, nubeNueva, null);
       r[k] = typeof v === 'string' ? v : JSON.stringify(v);
     }
     return r;

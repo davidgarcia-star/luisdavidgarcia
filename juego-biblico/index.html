@@ -185,7 +185,7 @@
         <div class="welcome-extras">
           <a class="btn btn-biblixia btn-juego" href="https://davidgarcia-star.github.io/luisdavidgarcia/desafio-biblico-rd-2/"><span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="btn-texto">🪢 Jugar Desafío Bíblico RD 2</span></a>
           <a class="btn btn-biblixia btn-juego" href="https://davidgarcia-star.github.io/biblixia/" rel="noopener"><span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="btn-texto">🎮 Jugar BIBLIXIA 3D</span></a>
-          <a class="btn btn-biblixia btn-juego" href="https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/" rel="noopener"><span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="btn-texto">🏃 ¡Nuevo! BIBLIXIA 3</span></a>
+          <a class="btn btn-biblixia btn-juego" href="https://davidgarcia-star.github.io/biblixia2/" rel="noopener"><span class="brillo halo" aria-hidden="true"></span><span class="brillo" aria-hidden="true"></span><span class="destellos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="btn-texto">🗺️ Jugar BIBLIXIA 2</span></a>
           <button class="btn ghost btn-full-cel js-full" type="button" hidden>⛶ <span class="chip-txt">Pantalla completa</span></button>
           <p id="fullTip" class="hint full-tip" hidden>En iPhone: toca <b>Compartir</b> <span aria-hidden="true">⬆️</span> y luego <b>“Agregar a inicio”</b>. Al abrir el juego desde ese ícono se verá en pantalla completa.</p>
           <a class="btn btn-paypal" href="https://www.paypal.me/luisdavidgarciaMCP?locale.x=es_XC&amp;country.x=DO" target="_blank" rel="noopener noreferrer">
@@ -230,6 +230,12 @@
             <span class="mode-name">Modo por equipos</span>
             <span class="mode-desc">De 2 a 4 equipos se turnan para responder. Gana el que más puntos sume.</span>
             <span class="mode-go" aria-hidden="true">Jugar en equipos</span>
+          </button>
+          <button id="btnCombate" class="mode-card" type="button">
+            <span class="mode-ico" aria-hidden="true">🥊</span>
+            <span class="mode-name">Combate de la Fe · En línea</span>
+            <span class="mode-desc">Reta a otra persona con un código o un enlace. Básico, Intermedio o Avanzado, con 10, 20 o 35 preguntas.</span>
+            <span class="mode-go" aria-hidden="true">Retar a alguien</span>
           </button>
         </div>
         <div class="menu-sound">
@@ -367,7 +373,8 @@
   <script src="questions.js?v=18"></script>
   <script src="animo.js?v=1"></script>
   <script src="../pais.js?v=1"></script>
-  <script src="../cuenta.js?v=8" data-pantallas="#screen-welcome,#screen-menu,#screen-levels"></script>
+  <script src="../duelo.js?v=2" data-juego="Desafío Bíblico RD"></script>
+  <script src="../cuenta.js?v=9" data-pantallas="#screen-welcome,#screen-menu,#screen-levels"></script>
   <script src="../felicidades.js?v=1"></script>
   <script src="game.js?v=30"></script>
   <script src="../ajuste.js?v=1" data-ajuste="#screen-welcome.active > .panel => => .welcome-extras ; .screen.active:not(#screen-welcome) > .panel"></script>
