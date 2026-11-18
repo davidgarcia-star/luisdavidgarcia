@@ -57,8 +57,10 @@
     try { if (window.Sound && Sound.click) Sound.click(); } catch (er) {}
     if (navigator.share && /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
       navigator.share({ title: TITULO, text: TEXTO, url: URL_ }).catch(function (er) { if (er && er.name !== 'AbortError') ov.classList.add('on'); });
-    } else ov.classList.add('on');
+    } else { ov.classList.add('on'); var w = ov.querySelector('.wa'); if (w) w.focus(); }
   });
+  // la tecla Escape cierra el cuadro de compartir
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && ov.classList.contains('on')) { cerrar(); b.focus(); } });
   function iniciar() { poner(); document.body.appendChild(ov); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
 })();
