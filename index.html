@@ -2410,9 +2410,14 @@
             /* con el menú abierto, la cápsula queda sólida para que no se vea la portada detrás */
             .site-header.open .wrap.nav { background: #040B1D; -webkit-backdrop-filter: none; backdrop-filter: none; }
         }
-        /* Al bajar, la barra de inicio (logo MIPROAA y menú) se esconde hacia arriba; al subir, vuelve a aparecer (celular, tableta y PC) */
-        .site-header { transition: transform .35s ease, background-color .3s ease, box-shadow .3s ease; will-change: transform; }
-        .site-header.nav-oculto { transform: translateY(calc(-100% - 24px)); pointer-events: none; }
+        /* La barra de inicio (logo MIPROAA y menú) queda siempre fija arriba. En la vista principal (Inicio) se ve
+           de su tamaño normal; al bajar, subir o ir a otra sección se ve más transparente y un poco más pequeña
+           para no tapar el contenido (al tocarla o pasar el cursor vuelve a verse normal) */
+        .site-header .wrap.nav { transform-origin: top center; transition: transform .35s ease, opacity .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease; }
+        .site-header.nav-mini:not(.open) .wrap.nav { transform: scale(.86); opacity: .85; background: rgba(0, 0, 0, .5); box-shadow: 0 6px 20px rgba(0, 0, 0, .2); }
+        .site-header.nav-mini:not(.open) .wrap.nav:hover,
+        .site-header.nav-mini:not(.open) .wrap.nav:focus-within { opacity: 1; background: rgba(0, 0, 0, .72); }
+        @media (prefers-reduced-motion: reduce) { .site-header .wrap.nav { transition: none; } }
 
 
         /* ---------- Botones pequeños: bajar al final / subir al inicio ---------- */
@@ -3367,6 +3372,7 @@
         toggle.setAttribute('aria-expanded', String(open));
         toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
         icon.className = open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        header.classList.toggle('nav-mini', !open && window.scrollY > 80);
     }
 
     toggle.addEventListener('click', function () { setMenu(!menu.classList.contains('open')); });
@@ -3382,21 +3388,13 @@
     var heroImg = document.getElementById('heroImg');
     var ticking = false;
     var navMovil = window.matchMedia('(max-width: 1080px)');
-    var ultimoY = window.scrollY;
 
     function onScroll() {
         var y = window.scrollY;
         var max = document.documentElement.scrollHeight - window.innerHeight;
         header.classList.toggle('solid', y > 40);
-        /* Esconder la barra de inicio al bajar y mostrarla al subir (en todas las pantallas) */
-        if (menu.classList.contains('open') || y < 80 || header.contains(document.activeElement)) {
-            header.classList.remove('nav-oculto');
-        } else if (y > ultimoY + 6) {
-            header.classList.add('nav-oculto');      // bajando
-        } else if (y < ultimoY - 6) {
-            header.classList.remove('nav-oculto');   // subiendo
-        }
-        if (Math.abs(y - ultimoY) > 6 || y < 80) ultimoY = y;
+        /* La barra queda fija: en la vista de Inicio se ve normal; fuera de ella, más pequeña y transparente */
+        header.classList.toggle('nav-mini', y > 80 && !menu.classList.contains('open'));
         bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
         if (!reduce && heroImg && y < window.innerHeight) {
             heroImg.style.transform = 'translateY(' + (y * 0.12).toFixed(1) + 'px) scale(' + (1 + y * 0.00008).toFixed(4) + ')';
