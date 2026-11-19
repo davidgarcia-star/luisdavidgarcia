@@ -1,5 +1,5 @@
 /* Desafío Bíblico RD – Banco de preguntas
- * 6 niveles x 50 preguntas. Nombres y referencias según La Biblia de las Américas (LBLA).
+ * 6 niveles con 50 preguntas o más cada uno. Nombres y referencias según La Biblia de las Américas (LBLA).
  * Formato: Q(pregunta, respuestaCorrecta, incorrecta1, incorrecta2, incorrecta3, referencia)
  * Las opciones se barajan al jugar. No se reproduce el texto de los versículos,
  * solo la referencia bíblica. */
@@ -172,6 +172,11 @@ const QUESTIONS = {
     Q("¿En qué ciudad habló Pablo en el Areópago?", "Atenas", "Corinto", "Roma", "Antioquía", "Hechos 17:19-22"),
     Q("¿Por qué esclavo intercedió Pablo en su carta a Filemón?", "Onésimo", "Epafras", "Tíquico", "Aristarco", "Filemón 10"),
     Q("¿A cuántas iglesias dirige cartas el Señor en Apocalipsis 2 y 3?", "Siete", "Cuatro", "Diez", "Doce", "Apocalipsis 1:11"),
+    Q("¿Qué profeta confrontó a David con la historia del rico que tomó la corderita del pobre?", "Natán", "Gad", "Samuel", "Ahías", "2 Samuel 12:1-7"),
+    Q("¿Qué esposa de Nabal calmó a David llevándole provisiones?", "Abigail", "Mical", "Betsabé", "Ahinoam", "1 Samuel 25:18-35"),
+    Q("¿Qué escriba escribió en un rollo las palabras que le dictó Jeremías?", "Baruc", "Esdras", "Safán", "Seraías", "Jeremías 36:4"),
+    Q("¿Qué rey de Judá quemó en el brasero el rollo de Jeremías?", "Joacim", "Sedequías", "Josías", "Manasés", "Jeremías 36:22-23"),
+    Q("¿Con qué rey de Israel fue Josafat a la batalla de Ramot de Galaad?", "Acab", "Jehú", "Omri", "Jeroboam", "1 Reyes 22:29-33"),
   ],
 
   experto: [
