@@ -7,13 +7,13 @@
 <script>/* Protección: que nadie meta esta página dentro de otra (clickjacking) */if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch (e) { document.documentElement.style.display = 'none'; } }</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>BIBLIXIA 3 – La Carrera de la Fe | Juego bíblico 3D</title>
-<meta name="description" content="BIBLIXIA 3 – La Carrera de la Fe: juego bíblico en 3D. Corre por 6 mundos bíblicos realistas, monta tu caballo, salta obstáculos y recolecta 72 versículos de la Biblia (LBLA). Creado por Luis David Esteban García.">
+<meta name="description" content="BIBLIXIA 3 – La Carrera de la Fe: juego bíblico en 3D. Corre por 8 mundos bíblicos realistas (de día y de noche), monta tu caballo, salta obstáculos y recolecta 96 versículos de la Biblia (LBLA). Creado por Luis David Esteban García.">
 <meta name="keywords" content="biblixia 3, biblixia, juego bíblico, juego bíblico 3D, juego cristiano, versículos bíblicos, juego de la Biblia, Moriah Church, San Cristóbal, República Dominicana">
 <meta name="author" content="Luis David Esteban García">
 <meta name="robots" content="index,follow">
 <meta property="og:type" content="website">
 <meta property="og:title" content="BIBLIXIA 3 – La Carrera de la Fe">
-<meta property="og:description" content="Juego bíblico en 3D: corre, salta y recolecta versículos en 6 mundos. ¡Aprende, juega y vive la Biblia!">
+<meta property="og:description" content="Juego bíblico en 3D: corre, salta y recolecta versículos en 8 mundos. ¡Aprende, juega y vive la Biblia!">
 <meta name="theme-color" content="#060c1a">
 <link rel="canonical" href="https://davidgarcia-star.github.io/luisdavidgarcia/biblixia3/">
 <link rel="icon" type="image/png" sizes="96x96" href="../favicon-96.png"><link rel="apple-touch-icon" href="../apple-touch-icon.png">
@@ -22,7 +22,7 @@
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"VideoGame","name":"BIBLIXIA 3 – La Carrera de la Fe","alternateName":["Biblixia 3","BIBLIXIA 3"],"description":"Juego bíblico 3D de carrera con 6 mundos, 24 niveles y 72 versículos para recolectar.","inLanguage":"es","genre":["Juego bíblico","Plataformas","Educativo"],"gamePlatform":["Web","Android"],"author":{"@type":"Person","name":"Luis David Esteban García"}}
+{"@context":"https://schema.org","@type":"VideoGame","name":"BIBLIXIA 3 – La Carrera de la Fe","alternateName":["Biblixia 3","BIBLIXIA 3"],"description":"Juego bíblico 3D de carrera con 8 mundos, 32 niveles y 96 versículos para recolectar.","inLanguage":"es","genre":["Juego bíblico","Plataformas","Educativo"],"gamePlatform":["Web","Android"],"author":{"@type":"Person","name":"Luis David Esteban García"}}
 </script>
 <style>
 :root{--navy:#0b1e3f;--gold:#d9b45a;--gold2:#a8842f;--txt:#f3ede0}
@@ -76,6 +76,7 @@ h2{font-family:Georgia,"Times New Roman",serif;color:var(--gold);margin:8px 0 12
 .cb b{font-size:8.5px;font-weight:600;letter-spacing:.04em;margin-top:-3px;opacity:.85}
 .cb.down{background:rgba(217,180,90,.45)}
 #btnL{left:calc(16px + env(safe-area-inset-left))}#btnR{left:calc(94px + env(safe-area-inset-left))}#btnD{right:calc(16px + env(safe-area-inset-right))}#btnF{right:calc(16px + env(safe-area-inset-right));bottom:calc(94px + env(safe-area-inset-bottom));background:rgba(140,40,20,.55)}@media (pointer:fine){#btnF{bottom:calc(80px + env(safe-area-inset-bottom))}}
+#btnB{right:calc(94px + env(safe-area-inset-right));background:rgba(20,70,40,.5)}#btnM{right:calc(94px + env(safe-area-inset-right));bottom:calc(94px + env(safe-area-inset-bottom));background:rgba(20,50,110,.5)}@media (pointer:fine){#btnB{right:calc(80px + env(safe-area-inset-right))}#btnM{right:calc(80px + env(safe-area-inset-right));bottom:calc(80px + env(safe-area-inset-bottom))}}
 @media (pointer:fine){.cb{width:54px;height:54px;opacity:.8}#btnR{left:calc(80px + env(safe-area-inset-left))}}
 .lv .md{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#cfe0ff;opacity:.85;margin-top:1px}
 #banner{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(110,24,24,.9);color:#fff;font-size:11px;text-align:center;padding:3px;display:none}
@@ -110,6 +111,8 @@ h2{font-family:Georgia,"Times New Roman",serif;color:var(--gold);margin:8px 0 12
 <button id="btnR" class="cb" aria-label="Derecha"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f3ede0" stroke-width="2.4"><path d="M9 5l7 7-7 7"/></svg></button>
 <button id="btnD" class="cb" aria-label="Agacharse"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f3ede0" stroke-width="2.4"><path d="M5 9l7 7 7-7"/></svg><b>Agacharse</b></button>
 <button id="btnF" class="cb" aria-label="Espada o lanzar piedra"><svg viewBox="0 0 24 24" width="28" height="28" fill="#f3ede0"><circle cx="15" cy="9" r="4.5"/><path d="M3 18c4-1 7-4 9-7" stroke="#f3ede0" stroke-width="2" fill="none"/></svg><b>Espada</b></button>
+<button id="btnB" class="cb" aria-label="Correr rápido (tecla B)"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#f3ede0" stroke-width="2.4"><path d="M4 7l5 5-5 5M12 7l5 5-5 5"/></svg><b>Correr</b></button>
+<button id="btnM" class="cb" aria-label="Mantener el vuelo (tecla M)"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f3ede0" stroke-width="2"><path d="M2 13c3-4 6-5 10-2c4-3 7-2 10 2c-3-1-6 0-10 3c-4-3-7-4-10-3z"/></svg><b>Volar</b></button>
 <div id="safeProbe" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)"></div>
 
 <script src="../felicidades.js?v=1"></script>
@@ -403,7 +406,7 @@ function mat(tex,tint,o){o=o||{};return{tex,tint:[tint?tint[0]:1,tint?tint[1]:1,
 class Node{constructor(mesh,mt){this.mesh=mesh||null;this.mat=mt||null;this.p=[0,0,0];this.r=[0,0,0];this.s=[1,1,1];this.ch=[];this.L=M4.c();this.W=M4.c();this.vis=true;this.par=null;this.cx=null;this.z=0}
  add(n){if(n.par){const a=n.par.ch,i=a.indexOf(n);if(i>=0)a.splice(i,1)}n.par=this;this.ch.push(n);return n}
  remove(){if(this.par){const a=this.par.ch,i=a.indexOf(this);if(i>=0)a.splice(i,1);this.par=null}}
- upd(PW){M4.trs(this.L,this.p,this.r,this.s);if(PW)M4.mul(this.W,PW,this.L);else this.W.set(this.L);for(const c of this.ch)c.upd(this.W)}
+ upd(PW){if(this.M)this.L.set(this.M);else M4.trs(this.L,this.p,this.r,this.s);if(PW)M4.mul(this.W,PW,this.L);else this.W.set(this.L);for(const c of this.ch)c.upd(this.W)}
  col(list,x0,x1){if(!this.vis)return;if(this.cx!==null&&(this.cx<x0||this.cx>x1))return;if(this.mesh)list.push(this);for(const c of this.ch)c.col(list,x0,x1)}}
 
 /* ---------- texturas ---------- */
@@ -990,7 +993,19 @@ const WORLDS=[
   top:['grass',[.18,.26,.09],[.44,.46,.19],[.6,.5,.3]],cliff:[[.36,.32,.3],[.26,.24,.23]],
   ter:{valley:-120,hills:60,mount:260,g1:[.3,.33,.15],g2:[.4,.4,.2],rock:[.36,.33,.3],sand:[.62,.54,.42]},
   water:{y:-30,deep:[.03,.05,.11],shal:[.12,.12,.2]},veg:[['olive',2],['palm',1],['bush',2]],near:[['grass',3],['flowers',3]],
-  stone:[.95,.9,.86],rockC:[.8,.78,.76],cloud:[[1,.72,.55],[.5,.38,.48]],tr:3,boats:true}
+  stone:[.95,.9,.86],rockC:[.8,.78,.76],cloud:[[1,.72,.55],[.5,.38,.48]],tr:3,boats:true},
+ {name:'Belén, la Noche Santa',tema:'Nos ha nacido un Salvador',kind:'bethlehem',enemy:'wolf',night:true,
+  zen:[.008,.02,.06],hor:[.06,.09,.17],sun:v3n(.3,.7,.62),sunC:[.42,.5,.72],glow:[.95,.88,.6],glowAmt:.9,diskC:[1,.97,.82],diskR:.022,disk:[.62,.7],
+  skyA:[.1,.13,.22],gndA:[.04,.05,.06],fog:[.045,.065,.12],fogN:320,fogD:1/2800,refl:[.1,.13,.22],
+  top:['grass',[.12,.18,.08],[.26,.32,.14],[.4,.37,.24]],cliff:[[.46,.42,.36],[.34,.31,.27]],
+  ter:{valley:-100,hills:70,mount:340,g1:[.2,.26,.12],g2:[.3,.32,.17],rock:[.46,.44,.4],sand:[.52,.48,.4]},
+  water:null,veg:[['olive',3],['bush',3],['acacia',1]],near:[['grass',4],['dry',1]],stone:[1,.95,.86],rockC:[.92,.9,.86],cloud:[[.22,.26,.38],[.08,.1,.16]],tr:4,city:true},
+ {name:'El Huerto de Getsemaní',tema:'Velad y orad',kind:'gethsemane',enemy:'snake',night:true,
+  zen:[.006,.016,.05],hor:[.05,.08,.15],sun:v3n(-.4,.66,.6),sunC:[.36,.44,.64],glow:[.4,.5,.75],glowAmt:.6,diskC:[.95,.95,.88],diskR:.05,disk:[.3,.66],
+  skyA:[.09,.12,.2],gndA:[.04,.05,.05],fog:[.04,.06,.11],fogN:300,fogD:1/2500,refl:[.1,.12,.2],
+  top:['dirt',[.42,.36,.28]],cliff:[[.5,.46,.4],[.38,.35,.3]],
+  ter:{valley:-120,hills:80,mount:360,g1:[.22,.26,.14],g2:[.3,.3,.18],rock:[.46,.44,.4],sand:[.5,.46,.38]},
+  water:null,veg:[['olive',6],['cypress',2],['bush',1]],near:[['grass',3],['dry',1]],stone:[.98,.95,.88],rockC:[.9,.88,.84],cloud:[[.18,.22,.34],[.07,.09,.15]],tr:-2,city:true,torches:true}
 ];
 let CUR_W=-1,WSPR={};
 function loadWorld(w){if(CUR_W===w)return;const W=WORLDS[w];
@@ -1082,6 +1097,8 @@ function buildLevelScene(lv,opts){opts=opts||{};const W=WORLDS[lv.w];
  W._hills=null;
  if(W.kind==='jericho'){W._hills=[{x:L*.45,d:900,rx:900,rd:300,h:60},{x:L*.95,d:1020,rx:700,rd:260,h:40}]}
  if(W.kind==='jerusalem'){W._hills=[{x:L*.5,d:1080,rx:L*.55+900,rd:300,h:80},{x:L*.6,d:1200,rx:650,rd:240,h:170}]}
+ if(W.kind==='bethlehem'){W._hills=[{x:L*.55,d:900,rx:800,rd:280,h:90}]}
+ if(W.kind==='gethsemane'){W._hills=[{x:L*.5,d:1150,rx:L*.5+900,rd:300,h:110},{x:L*.55,d:1250,rx:600,rd:240,h:190}]}
  // terreno
  S.root.add(NN(buildTerrain(W,-900,L+900),mat(TX.detail,[1,1,1],{uvS:[1,1]})));
  if(W.water){const g=new Geo();quadXZ(g,(L)/2,W.water.y,-3000,L+16000,6200);S.root.add(NN(g,mat(TX.white,[1,1,1],{water:true})))}
@@ -1113,13 +1130,15 @@ function buildLevelScene(lv,opts){opts=opts||{};const W=WORLDS[lv.w];
   add(k,[x,y-4,z,h*sp.asp,h,[tone,tone,tone]])}
  // decoración del camino
  for(const s of lv.ground){for(let x=s.x+4;x<s.x+s.w-4;x+=7+r()*8){if(x<-600)continue;const k=pickW(W.near,r);const sp=WSPR[k];if(!sp)continue;
-   const dense=W.kind==='desert'||W.kind==='jerusalem'?.18:W.kind==='jericho'?.35:.62;
+   const dense=W.kind==='desert'||W.kind==='jerusalem'?.18:W.kind==='jericho'||W.kind==='bethlehem'?.35:W.kind==='gethsemane'?.7:.62;
    if(r()<dense){const h=SPR_H[k]*(.6+r()*.7);add(k,[x,-1,-24-r()*34,h*sp.asp,h,[1,1,1]])}
    if(r()<dense*.45&&k!=='reeds'){const h=SPR_H[k]*(.45+r()*.4);add(k,[x,-2,23.5+r()*3,h*sp.asp,h,[.85,.85,.85]])}}}
  for(const k in veg)addSprites(S,k,veg[k]);
  // ciudades, tiendas, barcos
  if(W.kind==='jericho'){buildCity(W,S,L*.45,820,1100,70,0);buildCity(W,S,L*.95,940,700,35,0)}
  if(W.kind==='jerusalem'){buildCity(W,S,L*.5,960,L*.9+700,Math.round(170*(L/4000+.3)),L*.6)}
+ if(W.kind==='bethlehem'){buildCity(W,S,L*.55,880,900,48,0);buildTents(W,S,-300,L+300)}
+ if(W.kind==='gethsemane'){buildCity(W,S,L*.5,1060,L*.8+600,Math.round(130*(L/4000+.3)),L*.55)}
  if(W.kind==='desert')buildTents(W,S,-300,L+300);
  if(W.boats)buildBoats(W,S,-300,L+600);
  // nubes
@@ -1214,8 +1233,33 @@ const VERSOS=[
  ['Mateo 28:20','…yo estoy con vosotros todos los días, hasta el fin del mundo.'],
  ['Hechos 1:8','Pero recibiréis poder cuando el Espíritu Santo venga sobre vosotros…'],
  ['Juan 3:16','Porque de tal manera amó Dios al mundo, que dio a su Hijo unigénito…'],
- ['Hebreos 12:1','…corramos con paciencia la carrera que tenemos por delante…']]
+ ['Hebreos 12:1','…corramos con paciencia la carrera que tenemos por delante…']],
+[['Lucas 2:11','…os ha nacido hoy, en la ciudad de David, un Salvador…'],
+ ['Lucas 2:14','Gloria a Dios en las alturas, y en la tierra paz…'],
+ ['Lucas 2:10','…No temáis, porque he aquí, os traigo buenas nuevas de gran gozo…'],
+ ['Isaías 9:6','Porque un niño nos ha nacido, un hijo nos ha sido dado…'],
+ ['Isaías 9:2','El pueblo que andaba en tinieblas ha visto gran luz…'],
+ ['Miqueas 5:2','Pero tú, Belén Efrata, aunque eres pequeña entre las familias de Judá…'],
+ ['Juan 1:14','Y el Verbo se hizo carne, y habitó entre nosotros…'],
+ ['Mateo 1:23','…Emmanuel, que traducido significa: Dios con nosotros.'],
+ ['Juan 1:5','Y la luz brilla en las tinieblas…'],
+ ['Salmos 8:3','Cuando veo tus cielos, obra de tus dedos, la luna y las estrellas…'],
+ ['Salmos 147:4','Cuenta el número de las estrellas…'],
+ ['Lucas 1:37','Porque ninguna cosa será imposible para Dios.']],
+[['Mateo 26:41','Velad y orad para que no entréis en tentación…'],
+ ['Lucas 22:42','…no se haga mi voluntad, sino la tuya.'],
+ ['1 Tesalonicenses 5:17','Orad sin cesar.'],
+ ['Salmos 4:8','En paz me acostaré y así también dormiré…'],
+ ['Salmos 121:4','He aquí, no se adormecerá ni dormirá el que guarda a Israel.'],
+ ['Salmos 91:5','No temerás el terror de la noche…'],
+ ['Filipenses 4:6','Por nada estéis afanosos…'],
+ ['Jeremías 33:3','Clama a mí, y yo te responderé…'],
+ ['Mateo 7:7','Pedid, y se os dará…'],
+ ['Salmos 63:6','…en ti medito durante las vigilias de la noche.'],
+ ['Juan 15:13','Nadie tiene mayor amor que este: que uno dé su vida por sus amigos.'],
+ ['Lamentaciones 3:23','Son nuevas cada mañana; ¡grande es tu fidelidad!']]
 ];
+const NIVELES=WORLDS.length*4,ULTIMO=NIVELES-1,TOTAL_V=NIVELES*3;
 
 /* =====================================================================
    JUEGO: progreso, audio, niveles, física, cámara, HUD y pantallas
@@ -1230,6 +1274,8 @@ const b3Abierto=()=>b2Niveles().every(x=>x[1]);
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},raw(k){try{return localStorage.getItem(k)}catch(e){return null}}};
 let prog=LS.get('biblixia3_progreso',{un:0,m:{}});if(typeof prog.un!=='number'||!prog.m)prog={un:0,m:{}};
+/* quien ya terminó los 6 mundos originales tiene abiertos los mundos de noche nuevos */
+if((prog.fin||prog.m[23])&&prog.un<24)prog.un=24;
 let charSel=LS.get('biblixia3_personaje','h');if(charSel!=='h'&&charSel!=='m')charSel='h';
 const saveProg=()=>LS.set('biblixia3_progreso',prog);
 const bits=m=>((m&1)+(m>>1&1)+(m>>2&1));
@@ -1273,7 +1319,7 @@ const AU={ctx:null,on:LS.get('biblixia3_sonido',true),master:null,mus:null,noise
    case'check':this.nz(t,.6,.12,'lowpass',200,1800,1);[69,74].forEach((m,i)=>this.harp(m,t+.1+i*.12,.08));break;
    case'win':[62,63,66,67,69,70,72,74,75,78,79,81].forEach((m,i)=>this.harp(m,t+i*.055,.065));this.pad(50,t+.6,2.8,.05);this.pad(57,t+.6,2.8,.04);this.pad(66,t+.6,2.8,.03);break;
    case'lose':[69,66,63,62].forEach((m,i)=>this.harp(m-12,t+i*.22,.09));break;
-   case'splash':this.nz(t,.6,.25,'lowpass',1500,300,1);break;case'click':this.osc('sine',1200,t,.05,.04);break;case'slash':this.nz(t,.16,.16,'bandpass',2600,700,2);break;case'throw':this.nz(t,.18,.14,'bandpass',900,2200,1.5);break;case'crack':this.nz(t,.25,.22,'lowpass',1200,200,1);this.osc('sine',90,t,.2,.2);break;
+   case'splash':this.nz(t,.6,.25,'lowpass',1500,300,1);break;case'click':this.osc('sine',1200,t,.05,.04);break;case'slash':this.nz(t,.16,.16,'bandpass',2600,700,2);break;case'draw':this.nz(t,.34,.1,'bandpass',3200,7000,6);this.osc('triangle',2900,t+.24,.3,.025);break;case'sheath':this.nz(t,.2,.08,'bandpass',2600,1200,5);this.osc('sine',220,t+.18,.08,.06);break;case'throw':this.nz(t,.18,.14,'bandpass',900,2200,1.5);break;case'crack':this.nz(t,.25,.22,'lowpass',1200,200,1);this.osc('sine',90,t,.2,.2);break;
    case'heart':[74,78,81].forEach((m,i)=>this.harp(m,t+i*.07,.07));break}},
  TR:{menu:{bpm:64,mel:[74,null,72,70,69,null,null,null,70,null,69,67,66,null,null,null,67,69,70,null,69,67,66,63,62,null,null,null,null,null,null,null],menu:true},
   game:{bpm:104,mel:[62,63,66,67,69,67,66,63,62,null,66,67,69,70,69,null,70,72,70,69,67,69,66,63,66,67,63,62,62,null,null,null]}},
@@ -1290,7 +1336,7 @@ const AU={ctx:null,on:LS.get('biblixia3_sonido',true),master:null,mus:null,noise
 /* ---------------- GENERADOR DE NIVELES ---------------- */
 const ENEMY_DIM={snake:[26,10],scorpion:[24,13],crab:[22,14],fox:[30,18],wolf:[34,22],crow:[22,14],boulder:[20,20]};
 function genLevel(w,l){
- const li=w*4+l,rnd=mulberry32(1000+li*7919),diff=li/23,L=2300+l*420+w*260;
+ const li=w*4+l,rnd=mulberry32(1000+li*7919),diff=Math.min(1,li/23),L=2300+l*420+w*260;
  const lv={w,l,li,L,ground:[],blocks:[],plats:[],luces:[],scrolls:[],enemies:[],thorns:[],check:null,mount:null,goal:L+200,hints:[],free:l%2===1};let beamDone=li!==0;
  const R=(a,b)=>a+rnd()*(b-a),RI=(a,b)=>Math.floor(R(a,b+1));let x=0,gStart=-1600;
  const close=e=>lv.ground.push({x:gStart,w:e-gStart});
@@ -1299,7 +1345,7 @@ function genLevel(w,l){
  const enemy=(ex,type,ey)=>{type=type||WORLDS[w].enemy;const d=ENEMY_DIM[type],fly=type==='crow',bo=type==='boulder';
   lv.enemies.push({type,x:ex,y:fly?ey:-d[1],w:d[0],h:d[1],vx:bo?0:-(fly?40:R(22,38)+diff*22),minX:ex-(fly?90:55),maxX:ex+(fly?90:55),fly,bo,baseY:ey,ph:rnd()*6,dead:false,dy:0,active:!bo,rot:0})};
  const targets=[.24,.55,.84].map(f=>f*L);let si=0,check=false;let mountDone=!(l%2===1||(w>=3&&l===2));
- if(li===0)lv.hints=[[140,TOUCH?'Toca la pantalla para saltar':'Barra espaciadora: saltar'],[430,'Mantén presionado para saltar más alto y tomar el pergamino'],[1060,'En el aire, mantén presionado para planear con el manto'],[1330,TOUCH?'Mantén el botón de abajo a la derecha para agacharte':'Flecha abajo: agacharte'],[1900,TOUCH?'Botón Espada: saca la espada y vence a la serpiente':'Mantén la tecla B: saca la espada y vence a la serpiente']];
+ if(li===0)lv.hints=[[140,TOUCH?'Toca la pantalla para saltar':'Barra espaciadora: saltar'],[430,'Mantén presionado para saltar más alto y tomar el pergamino'],[640,TOUCH?'Botón Correr: corre más rápido':'Tecla B: corre más rápido'],[1060,TOUCH?'En el aire, mantén el botón Volar para seguir volando':'En el aire, mantén la tecla M para seguir volando'],[1330,TOUCH?'Mantén el botón de abajo a la derecha para agacharte':'Flecha abajo: agacharte'],[1900,TOUCH?'Botón Espada: saca la espada y vence a la serpiente':'Mantén la tecla F: saca la espada y vence a la serpiente']];
  if(li===1)lv.hints=[[60,TOUCH?'Nivel libre: usa las flechas para ir adelante o atrás':'Nivel libre: flechas izquierda y derecha para moverte',4],[700,'Puedes devolverte a recoger monedas y pergaminos']];
  x=330;row(150,6,-20);
  const placeScroll=k=>{const v=(k+li)%3;
@@ -1330,6 +1376,7 @@ function genLevel(w,l){
    case'boulder':{enemy(x+300,'boulder');row(x+60,5,-24);x+=330;break}
    case'beam':{lv.blocks.push({x:x+70,y:-62,w:46,h:26,k:'beam'});row(x+62,4,-14,20);x+=200;break}
   }}
+ if(gStart>lv.goal-160)lv.goal=Math.ceil(gStart+220);
  close(lv.goal+800);
  lv.solids=lv.ground.map(g=>({x:g.x,y:0,w:g.w,h:900,ground:true})).concat(lv.blocks);
  return lv}
@@ -1340,7 +1387,7 @@ let W=innerWidth,H=innerHeight,DPR=1,state='boot',G=null,P=null,SC=null,SCW=-1,T
 const HUM={};let HORSE=null,PL=null;
 const isLocked=li=>li>prog.un;
 function newPlayer(x){return{x,y:-46,vx:0,vy:0,w:14,h:46,onGround:true,coyote:0,buffer:0,holdT:0,held:false,pressed:false,glideT:.9,gliding:false,inv:0,mounted:false,ph:0,hph:0,prevB:0,plat:null,splash:false,air:0,crouch:false,face:1}}
-const INP={L:false,R:false,D:false,F:false};
+const INP={L:false,R:false,D:false,F:false,B:false,M:false};
 function dims(){const fx=P.x+P.w/2,fy=P.y+P.h;P.w=P.mounted?44:14;P.h=P.mounted?62:(P.crouch?30:46);P.x=fx-P.w/2;P.y=fy-P.h}
 function setMounted(m){P.mounted=m;if(m)P.crouch=false;dims()}
 function canStand(){const h=P.mounted?62:46,b={x:P.x+1,y:P.y+P.h-h,w:P.w-2,h:h-1};return!G.lv.solids.some(s=>!s.ground&&ov(b,s))}
@@ -1354,18 +1401,18 @@ function press(){if(state!=='play')return;AU.init();if(!P.pressed){P.pressed=tru
 function release(){if(!P)return;P.pressed=false;P.held=false}
 cv.addEventListener('pointerdown',e=>{e.preventDefault();press()});
 addEventListener('pointerup',release);addEventListener('pointercancel',release);
-addEventListener('keydown',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA')INP.L=true;if(e.code==='ArrowRight'||e.code==='KeyD')INP.R=true;if(e.code==='ArrowDown'||e.code==='KeyS'){INP.D=true;e.preventDefault()}if(e.code==='KeyF'||e.code==='KeyX'||e.code==='Enter'||e.code==='KeyB')INP.F=true;
+addEventListener('keydown',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA')INP.L=true;if(e.code==='ArrowRight'||e.code==='KeyD')INP.R=true;if(e.code==='ArrowDown'||e.code==='KeyS'){INP.D=true;e.preventDefault()}if(e.code==='KeyF'||e.code==='KeyX'||e.code==='Enter')INP.F=true;if(e.code==='KeyB'||e.code==='ShiftLeft'||e.code==='ShiftRight')INP.B=true;if(e.code==='KeyM')INP.M=true;
  if(e.repeat)return;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();press()}
  if(e.code==='Escape'||e.code==='KeyP'){if(state==='play')pause();else if(state==='pause')resume()}});
-addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')release();if(e.code==='ArrowLeft'||e.code==='KeyA')INP.L=false;if(e.code==='ArrowRight'||e.code==='KeyD')INP.R=false;if(e.code==='ArrowDown'||e.code==='KeyS')INP.D=false;if(e.code==='KeyF'||e.code==='KeyX'||e.code==='Enter'||e.code==='KeyB')INP.F=false});
+addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW')release();if(e.code==='ArrowLeft'||e.code==='KeyA')INP.L=false;if(e.code==='ArrowRight'||e.code==='KeyD')INP.R=false;if(e.code==='ArrowDown'||e.code==='KeyS')INP.D=false;if(e.code==='KeyF'||e.code==='KeyX'||e.code==='Enter')INP.F=false;if(e.code==='KeyB'||e.code==='ShiftLeft'||e.code==='ShiftRight')INP.B=false;if(e.code==='KeyM')INP.M=false});
 const TOUCH=matchMedia('(pointer:coarse)').matches||('ontouchstart' in window);
-for(const [id,k] of [['btnL','L'],['btnR','R'],['btnD','D'],['btnF','F']]){const b=document.getElementById(id);
+for(const [id,k] of [['btnL','L'],['btnR','R'],['btnD','D'],['btnF','F'],['btnB','B'],['btnM','M']]){const b=document.getElementById(id);
  const on=e=>{e.preventDefault();e.stopPropagation();AU.init();INP[k]=true;b.classList.add('down');try{b.setPointerCapture(e.pointerId)}catch(_){}};
  const off=e=>{INP[k]=false;b.classList.remove('down')};
  b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('lostpointercapture',off);b.addEventListener('contextmenu',e=>e.preventDefault())}
 function updF(){const b=document.getElementById('btnF');if(b)b.querySelector('b').textContent=P&&P.mounted?'Lanzar':'Espada'}
 function showCtrl(on){const free=on&&G&&G.lv.free;document.getElementById('btnL').style.display=free?'flex':'none';document.getElementById('btnR').style.display=free?'flex':'none';
- document.getElementById('btnD').style.display=on?'flex':'none';document.getElementById('btnF').style.display=on?'flex':'none';updF();if(!on){INP.L=INP.R=INP.D=INP.F=false}}
+ document.getElementById('btnD').style.display=on?'flex':'none';document.getElementById('btnF').style.display=on?'flex':'none';document.getElementById('btnB').style.display=on?'flex':'none';document.getElementById('btnM').style.display=on?'flex':'none';updF();if(!on){INP.L=INP.R=INP.D=INP.F=INP.B=INP.M=false}}
 /* pantalla completa */
 const fsEl=document.documentElement;
 function isFS(){return!!(document.fullscreenElement||document.webkitFullscreenElement)}
@@ -1385,9 +1432,10 @@ function hurt(){if(P.inv>0)return;shakeT=.25;
  G.hearts--;P.inv=1.6;P.vy=-280;AU.fx('hurt');if(G.hearts<=0)endLevel(false,'Te quedaste sin corazones')}
 function pit(){G.hearts--;AU.fx('hurt');if(G.hearts<=0){endLevel(false,'Te caíste… ¡inténtalo otra vez!');return}
  if(P.mounted){setMounted(false)}const rx=G.lv.check&&G.lv.check.on?G.lv.check.x+10:60;Object.assign(P,newPlayer(rx));P.inv=1.5}
-function step(dt){const lv=G.lv;if(!lv.free)P.vx=G.speed*(P.mounted?1.12:1);
- let g=1500;if(P.held&&P.holdT>0&&P.vy<0){g*=.4;P.holdT-=dt}P.vy+=g*dt;
- P.gliding=false;if(P.pressed&&P.vy>0&&!P.onGround&&P.glideT>0){if(P.vy>80)P.vy=80;P.glideT-=dt;P.gliding=true}if(P.vy>900)P.vy=900;
+function step(dt){const lv=G.lv;if(!lv.free)P.vx=G.speed*(P.mounted?1.12:1)*(G.spr||1);
+ const fly=INP.M&&!P.onGround&&P.vy>-60;let g=fly?0:1500;if(P.held&&P.holdT>0&&P.vy<0){g*=.4;P.holdT-=dt}P.vy+=g*dt;
+ P.gliding=false;if(P.pressed&&P.vy>0&&!P.onGround&&P.glideT>0){if(P.vy>80)P.vy=80;P.glideT-=dt;P.gliding=true}
+ if(fly){P.vy+=(8-P.vy)*Math.min(1,dt*6);P.gliding=true}if(P.vy>900)P.vy=900;
  const near=lv.solids.filter(s=>s.x<P.x+90&&s.x+s.w>P.x-90);
  P.x+=P.vx*dt;if(P.x<0){P.x=0;if(P.vx<0)P.vx=0}for(const s of near)if(ov(P,s)){if(P.x+P.w/2<s.x+s.w/2)P.x=s.x-P.w;else P.x=s.x+s.w}
  const pb=P.y+P.h;P.y+=P.vy*dt;const wasG=P.onGround;P.onGround=false;P.plat=null;
@@ -1395,14 +1443,18 @@ function step(dt){const lv=G.lv;if(!lv.free)P.vx=G.speed*(P.mounted?1.12:1);
  for(const p of lv.plats){if(P.vy>=0&&pb<=p.y+2&&P.y+P.h>=p.y&&P.x+P.w>p.x&&P.x<p.x+p.w){P.y=p.y-P.h;P.vy=0;P.onGround=true;P.plat=p}}
  if(P.onGround&&!wasG&&P.air>.35){AU.fx('land');dust(P.x+P.w/2,P.y+P.h,6)}}
 function update(dt){const lv=G.lv;
- if(state==='winAnim'){P.face=1;P.vx=G.speed;P.x+=G.speed*dt;P.ph+=dt*G.speed/HS*.3456;P.hph+=dt*2.3;G.winT-=dt;if(G.winT<=0)showEnd(true);return}
+ if(state==='winAnim'){P.face=1;P.pressed=P.held=false;P.holdT=0;P.plat=null;if(P.crouch){P.crouch=false;dims()}INP.M=INP.B=false;G.spr=1;
+  const n=Math.ceil(dt/.0084),sd=dt/n;for(let i=0;i<n;i++){P.vx=G.speed*(P.mounted?1.12:1);step(sd)}
+  if(P.y>200){P.y=-P.h;P.vy=0;P.onGround=true}
+  if(P.onGround){P.ph+=dt*G.speed/HS*.3456;P.hph+=dt*2.3}else P.hph+=dt*.6;G.winT-=dt;if(G.winT<=0&&P.onGround)showEnd(true);else if(G.winT<-1.5)showEnd(true);return}
  if(state!=='play')return;
  G.time-=dt;if(G.time<=0){G.time=0;endLevel(false,'¡Se acabó el tiempo!');return}
  for(const p of lv.plats){if(!p.mv){p.dx=p.dy=0;continue}const ox=p.x,oy=p.y,o=Math.sin(T*p.mv.spd+p.mv.ph)*p.mv.amp;if(p.mv.ax==='y')p.y=p.oy+o;else p.x=p.ox+o;p.dx=p.x-ox;p.dy=p.y-oy}
  if(P.plat){P.x+=P.plat.dx;P.y=P.plat.y-P.h}
+ G.spr=(G.spr||1)+(((INP.B&&!P.crouch)?1.6:1)-(G.spr||1))*Math.min(1,dt*6);
  if(P.onGround){P.coyote=.09;P.glideT=.9;P.air=0}else{P.coyote-=dt;P.air+=dt}
  // movimiento libre (niveles 2 y 4) y agacharse
- if(lv.free){const dir=(INP.R?1:0)-(INP.L?1:0);const tgt=dir*G.speed*(P.mounted?1.12:1)*(P.crouch?.55:1);P.vx+=(tgt-P.vx)*Math.min(1,dt*(dir?7:9));if(dir)P.face=dir;if(Math.abs(P.vx)<1&&!dir)P.vx=0}else P.face=1;
+ if(lv.free){const dir=(INP.R?1:0)-(INP.L?1:0);const tgt=dir*G.speed*(P.mounted?1.12:1)*(P.crouch?.55:1)*(G.spr||1);P.vx+=(tgt-P.vx)*Math.min(1,dt*(dir?7:9));if(dir)P.face=dir;if(Math.abs(P.vx)<1&&!dir)P.vx=0}else P.face=1;
  if(INP.D&&!P.mounted&&!P.crouch&&P.onGround){P.crouch=true;dims()}
  if(P.crouch&&(!INP.D||!P.onGround)&&canStand()){P.crouch=false;dims()}
  if(INP.D&&!P.onGround&&P.vy<650)P.vy=Math.min(650,P.vy+2400*dt);
@@ -1435,7 +1487,7 @@ function update(dt){const lv=G.lv;
   if(sh.life>0&&lv.solids.some(s=>ov(b,s))){sh.life=0;dust(sh.x,sh.y,3,.5)}}
  G.shots=G.shots.filter(sh=>sh.life>0);
  // espada (a pie): mantener B o el botón Espada
- G.swCd=(G.swCd||0)-dt;G.slash=(G.slash||0)-dt;if(!P.mounted&&INP.F&&G.swCd<=0){G.slash=.32;G.swCd=.42;AU.fx('slash')}
+ G.swCd=(G.swCd||0)-dt;G.slash=(G.slash||0)-dt;if(!P.mounted&&INP.F&&G.swCd<=0&&(G.swD||0)>=1){G.slash=.32;G.swCd=.42;AU.fx('slash')}
  if(!P.mounted&&G.slash>0&&G.slash<.27){const hb={x:P.face>0?P.x+P.w-2:P.x-36,y:P.y+2,w:38,h:P.h-2};
   for(const e of lv.enemies){if(e.dead||e.gone||!ov(hb,e))continue;if(e.bo){e.gone=true;e.dead=true}else{e.dead=true;e.dy=-240}AU.fx('crack');dust(e.x+e.w/2,e.y+e.h/2,10)}}
  if(G.flee){G.flee.t+=dt;G.flee.x-=210*dt*(G.flee.dir||1);if(G.flee.t>2.2)G.flee=null}
@@ -1485,7 +1537,7 @@ function syncLevel(dt){const lv=G.lv,S=SC,t=T;let si=0;
  if(P.mounted){if(Hm.root.par!==Q.J.body){Q.J.body.add(Hm.root);Hm.root.s=[1,1,1];Hm.root.p=[.02,-.6,0];Hm.root.r=[0,-.12,0]}
   Q.root.vis=!blink;Q.root.p=[fx,fy,0];Q.root.r[1]=P.face>0?-.22:PI+.22;animQuad(Q,Math.abs(P.vx)<10&&P.onGround?'idle':'gallop',P.onGround?P.hph:.68,t);animHuman(Hm,'ride',P.ph,dt,t,1)}
  else{if(Hm.root.par!==PL){PL.add(Hm.root);Hm.root.s=[HS,HS,HS]}Hm.root.p=[fx,fy,0];Hm.root.r=[0,P.face>0?-.32:PI+.32,0];Hm.root.vis=!blink;
-  const mode=state==='winAnim'?'run':P.onGround?(P.crouch?'crouch':Math.abs(P.vx)<12?'idle':'run'):P.gliding?'glide':P.vy<0?'jump':'fall';animHuman(Hm,mode,P.ph,dt,t,Math.min(1,Math.abs(P.vx)/G.speed));
+  const mode=state==='winAnim'&&P.onGround?'run':P.onGround?(P.crouch?'crouch':Math.abs(P.vx)<12?'idle':'run'):P.gliding?'glide':P.vy<0?'jump':'fall';animHuman(Hm,mode,P.ph,dt,t,Math.min(1,Math.abs(P.vx)/G.speed));
   if(m&&!m.taken){Q.root.vis=true;Q.root.p=[m.x,0,0];Q.root.r[1]=0;animQuad(Q,'idle',0,t)}
   else if(G.flee){Q.root.vis=true;Q.root.p=[G.flee.x,0,0];Q.root.r[1]=(G.flee.dir||1)>0?PI:0;G.hph=(G.hph||0)+dt*2.4;animQuad(Q,'gallop',G.hph,t)}else Q.root.vis=false}
  const ps=surfY(fx,fy+1);shadowAt(si++,fx,ps,ps===null?0:Math.max(0,fy-ps),P.mounted?62:24,blink?.4:1);
@@ -1495,7 +1547,8 @@ function syncLevel(dt){const lv=G.lv,S=SC,t=T;let si=0;
  if(S.cairn){const on=lv.check&&lv.check.on;for(let i=0;i<S.cairn.fire.length;i++){const f=S.cairn.fire[i];f.vis=on;if(on&&i<3){f.s=[10+Math.sin(t*17+i)*1.5,24+Math.sin(t*13+i*2)*4,1]}}
   if(on&&Math.random()<dt*8)spawnP(lv.check.x+12+(Math.random()-.5)*6,30,-30,(Math.random()-.5)*10,30+Math.random()*30,1,2.5,OBJ.sparkM,-5)}
  // espada
- {const sw=Hm.sword;const show=!P.mounted&&(INP.F||G.slash>0);sw.vis=show;if(show&&!P.mounted){const J=Hm.J;if(G.slash>0){const pr=1-G.slash/.32;J.shR.r[2]=(-115+205*pr)*DEG;J.elR.r[2]=15*DEG}else{J.shR.r[2]=35*DEG;J.elR.r[2]=70*DEG}}}
+ {const want=!P.mounted&&state==='play'&&(INP.F||G.slash>0),d0=G.swD||0;G.swD=clamp(d0+(want?dt/.26:-dt/.32),0,1);if(P.mounted)G.swD=0;
+  if(want&&d0===0)AU.fx('draw');if(!want&&d0>0&&G.swD===0)AU.fx('sheath');swordPose(Hm,G.swD,!P.mounted&&G.slash>0?1-G.slash/.32:-1)}
  if(SC.lastM!==P.mounted){SC.lastM=P.mounted;updF()}
  // piedras
  SC.stones=SC.stones||[];for(let i=0;i<Math.max(G.shots.length,SC.stones.length);i++){let n=SC.stones[i];if(!n){n=new Node(OBJ.boulder,OBJ.boulderM);n.s=[.32,.32,.32];SC.dyn.add(n);SC.stones.push(n)}const sh=G.shots[i];n.vis=!!sh;if(sh){n.p=[sh.x,-sh.y,0];n.r=[t*9,t*7,0]}}
@@ -1581,10 +1634,10 @@ function endLevel(win,msg){showCtrl(false);if(!win){state='lost';AU.stop();AU.fx
 function showEnd(win,msg){const li=G.li,w=G.lv.w,l=G.lv.l;state='end';document.getElementById('pauseBtn').style.display='none';
  let mask=0;G.got.forEach((g,k)=>{if(g)mask|=1<<k});
  const eT=document.getElementById('eTitle'),eR=document.getElementById('eRes'),eV=document.getElementById('eVerses'),eN=document.getElementById('eNext');
- if(win){prog.m[li]=(prog.m[li]||0)|mask;if(li+1>prog.un)prog.un=Math.min(23,li+1);if(li===23){prog.fin=true;try{localStorage.setItem('biblixia3_completado','si')}catch(e){}}saveProg();
-  eT.textContent=li===23?'¡Terminaste BIBLIXIA 3!':'Nivel completado';
+ if(win){prog.m[li]=(prog.m[li]||0)|mask;if(li+1>prog.un)prog.un=Math.min(ULTIMO,li+1);if(li===ULTIMO){prog.fin=true;try{localStorage.setItem('biblixia3_completado','si')}catch(e){}}saveProg();
+  eT.textContent=li===ULTIMO?'¡Terminaste BIBLIXIA 3!':'Nivel completado';
   eR.innerHTML=(G.lv.free?'':'')+`Pergaminos <b>${bits(mask)}/3</b> &nbsp;·&nbsp; Monedas <b>${G.luces}</b>`+(bits(mask)<3?'<br><small>Repite el nivel para encontrar los pergaminos que faltan.</small>':'');
-  eN.style.display=li<23?'block':'none';if(li===23){eR.innerHTML+='<br><br><i>«Corramos con paciencia la carrera que tenemos por delante».</i><br><small>Hebreos 12:1</small>';setTimeout(()=>window.Felicidades&&Felicidades.mostrar({juego:'BIBLIXIA 3',niveles:WORLDS.map(x=>x.name),texto:'Terminaste los '+WORLDS.length+' mundos de La Carrera de la Fe',siguiente:{nombre:'Desafío Bíblico RD',url:SITIO_URL+'juego-biblico/'},sonido:AU.on!==false}),900)}}
+  eN.style.display=li<ULTIMO?'block':'none';if(li===ULTIMO){eR.innerHTML+='<br><br><i>«Corramos con paciencia la carrera que tenemos por delante».</i><br><small>Hebreos 12:1</small>';setTimeout(()=>window.Felicidades&&Felicidades.mostrar({juego:'BIBLIXIA 3',niveles:WORLDS.map(x=>x.name),texto:'Terminaste los '+WORLDS.length+' mundos de La Carrera de la Fe',siguiente:{nombre:'Desafío Bíblico RD',url:SITIO_URL+'juego-biblico/'},sonido:AU.on!==false}),900)}}
  else{eT.textContent='Inténtalo de nuevo';eR.textContent=msg||'';eN.style.display='none'}
  eV.innerHTML='';G.got.forEach((g,k)=>{if(g){const v=VERSOS[w][l*3+k];const d=document.createElement('div');d.className='vcard';d.innerHTML='<b></b><span></span>';d.querySelector('b').textContent=v[0];d.querySelector('span').textContent=v[1];eV.appendChild(d)}});
  showScreen('sEnd');AU.music('menu')}
@@ -1609,7 +1662,7 @@ document.getElementById('eRetry').onclick=()=>{AU.fx('click');startLevel(G.li)};
 document.getElementById('eWorlds').onclick=()=>{AU.fx('click');openWorlds()};
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));document.getElementById('fsBtn').style.display=id?'none':'flex';if(id){document.getElementById('pauseBtn').style.display='none';showCtrl(false)}
  document.getElementById('banner').style.display=(!PROTEGIDO&&id&&id!=='sLock')?'block':'none'}
-async function toMenuScene(){const w=G?G.lv.w:Math.min(5,Math.floor(prog.un/4));if(state!=='menu'||SCW!==w||G){state='loadingMenu';if(CUR_W!==w){setLoading(true,'Cargando…',.4);await nextFrame()}buildShowcase(w);setLoading(false)}state='menu'}
+async function toMenuScene(){const w=G?G.lv.w:Math.min(WORLDS.length-1,Math.floor(prog.un/4));if(state!=='menu'||SCW!==w||G){state='loadingMenu';if(CUR_W!==w){setLoading(true,'Cargando…',.4);await nextFrame()}buildShowcase(w);setLoading(false)}state='menu'}
 async function goMenu(id){AU.init();await toMenuScene();showScreen(id);AU.music('menu')}
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{AU.fx('click');goMenu(b.dataset.go)});
 async function openWorlds(){await toMenuScene();const box=document.getElementById('worldList');box.innerHTML='';let tot=0;
@@ -1619,12 +1672,12 @@ async function openWorlds(){await toMenuScene();const box=document.getElementByI
   const g=d.querySelector('.lvls');for(let l=0;l<4;l++){const li=w*4+l,b=document.createElement('button');b.className='lv';const m=prog.m[li]||0;tot+=bits(m);
    b.innerHTML=`<span class="n">${w+1}-${l+1}</span><span class="md">${l%2?'libre':'carrera'}</span><span class="st">${isLocked(li)?'bloqueado':bits(m)+'/3 pergaminos'}</span>`;b.disabled=isLocked(li);b.onclick=()=>{AU.fx('click');startLevel(li)};g.appendChild(b)}
   box.appendChild(d)});
- document.getElementById('totalSt').textContent=`Pergaminos ${tot}/72`;showScreen('sWorlds');AU.music('menu')}
+ document.getElementById('totalSt').textContent=`Pergaminos ${tot}/${TOTAL_V}`;showScreen('sWorlds');AU.music('menu')}
 document.getElementById('bPlay').onclick=()=>{AU.init();AU.fx('click');openWorlds()};
 document.getElementById('bVerses').onclick=async()=>{AU.init();AU.fx('click');await toMenuScene();const box=document.getElementById('verseList');box.innerHTML='';let n=0;
  WORLDS.forEach((wd,w)=>{for(let l=0;l<4;l++){const m=prog.m[w*4+l]||0;for(let k=0;k<3;k++)if((m>>k)&1){const v=VERSOS[w][l*3+k];const d=document.createElement('div');d.className='vcard';
   d.innerHTML='<b></b><span></span>';d.querySelector('b').textContent=v[0];d.querySelector('span').textContent=v[1];box.appendChild(d);n++}}});
- if(!n)box.innerHTML='<p class="empty">Aún no tienes versículos. Corre y toma los pergaminos.</p>';document.getElementById('vCount').textContent=`${n}/72`;showScreen('sVerses')};
+ if(!n)box.innerHTML='<p class="empty">Aún no tienes versículos. Corre y toma los pergaminos.</p>';document.getElementById('vCount').textContent=`${n}/${TOTAL_V}`;showScreen('sVerses')};
 function updChars(){document.querySelectorAll('.char').forEach(el=>el.classList.toggle('sel',el.dataset.c===charSel))}
 document.querySelectorAll('.char').forEach(el=>el.onclick=()=>{charSel=el.dataset.c;LS.set('biblixia3_personaje',charSel);AU.fx('click');updChars()});
 document.getElementById('bChar').onclick=async()=>{AU.init();AU.fx('click');await toMenuScene();updChars();showScreen('sChar')};
@@ -1637,12 +1690,71 @@ const salir=()=>{location.href=SITIO_URL};
 document.getElementById('bExit').onclick=salir;document.getElementById('lockOut').onclick=salir;document.getElementById('goB2').onclick=()=>{location.href=BIBLIXIA2_URL};
 document.addEventListener('pointerdown',()=>{if(!AU.ctx&&(state==='menu')){AU.init();AU.music('menu')}},{once:true});
 
-function addSword(H){const g=new Geo(),gd=new Geo(),hl=new Geo();box(g,-.011,-.98,-.0035,.011,-.13,.0035,1);box(gd,-.02,-.135,-.075,.02,-.11,.075,1);box(hl,-.016,-.12,-.016,.016,.02,.016,1);
- const n=new Node();n.add(NN(g,mat(TX.white,[.82,.84,.88],{spec:1.6})));n.add(NN(gd,mat(TX.white,[.85,.65,.25],{spec:1.2})));n.add(NN(hl,mat(TX.leather,[.3,.18,.1])));
- n.p=[.02,-.06,0];n.r=[0,0,.25];n.vis=false;H.J.haR.add(n);H.sword=n}
+/* ---------------- ESPADA REALISTA: hoja de acero con filo y nervio, guarda, empuñadura forrada, pomo y vaina al costado ---------------- */
+let SWG=null;
+function swordGeos(){if(SWG)return SWG;
+ // hoja (sección en rombo: filos a los lados, nervio en el centro) — apunta hacia -y
+ const bl=new Geo(),Ys=[-.088,-.11,-.3,-.55,-.76,-.83,-.875],Ws=[.025,.0235,.022,.019,.0155,.009,0],Ts=[.0068,.0064,.006,.0052,.0044,.003,0];
+ for(const[sx,sz]of[[1,1],[-1,1],[-1,-1],[1,-1]]){const nl=Math.hypot(.0055,.02),nx=sx*.0055/nl,nz=sz*.02/nl,o=bl.vc;
+  for(let i=0;i<Ys.length;i++){bl.v(sx*Ws[i],Ys[i],0,0,i/6,nx,0,nz,1.08,1.08,1.1);bl.v(0,Ys[i],sz*Ts[i],1,i/6,nx,0,nz,.78,.79,.82)}
+  for(let i=0;i<Ys.length-1;i++){const a=o+i*2;bl.q(a,a+1,a+3,a+2)}}
+ // recazo (base sin filo)
+ box(bl,-.02,-.098,-.0075,.02,-.084,.0075,1,63,[.7,.7,.72]);
+ // guarda con gavilanes curvos y remates
+ const gd=loft([[0,-.064,-.1],[0,-.074,-.06],[0,-.08,0],[0,-.074,.06],[0,-.064,.1]],[[.0075,.0085],[.0095,.011],[.013,.017],[.0095,.011],[.0075,.0085]],10,[1,0,0]);
+ for(const z of[-.104,.104])gd.add(sphere(.011,.011,.011,10,8,(x,y,zz)=>[x,y-.062,zz+z]));
+ gd.add(loft([[0,-.086,0],[0,-.07,0]],[[.017,.011],[.015,.01]],10));
+ // empuñadura forrada en cuero (espiral de tiras)
+ const gp=[],gr=[];for(let k=0;k<=16;k++){const y=-.068+k*.0075;gp.push([0,y,0]);const r=(k%2?.0168:.0148)+.002*Math.sin(k/16*PI);gr.push([r,r*.92])}const gh=loft(gp,gr,10);
+ // pomo
+ const pm=sphere(.024,.02,.024,14,10,(x,y,z)=>[x,y+.076,z]);pm.add(loft([[0,.052,0],[0,.062,0]],[[.012,.012],[.016,.016]],10));
+ // vaina de cuero con brocal y contera de bronce
+ const sc=loft([[0,-.075,0],[0,-.12,0],[0,-.5,0],[0,-.8,0],[0,-.88,0],[0,-.905,0]],[[.034,.014],[.034,.014],[.031,.013],[.026,.012],[.017,.009],[.008,.006]],12,[0,0,1]);
+ const sb=loft([[0,-.07,0],[0,-.118,0]],[[.038,.017],[.037,.017]],12,[0,0,1]);sb.add(loft([[0,-.79,0],[0,-.89,0],[0,-.91,0]],[[.03,.015],[.019,.011],[.007,.006]],12,[0,0,1]));
+ sb.add(loft([[0,-.2,0],[0,-.215,0]],[[.037,.017],[.037,.017]],12,[0,0,1]));
+ SWG={bl,gd,gh,pm,sc,sb};return SWG}
+function addSword(H){const G0=swordGeos();
+ if(!H.swM)H.swM={steel:mat(TX.white,[.8,.82,.87],{spec:2.4,emis:.05,cull:false}),brass:mat(TX.white,[.78,.58,.26],{spec:1.5}),grip:mat(TX.leather,[.26,.15,.08],{spec:.25}),sheath:mat(TX.leather,[.3,.17,.09],{spec:.35})};
+ const M=H.swM,n=new Node();n.add(NN(G0.bl,M.steel));n.add(NN(G0.gd,M.brass));n.add(NN(G0.gh,M.grip));n.add(NN(G0.pm,M.brass));
+ // vaina colgada en la cadera izquierda: empuñadura hacia adelante y arriba, punta hacia atrás
+ const sc=H.J.pel.add(new Node());sc.p=[.035,-.035,-.185];sc.r=[.2,0,-.78];sc.add(NN(G0.sc,M.sheath));sc.add(NN(G0.sb,M.brass));
+ const sock=sc.add(new Node());sock.add(n);H.scab=sc;H.sock=sock;H.sword=n}
+/* inversa de una matriz afín 4x4 (column-major) */
+function inv4(o,m){const a=m[0],b=m[4],c=m[8],d=m[1],e=m[5],f=m[9],g=m[2],h=m[6],k=m[10];
+ const A=e*k-f*h,B=-(d*k-f*g),C=d*h-e*g,det=a*A+b*B+c*C,i=1/det;
+ o[0]=A*i;o[4]=-(b*k-c*h)*i;o[8]=(b*f-c*e)*i;o[1]=B*i;o[5]=(a*k-c*g)*i;o[9]=-(a*f-c*d)*i;o[2]=C*i;o[6]=-(a*h-b*g)*i;o[10]=(a*e-b*d)*i;
+ o[3]=o[7]=o[11]=0;o[15]=1;const x=m[12],y=m[13],z=m[14];o[12]=-(o[0]*x+o[4]*y+o[8]*z);o[13]=-(o[1]*x+o[5]*y+o[9]*z);o[14]=-(o[2]*x+o[6]*y+o[10]*z);return o}
+function orthoM(m){// Gram-Schmidt de las columnas de rotación (mantiene la escala media)
+ const sx=Math.hypot(m[0],m[1],m[2]);let X=[m[0],m[1],m[2]],Y=[m[4],m[5],m[6]];const lx=Math.hypot(...X);X=X.map(v=>v/lx);
+ const dp=X[0]*Y[0]+X[1]*Y[1]+X[2]*Y[2];Y=[Y[0]-dp*X[0],Y[1]-dp*X[1],Y[2]-dp*X[2]];const ly=Math.hypot(...Y)||1;Y=Y.map(v=>v/ly);
+ const Z=[X[1]*Y[2]-X[2]*Y[1],X[2]*Y[0]-X[0]*Y[2],X[0]*Y[1]-X[1]*Y[0]];
+ for(let q=0;q<3;q++){m[q]=X[q]*sx;m[4+q]=Y[q]*sx;m[8+q]=Z[q]*sx}return m}
+const SW_TMP=M4.c(),SW_TMP2=M4.c(),SW_HAND=M4.trs(M4.c(),[.012,-.098,0],[0,0,.2],[1,1,1]);
+/* IK de 2 huesos del brazo derecho para llevar la mano a un punto (coordenadas del mundo) */
+function armIK(H,wx,wy,wz){const J=H.J,Si=inv4(SW_TMP,J.spine.W),S=J.shR.p;
+ const tx=Si[0]*wx+Si[4]*wy+Si[8]*wz+Si[12]-S[0],ty=Si[1]*wx+Si[5]*wy+Si[9]*wz+Si[13]-S[1],tz=Si[2]*wx+Si[6]*wy+Si[10]*wz+Si[14]-S[2];
+ const a=.29,b=.335,rho=Math.hypot(ty,tz),d=clamp(Math.hypot(tx,rho),.08,a+b-.005);
+ const r0=Math.atan2(-tz,-ty),el=PI-Math.acos(clamp((a*a+b*b-d*d)/(2*a*b),-1,1)),al=Math.acos(clamp((a*a+d*d-b*b)/(2*a*d),-1,1)),r2=Math.atan2(tx,rho)-al;
+ return[r0,r2,el]}
+/* d: 0 = envainada … 1 = desenvainada en guardia; sp: progreso del tajo (0..1) o -1 */
+function swordPose(H,d,sp){const J=H.J,D=DEG,sw=H.sword,e=x=>x*x*(3-2*x);
+ if(d<=0&&sp<0){if(sw.par!==H.sock)H.sock.add(sw);sw.M=null;sw.p=[0,0,0];sw.r=[0,0,0];return}
+ if(sp>=0){if(sw.par!==J.haR)J.haR.add(sw);sw.M=null;sw.p=[.012,-.098,0];sw.r=[0,0,.2];
+  J.shR.r=[0,0,(-115+205*sp)*D];J.elR.r[2]=(15+20*Math.sin(sp*PI))*D;return}
+ const pose=(r0,r2,el,bl)=>{J.shR.r=[lerp(J.shR.r[0],r0,bl),J.shR.r[1],lerp(J.shR.r[2],r2,bl)];J.elR.r[2]=lerp(J.elR.r[2],el,bl)};
+ if(d<.7){// la mano agarra la empuñadura en la cadera izquierda y la saca deslizando la hoja fuera de la vaina
+  const kA=e(Math.min(1,d/.3)),slide=d<.3?0:e((d-.3)/.4)*.86;
+  J.spine.r[1]+=-.2*Math.sin(Math.min(1,d/.7)*PI);
+  if(sw.par!==H.sock)H.sock.add(sw);sw.M=null;sw.p=[0,slide,0];sw.r=[0,0,0];
+  const R=H.root;R.upd(R.par?R.par.W:null);const W=H.sock.W,gy=slide-.005;
+  const ik=armIK(H,W[4]*gy+W[12],W[5]*gy+W[13],W[6]*gy+W[14]);pose(ik[0],ik[1],ik[2],kA);H.ikEnd=ik;H.swL0=null}
+ else{// ya fuera de la vaina: la espada gira en la mano hasta quedar en guardia
+  const k=e((d-.7)/.3),ie=H.ikEnd||[16*D,78*D,30*D];pose(lerp(ie[0],0,k),lerp(ie[1],35*D,k),lerp(ie[2],70*D,k),1);
+  if(sw.par!==J.haR){const R=H.root;R.upd(R.par?R.par.W:null);M4.mul(SW_TMP2,inv4(SW_TMP,J.haR.W),sw.W);J.haR.add(sw);H.swL0=SW_TMP2.slice()}
+  const L0=H.swL0||SW_HAND,m=sw.M||(sw.M=M4.c());for(let q=0;q<16;q++)m[q]=lerp(L0[q],SW_HAND[q],k);orthoM(m)}}
 /* ---------------- ARRANQUE ---------------- */
 async function boot(){
- if(!PROTEGIDO)prog.un=23; // modo de prueba (fuera de github.io): todos los niveles abiertos
+ if(!PROTEGIDO)prog.un=ULTIMO; // modo de prueba (fuera de github.io): todos los niveles abiertos
  const aa=!((navigator.deviceMemory||4)<=3||(navigator.hardwareConcurrency||4)<=4)&&QUALITY.mode!=='baja';
  setLoading(true,'Preparando el mundo…',.05);
  if(!initGL(cv,aa)){setLoading(false);document.getElementById('noGL').classList.add('on');return}
@@ -1653,7 +1765,7 @@ async function boot(){
  HUM.h=buildHuman('h');HUM.m=buildHuman('m');for(const k in HUM)addSword(HUM[k]);HORSE=buildQuad('horse');PL.add(HORSE.root);mkIcons();
  const pc=paintParch(512,256,false).toDataURL('image/jpeg',.82);document.getElementById('vBox').style.backgroundImage=`url(${pc})`;
  setLoading(true,null,.7);await nextFrame();
- buildShowcase(Math.min(5,Math.floor(prog.un/4)));state='menu';setLoading(false);
+ buildShowcase(Math.min(WORLDS.length-1,Math.floor(prog.un/4)));state='menu';setLoading(false);
  if(PROTEGIDO&&!b3Abierto()){document.getElementById('lockProg').textContent=b2Niveles().map(([n,ok])=>(ok?'✅ ':'⬜ ')+n).join('   ');showScreen('sLock')}else{if(!PROTEGIDO)document.getElementById('banner').style.display='block';showScreen('sMenu')}
  last=performance.now();requestAnimationFrame(frame)}
 boot().catch(e=>{console.error(e);setLoading(false);const n=document.getElementById('noGL');n.querySelector('p').textContent='Error al iniciar: '+e.message;n.classList.add('on')});
