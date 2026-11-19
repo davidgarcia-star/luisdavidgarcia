@@ -2411,12 +2411,10 @@
             .site-header.open .wrap.nav { background: #040B1D; -webkit-backdrop-filter: none; backdrop-filter: none; }
         }
         /* La barra de inicio (logo MIPROAA y menú) queda siempre fija arriba. En la vista principal (Inicio) se ve
-           de su tamaño normal; al bajar, subir o ir a otra sección se ve más transparente y un poco más pequeña
-           para no tapar el contenido (al tocarla o pasar el cursor vuelve a verse normal) */
-        .site-header .wrap.nav { transform-origin: top center; transition: transform .35s ease, opacity .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease; }
-        .site-header.nav-mini:not(.open) .wrap.nav { transform: scale(.86); opacity: .85; background: rgba(0, 0, 0, .5); box-shadow: 0 6px 20px rgba(0, 0, 0, .2); }
-        .site-header.nav-mini:not(.open) .wrap.nav:hover,
-        .site-header.nav-mini:not(.open) .wrap.nav:focus-within { opacity: 1; background: rgba(0, 0, 0, .72); }
+           de su tamaño normal; al bajar, subir o ir a otra sección se ve un poco más pequeña (sin transparencia,
+           con fondo sólido para que se lea bien) y así no tapa el contenido */
+        .site-header .wrap.nav { transform-origin: top center; transition: transform .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease; }
+        .site-header.nav-mini:not(.open) .wrap.nav { transform: scale(.84); background: #040B1D; -webkit-backdrop-filter: none; backdrop-filter: none; border-color: rgba(244, 183, 63, .35); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
         @media (prefers-reduced-motion: reduce) { .site-header .wrap.nav { transition: none; } }
 
 
