@@ -110,12 +110,13 @@
     {
       id: "soga", ico: "🪢", name: "La Soga",
       desc: "Jala la soga contra el hombre fuerte. Si él la lleva a su lado, pierdes.",
-      how: "<b>La Soga:</b> el hombre fuerte jala sin parar; cada respuesta correcta jala la soga hacia ti. Si la marca roja llega a tu línea, ganas.",
+      how: "<b>La Soga:</b> el hombre fuerte jala sin parar; cada respuesta correcta jala la soga hacia ti. Con 14 aciertos de 20 (70 %) la marca roja llega a tu línea y ganas.",
       man: { ok: ["¡Uf! ¡Qué fuerza!", "¡No puede ser!", "¡Aguanta, aguanta!"], bad: ["¡Jajá! ¡La soga es mía!", "¡Más fuerza, campeón!", "¡Te voy a ganar!"] },
       you: ["¡Jala!", "¡Con Dios todo!", "¡Fuerza!", "¡Amén!"],
       create(svg, k) {
-        const drift = 0.8 + 0.25 * k, yank = 10 + 2 * k;
-        let pos = 0, vis = 0, kick = 0, kickMan = 0;
+        // Regla del 70 %: la soga solo cruza tu línea al llegar a NEED aciertos; con MAXERR fallos llega a la suya
+        const drift = 0.12 + 0.04 * k, yank = 100 / MAXERR;
+        let pos = 0, vis = 0, kick = 0, kickMan = 0, hits = 0;
         svg.innerHTML = sky("#1b2a4a", "#3a4f78") + groundSvg("#5b4a32", "#7a6442") +
           `<rect x="0" y="${GROUND + 3}" width="800" height="40" fill="rgba(0,0,0,.12)"/>` +
           `<line x1="400" y1="${GROUND - 6}" x2="400" y2="250" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-dasharray="5 5"/>` +
@@ -138,10 +139,17 @@
             tr(you, 170, GROUND + Math.sin(t * 9) * .8, -14 - kick * 10);
             tr(man, 630, GROUND + Math.cos(t * 9) * .8, 14 + kickMan * 10);
           },
-          correct(tf, streak) { pos = clamp(pos - (18 + 9 * tf + Math.min(streak - 1, 4) * 2), -100, 100); kick = 1; fx.pull(); },
-          wrong(timeout) { pos = clamp(pos + yank + (timeout ? 4 : 0), -100, 100); kickMan = 1; fx.pull(); },
-          status() { return pos <= -100 ? "win" : pos >= 100 ? "lose" : null; },
-          final() { return pos < 0 ? "win" : "lose"; },
+          correct(tf, streak) {
+            hits++;
+            // nunca llega a tu línea antes de tiempo: el límite avanza con cada acierto
+            const floor = hits >= NEED ? -100 : -96 * hits / NEED;
+            pos = clamp(pos - (100 / NEED + 4 * tf + Math.min(streak - 1, 4)), floor, 100);
+            if (hits >= NEED) pos = -100;
+            kick = 1; fx.pull();
+          },
+          wrong(timeout) { pos = clamp(pos + yank + (timeout ? 2 : 0), -100, 100); kickMan = 1; fx.pull(); },
+          status() { return hits >= NEED ? "win" : pos >= 100 ? "lose" : null; },
+          final() { return hits >= NEED ? "win" : "lose"; },
           hud() { const p = (100 - pos) / 200; return { good: p, goodLbl: "Tu lado " + Math.round(p * 100) + "%", bad: 1 - p, badLbl: "Hombre fuerte " + Math.round((1 - p) * 100) + "%" }; },
           winTxt: "¡Le ganaste al hombre fuerte! La soga cruzó tu línea.",
           loseTxt: "El hombre fuerte llevó la soga a su lado.",
@@ -262,12 +270,13 @@
     {
       id: "carrera", ico: "🏃", name: "La Carrera",
       desc: "Corre contra un rival que avanza con el tiempo. Llega primero a la meta.",
-      how: "<b>La Carrera:</b> tu rival avanza mientras piensas; cada respuesta correcta te hace correr. Si llegas primero a la meta, ganas (Hebreos 12:1).",
+      how: "<b>La Carrera:</b> tu rival avanza mientras piensas; cada respuesta correcta te hace correr. Con 14 aciertos de 20 (70 %) llegas a la meta y ganas (Hebreos 12:1).",
       man: { ok: ["¡Qué rápido!", "¡Espérame!"], bad: ["¡Te pasé!", "¡Me voy!", "¡Adiós!"] },
       you: ["¡Corre!", "¡A la meta!", "¡Vamos!"],
       create(svg, k) {
-        const drift = 0.8 + 0.2 * k, step = 5 + k;
-        let me = 0, riv = 0, vMe = 0, vRiv = 0, run = 0, runR = 0;
+        // Regla del 70 %: llegas a la meta con NEED aciertos; el rival llega con MAXERR fallos (y avanza un poco con el tiempo)
+        const drift = 0.1 + 0.04 * k, step = 100 / MAXERR;
+        let me = 0, riv = 0, vMe = 0, vRiv = 0, run = 0, runR = 0, hits = 0;
         const X = (p) => 150 + p * 5;
         let lanes = "";
         for (let i = 0; i < 16; i++) lanes += `<rect x="${650 + (i % 2) * 8}" y="${78 + Math.floor(i / 2) * 18}" width="8" height="9" fill="#fff"/><rect x="${650 + ((i + 1) % 2) * 8}" y="${78 + Math.floor(i / 2) * 18 + 9}" width="8" height="9" fill="#fff"/>`;
@@ -281,7 +290,7 @@
           `<g id="me">${figure({ ...PLAYER, face: 1, arms: [[14, -52], [-14, -54]], legs: [[-14, 0], [14, 0]] })}</g>`;
         const gMe = q(svg, "#me"), gRiv = q(svg, "#riv");
         return {
-          tick(dt) { riv = Math.min(100, riv + drift * dt); },
+          tick(dt) { riv = Math.min(99, riv + drift * dt); },
           frame(dt) {
             const pm = vMe, pr = vRiv;
             vMe += (me - vMe) * Math.min(1, dt * 4); vRiv += (riv - vRiv) * Math.min(1, dt * 4);
@@ -289,10 +298,10 @@
             tr(gRiv, X(vRiv), 140 - Math.abs(Math.sin(runR * 3)) * 5, 6, .7);
             tr(gMe, X(vMe), 216 - Math.abs(Math.sin(run * 3)) * 5, 6, .8);
           },
-          correct(tf, streak) { me = Math.min(100, me + 11 + 5 * tf + Math.min(streak - 1, 4) * 1.5); fx.whoosh(); },
-          wrong(timeout) { riv = Math.min(100, riv + step + (timeout ? 2 : 0)); },
-          status() { return me >= 100 ? "win" : riv >= 100 ? "lose" : null; },
-          final() { return me > riv ? "win" : "lose"; },
+          correct() { hits++; me = Math.min(100, 100 * hits / NEED); fx.whoosh(); },
+          wrong() { riv = Math.min(100, riv + step); },
+          status() { return hits >= NEED ? "win" : riv >= 100 ? "lose" : null; },
+          final() { return hits >= NEED ? "win" : "lose"; },
           hud() { return { good: me / 100, goodLbl: `Tú ${Math.round(me)} %`, bad: riv / 100, badLbl: `Rival ${Math.round(riv)} %` }; },
           winTxt: "¡Llegaste primero a la meta! «…corramos con paciencia la carrera que tenemos por delante» (Hebreos 12:1).",
           loseTxt: "Tu rival llegó primero a la meta.",
@@ -348,11 +357,12 @@
     {
       id: "honda", ico: "🪨", name: "La Honda",
       desc: "Como David, detén al gigante con tu honda antes de que llegue a ti.",
-      how: "<b>La Honda:</b> el gigante camina hacia ti. Cada respuesta correcta le lanza una piedra y lo hace retroceder. Dale los golpes que pide el nivel antes de que te alcance (1 Samuel 17).",
+      how: "<b>La Honda:</b> el gigante camina hacia ti. Cada respuesta correcta le lanza una piedra y lo hace retroceder. Dale 14 golpes de 20 (70 %) antes de que te alcance (1 Samuel 17).",
       man: { ok: ["¡Ay, mi cabeza!", "¡Uf!", "¡Grrr!"], bad: ["¡Ahí voy!", "¡Ja, fallaste!", "¡No me detienes!"] },
       you: ["¡En el nombre del SEÑOR!", "¡Toma!", "¡Piedra!"],
       create(svg, k) {
-        const drift = 0.8 + 0.2 * k, stepIn = 7 + k, hits0 = Math.min(5 + Math.round(k), NEED);
+        // Regla del 70 %: hacen falta NEED golpes; con MAXERR fallos el gigante te alcanza
+        const drift = 0.1 + 0.04 * k, stepIn = 100 / MAXERR, hits0 = NEED;
         let d = 100, vis = 100, hits = 0, knock = 0, down = 0;
         const X = (dd) => 240 + dd * 4.1;
         svg.innerHTML = sky("#3b2a1f", "#a0703f") + groundSvg("#8a6a3a", "#a5834f") +
@@ -370,15 +380,15 @@
           stone.innerHTML = ""; fx.thud(); knock = 1;
         }
         return {
-          tick(dt) { if (!down) d = Math.max(0, d - drift * dt); },
+          tick(dt) { if (!down) d = Math.max(1, d - drift * dt); },
           frame(dt) {
             vis += (d - vis) * Math.min(1, dt * 4); knock = Math.max(0, knock - dt * 2.5);
             const t = performance.now() / 1000;
             if (down) { down = Math.min(1, down + dt * 1.5); tr(giant, X(vis), GROUND, down * 85); return; }
             tr(giant, X(vis), GROUND - Math.abs(Math.sin(t * 3)) * 3, knock * 12);
           },
-          async correct(tf) { await sling(); hits++; d = Math.min(100, d + 12 + 4 * tf); paint(); if (hits >= hits0) { down = .01; fx.crumble(); } },
-          wrong(timeout) { d = Math.max(0, d - stepIn - (timeout ? 2 : 0)); fx.thud(); },
+          async correct(tf) { await sling(); hits++; d = Math.min(100, d + 3 + 3 * tf); paint(); if (hits >= hits0) { down = .01; fx.crumble(); } },
+          wrong() { d = Math.max(0, d - stepIn); fx.thud(); },
           status() { return hits >= hits0 ? "win" : d <= 0 ? "lose" : null; },
           final() { return hits >= hits0 ? "win" : "lose"; },
           hud() { return { good: hits / hits0, goodLbl: `Golpes ${hits} de ${hits0}`, bad: 1 - d / 100, badLbl: `El gigante se acerca ${Math.round(100 - d)} %` }; },
@@ -707,9 +717,11 @@
     await (ok ? state.M.correct(tf, state.streak) : state.M.wrong(timeout));
     paintHud();
     state.busy = false;
-    const st = state.M.status();
+    let st = state.M.status();
+    if (st === "win" && state.correct < NEED) st = null;              // aún no llega al 70 %
+    if (!st && state.answered - state.correct >= MAXERR) st = "lose"; // ya no puede llegar al 70 %
     if (st) state.over = st;
-    else if (state.index + 1 >= state.queue.length) state.over = state.M.final();
+    else if (state.index + 1 >= state.queue.length) state.over = state.correct >= NEED ? "win" : "lose";
     $("btnNext").textContent = state.over ? "Ver resultado" : "Siguiente";
     $("feedback").hidden = false;
     $("btnNext").focus({ preventScroll: true });
@@ -763,7 +775,7 @@
   function finish(res) {
     stopLoop();
     const m = state.mode, l = state.level, M = state.M;
-    const win = res === "win";
+    const win = res === "win" && state.correct >= NEED; // solo se gana con el 70 % (90 % en Máster)
     const pct = state.answered ? Math.round((state.correct / state.answered) * 100) : 0;
     let next = null;
     if (win) {

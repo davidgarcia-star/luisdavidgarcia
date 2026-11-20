@@ -588,10 +588,10 @@
     clearInterval(state.timer);
     state.active = false;
     state.finished = true;
-    Sound.fanfare();
-    // El confeti solo celebra cuando se aprueba (o en equipos); si no, taparía el mensaje de ánimo
+    // La fanfarria y el confeti solo celebran cuando se aprueba (o en equipos); si no, taparían el mensaje de ánimo
     const celebra = state.mode !== "solo" || Math.round((state.correctCount / state.total) * 100) >= passPct(state.level);
     if (celebra) {
+      Sound.fanfare();
       confetti(180);
       setTimeout(() => confetti(120), 500);
     }
@@ -606,7 +606,10 @@
       const li = LEVELS.findIndex((l) => l.id === state.level.id);
       const nextLv = LEVELS[li + 1] || null;
       state.nextLevel = passed ? nextLv : null;
-      $("resultTitle").textContent = "¡Nivel " + state.level.name + " completado!";
+      // Solo se dice "completado" si de verdad aprobó el nivel (70 % o más)
+      $("resultTitle").textContent = passed
+        ? "¡Nivel " + state.level.name + " completado!"
+        : "Nivel " + state.level.name + " no superado";
       $("resultIcon").hidden = true;
       const ring = document.createElement("div");
       ring.className = "score-ring";
