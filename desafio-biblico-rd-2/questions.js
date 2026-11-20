@@ -191,7 +191,7 @@ const QUESTIONS = {
     Q("Según Daniel 4, ¿cuántos «tiempos» pasaron sobre Nabucodonosor mientras vivía como animal del campo?", "Siete tiempos", "Tres tiempos", "Cuarenta días", "Un tiempo", "Daniel 4:32-33"),
     Q("¿Cuántos años de cautiverio en Babilonia anunció Jeremías?", "70", "40", "50", "100", "Jeremías 25:11"),
     Q("¿Qué rey de Babilonia vio la escritura en la pared durante un banquete?", "Belsasar", "Nabucodonosor", "Darío", "Ciro", "Daniel 5"),
-    Q("¿Cuáles fueron las palabras escritas en la pared en el banquete de Belsasar?", "Mene, Mene, Tekel, Uparsin", "Selah, Amén, Aleluya, Hosanna", "Alfa, Omega, Principio, Fin", "Santo, Santo, Santo, Señor", "Daniel 5:25"),
+    Q("¿Cuáles fueron las palabras escritas en la pared en el banquete de Belsasar?", "Mene, Mene, Tekel, Ufarsin", "Selah, Amén, Aleluya, Hosanna", "Alfa, Omega, Principio, Fin", "Santo, Santo, Santo, Señor", "Daniel 5:25"),
     Q("¿Cuántos años tenía Moisés cuando murió?", "120", "100", "110", "80", "Deuteronomio 34:7"),
     Q("¿En qué monte murió Moisés después de ver la tierra prometida?", "Nebo", "Sinaí", "Hermón", "Carmelo", "Deuteronomio 34:1, 5"),
     Q("¿Cuántos años tenía Josué cuando murió?", "110", "120", "100", "99", "Josué 24:29"),
