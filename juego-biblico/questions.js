@@ -230,6 +230,11 @@ const QUESTIONS = {
     Q("¿Cuántos días se apareció Jesús a sus discípulos después de su resurrección antes de ascender?", "Cuarenta", "Tres", "Siete", "Cincuenta", "Hechos 1:3"),
     Q("¿Cuántas personas se añadieron a los discípulos tras el sermón de Pedro en Pentecostés?", "Unas 3000", "Unas 500", "Unas 5000", "Unas 120", "Hechos 2:41"),
     Q("¿Qué discípula de Jope fue resucitada por Pedro?", "Dorcas (Tabita)", "Lidia", "Priscila", "Febe", "Hechos 9:36-41"),
+    Q("¿En casa de quién se quedó Pedro muchos días en Jope?", "Simón, un curtidor", "Cornelio", "Eneas", "Jasón", "Hechos 9:43"),
+    Q("¿Cómo se llamaba la sirvienta que reconoció la voz de Pedro a la puerta tras salir de la cárcel?", "Rode", "Lidia", "Febe", "Damaris", "Hechos 12:13-14"),
+    Q("¿De qué ciudad era natural Apolos, hombre elocuente y poderoso en las Escrituras?", "Alejandría", "Tarso", "Antioquía", "Corinto", "Hechos 18:24"),
+    Q("¿Cuántas personas iban en total en la nave en que naufragó Pablo?", "276", "144", "300", "70", "Hechos 27:37"),
+    Q("¿Qué edad tenía el cojo de nacimiento sanado por Pedro en la puerta del templo?", "Más de 40 años", "Más de 30 años", "Más de 50 años", "Más de 20 años", "Hechos 4:22"),
   ],
 
   master: [
