@@ -288,6 +288,11 @@ const QUESTIONS = {
     Q("¿Qué arcángel contendió con el diablo por el cuerpo de Moisés?", "Miguel", "Gabriel", "Querubín", "Abadón", "Judas 9"),
     Q("¿Cuántos fueron sellados de cada tribu de Israel en Apocalipsis 7?", "12 000", "144 000", "7000", "1000", "Apocalipsis 7:4-8"),
     Q("¿Qué iglesia de Apocalipsis fue reprendida por ser tibia?", "Laodicea", "Sardis", "Pérgamo", "Tiatira", "Apocalipsis 3:14-16"),
+    Q("¿Ante quién llevaron primero a Jesús, por ser suegro de Caifás?", "Anás", "Gamaliel", "Nicodemo", "Ananías", "Juan 18:13"),
+    Q("¿Cuántos años reinó Manasés en Jerusalén?", "55", "52", "41", "29", "2 Reyes 21:1"),
+    Q("¿Qué hijo de Saúl reinó dos años sobre Israel después de la muerte de su padre?", "Is-boset", "Jonatán", "Mefiboset", "Abinadab", "2 Samuel 2:10"),
+    Q("¿Qué concubina de Saúl cuidó los cuerpos de sus hijos para que no los tocaran las aves ni las fieras?", "Rizpa", "Mical", "Merab", "Ahinoam", "2 Samuel 21:8-10"),
+    Q("¿Qué rey de Tiro envió madera de cedro y de ciprés a Salomón para el templo?", "Hiram", "Ben-adad", "Hazael", "Nabucodonosor", "1 Reyes 5:1-10"),
   ],
 
   mastersuperior: [
