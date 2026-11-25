@@ -346,6 +346,11 @@ const QUESTIONS = {
     Q("Según 3 Juan, ¿quién «ama ser el primero» entre los hermanos?", "Diótrefes", "Demetrio", "Gayo", "Demas", "3 Juan 9"),
     Q("¿Cuál es el nombre en griego del ángel del abismo en Apocalipsis 9?", "Apolión", "Abadón", "Belial", "Beelzebú", "Apocalipsis 9:11"),
     Q("¿Qué testigo fiel fue muerto en Pérgamo, «donde mora Satanás»?", "Antipas", "Esteban", "Epafras", "Trófimo", "Apocalipsis 2:13"),
+    Q("¿Qué nombre puso Jacob al lugar donde le salieron al encuentro los ángeles de Dios?", "Mahanaim", "Peniel", "Sucot", "Galaad", "Génesis 32:1-2"),
+    Q("¿Cuántos años tenía Joás cuando comenzó a reinar?", "7", "8", "12", "16", "2 Reyes 11:21"),
+    Q("¿Cómo se llamaba la madre del rey Josías?", "Jedida", "Hefzi-bá", "Mesulemet", "Abí", "2 Reyes 22:1"),
+    Q("¿Cómo se llamaba el horonita que se burló de Nehemías y se opuso a la reconstrucción del muro?", "Sanbalat", "Tobías", "Gesem", "Rehum", "Nehemías 2:10, 19; 4:1"),
+    Q("¿En qué ciudad apedrearon a Pablo y lo arrastraron fuera, creyendo que estaba muerto?", "Listra", "Derbe", "Iconio", "Perge", "Hechos 14:19"),
   ],
 };
 

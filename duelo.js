@@ -311,7 +311,7 @@
       '<div class="cmb-code">' + S.code + '</div>' +
       '<p class="cmb-c">' + lv.emoji + ' ' + lv.name + ' · ' + S.n + ' preguntas</p>' +
       '<div class="cmb-row"><button class="cmb-btn" type="button" id="cmbShare">📤 Compartir enlace</button><button class="cmb-btn sec" type="button" id="cmbCopy">📋 Copiar</button></div>' +
-      '<a class="cmb-btn sec" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(texto) + '">💬 Enviar por WhatsApp</a>' +
+      '<a class="cmb-btn sec" style="text-align:center;text-decoration:none" target="_blank" rel="noopener noreferrer" href="https://wa.me/?text=' + encodeURIComponent(texto) + '">💬 Enviar por WhatsApp</a>' +
       '<p class="cmb-c" style="margin-top:14px"><span class="cmb-wait"></span>Esperando a tu rival…</p>' +
       '<button class="cmb-btn ter" type="button" id="cmbCancel">Cancelar combate</button>'
     );
