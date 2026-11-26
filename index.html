@@ -878,6 +878,13 @@
         .h1-main .mask:nth-child(2) > span { animation-delay: .4s, 1.6s; }
         .h1-main .mask:nth-child(3) > span { animation-delay: .55s, 1.6s; }
 
+        /* En dos columnas (≥900px) la palabra «AVIVAMIENTO» no cabía y se cortaba la «O» */
+        @media (min-width: 900px) {
+            .h1-main .mask > span { font-size: clamp(2.6rem, 5.5vw, 5.2rem); }
+            /* con texto agrandado (accesibilidad) el título conserva su tamaño en píxeles */
+            html[class*="a11y-t"] .h1-main .mask > span { font-size: clamp(41px, 5.2vw, 76px); }
+        }
+
         @keyframes fire {
             0% { background-position: 100% 0; }
             100% { background-position: -150% 0; }
