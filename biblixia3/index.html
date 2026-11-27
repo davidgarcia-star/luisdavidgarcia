@@ -1393,7 +1393,7 @@ function setMounted(m){P.mounted=m;if(m)P.crouch=false;dims()}
 function canStand(){const h=P.mounted?62:46,b={x:P.x+1,y:P.y+P.h-h,w:P.w-2,h:h-1};return!G.lv.solids.some(s=>!s.ground&&ov(b,s))}
 function resize(){W=innerWidth;H=innerHeight;DPR=window.devicePixelRatio||1;const rs=(QUALITY.low?Math.min(DPR,1)*.8:Math.min(DPR,1.5))*QUALITY.scale;
  cv.width=Math.max(2,Math.round(W*rs));cv.height=Math.max(2,Math.round(H*rs));cv.style.width=W+'px';cv.style.height=H+'px';
- const hd=Math.min(DPR,2);hud.width=Math.round(W*hd);hud.height=Math.round(H*hd);hud.style.width=W+'px';hud.style.height=H+'px';hud.dpr=hd}
+ const hd=Math.min(DPR,QUALITY.low?1.5:2);/* en equipos modestos el marcador se dibuja a 1.5x: igual de nítido y menos trabajo */hud.width=Math.round(W*hd);hud.height=Math.round(H*hd);hud.style.width=W+'px';hud.style.height=H+'px';hud.dpr=hd}
 addEventListener('resize',()=>{if(gl)resize()});
 
 /* ---------------- ENTRADA ---------------- */
