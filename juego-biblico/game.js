@@ -471,10 +471,14 @@
   function startTimer() {
     clearInterval(state.timer);
     state.timeLeft = timeQ();
+    state.avisoTiempo = false;
+    const aviso = $("timerAviso"); if (aviso) aviso.textContent = "";
     updateTimerBar();
     state.timer = setInterval(() => {
       state.timeLeft -= 0.25;
       updateTimerBar();
+      // Aviso para lectores de pantalla (una sola vez por pregunta)
+      if (state.timeLeft <= 5 && !state.avisoTiempo) { state.avisoTiempo = true; const av = $("timerAviso"); if (av) av.textContent = "¡Quedan 5 segundos!"; }
       if (state.timeLeft <= 5 && Math.abs(state.timeLeft - Math.round(state.timeLeft)) < 0.01) Sound.tick();
       if (state.timeLeft <= 0) {
         clearInterval(state.timer);

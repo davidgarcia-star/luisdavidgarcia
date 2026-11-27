@@ -735,3 +735,6 @@ select option { color: #111; }
   .screen > .panel::-webkit-scrollbar-track { background: transparent; }
 }
 .welcome-clasica .welcome-extras .btn-paypal { grid-column: 1 / -1; justify-self: center; }
+
+/* Texto solo para lectores de pantalla */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
