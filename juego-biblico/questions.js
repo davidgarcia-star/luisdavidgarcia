@@ -435,3 +435,13 @@ QUESTIONS.intermedio.push(
   Q("¿Qué matrimonio mintió sobre el precio de un terreno vendido?", "Ananías y Safira", "Aquila y Priscila", "Zacarías y Elisabet", "Abraham y Sara", "Hechos 5:1-10"),
   Q("¿En qué isla naufragó Pablo camino a Roma?", "Malta", "Chipre", "Creta", "Patmos", "Hechos 28:1")
 );
+QUESTIONS.avanzado.push(
+  Q("¿Qué jefe del ejército fue ungido rey de Israel por un joven profeta enviado por Eliseo, para acabar con la casa de Acab?", "Jehú", "Hazael", "Omri", "Joram", "2 Reyes 9:1-10"),
+  Q("¿Qué reina mató a la descendencia real de Judá y reinó seis años mientras Joás estaba escondido?", "Atalía", "Jezabel", "Vasti", "Mical", "2 Reyes 11:1-3"),
+  Q("¿Qué rey de Israel, después de caer por la celosía de su aposento, mandó consultar a Baal-zebub, dios de Ecrón?", "Ocozías", "Acab", "Joram", "Jehú", "2 Reyes 1:2-4"),
+  Q("¿Qué profeta, hijo de Imla, anunció que Acab caería en Ramot de Galaad?", "Micaías", "Elías", "Sedequías hijo de Quenaana", "Eliseo", "1 Reyes 22:8-28"),
+  Q("¿Cómo se llamaban los hijos de Samuel, que no anduvieron en los caminos de su padre?", "Joel y Abías", "Ofni y Finees", "Nadab y Abiú", "Mahlón y Quelión", "1 Samuel 8:1-3"),
+  Q("¿Qué estaba haciendo Gedeón cuando se le apareció el ángel del Señor?", "Sacudía el trigo en el lagar", "Cuidaba las ovejas", "Derribaba el altar de Baal", "Pescaba en el Jordán", "Jueces 6:11-12"),
+  Q("¿Qué profeta compró el campo de su primo en Anatot mientras Jerusalén estaba sitiada?", "Jeremías", "Isaías", "Ezequiel", "Amós", "Jeremías 32:6-9"),
+  Q("¿Qué discípulo de Listra, hijo de una judía creyente y de padre griego, se unió a Pablo?", "Timoteo", "Tito", "Silas", "Lucas", "Hechos 16:1-3")
+);
